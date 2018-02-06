@@ -1,7 +1,7 @@
 ---
 date: "2018-02-06T19:47:56+09:00"
 title: "Forth-Post"
-authors: ["1000jaeh", "blingeeee"]
+authors: ["1000jaeh", "blingeeeee"]
 categories:
   - Blog
 tags:
