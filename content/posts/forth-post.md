@@ -6,7 +6,7 @@ categories:
   - Blog
 tags:
   - Cloud
-draft: true
+draft: false
 ---
 # REST API란 무엇인가?
 
