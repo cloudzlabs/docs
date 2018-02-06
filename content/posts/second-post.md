@@ -1,12 +1,12 @@
 ---
 date: "2018-02-06T18:47:29+09:00"
 title: "Docker"
-authors: [1000jaeh]
+authors: ["1000jaeh"]
 categories:
   - 블로그
 tags:
   - Docker
-draft: true
+draft: false
 ---
 # Docker
 
