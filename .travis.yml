@@ -15,7 +15,7 @@ deploy:
   target_branch: gh-pages # GitHub pages branch to deploy to (in other cases it can be gh-pages)
   provider: pages
   skip_cleanup: true
-  # github_token: $GITHUB_TOKEN # This is the authentication which you will setup in the next step in travis-ci dashboard
+  github_token: $GITHUB_TOKEN # This is the authentication which you will setup in the next step in travis-ci dashboard
   email: withdtlabs@gmail.com
   name: "dtlabs"
   on:
