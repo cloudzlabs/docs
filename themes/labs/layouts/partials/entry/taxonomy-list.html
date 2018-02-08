@@ -1,0 +1,13 @@
+{{- $txs := ( $.Scratch.Get "taxonomy" ) -}}
+{{- $tx := ( $txs | singularize ) -}}
+
+{{- range $i, $term := ( index $.Params $txs ) -}}
+{{- if gt $i 0 }} {{ end -}}
+<a href='{{ $.LanguagePrefix }}/{{ $txs }}/{{ $term | urlize }}'>
+    {{- with $.Site.GetPage "taxonomyTerm" $txs ( $term | urlize ) -}}
+        {{- .Title -}}
+    {{- else -}}
+        {{- $term -}}
+    {{- end -}}
+</a>
+{{- end -}}

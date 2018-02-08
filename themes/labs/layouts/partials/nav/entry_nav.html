@@ -1,0 +1,43 @@
+{{- $config := ( .Site.Params.settings.hideEntryNavigation ) -}}
+{{- $configType := ( printf "%T" $config ) -}}
+
+{{- if ( eq $configType "bool" ) -}}
+  {{- $.Scratch.Set "showEntryNav" ( not $config ) -}}
+{{- else -}}
+  {{- $.Scratch.Set "showEntryNav" ( not ( in $config .Section ) ) -}}
+{{- end -}}
+
+{{- if ( $.Scratch.Get "showEntryNav" ) -}}
+
+{{ if gt ( len ( where .Site.RegularPages "Section" .Section ) ) 1 }}
+<div class="mt-30 row">
+    {{- if .PrevInSection -}}
+    <div class="col-md-6 post-pre">
+        <a href='{{ .PrevInSection.Permalink | relURL }}'>
+            <div class="author">
+                <img class="img-circle" alt="" src="img/user/user-ava-md.png">
+                <div class="author-info">
+                    <h3>{{- .PrevInSection.Title -}}</h3>
+                    <p>{{- .PrevInSection.Summary -}}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    {{- end -}}
+
+    {{- if .NextInSection -}}
+    <div class="col-md-6 post-next">
+        <a href='{{ .NextInSection.Permalink | relURL }}'>
+            <div class="author">
+                <img class="img-circle" alt="" src="img/user/user-ava-md.png">
+                <div class="author-info">
+                    <h3>{{- .NextInSection.Title -}}</h3>
+                    <p>{{- .NextInSection.Summary -}}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    {{- end -}}
+</div>
+{{ end }}
+{{- end -}}

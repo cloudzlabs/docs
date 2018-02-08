@@ -1,0 +1,20 @@
+{{ partial "header" . }}
+
+<div id='main' class='container'>
+    {{ if .Content }}
+    <article class='entry'>
+        {{ partial "entry/cover" . }}
+        {{ partial "entry/content" . }}
+    </article>
+    {{ end }}
+
+    {{- with .Site.Params.settings.homepageSections -}}
+        {{- range . -}}
+            {{- partial ( print "home/" . ) $ -}}
+        {{- end -}}
+    {{- else -}}
+        {{- partial "home/recent_posts" . -}}
+    {{- end -}}
+</div>
+
+{{ partial "footer" . }}

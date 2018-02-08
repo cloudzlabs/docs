@@ -1,0 +1,21 @@
+{{- if not .Site.Params.settings.hideSocialMenu -}}
+<ul class='nav-social'>
+    {{- $social := ( .Site.Params.social ) -}}
+    {{- range $platform := $social.config.platforms -}}
+        {{- with $username := ( index $social $platform ) -}}
+        <li>
+            <a class='social-button' href='{{ print ( index $.Site.Data.theme.social.base $platform ) $username }}' target='_blank' rel='noopener'>
+            <i class='screen-reader' aria-hidden='true'>
+                {{- if eq $platform "email" -}}
+                {{- i18n "contactViaEmail" -}}
+                {{- else -}}
+                {{- i18n "openAccountInNewTab" ( dict "Platform" ( $platform | title ) ) -}}
+                {{- end -}}
+            </i>
+            {{- partial "svg/icons" $platform -}}
+            </a>
+        </li>
+        {{- end -}}
+    {{- end -}}
+</ul>
+{{- end -}}
