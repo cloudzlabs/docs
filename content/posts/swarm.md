@@ -9,7 +9,7 @@ tags:
   - Swarm
 draft: false
 ---
-## Swarm
+# Swarm
 
 Docker의 현재 버전에는 swarm이라고 불리는 Docker 엔진의 클러스터를 기본적으로 관리하기 위한 Swarm 모드가 포함되어 있습니다. Docker CLI를 사용하여 swarm을 만들고, swarm에 응용 프로그램 서비스들을 배포하고, swarm의 행동을 관리하십시오.
 
