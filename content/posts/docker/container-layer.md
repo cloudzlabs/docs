@@ -1,15 +1,20 @@
 ---
 date: "2018-01-08T14:02:23+09:00"
 title: "Container-Layer"
-authors: []
+authors: ["1000jaeh"]
 categories:
-  - 블로그
+  - posts
 tags:
   - Docker
   - Cloud
   - Container As a Service
+cover:
+  image: /docs/images/container-layers.jpg
+  caption: Eden Farm Children's Village by Gareth Harper on Unsplash
+  style: full
 draft: false
 ---
+# Container Layer
 
 ## Images와 Layers
 
@@ -27,27 +32,17 @@ CMD python /app/app.py
 
  `FROM` 은 `ubuntu:15.04` Image에서 Layer를 생성하는 것으로 시작합니다.  `COPY` 는 Docker Client의 현재 디렉토리에서 일부 파일을 추가합니다. `RUN`은 `make`명령어를 사용하여, 응용프로그램을 빌드합니다. 마지막 Layer는 Container 내에서 실행할 명령을 지정합니다.
 
-
-
 각각의 Layer는 이전 Layer와의 차이점 Set입니다. Layer는 서로 위에 겹쳐져 있습니다. 새로운 Container를 만들 때, 기본 Layer 위에 새로운 쓰기 가능한 Layer를 추가합니다. 이 Layer를 종종 "Container Layer"라고 합니다. 새 파일 작성, 기존 파일 수정과 삭제와 같은 Container 기동 중에 발생하는 모든 변화들은 Thin Writable Container Layer에 쓰여집니다.
-
-
 
 아래 다이어그램은 Ubuntu 15.04 Image를 기반으로하는 Container의 구조입니다.
 
-![image](http://docs.docker.com/engine/userguide/storagedriver/images/container-layers.jpg)
-
-
+![image](/docs/images/container-layers.jpg)
 
 *Storage Driver*가 Layers간 상호 작용 방식에 대한 세부 사항들을 처리합니다. 다양한 Storage Driver를 사용할 수 있으며, 상황에 따라 장점과 단점이 있습니다.
-
-
 
 ## Container와 Layers
 
 Container와 Image의 주된 차이점은 최상단 Writable Layer의 존재입니다. 새 데이터를 추가하거나 기존 데이터를 수정하는 Container에서 발생하는 행위는 이 Writable Layer에 저장됩니다. Container가 삭제되면, 해당 Writable Layer도 삭제됩니다. 기본 Image는 변경되지 않습니다.
-
-
 
 각 Container는 자체적으로 Writable Layer를 갖고 있으며, 모든 변경된 내용은 해당 Layer에 저장되지 때문에, 여러 Container가 동일한 기본 Image를 공유하여 사용하면서 Container 자신의 Data 상태를 가질 수 있습니다. 아래 다이어그램은 동일한 Ubuntu 15.04 Image를 공유하는 여러 Container를 보여줍니다.
 
@@ -55,11 +50,7 @@ Container와 Image의 주된 차이점은 최상단 Writable Layer의 존재입�
 
 > 참고: 만약 여러 Image들이 동일한 데이터에 대한 접근을 공유할 필요한 경우, 해당 데이터를 Docker Volume에 저장하고 Container들에 마운트하십시오.
 
-
-
 Docker는 Storage Driver를 사용하여, Image Layers와 Writable Container Layer의 Contents들을 관리합니다. 각 Storage Driver는 구현은 다르게 되어있지만, 모든 드라이버는 Stackable Image Layers와 copy-on-write(CoW) 전략을 사용합니다.
-
-
 
 ## Disk상의 Container 크기
 
@@ -78,13 +69,9 @@ b2a14a58e3b6        acme/my-final-image:1.0   "bash"              2 hours ago   
 - `size`: 각 Container의 Writable Layer에서 사용되는 디스크상의 데이터 양
 - `virtual size`: Container가 사용하는 Read-only Image에서 사용된 데이터의 양. 여러 Container들이 일부 또는 모든 Read-only Image 데이터를 공유할 수 있습니다. 동일한 Image에서 시작된 두 개의 Container는 Read-only 데이터의 100% 공유하는 반면, 서로 다른 Image를 가진 두 개의 Container는 공통된 Layer만을 공유합니다. 따라서, `virtual size`들을 합산할 수 없습니다. 이로 인해서 잠재적으로 전체 Disk 사용량이 예상치 못하게 과대평가될 수 있습니다.
 
-
-
 Disk 상에서 실행 중인 모든 Container들이 사용하는 전체 Disk 공간은 각 Container의 `size`와 `virtual size`값의 일부 조합입니다. 만약 여러 Container들의 `virtual size`가 동일하다면, 동일한 Image에서 만들어졌을 가능성이 큽니다.
 
-
-
-또한, 아래와 같은 Container가 Disk 공간을 차지할 수 있는 추가 방법들은 계산하지 않습니다: 
+또한, 아래와 같은 Container가 Disk 공간을 차지할 수 있는 추가 방법들은 계산하지 않습니다:
 
 - `json-file` Logging Driver를 사용하는 경우, 로그 파일들이 차지하는 Disk 공간. 만약 Container가 대량의 로깅 데이터를 생성하고, 로그 로테이션에 대한 설정이 되어있지 않다면, 이는 중대한 문제가 될 수 있습니다.
 - Container가 사용하는 Volume들과 Bind Mounts
@@ -92,47 +79,39 @@ Disk 상에서 실행 중인 모든 Container들이 사용하는 전체 Disk 공
 - Disk에 기록된 Memory(Swapping이 활성화된 경우.)
 - Checkpoints, 만약 실험적으로 checkpoint/restore Feature를 사용하는 경우.
 
-
-
 ## Copy-on-Write(CoW) 전략
 
 Copy-On-Write는 파일을 공유하고 복사하여 최대한의 효율성을 높이는 전략입니다. 파일 또는 디렉토리가 Image의 하위 Layer에 존재하거나, 다른 Layer(Writable Layer 포함)에서 해당 파일 또는 디렉토리에 대한 읽기 권한이 필요한 경우, 기존 파일을 사용하기만 합니다. 처음으로 다른 Layer가 파일을 수정해야 할 때 (Image를 만들거나 Container를 실행할 때), 파일은 해당 Layer에 복사되고 수정됩니다. 이렇게 하면, I/O와 각 후속 Layer의 크기가 최소화됩니다. 
 
-
-
-### 공유는 더 작은 Image를 조장합니다.
+### 공유는 더 작은 Image를 조장합니다
 
 Repository로 부터 Image를 Pull하기 위해 `docker pull`를 사용하거나, 아직 로컬에 존재하지 않는 Image에서 Container를 생성하려할 때, 각 Layer는 별도로 분리되어 Docker의 로컬 Repository(일반적으로 Linux에서 `/var/lib/docker/`에 위치)에 저장됩니다. 다음 예제에서 이러한 Layer가 표시되는지 확인할 수 있습니다.
-
-
 
 [Ubuntu Image](https://store.docker.com/images/ubuntu) 비교
 
 ```shell
 $ docker pull ubuntu:latest
 latest: Pulling from library/ubuntu
-ae79f2514705: Pull complete 
-5ad56d5fc149: Pull complete 
-170e558760e8: Pull complete 
-395460e233f5: Pull complete 
-6f01dc62e444: Pull complete 
+ae79f2514705: Pull complete
+5ad56d5fc149: Pull complete
+170e558760e8: Pull complete
+395460e233f5: Pull complete
+6f01dc62e444: Pull complete
 Digest: sha256:506e2d5852de1d7c90d538c5332bd3cc33b9cbd26f6ca653875899c505c82687
 Status: Downloaded newer image for ubuntu:latest
 
-$ docker pull ubuntu:14.04 
+$ docker pull ubuntu:14.04
 14.04: Pulling from library/ubuntu
-bae382666908: Pull complete 
-29ede3c02ff2: Pull complete 
-da4e69f33106: Pull complete 
-8d43e5f5d27f: Pull complete 
-b0de1abb17d6: Pull complete 
+bae382666908: Pull complete
+29ede3c02ff2: Pull complete
+da4e69f33106: Pull complete
+8d43e5f5d27f: Pull complete
+b0de1abb17d6: Pull complete
 Digest: sha256:6e3e3f3c5c36a91ba17ea002f63e5607ed6a8c8e5fbbddb31ad3e15638b51ebc
 Status: Downloaded newer image for ubuntu:14.04
 ```
 
 15.04 Version과 최신버전의 Ubuntu Image를 Pull한 경우, 최초 한번 받은 Layer들은 이후에는 Complete처리가 되어 다운받지 않고, 차이나는 Layer만 다운받는 것을 확인할 수 있습니다.
-
-
 
 [Ubuntu Image](https://store.docker.com/images/ubuntu) 버전에 따른 Dockerfile 비교
 
@@ -149,16 +128,12 @@ FROM scratch
 # see https://github.com/docker/docker/blob/9a9fc01af8fb5d98b8eec0740716226fadb3735c/contrib/mkimage/debootstrap
 RUN set -xe \
 
-	.... 생략 ....
+.... 생략 ....
 ```
 
 16.04와 14.04 Version을 Pull했을 때, 발생하는 Layer의 차이는 각 Dockerfile의 `ADD`이 달라서 발생하는 것으로 확인할 수 있습니다.
 
-
-
 각각의 Layer들은 Docker Host의 로컬 저장 영역의 자체 디렉토리에 저장됩니다. 파일 시스템에서 `/var/lib/docker/<storage-driver>/layers/`의 경로에서 Layer목록을 확인할 수 있습니다.
-
-
 
 저장된 Docker Image Layer (Mac 기준)
 
@@ -212,9 +187,7 @@ fffe916816bf624b5d994ea5c29980562c088e029e78215e0df1079d39372fef
 l
 ```
 
->  overlay2 Storage Driver로 Layer들이 생성되어 있으며 각 디렉토리 이름은 Layer ID와 일치하지 않습니다.(Docker 1.10 이후 사실로 확인됨)
-
-
+> overlay2 Storage Driver로 Layer들이 생성되어 있으며 각 디렉토리 이름은 Layer ID와 일치하지 않습니다.(Docker 1.10 이후 사실로 확인됨)
 
 Container간 Layer 차이 확인
 
@@ -236,7 +209,7 @@ CMD /app/hello.sh
 
 두 Dockerfile에서 Image를 빌드하는 경우, `docker images` 및 `docker history`를 사용하여 공유 Layer의 암호화 ID가 동일한지 확인할 수 있습니다.
 
-1.  `cow-test/` 디렉토리를 생성합니다.
+1. `cow-test/` 디렉토리를 생성합니다.
 
 2. `cow-test/` 안에 다음과 같은 내용으로 `hello.sh`을 만듭니다.
 
@@ -325,7 +298,7 @@ CMD /app/hello.sh
 
 9. `docker history IMAGE`로 각 Image를 구성하는 Layer를 확인할 수 있습니다.
 
-   Base Image: 
+   Base Image:
 
    ```shell
    $ docker history 71a49d51b7cb
@@ -339,7 +312,7 @@ CMD /app/hello.sh
    <missing>           3 months ago        /bin/sh -c #(nop) ADD file:6cd9e0a52cd1520...   107MB  
    ```
 
-   두번째 Image: 
+   두번째 Image:
 
    ```shell
    $ docker history e242fd50d9e6
@@ -364,9 +337,7 @@ CMD /app/hello.sh
 
   > 생성된 Image들이 Layer별로 분리되어 위와 같이 저장되었습니다.
 
-  ​
-
-### 복사는 Container를 효율적으로 만듭니다.
+### 복사는 Container를 효율적으로 만듭니다
 
 Container를 시작할 때, Thin Writable Container Layer가 다른 Layer 위에 추가됩니다. Container가 파일 시스템에 대해 수행한 모든 변경 사항이 여기에 저장됩니다. Container가 변경하지 않는 파일은 Writable Layer에 복사되지 않습니다. 즉, Writable Layer는 가능한 작게 유지되고 있음을 의미합니다.
 
@@ -378,13 +349,9 @@ Container의 기존 파일이 수정되면 Storage Driver는 copy-on-write를 �
 
 Btrfs, ZFS 및 다른 드라이버는 copy-on-write를 다르게 처리합니다. 
 
-
-
 많은 양의 데이터를 쓰는 Container는 그렇지 않은 Container보다 더 많은 공간을 사용합니다. 이는 대부분의 쓰기 작업이 Container의 최상위에 있는 Writable Layer에서 새로운 공간을 사용하기 때문입니다.
 
 > 참고: 쓰기가 많은 응용 프로그램의 경우, Container에 데이터를 저장하지 마십시오. 대신 Docker Volume을 사용하십시오. Docker 볼륨은 실행중이 Container와 독립적이며, I/O을 효율적으로 할 수 있도록 설계되었습니다. 또한, Volume을 Container들간 공유가 가능하며, Container의 Writable Layer 크기는 증가하지 않습니다.
-
-
 
 `copy_up`은 성능 오버헤드가 발생할 수 있습니다. 이 오버헤드는 사용 중인 Storage Driver에 따라 다릅니다. 대용량 파일, 많은 Layer 및 Deep Directory Tree들이 오버헤드를 더 두드러지게 만들 수 있습니다. 각 `copy_up` 동작이 주어진 파일이 처음 수정 될 때만 발생한다는 사실은, 이러한 오버헤드를 완화시킵니다.
 
@@ -446,11 +413,7 @@ copy-on-write가 작동 방식을 확인하기 위해, `acme/my-final-image:1.0`
 
 copy-on-write는 공간을 절약할 뿐만 아니라, Container의 기동 시간을 줄여줍니다. Container(또는 동일한 Image에서 여러 Container)를 시작하려할 때, Docker는 단지 Writable Container Layer만 만들면 됩니다.
 
-
-
 Docker가 새 Container를 시작할 때마다 기본 Image Stack의 전체 복사본을 만들어야 하는 경우, Container 기동 시간과 사용하는 Disk 공간은 크게 늘어납니다. 이는 Virtual Machine이 동작하는 방식과 유사하며, Virtual Machine당 하나 이상의 Virtual Disk가 있는 것과 같습니다.
-
-
 
 ## Data Volume과 Storage Driver
 

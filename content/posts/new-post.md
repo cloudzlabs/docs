@@ -3,13 +3,19 @@ date: "2018-02-07T13:24:01+09:00"
 title: "New-Post"
 authors: ["1000jaeh"]
 categories:
-  - test
+  - Spring Cloud
+  - Cloud
+  - Java
 tags:
-  - test
+  - Spring
+  - Cloud
+  - Spring Cloud
+cover:
+  image: /docs/images/container-layers.jpg
+  caption: Eden Farm Children's Village by Gareth Harper on Unsplash
+  style: full
 draft: false
 ---
-
-<!-- TOC -->
 
 - [Staticfile Buildpack](#staticfile-buildpack)
     - [Overview](#overview)
@@ -23,8 +29,6 @@ draft: false
     - [Buildpack Configuration & Application push](#buildpack-configuration-application-push)
         - [Config option](#config-option)
     - [Consideration](#consideration)
-
-<!-- /TOC -->
 
 ## Overview
 

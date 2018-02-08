@@ -6,6 +6,10 @@ categories:
   - Spring
 tags:
   - Spring
+  - Test
+  - Spring Cloud
+  - CDC
+description: "alksdjflaksdjflakdsjflkasdjfkladsjflakdsjfalksd"
 draft: false
 ---
 spring-cloud-contract

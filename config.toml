@@ -1,14 +1,13 @@
 baseURL = "https://withdtlabs.github.io/docs/"
 title = "CloudZ Labs"
+theme = "labs"
+
 # for smart copyright line, leave this blank and check [params.copyright]
 copyright = ""
-
-theme = "minimo"
-
-disqusShortname = ""
+disqusShortname = "DTLabs"
 googleAnalytics = ""
 
-Paginate = 5
+Paginate = 10
 preserveTaxonomyNames = true
 
 enableRobotsTXT = true # generate robots.txt
@@ -25,26 +24,26 @@ title404 = "Nothing's here!"
 
 [params.assets]
 favicon = "favicon.ico"
-customCSS = ["css/custom.css"]
-customJS = ["js/custom.js"]
+customCSS = ["assets/css/bootstrap.css", "assets/css/common.css", "assets/css/font-awesome.css"]
+customJS = ["assets/js/common.js", "assets/js/scripts.js"]
 gopher = "" # used in 404 template ( Generator: https://gopherize.me )
 
 [params.copyright]
-prefix = ""
+prefix = "Copyright"
 holder = "CloudZ Labs"
 startYear = "2018"
-suffix = ""
+suffix = "All Rights Reserved."
 
 [params.settings]
 # date & time format: https://golang.org/pkg/time/
 dateFormat = "2006, Jan 02"
 listDateFormat = "2006, Jan 02"
 hideEntryNavigation = ["page"] # boolean / array of sections
-recentPostsLength = 4
+recentPostsLength = 3
 hideSocialMenu = false
 showReadingTime = true
 noTermCloudShuffle = false
-homepageSections = ["recent_posts"]
+homepageSections = ["recent_posts", "posts"]
 
 [params.opengraph.facebook]
 admins = [] # array of Facebook IDs
@@ -81,16 +80,16 @@ tag = "tags"
 page = "/:slug/"
 
 [[menu.main]]
-name = "Repo"
-weight = -10
-identifier = "repository"
-url = "https://github.com/MunifTanjim/minimo"
-
-[[menu.main]]
-name = "블로그"
+name = "Tech Blog"
 weight = -10
 identifier = "blog"
-url = ""
+url = "/"
+
+[[menu.main]]
+name = "Registration"
+weight = 10
+identifier = "labs"
+url = "http://cloudz-labs.sk.com"
 
 [blackfriday]
 hrefTargetBlank = true

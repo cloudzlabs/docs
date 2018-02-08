@@ -7,6 +7,9 @@ host = "gmail.com"
 [name]
 display = "Jaehoon Jung"
 
+[info]
+description = "alkdlksadjflkasdjflkasdjf"
+
 [social]
 email = ""
 facebook  = ""
