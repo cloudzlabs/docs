@@ -1,134 +1,102 @@
 baseURL = "https://withdtlabs.github.io/docs/"
-title = "Notre-Dame de Paris"
-# baseURL = "https://example.com"
-languageCode = "en-us"
-theme = "gohugo-theme-ananke"
-# themesDir = "../.."
+title = "CloudZ Labs"
+theme = "labs"
 
-MetaDataFormat = "yaml"
-DefaultContentLanguage = "en"
-SectionPagesMenu = "main"
-Paginate = 3 # this is set low for demonstrating with dummy content. Set to a higher number
+# for smart copyright line, leave this blank and check [params.copyright]
+copyright = ""
+disqusShortname = "DTLabs"
 googleAnalytics = ""
-enableRobotsTXT = true
 
-[sitemap]
-  changefreq = "monthly"
-  priority = 0.5
-  filename = "sitemap.xml"
+Paginate = 10
+preserveTaxonomyNames = true
 
-[params]
-  favicon = ""
-  description = "The last theme you'll ever need. Maybe."
-  facebook = ""
-  twitter = "https://twitter.com/GoHugoIO"
-  instagram = ""
-  youtube = ""
-  github = ""
-  linkedin = ""
-  # choose a background color from any on this page: http://tachyons.io/docs/themes/skins/ and preface it with "bg-"
-  background_color_class = "bg-black"
-  featured_image = "/images/gohugo-default-sample-hero-image.jpg"
-  recent_posts_number = 2
+enableRobotsTXT = true # generate robots.txt
 
-# title = "CloudZ Labs"
-# theme = "labs"
+# Syntax Highlighting ( https://gohugo.io/content-management/syntax-highlighting/ )
+pygmentsCodefences = true
 
-# # for smart copyright line, leave this blank and check [params.copyright]
-# copyright = ""
-# disqusShortname = "DTLabs"
-# googleAnalytics = ""
+# Missing translations will default to this content language
+defaultContentLanguage = "en"
 
-# Paginate = 10
-# preserveTaxonomyNames = true
+[params.info]
+description = "Cloud의 시작. CloudZ Labs와 함께 하세요."
+title404 = "Nothing's here!"
 
-# enableRobotsTXT = true # generate robots.txt
+[params.assets]
+favicon = "favicon.ico"
+customCSS = ["assets/css/bootstrap.css", "assets/css/common.css", "assets/css/font-awesome.css"]
+customJS = ["assets/js/common.js", "assets/js/scripts.js"]
+gopher = "" # used in 404 template ( Generator: https://gopherize.me )
 
-# # Syntax Highlighting ( https://gohugo.io/content-management/syntax-highlighting/ )
-# pygmentsCodefences = true
+[params.copyright]
+prefix = "Copyright"
+holder = "CloudZ Labs"
+startYear = "2018"
+suffix = "All Rights Reserved."
 
-# # Missing translations will default to this content language
-# defaultContentLanguage = "en"
+[params.settings]
+# date & time format: https://golang.org/pkg/time/
+dateFormat = "2006, Jan 02"
+listDateFormat = "2006, Jan 02"
+hideEntryNavigation = ["page"] # boolean / array of sections
+recentPostsLength = 3
+hideSocialMenu = false
+showReadingTime = true
+noTermCloudShuffle = false
+homepageSections = ["recent_posts", "posts"]
 
-# [params.info]
-# description = "Cloud의 시작. CloudZ Labs와 함께 하세요."
-# title404 = "Nothing's here!"
+[params.opengraph.facebook]
+admins = [] # array of Facebook IDs
+appID = ""
+pageID = ""
 
-# [params.assets]
-# favicon = "favicon.ico"
-# customCSS = ["assets/css/bootstrap.css", "assets/css/common.css", "assets/css/font-awesome.css"]
-# customJS = ["assets/js/common.js", "assets/js/scripts.js"]
-# gopher = "" # used in 404 template ( Generator: https://gopherize.me )
+[params.opengraph.twitter]
+page = "" # Twitter page username
 
-# [params.copyright]
-# prefix = "Copyright"
-# holder = "CloudZ Labs"
-# startYear = "2018"
-# suffix = "All Rights Reserved."
+[params.seo]
+# Title Separator: - – — · • * ⋆ | ~ « » < >
+titleSeparator = "•"
 
-# [params.settings]
-# # date & time format: https://golang.org/pkg/time/
-# dateFormat = "2006, Jan 02"
-# listDateFormat = "2006, Jan 02"
-# hideEntryNavigation = ["page"] # boolean / array of sections
-# recentPostsLength = 3
-# hideSocialMenu = false
-# showReadingTime = true
-# noTermCloudShuffle = false
-# homepageSections = ["recent_posts", "posts"]
+[params.social]
+codepen = "MunifTanjim"
+email = "contact@example.com"
+facebook = "MunifTanjim"
+github = "MunifTanjim"
+instagram = "MunifTanjim"
+linkedin = "muniftanjim"
+twitter = "MunifTanjim"
+telegram = "MunifTanjim"
+google_scholar = "qc6CJjYAAAAJ"
 
-# [params.opengraph.facebook]
-# admins = [] # array of Facebook IDs
-# appID = ""
-# pageID = ""
+[params.social.config]
+platforms = ["github","facebook","twitter","instagram","email","codepen","linkedin","telegram","google_scholar"]
 
-# [params.opengraph.twitter]
-# page = "" # Twitter page username
+[taxonomies]
+author = "authors"
+category = "categories"
+tag = "tags"
 
-# [params.seo]
-# # Title Separator: - – — · • * ⋆ | ~ « » < >
-# titleSeparator = "•"
+[permalinks]
+page = "/:slug/"
 
-# [params.social]
-# codepen = "MunifTanjim"
-# email = "contact@example.com"
-# facebook = "MunifTanjim"
-# github = "MunifTanjim"
-# instagram = "MunifTanjim"
-# linkedin = "muniftanjim"
-# twitter = "MunifTanjim"
-# telegram = "MunifTanjim"
-# google_scholar = "qc6CJjYAAAAJ"
+[[menu.main]]
+name = "Tech Blog"
+weight = -10
+identifier = "blog"
+url = "/"
 
-# [params.social.config]
-# platforms = ["github","facebook","twitter","instagram","email","codepen","linkedin","telegram","google_scholar"]
+[[menu.main]]
+name = "Registration"
+weight = 10
+identifier = "labs"
+url = "http://cloudz-labs.sk.com"
 
-# [taxonomies]
-# author = "authors"
-# category = "categories"
-# tag = "tags"
+[blackfriday]
+hrefTargetBlank = true
 
-# [permalinks]
-# page = "/:slug/"
-
-# [[menu.main]]
-# name = "Tech Blog"
-# weight = -10
-# identifier = "blog"
-# url = "/"
-
-# [[menu.main]]
-# name = "Registration"
-# weight = 10
-# identifier = "labs"
-# url = "http://cloudz-labs.sk.com"
-
-# [blackfriday]
-# hrefTargetBlank = true
-
-# [languages]
-# # edit this block for your own language
-# [languages.en]
-# lang = "ko"
-# languageName = "Korean"
-# weight = 1
+[languages]
+# edit this block for your own language
+[languages.en]
+lang = "ko"
+languageName = "Korean"
+weight = 1
