@@ -86,7 +86,7 @@ tag = "tags"
 page = "/:slug/"
 
 [[menu.main]]
-name = "Tech Blog"
+name = "Posts"
 weight = -10
 identifier = "blog"
 url = "/"

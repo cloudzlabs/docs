@@ -8,6 +8,7 @@ host = "gmail.com"
 display = "Jaehoon Jung"
 
 [info]
+image = "/images/authors/ddabong.png"
 description = "alkdlksadjflkasdjflkasdjf"
 
 [social]
