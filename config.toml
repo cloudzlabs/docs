@@ -4,7 +4,7 @@ theme = "labs"
 
 # for smart copyright line, leave this blank and check [params.copyright]
 copyright = ""
-disqusShortname = "DTLabs"
+disqusShortname = "Labs Tech Blog"
 googleAnalytics = ""
 
 Paginate = 10
@@ -44,6 +44,12 @@ hideSocialMenu = false
 showReadingTime = true
 noTermCloudShuffle = false
 homepageSections = ["recent_posts", "posts"]
+
+# Enable / Disable algolia search
+algolia_search    = true
+algolia_appId     = "Y2C4RWMPXW"
+algolia_apiKey    = "50ea7f8c41c0ad233926e0be2b769ed1"
+algolia_indexName = "default-content"
 
 [params.opengraph.facebook]
 admins = [] # array of Facebook IDs
