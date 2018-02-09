@@ -10,7 +10,12 @@
                 <a class="cover-trigger"></a>
                 <div class="cover-gradient"></div>
                 <div class="cover-header">
-                    <h5 class="cover-section"><a href="/section/apps">Apps</a></h5>
+                    <h5 class="cover-section">
+                        {{ if .Params.tags }}
+                            {{ range $index, $tag := .Params.tags }}{{ if gt $index 0 }}, {{ end }}
+                            <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">{{ . }}</a>{{ end }}
+                        {{ end }}
+                    </h5>
                     <h2 class="cover-title"><a href="{{ .URL }}">{{ .Title }}</a></h2>
                     <ul class="cover-byline">
                         {{- with .Params.authors -}}

@@ -7,7 +7,7 @@
     {{- $info := ( or $i18nAuthor.info $author.info ) -}}
     {{- if gt $i 0 }}, {{ end -}}
     <div class="author">
-        <img class="img-circle" alt="" src="img/user/user-ava-md.png" >
+        <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $info.image }}" >
         <div class="author-info">
             <h3>
                 <a href='{{ $.LanguagePrefix }}/authors/{{ $author.id }}'>

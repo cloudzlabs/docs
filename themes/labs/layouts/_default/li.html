@@ -1,15 +1,54 @@
-<li class='list-item'>
-  <article>
-    <div class='meta'>
-      {{ partial "list/date" . }}
-    </div>
+<div class="fulid-set-12 card mb-30">
+    <div class="row">
+        <a href="#" class="col-md-4 col-sm-12 col-xs-12">
+            {{- with .Params.cover -}}
 
-    <header class='list-item-header'>
-      <h3 class='list-item-title'>
-        <a href='{{ .Permalink | relURL }}'>
-          {{- .Title -}}
-        </a>
-      </h3>
-    </header>
-  </article>
-</li>
+            {{- $type := ( printf "%T" . ) -}}
+            {{- $isMap := ( not ( eq $type "string" ) ) -}}
+            <img class="img-responsive" alt="Post Thumbnail" src='{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
+                {{- if $isMap }}
+                    {{- with .caption }} alt='{{ . | markdownify }}'{{ end -}}
+                {{ end -}} /></a>
+            {{- end -}}
+        <div class="col-md-8 col-sm-12 col-xs-12 post-info">
+            <h3 class="post-title">
+                <a href="{{ .URL }}">{{ .Title }}</a>
+            </h3>
+            {{- with .Params.authors -}}
+            {{- $lang := ( $.Params.lang | default $.Lang ) -}}
+            <h4 class="post-authorName">{{ i18n "by" }}&nbsp;
+                {{- range $i, $authorID := . -}}
+                    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
+                    {{- $i18nAuthor := ( index $author $lang ) -}}
+                    {{- $name := ( or $i18nAuthor.name $author.name ) -}}
+                    {{- if gt $i 0 }}, {{ end -}}
+                    <a href='{{ $.LanguagePrefix }}/authors/{{ $author.id }}'>
+                        {{- $name.display -}}
+                    </a>
+                {{- end -}}
+            </h4>
+            {{- end -}}
+            <p class="post-excerpt">
+                {{- $page := . -}}
+                    {{- with .Description -}}
+                        {{ . | plainify | htmlUnescape | replaceRE "(?m)(\\s+)" " " }}
+                    {{- else -}}
+                        {{ .Summary | plainify | htmlUnescape | replaceRE "(?m)(\\s+)" " " }}{{ if .Truncated }}
+                    {{ end }}
+                {{- end -}}
+            </p>
+            <span class="btn-link">
+                <a href="{{ .URL }}">Read more...</a>
+            </span>
+            <div class="tag">
+                    {{ if .Params.tags }}
+                    <div class="tag">
+                        {{ range $index, $tag := .Params.tags }}{{ if gt $index 0 }} {{ end }}
+                        <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">{{ . }}</a>{{ end }}
+                    </div>
+                    {{ end }}
+                    {{- /* vim: set ts=2 sw=2 et: */}}
+            </div>
+        </div>
+    </div>
+</div>
