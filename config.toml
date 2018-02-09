@@ -4,7 +4,7 @@ theme = "labs"
 
 # for smart copyright line, leave this blank and check [params.copyright]
 copyright = ""
-disqusShortname = "Labs Tech Blog"
+disqusShortname = "labs-tech-blog."
 googleAnalytics = ""
 
 Paginate = 10
