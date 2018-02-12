@@ -10,8 +10,8 @@
         <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $info.image }}" >
         <div class="author-info">
             <h3>
-                <a href='{{ $.LanguagePrefix }}/authors/{{ $author.id }}'>
-                    {{- $name.display -}}
+                <a href='{{ $.Site.BaseURL }}authors/{{ $author.id }}'>
+                    {{- $name.display -}}{{ $.LanguagePrefix }}
                 </a>
             </h3>
             <p>{{- $info.description -}}</p>
