@@ -15,6 +15,7 @@
     {{- else -}}
         {{- partial "home/recent_posts" . -}}
     {{- end -}}
+    {{ partial "nav/pagination" . }}
 </div>
 
 {{ partial "footer" . }}

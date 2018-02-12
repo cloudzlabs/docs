@@ -143,6 +143,7 @@ button:focus { outline: none; }
 .btn-default:hover { border:1px solid #ad4868; background-color: #ad4868; color:#fff; }
 .btn-load { color: #666; border: 1px solid #ad4868; border-radius: 4px; font-size: 16px; color:#ad4868; padding:0 25px; }
 .btn-load:hover { background:#ad4868; color:#fff; }
+.btn-load.active { background:#ad4868; color:#fff; }
 .text-center .btn, .text-center .btn-group { margin-right: 6px; margin-left: 6px; }
 .text-right .btn, .text-right .btn-group { margin-right: 0; margin-left: 12px; }
 .social-button { display: inline-block; margin-top: 5px; margin-right: 18px; margin-bottom: 5px; transition: color .3s; color: #fff; font-size: 16px; text-decoration: none; vertical-align: middle; }
@@ -151,7 +152,7 @@ button:focus { outline: none; }
 .btn-link { display: block; padding: 0; border-radius: 7px; list-style: none; font-size: 14px; }
 .btn-link a { color:#777; }
 .img-circle { border-radius: 50%; border:1px solid #ddd; }
-    
+
 .tag { margin-top:15px; }
 .tag a{ display: inline-block; height: 28px; margin-right: 4px; margin-bottom: 8px; padding: 0 12px; transition: all .3s; border: 1px solid #e1e7ec; border-radius: 4px; color: #606975 !important; font-size: 13px; font-weight: 500; line-height: 25px; text-decoration: none !important; white-space: nowrap; }
 .tag a:hover { background-color: #fff; color: #ad4868 !important; border:1px solid #ad4868; -webkit-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); -moz-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); }
@@ -170,7 +171,7 @@ button:focus { outline: none; }
 .table-bordered thead th, .table-bordered thead td { border-bottom-width: 2px; }
 .table-striped tbody tr:nth-of-type(odd) {	background: rgba(173, 72, 103, 0.05); }
 .table-hover tbody tr:hover { background-color: rgba(0,0,0,0.075); }
-.table thead tr:hover, 
+.table thead tr:hover,
 .table tbody tr:hover
  { font-weight: bold; background: rgba(173, 72, 103, 0.15); color:#333 !important; }
 
@@ -303,12 +304,12 @@ button:focus { outline: none; }
 .cover-section { font-weight: bold; }
 .cover-title { font-weight: bold; }
 .cover-image { background-color: #000; background-size: cover; background-position: center center; top: 4px; z-index: 1; }
-.cover-trigger { 
-    -moz-transition: 
-    background-color .4s ease; -o-transition: 
-    background-color .4s ease; -webkit-transition: 
-    background-color .4s ease; transition: background-color .4s ease; 
-    background:  rgba(0,0,0,.25); 
+.cover-trigger {
+    -moz-transition:
+    background-color .4s ease; -o-transition:
+    background-color .4s ease; -webkit-transition:
+    background-color .4s ease; transition: background-color .4s ease;
+    background:  rgba(0,0,0,.25);
     background-size: 100% 100%; display: block; top: 4px; will-change: background-color; z-index: 2; }
 .cover-header h5 a,
 .cover-header h2 a,
@@ -323,12 +324,12 @@ button:focus { outline: none; }
 .cover-byline { color: rgba(255,255,255,.6); font-size: 14px; list-style: none; margin: 0; padding: 0; display: inline-block; }
 .cover-byline li { list-style: none; float: left; margin-right: 10px; }
 .cover-byline li:last-child { margin-right: 0; }
-.cover-grid1 .cover-story:nth-child(2), 
-.cover-grid1 .cover-story:nth-child(3), 
-.cover-grid1 .cover-story:nth-child(4), 
-.cover-grid2 .cover-story:nth-child(3), 
-.cover-grid2 .cover-story:nth-child(4), 
-.cover-grid3 .cover-story:nth-child(4), 
+.cover-grid1 .cover-story:nth-child(2),
+.cover-grid1 .cover-story:nth-child(3),
+.cover-grid1 .cover-story:nth-child(4),
+.cover-grid2 .cover-story:nth-child(3),
+.cover-grid2 .cover-story:nth-child(4),
+.cover-grid3 .cover-story:nth-child(4),
 .cover-date { display: none; }
 .no-touch .cover article:hover .cover-trigger { background-color: rgba(0,0,0,.1); }
 
@@ -395,11 +396,11 @@ button:focus { outline: none; }
 .cover-grid4 article:nth-child(1) .distraction-title, .cover-grid4 article:nth-child(1) h2 { font-size: 56px; }
 .cover-grid4 article:nth-child(2) .distraction-title, .cover-grid4 article:nth-child(2) h2 { font-size: 40px; }
 .no-touch .cover article:hover .cover-trigger { background-color: rgba(0,0,0,.1); }
-.cover-trigger { 
--moz-transition: background-color .4s ease; 
--o-transition: background-color .4s ease; 
--webkit-transition: background-color .4s ease; transition: background-color .4s ease; 
-background:  rgba(0,0,0,.25); 
+.cover-trigger {
+-moz-transition: background-color .4s ease;
+-o-transition: background-color .4s ease;
+-webkit-transition: background-color .4s ease; transition: background-color .4s ease;
+background:  rgba(0,0,0,.25);
 background-size: 100% 100%; display: block; top: 4px; will-change: background-color; z-index: 2; }
 }
 
@@ -429,7 +430,7 @@ background-size: 100% 100%; display: block; top: 4px; will-change: background-co
 }
 
 @media (min-width:768px) and (orientation:portrait) {
-.cover:not(.cover-grid4) { height: 50vh!important; } 
+.cover:not(.cover-grid4) { height: 50vh!important; }
 }
 
 @media (max-width: 1070px) {
@@ -457,7 +458,7 @@ background-size: 100% 100%; display: block; top: 4px; will-change: background-co
 .cover-grid4 article .cover-byline li:last-child { display: none; }
 .cover-grid4 article:nth-child(1) { height: 60%; width: 100%; }
 .cover-grid4 article:nth-child(1) .distraction-title, .cover-grid4 article:nth-child(1) h2 { font-size: 40px; }
-.cover-grid4 article:nth-child(1) .cover-byline li:last-child { display: inline-block; }; 
+.cover-grid4 article:nth-child(1) .cover-byline li:last-child { display: inline-block; };
 }
 
 @media (max-width: 768px) {
@@ -466,8 +467,8 @@ background-size: 100% 100%; display: block; top: 4px; will-change: background-co
 .single-post-meta .column:last-child { padding-top: 5px; text-align: left; }
 .single-post-meta .column:last-child .meta-link { margin-right: 10px; margin-left: 0; }
 h1, .h1 { font-size: 31px; }
-h2, .h2 { font-size: 28px; } 
-h3, .h3 { font-size: 22px; } 
+h2, .h2 { font-size: 28px; }
+h3, .h3 { font-size: 22px; }
 .cover .distraction-title, .cover h2 { font-size: 20px; line-height: 24px; }
 .cover article { min-height: 30vh; position: relative; }
 .cover-grid1 .cover-story { min-height: 50vh; }
@@ -480,7 +481,7 @@ h3, .h3 { font-size: 22px; }
 @media (min-width: 576px) {
 .single-post-footer { display: table; width: 100%; }
 .single-post-footer>.column { display: table-cell; vertical-align: middle; }
-.single-post-footer>.column:last-child { text-align: right; } 
+.single-post-footer>.column:last-child { text-align: right; }
 }
 
 @media (max-width:480px) {
