@@ -30,8 +30,9 @@
     </div>
     <nav id='main-menu' class='site-menu' aria-label='{{ i18n "mainMenu" }}'>
         <ul>
-            {{ range .Site.Menus.main }} {{- $isCurrent := ( or ( $.IsMenuCurrent "main" . ) ( $.HasMenuCurrent "main" . ) ) -}}
-            <li class='has-megamenu {{ if $isCurrent -}} active {{ end -}}' aria-current='page'>
+            {{ range .Site.Menus.main }}
+            {{- $isCurrent := ( or ( $.IsMenuCurrent "main" . ) ( $.HasMenuCurrent "main" . ) ) -}}
+            <li {{ if $isCurrent -}} class='has-megamenu active' aria-current='page' {{ end -}}>
                 <a href='{{ .URL }}'>
                     <span>{{- .Name -}}</span>
                 </a>

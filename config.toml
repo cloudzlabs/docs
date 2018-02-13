@@ -96,7 +96,7 @@ page = "/:slug/"
 [[menu.main]]
 name = "Posts"
 weight = -10
-identifier = "blog"
+identifier = "posts"
 url = "/posts"
 
 [[menu.main]]
