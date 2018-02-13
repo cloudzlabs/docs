@@ -40,6 +40,7 @@ dateFormat = "2006, Jan 02"
 listDateFormat = "2006, Jan 02"
 hideEntryNavigation = ["page"] # boolean / array of sections
 recentPostsLength = 3
+latestPostsLength = 7
 hideSocialMenu = false
 showReadingTime = true
 noTermCloudShuffle = false
@@ -89,7 +90,7 @@ page = "/:slug/"
 name = "Posts"
 weight = -10
 identifier = "blog"
-url = "/"
+url = "/posts"
 
 [[menu.main]]
 name = "Registration"
