@@ -17,6 +17,15 @@ draft: false
 ---
 # Container Layer
 
+- [Container Layer](#container-layer)
+    - [Images와 Layers](#images%EC%99%80-layers)
+    - [Container와 Layers](#container%EC%99%80-layers)
+    - [Disk상의 Container 크기](#disk%EC%83%81%EC%9D%98-container-%ED%81%AC%EA%B8%B0)
+    - [Copy-on-Write(CoW) 전략](#copy-on-writecow-%EC%A0%84%EB%9E%B5)
+        - [공유는 더 작은 Image를 조장합니다](#%EA%B3%B5%EC%9C%A0%EB%8A%94-%EB%8D%94-%EC%9E%91%EC%9D%80-image%EB%A5%BC-%EC%A1%B0%EC%9E%A5%ED%95%A9%EB%8B%88%EB%8B%A4)
+        - [복사는 Container를 효율적으로 만듭니다](#%EB%B3%B5%EC%82%AC%EB%8A%94-container%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EB%A7%8C%EB%93%AD%EB%8B%88%EB%8B%A4)
+    - [Data Volume과 Storage Driver](#data-volume%EA%B3%BC-storage-driver)
+
 ## Images와 Layers
 
 Docker Image는 일련의 Layer로 구성됩니다. 각 Layer는 Image의 Dockerfile에 있는 명령을 나타냅니다. 마지막 Layer를 제외한 각 Layer는 읽기 전용입니다.
@@ -222,7 +231,7 @@ CMD /app/hello.sh
    파일을 저장하고 실행 가능한 상태로 변경합니다.
 
    ```sh
-   chmod +x hello.sh 
+   chmod +x hello.sh
    ```
 
 3. 위의 Base Image의 Dockerfile 내용을 `Dockerfile.base`라는 이름으로 생성합니다.
@@ -434,3 +443,16 @@ dtlabs-mysql
 ```
 
 Data Volume은 Docker Host의 로컬 스토리지 영역 외부에 있으므로, Storage Driver의 제어로부터 독립성이 더욱 강화됩니다. Container가 삭제되면, Data Volume에 저장된 모든 Data는 Docker Host에 유지됩니다.
+
+| 항목              | 내용                        | 비고                         |
+|-----------------|---------------------------|----------------------------|
+| /docs           | 프로젝트 홈                    |                            |
+| archetypes      | 컨텐츠 기본 구조 정의              | default.md 파일에서 마크다운 구조 설정 |
+| content/posts   | 블로그에 올라갈 마크다운 파일 위치       |                            |
+| data            | 태그, 카테고리, 저자 등 기타 항목 정의   |                            |
+| layouts, static | 블로그의 템플릿 및 정적 리소스 위치      | 현재는 테마를 사용하기 때문에 사용안함      |
+| public          | 블로그 빌드 타켓 폴더              | gh-pages 브랜치에 Push될 결과물    |
+| themes          | 사용할 Hugo 테마 위치            |                            |
+| .editorconfig   | 프로젝트 내의 코딩 컨벤션 설정 파일      |                            |
+| .travis.yml     | 빌드/배포를 위한 Travis CI 설정 파일 |                            |
+| config.toml     | Hugo 블로그 전체 설정 파일         |                            |
