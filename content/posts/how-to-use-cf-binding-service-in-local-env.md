@@ -18,13 +18,13 @@ typora-copy-images-to: ..\images
 
 
 
-# What?
+##What?
 
-PaaS의 binding 된 서비스를 로컬 개발 환경에서 사용하자.
+#### PaaS의 binding 된 서비스를 로컬 개발 환경에서 사용하자.
 
 
 
-# Why?
+## Why?
 
 로컬 개발 환경과 PaaS 환경(dev, stg, prod 등) 을 분리하여 개발환경을 구성하는 경우 몇가지 **불편한 점**이 있다.
 
@@ -76,7 +76,7 @@ PaaS의 binding 된 서비스를 로컬 개발 환경에서 사용하자.
 
 
 
-# How?
+## How?
 
 Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입) 을 활용하자.
 
@@ -201,9 +201,9 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
   ​
 
-# Conclusion
+## Conclusion
 
-Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해, 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
+#### Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해, 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
 
 
 
