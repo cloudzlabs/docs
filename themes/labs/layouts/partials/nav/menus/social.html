@@ -5,14 +5,7 @@
         {{- with $username := ( index $social $platform ) -}}
         <li>
             <a class='social-button' href='{{ print ( index $.Site.Data.theme.social.base $platform ) $username }}' target='_blank' rel='noopener'>
-            <i class='screen-reader' aria-hidden='true'>
-                {{- if eq $platform "email" -}}
-                {{- i18n "contactViaEmail" -}}
-                {{- else -}}
-                {{- i18n "openAccountInNewTab" ( dict "Platform" ( $platform | title ) ) -}}
-                {{- end -}}
-            </i>
-            {{- partial "svg/icons" $platform -}}
+                <i class='fa fa-{{- $platform -}}' aria-hidden='true'></i>
             </a>
         </li>
         {{- end -}}
