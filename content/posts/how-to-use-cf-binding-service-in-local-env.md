@@ -9,6 +9,9 @@ tags:
   - H2
   - PaaS
   - Spring Cloud
+cover:
+  image: /docs/images/112411124214.PNG
+  style: full
 draft: false
 typora-copy-images-to: ..\images
 ---
@@ -17,7 +20,7 @@ typora-copy-images-to: ..\images
 
 # What?
 
-### PaaS의 binding 된 서비스를 로컬 개발 환경에서 사용하자.
+PaaS의 binding 된 서비스를 로컬 개발 환경에서 사용하자.
 
 
 
@@ -33,7 +36,7 @@ typora-copy-images-to: ..\images
 
 1. 로컬 환경에서 H2 DB 를 쓰다가 MariaDB로 배포하는 경우 쿼리가 다르다.
 
-   ###### H2:
+   H2:
 
    ```
    DROP TABLE IF EXISTS users CASCADE;
@@ -46,7 +49,7 @@ typora-copy-images-to: ..\images
    ALTER TABLE users MODIFY id INTEGER NOT NULL AUTO_INCREMENT;
    ```
 
-   ###### MariaDB:
+   MariaDB:
 
    ```
    DROP TABLE IF EXISTS users CASCADE;
@@ -65,7 +68,7 @@ typora-copy-images-to: ..\images
 
    테스트 데이터를 매번 생성 or 초기화 하는 절차가 추가된다.
 
-   ![1518484130041](C:\docs\content\images/1518484130041.png)
+   ![1518484130041](\docs\content\images/1518484130041.png)
 
 3. 어플리케이션 수정 후 PaaS 환경에서 테스트를 할 때마다 매번 배포를 해야한다. -> CI/CD 배포 pipeline이 없다면 번거로운 절차다.
 
@@ -75,11 +78,11 @@ typora-copy-images-to: ..\images
 
 # How?
 
-### Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration 을 활용하자.
+Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입) 을 활용하자.
 
 
 
-- #### 개발 환경
+- 개발 환경
 
   - STS(Spring Tool Suite)
 
@@ -95,7 +98,7 @@ typora-copy-images-to: ..\images
 
   ​
 
-- #### 미리 준비한 것
+- 미리 준비한 것
 
   - MariaDB 인스턴스 생성 : js-test-MariaDB
 
@@ -103,7 +106,7 @@ typora-copy-images-to: ..\images
 
     - dependency 추가 - Spring Cloud Connector
 
-      ![1518495055690](C:\docs\content\images/1518495055690.png)
+      ![1518495055690](\docs\content\images/1518495055690.png)
 
     - datasource 설정
 
@@ -158,15 +161,15 @@ typora-copy-images-to: ..\images
 
   - 로컬 환경과 PaaS 환경의 데이터가 다른 것을 확인한다.
 
-    ![151231](C:\docs\content\images/151231-8495551138.png)
+    ![151231](\docs\content\images/151231-8495551138.png)
 
-  - ### 준비 끝!
+  - 준비 끝!
 
 
 
 - #### 상세 적용 방법
 
-  1. ##### MariaDB ssh 연동
+  1. MariaDB ssh 연동
 
      PaaS 환경의 서비스 인스턴스는 로컬에서 연동시 바로 연동하지 못하고, ssh로 연동한다.
 
@@ -174,13 +177,13 @@ typora-copy-images-to: ..\images
      cf ssh -N -L 63306:172.132.14.32:3306 js-local-paas-service-conn
      ```
 
-  2. ##### STS - Run Configuration - Spring Boot - Profiles 설정
+  2. STS - Run Configuration - Spring Boot - Profiles 설정
 
      어플리케이션의 수행 profile을 dev로 설정한다.
 
-     ![1518489287635](C:\docs\content\images/1518489287635.png)
+     ![1518489287635](\docs\content\images/1518489287635.png)
 
-  3. ##### STS - Run Configuration - Environment - Environment variables
+  3. STS - Run Configuration - Environment - Environment variables
 
      어플리케이션의 PaaS 환경 변수(VCAP_APPLICATION, VCAP_SERVICES)를 설정한다.
 
@@ -190,20 +193,34 @@ typora-copy-images-to: ..\images
 
        ![141231](C:\Users\Administrator\Desktop\141231.png)
 
-       ![1518493193055](C:\docs\content\images/1518493193055.png)
+       ![1518493193055](\docs\content\images\1518493193055.png)
 
        > cf env로 조회된 mariaDB credential 중 hostname과 port 정보를 ssh 연동한 정보로 수정이 필요하다.
        >
        > ex. "hostname": "172.132.14.32" => "hostname": "127.0.0.1"
 
-  4. ##### 로컬에서 PaaS 데이터 확인
+  4. 로컬에서 PaaS 데이터 확인
 
-     ![1518495702705](C:\docs\content\images/1518495702705.png)
+     ![1518495702705](\docs\content\images\1518495702705.png)
 
-  5. ### 성공!
+  5. 성공!
 
   ​
 
 # Conclusion
 
-### Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해, 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
+Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해, 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
+
+
+
+# 가
+
+## 나
+
+### 다
+
+#### 라
+
+##### 마
+
+###### 바
