@@ -7,7 +7,7 @@ copyright = ""
 disqusShortname = "labs-tech-blog"
 googleAnalytics = ""
 
-Paginate = 10
+Paginate = 5
 preserveTaxonomyNames = true
 
 enableRobotsTXT = true # generate robots.txt
@@ -65,18 +65,25 @@ page = "" # Twitter page username
 titleSeparator = "•"
 
 [params.social]
-codepen = "MunifTanjim"
-email = "contact@example.com"
-facebook = "MunifTanjim"
-github = "MunifTanjim"
-instagram = "MunifTanjim"
-linkedin = "muniftanjim"
-twitter = "MunifTanjim"
-telegram = "MunifTanjim"
-google_scholar = "qc6CJjYAAAAJ"
+google = "dtlabs"
+facebook = "dtlabs"
+twitter = "dtlabs"
+github-alt = "dtlabs"
+email = "withdtlabs@gmail.com"
+# google_scholar = "qc6CJjYAAAAJ"
+# codepen = "MunifTanjim"
+# email = "contact@example.com"
+# facebook = "MunifTanjim"
+# github = "MunifTanjim"
+# instagram = "MunifTanjim"
+# linkedin = "muniftanjim"
+# twitter = "MunifTanjim"
+# telegram = "MunifTanjim"
+
 
 [params.social.config]
-platforms = ["github","facebook","twitter","instagram","email","codepen","linkedin","telegram","google_scholar"]
+platforms = ["google", "twitter", "facebook", "github-alt"]
+# platforms = ["github","facebook","twitter","instagram","email","codepen","linkedin","telegram","google_scholar"]
 
 [taxonomies]
 author = "authors"
@@ -89,7 +96,7 @@ page = "/:slug/"
 [[menu.main]]
 name = "Posts"
 weight = -10
-identifier = "blog"
+identifier = "posts"
 url = "/posts"
 
 [[menu.main]]
