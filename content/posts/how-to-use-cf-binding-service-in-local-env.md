@@ -161,7 +161,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
 
 
-- #### 상세 적용 방법
+- 상세 적용 방법
 
   1. MariaDB ssh 연동
 
