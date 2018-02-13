@@ -97,9 +97,60 @@ typora-copy-images-to: ..\images
 
 - #### 미리 준비한 것
 
+  - MariaDB 인스턴스 생성 : js-test-MariaDB
+
   - 어플리케이션 : js-local-paas-service-conn
 
-  - MariaDB : js-test-MariaDB
+    - dependency 추가 - Spring Cloud Connector
+
+      ![1518495055690](C:\docs\content\images/1518495055690.png)
+
+    - datasource 설정
+
+      - Bean 생성
+
+        ```
+        @Configuration
+        @Profile({"dev"})
+        public class CloudConfiguration extends AbstractCloudConfig {
+        	
+        	@Value("${services.datasource.name}")
+        	private String datasourceName;
+
+        	@Value("${services.datasource.initial-size}")
+        	private int minPoolSize;
+
+        	@Value("${services.datasource.maximum-pool-size}")
+        	private int maxPoolSize;
+
+        	@Value("${services.datasource.max-wait-time}")
+        	private int maxWaitTime;
+
+        	/**
+        	 * configure datasource.
+        	 * @return dataSource object
+        	 */
+        	@Bean
+        	public DataSource dataSource() {
+        		PoolConfig poolConfig = new PoolConfig(minPoolSize, maxPoolSize, maxWaitTime);
+        		DataSourceConfig dbConfig = new DataSourceConfig(poolConfig, null);
+        		return connectionFactory().dataSource(datasourceName, dbConfig);
+        	}
+        }
+
+        ```
+
+      - application-dev.yml - datasource 설정
+
+        ```
+        services:
+          datasource: 
+            initial-size: 1
+            maximum-pool-size: 100
+            max-wait-time: 3000
+            name: js-test-mariadb
+            initialize: false
+        ```
 
   - js-local-paas-service-conn 을 PaaS에 배포한 후 js-test-MariaDB 와 binding 한다.
 
@@ -107,9 +158,9 @@ typora-copy-images-to: ..\images
 
   - 로컬 환경과 PaaS 환경의 데이터가 다른 것을 확인한다.
 
-    ![11414](C:\docs\content\images/11414.png)
+    ![151231](C:\docs\content\images/151231-8495551138.png)
 
-  - ##### 준비 끝!
+  - ### 준비 끝!
 
 
 
@@ -147,12 +198,12 @@ typora-copy-images-to: ..\images
 
   4. ##### 로컬에서 PaaS 데이터 확인
 
-     ![1518493600467](C:\docs\content\images/1518493600467.png)
+     ![1518495702705](C:\docs\content\images/1518495702705.png)
 
-  5. ##### 성공!
+  5. ### 성공!
 
   ​
 
 # Conclusion
 
-### Spring Cloud Connector와 STS/Eclipse의 Run Configuration을 사용해, 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
+### Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해, 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
