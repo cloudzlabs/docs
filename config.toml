@@ -7,7 +7,7 @@ copyright = ""
 disqusShortname = "labs-tech-blog"
 googleAnalytics = ""
 
-Paginate = 10
+Paginate = 5
 preserveTaxonomyNames = true
 
 enableRobotsTXT = true # generate robots.txt

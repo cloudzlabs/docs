@@ -1,7 +1,7 @@
 ---
 date: "2018-02-13T08:34:45+09:00"
 title: "Spring Cloud Connector로 PaaS의 binding 서비스를 로컬에서 사용하기"
-authors: [jisangYun]
+authors: ["jisangYun"]
 tags:
   - Spring Cloud Connector
   - Cloud Foundry
@@ -11,18 +11,14 @@ tags:
   - Spring Cloud
 cover:
   image: /docs/images/112411124214.PNG
+  caption: "asdfasdf"
   style: full
 draft: false
-typora-copy-images-to: ..\images
 ---
-
-
 
 ##What?
 
 #### PaaS의 binding 된 서비스를 로컬 개발 환경에서 사용하자.
-
-
 
 ## Why?
 
@@ -38,7 +34,7 @@ typora-copy-images-to: ..\images
 
    H2:
 
-   ```
+   ``` sql
    DROP TABLE IF EXISTS users CASCADE;
    CREATE TABLE IF NOT EXISTS users (
      	id 			INTEGER,
@@ -51,7 +47,7 @@ typora-copy-images-to: ..\images
 
    MariaDB:
 
-   ```
+   ``` sql
    DROP TABLE IF EXISTS users CASCADE;
    CREATE TABLE IF NOT EXISTS users (
      	id 			INTEGER,
@@ -68,19 +64,15 @@ typora-copy-images-to: ..\images
 
    테스트 데이터를 매번 생성 or 초기화 하는 절차가 추가된다.
 
-   ![1518484130041](\docs\content\images/1518484130041.png)
+   ![1518484130041](/docs/content/images/1518484130041.png)
 
 3. 어플리케이션 수정 후 PaaS 환경에서 테스트를 할 때마다 매번 배포를 해야한다. -> CI/CD 배포 pipeline이 없다면 번거로운 절차다.
 
 4. 로컬에서는 잘 되는게 PaaS에서는 안된다. -> 서비스의 버전이 다른 경우,,,, 로컬에서 아무리 잘되도 서비스하는 환경에서 안되면 말짱 꽝이다. 버전 맞추는 것도 번거롭다.
 
-
-
 ## How?
 
 Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입) 을 활용하자.
-
-
 
 - 개발 환경
 
@@ -100,13 +92,13 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
     - dependency 추가 - Spring Cloud Connector
 
-      ![1518495055690](\docs\content\images/1518495055690.png)
+      ![1518495055690](/docs/images/1518495055690.png)
 
     - datasource 설정
 
       - Bean 생성
 
-        ```
+        ``` java
         @Configuration
         @Profile({"dev"})
         public class CloudConfiguration extends AbstractCloudConfig {
@@ -139,7 +131,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
       - application-dev.yml - datasource 설정
 
-        ```
+        ``` yaml
         services:
           datasource: 
             initial-size: 1
@@ -151,15 +143,13 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
   - js-local-paas-service-conn 을 PaaS에 배포한 후 js-test-MariaDB 와 binding 한다.
 
-    ![1518484942742](\docs\content\images/1518484942742.png)
+    ![1518484942742](/docs/images/1518484942742.png)
 
   - 로컬 환경과 PaaS 환경의 데이터가 다른 것을 확인한다.
 
-    ![151231](\docs\content\images/151231-8495551138.png)
+    ![151231](/docs/images/151231-8495551138.png)
 
   - 준비 끝!
-
-
 
 - 상세 적용 방법
 
@@ -167,7 +157,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
      PaaS 환경의 서비스 인스턴스는 로컬에서 연동시 바로 연동하지 못하고, ssh로 연동한다.
 
-     ```
+     ``` bash
      cf ssh -N -L 63306:172.132.14.32:3306 js-local-paas-service-conn
      ```
 
@@ -175,7 +165,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
      어플리케이션의 수행 profile을 dev로 설정한다.
 
-     ![1518489287635](\docs\content\images/1518489287635.png)
+     ![1518489287635](/docs/images/1518489287635.png)
 
   3. STS - Run Configuration - Environment - Environment variables
 
@@ -185,9 +175,9 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
      - VCAP_SERVICES : cf env {어플리케이션명} 으로 조회된 value를 엔터키 없이 복사해서 넣는다.
 
-       ![141231](\docs\content\images\141231.png)
+       ![141231](/docs/images/141231.png)
 
-       ![1518493193055](\docs\content\images\1518493193055.png)
+       ![1518493193055](/docs/images/1518493193055.png)
 
        > cf env로 조회된 mariaDB credential 중 hostname과 port 정보를 ssh 연동한 정보로 수정이 필요하다.
        >
@@ -195,7 +185,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
   4. 로컬에서 PaaS 데이터 확인
 
-     ![1518495702705](\docs\content\images\1518495702705.png)
+     ![1518495702705](/docs/images/1518495702705.png)
 
   5. 성공!
 
