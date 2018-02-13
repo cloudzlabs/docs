@@ -2,6 +2,8 @@
 date: "2018-02-13T08:34:45+09:00"
 title: "Spring Cloud Connector로 PaaS의 binding 서비스를 로컬에서 사용하기"
 authors: [jisangYun]
+categories:
+  - posts
 tags:
   - Spring Cloud Connector
   - Cloud Foundry
@@ -18,7 +20,7 @@ typora-copy-images-to: ..\images
 
 
 
-##What?
+# What?
 
 #### PaaS의 binding 된 서비스를 로컬 개발 환경에서 사용하자.
 
@@ -86,7 +88,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
   - STS(Spring Tool Suite)
   - Spring Boot 1.5.9
-  - [Spring Cloud Connector](http://cloud.spring.io/spring-cloud-connectors/spring-cloud-connectors.html)
+  - Spring Cloud Connector [Spring Cloud Connector Docs Link](http://cloud.spring.io/spring-cloud-connectors/spring-cloud-connectors.html)
   - Cloud Foundry 기반의 OpenPaaS
     - MariaDB 인스턴스
 
@@ -100,7 +102,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
     - dependency 추가 - Spring Cloud Connector
 
-      ![1518495055690](\docs\content\images/1518495055690.png)
+      ![1518495055690](/docs/images/1518495055690.png)
 
     - datasource 설정
 
