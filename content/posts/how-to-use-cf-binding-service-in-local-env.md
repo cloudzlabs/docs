@@ -85,15 +85,9 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 - 개발 환경
 
   - STS(Spring Tool Suite)
-
   - Spring Boot 1.5.9
-
-  - Spring Cloud Connector  
-
-    [Spring Cloud Connector]: http://cloud.spring.io/spring-cloud-connectors/spring-cloud-connectors.html	"Spring Cloud Connector"
-
+  - [Spring Cloud Connector](http://cloud.spring.io/spring-cloud-connectors/spring-cloud-connectors.html)
   - Cloud Foundry 기반의 OpenPaaS
-
     - MariaDB 인스턴스
 
   ​
@@ -157,7 +151,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
   - js-local-paas-service-conn 을 PaaS에 배포한 후 js-test-MariaDB 와 binding 한다.
 
-    ![1518484942742](C:\docs\content\images/1518484942742.png)
+    ![1518484942742](\docs\content\images/1518484942742.png)
 
   - 로컬 환경과 PaaS 환경의 데이터가 다른 것을 확인한다.
 
@@ -191,7 +185,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
      - VCAP_SERVICES : cf env {어플리케이션명} 으로 조회된 value를 엔터키 없이 복사해서 넣는다.
 
-       ![141231](C:\Users\Administrator\Desktop\141231.png)
+       ![141231](\docs\content\images\141231.png)
 
        ![1518493193055](\docs\content\images\1518493193055.png)
 
