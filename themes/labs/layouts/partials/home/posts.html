@@ -2,7 +2,7 @@
     <article class="post">
         <h3 class="title mb-10">Latest</h3>
 
-        {{ range .Paginator.Pages }}
+        {{ range (first .Site.Params.settings.latestPostsLength ( after .Site.Params.settings.recentPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) )}}
         <div class="fulid-set-12 card mb-30">
             <div class="row">
                 <a href="#" class="col-md-4 col-sm-12 col-xs-12">

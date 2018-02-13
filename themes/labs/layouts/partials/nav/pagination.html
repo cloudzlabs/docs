@@ -1,5 +1,12 @@
 {{ if gt .Paginator.TotalPages 1 }}
 <div class="col-lg-12 text-center">
+
+    {{ with .Paginator.Prev }}
+    <a class='btn btn-load' href='{{ .URL }}'>
+        {{- partial "svg/icons" "prev" -}}
+    </a>
+    {{ end }}
+
     {{- $.Scratch.Set "hasPrevDots" false -}}
     {{- $.Scratch.Set "hasNextDots" false -}}
 
@@ -17,6 +24,12 @@
           <a href="#" class="btn btn-load">&hellip;</a>
         {{ end }}
       {{ end }}
+    {{ end }}
+
+    {{ with .Paginator.Next }}
+    <a class='btn btn-load' href='{{ .URL }}'>
+      {{- partial "svg/icons" "next" -}}
+    </a>
     {{ end }}
 </div>
 {{ end }}
