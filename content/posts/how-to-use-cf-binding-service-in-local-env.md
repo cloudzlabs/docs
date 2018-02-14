@@ -23,7 +23,7 @@ typora-copy-images-to: ..\images
 
 ## What?
 
-#### 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용하자.
+#### 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용하자. 
 
 
 
