@@ -3,6 +3,18 @@
 
     {{ partial "head/head" . }}
 
-    {{ block "main" . }}{{ end }}
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        {{ partial "header/header" . }}
+
+        {{ block "main" . }}{{ end }}
+
+        {{ partial "footer/footer" . }}
+
+        {{ partial "component/scroll-back" . }}
+
+        {{- partial "footer/scripts" . -}}
+
+    </body>
 
 </html>

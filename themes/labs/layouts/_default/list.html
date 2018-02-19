@@ -1,48 +1,36 @@
 {{ define "main" }}
 
-<body naver_screen_capture_injected="true" class='hasScrollbar'>
+<div class='offcanvas-wrapper'>
 
-    {{ partial "header/header" . }}
+    <section class="visual-area text-center">
+        <div class="visual">
+            {{- if eq .Kind "taxonomy" -}}
+            <h3>{{- ( default .Data.Singular ) | title -}} {{- print ": " -}}</h3>
+            {{- end -}}
+            {{- if eq .Data.Singular "author" -}}
+                {{- partial "data/author/displayName" . -}}
+            {{- else -}}
+                {{- .Title -}}
+            {{- end -}}
 
-    <div class='offcanvas-wrapper'>
+            {{ with .Description }}
+            <p class='subtitle'>{{- . -}}</p>
+            {{ end }}
+        </div>
+    </section>
 
-        <section class="visual-area text-center">
-            <div class="visual">
-                {{- if eq .Kind "taxonomy" -}}
-                <h3>{{- ( default .Data.Singular ) | title -}} {{- print ": " -}}</h3>
-                {{- end -}}
-                {{- if eq .Data.Singular "author" -}}
-                    {{- partial "data/author/displayName" . -}}
-                {{- else -}}
-                    {{- .Title -}}
-                {{- end -}}
+    <section class='container'>
+        <article class="post">
+            <h3 class="title mb-10">Latest</h3>
 
-                {{ with .Description }}
-                <p class='subtitle'>{{- . -}}</p>
-                {{ end }}
-            </div>
-        </section>
+            {{ range .Paginator.Pages }}
+                {{ .Render "li" }}
+            {{ end }}
 
-        <section class='container'>
-            <article class="post">
-                <h3 class="title mb-10">Latest</h3>
+            {{ partial "component/pagination" . }}
 
-                {{ range .Paginator.Pages }}
-                    {{ .Render "li" }}
-                {{ end }}
-
-                {{ partial "component/pagination" . }}
-
-            </article>
-        </section>
-    </div>
-
-    {{ partial "footer/footer" . }}
-
-    {{ partial "component/scroll-back" . }}
-
-    {{- partial "footer/scripts" . -}}
-
-</body>
+        </article>
+    </section>
+</div>
 
 {{ end }}
