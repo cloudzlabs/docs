@@ -2,16 +2,16 @@ id = "1000jaeh"
 
 [email]
 username = "1000jaeh"
-host = "gmail.com"
+host = "sk.com"
 
 [name]
 display = "Jaehoon Jung"
 
 [info]
 image = "/images/authors/ddabong.png"
-description = "alkdlksadjflkasdjflkasdjf"
+description = "Microservice Architecture Design"
 
 [social]
-email = ""
+email = "1000jaeh@sk.com"
 facebook  = ""
 twitter = ""

@@ -72,20 +72,9 @@ facebook = "dtlabs"
 twitter = "dtlabs"
 github-alt = "dtlabs"
 email = "withdtlabs@gmail.com"
-# google_scholar = "qc6CJjYAAAAJ"
-# codepen = "MunifTanjim"
-# email = "contact@example.com"
-# facebook = "MunifTanjim"
-# github = "MunifTanjim"
-# instagram = "MunifTanjim"
-# linkedin = "muniftanjim"
-# twitter = "MunifTanjim"
-# telegram = "MunifTanjim"
-
 
 [params.social.config]
 platforms = ["google", "twitter", "facebook", "github-alt"]
-# platforms = ["github","facebook","twitter","instagram","email","codepen","linkedin","telegram","google_scholar"]
 
 [taxonomies]
 author = "authors"
