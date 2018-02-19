@@ -1,6 +1,6 @@
 ---
 date: "2018-02-19T10:39:44+09:00"
-title: "Bluemix에서 eureka server의 종료된 앱 정보가 제거에 delay가 발생하는 현상"
+title: "Bluemix에서 종료된 앱 정보가  eureka server map에서 제거되기까지 delay가 발생하는 현상"
 authors: [jisangYun]
 categories:
   - posts
@@ -30,15 +30,15 @@ draft: false
 
 해당 현상은 eureka client 어플리케이션이 종료됐을 때, eureka server에서 해당 어플리케이션 정보가 삭제되는데 생각보다 delay가 생기는 것이다. (예상 : 5초 내외, but 수 분이상 dashboard 상에서 조회가 된다.)
 
-![bluemix-run](docs/images/bluemix-run.PNG)
+![bluemix-run](/docs/images/bluemix-run.PNG)
 
-![bluemix-stop](docs/images/bluemix-stop.PNG)
+![bluemix-stop](/docs/images/bluemix-stop.PNG)
 
 어디서 꼬인 것인가 ?
 
 ## Why ?
 
-1. #### eureka 설정이 잘못됐을 가능성
+1. eureka 설정이 잘못됐을 가능성
 
    eureka server 적용된 설정은 아래와 같다.
 
@@ -65,7 +65,9 @@ draft: false
 
    해당 설정은 의도에 적합하게 사용된 것일까 ? 
 
-2. #### 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
+   ​
+
+2. 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
 
    Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까 ? 
 
@@ -156,16 +158,21 @@ draft: false
      }
      ```
 
-   eureka server / eureka client/ eureka.instance.lease-expiration-duration-in-seconds 설정을 다 확인해보니, 무언가 이상한게 보인다. 
+   eureka server / eureka client / eureka.instance.lease-expiration-duration-in-seconds 설정을 다 확인해보니, 무언가 이상한게 보인다. 
 
    eureka.instance.lease-expiration-duration-in-seconds 설정을 eureka server에 세팅하고 eureka client에는 세팅을 하지 않았다.
 
    eureka.instance 설정의 개념을 살펴보니,
 
    > eureka.instance: eureka service가 자신이 eureka 서버에 등록될 때 사용하는 설정
+   >
    > erueka.client: 다른 erueka service를 찾으려고 할 때 사용하는 설정
 
-   ##### eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다. 
+   eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다.
+
+   - eureka client에 설정 적용 후 eureka/apps 로 확인
+
+     ![erureka-apps](/docs/images/erureka-apps.PNG)
 
    하지만 default 값이 90초로 세팅되어 있는데, 현재 eureka server dashboard 에서 어플리케이션 정보가 삭제될 때까지 수 분이 걸리는 것으로 봐서 해당 사유는 아닌 듯 하다.
 
@@ -216,9 +223,9 @@ draft: false
        2017-10-11T10:56:04.07+0900 [CELL/0]     OUT Successfully destroyed container
        ```
 
-     buildpack 별 log를 확인해보니, 무언가 다른 것을 찾을 수 있다.
+     buildpack 별 log를 확인해보니, 다른 점을 찾을 수 있다.
 
-     ##### java buildpack 은 종료시  DispatcherServlet.destory() -> AbstractApplicationContext.close() 가 호출되는데, liberty-for-java buildpack은 여타 동작없이 어플리케이션을 강제종료 시킨 것 처럼 보인다.
+     java buildpack 은 종료시  DispatcherServlet.destory() -> AbstractApplicationContext.close() 가 호출되는데, liberty-for-java buildpack은 여타 동작없이 어플리케이션을 강제종료 시킨 것 처럼 보인다.
 
      liberty-for-java buildpack 의 강제종료 사유는 ?
 
@@ -229,13 +236,15 @@ draft: false
      3. 어플리케이션 프로세스는 10초 내 종료되어야함
      4. 10초 내 종료되지 않으면, Cloud Foundry가 SIGKILL 시그널을 보내 어플리케이션을 종료한다.
 
-     ##### 10초 내로 SIGTERM 으로 종료되지 않으면 SIGKILL로 어플리케이션을 종료시킨다. 이것 때문에 강제종료 처리가 되는 것일까 ? SIGTERM 이후 10초 내에 어플리케이션이 종료되지 않은 이유는 무엇인가 ?
+     10초 내로 SIGTERM 으로 종료되지 않으면 SIGKILL로 어플리케이션을 종료시킨다. 
+
+     이것 때문에 강제종료 처리가 되는 것일까 ? SIGTERM 이후 10초 내에 어플리케이션이 종료되지 않은 이유는 무엇인가 ?
 
    - Cloud Foundry의 custom command 가이드 체크
 
      - Cloud Foundry위의 어플리케이션을 사용할 때, Cloud Foundry가 보내는 SIGTERM 시그널을 받기 위해서 어플리케이션 프로세스를 exec prefix를 사용해서 start해야 한다. ([CF custorm command](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#start-commands))
 
-     ##### Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.
+     Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.
 
      buildpack 별 exec prefix가 적용되어 있는가 ?
 
@@ -255,28 +264,28 @@ draft: false
 
        - 2017년 10월 18일에 적용되었다. (예전 배포 시점은 2017년 10월 11일)
 
-         ![liberty-version](docs/images/liberty-version.PNG)
+         ![liberty-version](/docs/images/liberty-version.PNG)
 
-     ##### 예전에 적용된 빌드팩에 exec prefix가 적용되지 않은 것이 문제라면, 빌드팩을 최신 버전(v.3.1.5)으로 변경해서 재배포를 해보자.
+     예전에 적용된 빌드팩에 exec prefix가 적용되지 않은 것이 문제라면, 빌드팩을 최신 버전(v.3.1.5)으로 변경해서 재배포를 해보자.
 
      ​
 
 3. liberty-for-java buildpack 최신버전으로 변경해서 체크
 
-   ![cfpush](docs/images/cfpush.PNG)
+   ![cfpush](/docs/images/cfpush.PNG)
 
    ```
-   API/1Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})2018년 2월 19일 06:46:24.264 오후
-   APP/0.app-management/scripts/start: 1: kill: invalid signal number or name: igterm2018년 2월 19일 06:46:24.266 오후
-   CELL/0Exit status 02018년 2월 19일 06:46:24.268 오후
-   CELL/0Successfully destroyed container2018년 2월 19일 06:46:35.999 오후
+   API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
+   APP/0	.app-management/scripts/start: 1: kill: invalid signal number or name: igterm		2018년 2월 19일 06:46:24.266 오후
+   CELL/0	Exit status 0																		2018년 2월 19일 06:46:24.268 오후
+   CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
    ```
 
-   여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다.
+   여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.  
 
-   sigterm의 오타인가 설마... 원인을 잘 모르겠다.  GG
+   ​
 
-
+   GG
 
 
 
@@ -284,8 +293,13 @@ draft: false
 
 ## Conclusion
 
-Cloud Foundry의 custom command 사용시 exec prefix를 달아줘야 한다.
+1. eureka.instance.lease-expiration-duration-in-seconds 설정은 eureka client에 세팅을 해줘야한다. 이 말은 어플리케이션 마다 eureka server에서 unregist 되는 시간을 달리 해줄 수 있다는 의미이다. 활용할 방법을 고민해볼만 하다.
 
-liberty-for-java buildpack 은 2017년 10월 해당 기능이 적용된 buildpack을 release 했으나, 원인 모를 곳에서 막히고 말았다.
+   ​
 
-내가 잘못한 것 인지, buildpack이 잘못한 것인지 나중에 시간나면 또 확인을 해보자.
+2. Cloud Foundry의 custom command 사용시 exec prefix를 달아줘야 한다. Cloud Foundry 기반의 플랫폼을 구축할 때 or buildpack을 개발해서 제공할 때 유의해야 할 부분이다.
+
+3. liberty-for-java buildpack 은 2017년 10월 exec prefix가 적용된 buildpack을 release 했으나, 원인 모를 곳에서 막히고 말았다. 
+
+   내가 잘못한 것 인지, buildpack이 잘못한 것인지 시간이 지나고 확인을 해보자.
+
