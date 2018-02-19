@@ -3,7 +3,7 @@
 
     {{ with .Paginator.Prev }}
     <a class='btn btn-load' href='{{ .URL }}'>
-        <-
+        &lt;&lt;
     </a>
     {{ end }}
 
@@ -28,7 +28,7 @@
 
     {{ with .Paginator.Next }}
     <a class='btn btn-load' href='{{ .URL }}'>
-      ->
+      &gt;&gt;
     </a>
     {{ end }}
 </div>
