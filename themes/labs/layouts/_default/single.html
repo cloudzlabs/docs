@@ -13,19 +13,23 @@
 
                     <div class="page-con">
 
-                        {{ partial "single/info" . }}
-
-                        {{ partial "single/cover" . }}
-
-                        {{ partial "single/toc" . }}
+                        {{- with .Site.Params.settings.singlepageHeader -}}
+                            {{- range . -}}
+                                {{- partial ( print "single/header/" . ) $ -}}
+                            {{- end -}}
+                        {{- else -}}
+                            {{- partial "single/header/info" . -}}
+                        {{- end -}}
 
                         {{ .Content }}
 
-                        {{ partial "single/tag" . }}
-
-                        {{ partial "single/recommend" . }}
-
-                        {{ partial "single/comments" . }}
+                        {{- with .Site.Params.settings.singlepageFooter -}}
+                            {{- range . -}}
+                                {{- partial ( print "single/footer/" . ) $ -}}
+                            {{- end -}}
+                        {{- else -}}
+                            {{- partial "single/footer/comments" . -}}
+                        {{- end -}}
 
                     </div>
 
