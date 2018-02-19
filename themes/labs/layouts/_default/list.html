@@ -1,6 +1,6 @@
 {{ define "main" }}
 
-<body naver_screen_capture_injected="true" class='{{ partial "header/bodyClasses" . }} hasScrollbar'>
+<body naver_screen_capture_injected="true" class='hasScrollbar'>
 
     {{ partial "nav/menus/mobile" . }}
 
@@ -8,9 +8,7 @@
 
     <div class='offcanvas-wrapper'>
 
-        <header class='header-container'>
-            <div class='header list-header'>
-                <div class='header-info'>
+
                     <h1 class='title'>
                         {{- if eq .Kind "taxonomy" -}}
                         <span class='taxonomy-type'>
@@ -21,10 +19,23 @@
 
                     </h1>
 
-                    {{ partial "header/subtitle" . }}
-                </div>
+                    {{ with .Description }}
+                    <p class='subtitle'>
+                    {{- . -}}
+                    </p>
+                    {{ end }}
+
+
+        <section class="visual-area text-center">
+            <div class="visual">
+                {{ if eq .Kind "home" }}
+                <h3>{{ .Site.Title }}</h3>
+                {{ else }}
+                <p>{{ .Site.Title }}</p>
+                {{ end }}
+                <p>{{ .Site.Params.info.description }}</p>
             </div>
-        </header>
+        </section>
 
         <section class='container'>
             <article class="post">
