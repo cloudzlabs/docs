@@ -1,2 +1,8 @@
+<!DOCTYPE html>
+<html lang='{{ .Site.Language.Lang }}' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
 
-{{ block "main" . }}{{ end }}
+    {{ partial "head/head" . }}
+
+    {{ block "main" . }}{{ end }}
+
+</html>
