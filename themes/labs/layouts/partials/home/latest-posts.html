@@ -8,7 +8,6 @@
                 {{- if .Params.cover -}}
                 <a href="#" class="col-md-4 col-sm-12 col-xs-12">
                     {{- with .Params.cover -}}
-
                     {{- $type := ( printf "%T" . ) -}}
                     {{- $isMap := ( not ( eq $type "string" ) ) -}}
                     <img class="img-responsive" alt="Post Thumbnail" src='{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
@@ -31,13 +30,13 @@
                     {{- $lang := ( $.Params.lang | default $.Lang ) -}}
                     <h4 class="post-authorName">{{ i18n "by" }}&nbsp;
                         {{- range $i, $authorID := . -}}
-                            {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-                            {{- $i18nAuthor := ( index $author $lang ) -}}
-                            {{- $name := ( or $i18nAuthor.name $author.name ) -}}
-                            {{- if gt $i 0 }}, {{ end -}}
-                            <a href='authors/{{ $author.id }}'>
-                                {{- $name.display -}}
-                            </a>
+                        {{- $author := ( index $.Site.Data.authors $authorID ) -}}
+                        {{- $i18nAuthor := ( index $author $lang ) -}}
+                        {{- $name := ( or $i18nAuthor.name $author.name ) -}}
+                        {{- if gt $i 0 }}, {{ end -}}
+                        <a href='authors/{{ $author.id }}'>
+                            {{- $name.display -}}
+                        </a>
                         {{- end -}}
                     </h4>
                     {{- end -}}
@@ -54,13 +53,13 @@
                         <a href="{{ .URL }}">Read more...</a>
                     </span>
                     <div class="tag">
-                            {{ if .Params.tags }}
-                            <div class="tag">
-                                {{ range $index, $tag := .Params.tags }}{{ if gt $index 0 }} {{ end }}
-                                <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">{{ . }}</a>{{ end }}
-                            </div>
-                            {{ end }}
-                            {{- /* vim: set ts=2 sw=2 et: */}}
+                        {{ if .Params.tags }}
+                        <div class="tag">
+                            {{ range $index, $tag := .Params.tags }}{{ if gt $index 0 }} {{ end }}
+                            <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">{{ . }}</a>{{ end }}
+                        </div>
+                        {{ end }}
+                        {{- /* vim: set ts=2 sw=2 et: */}}
                     </div>
                 </div>
             </div>

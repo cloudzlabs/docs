@@ -44,7 +44,7 @@ latestPostsLength = 7
 hideSocialMenu = false
 showReadingTime = true
 noTermCloudShuffle = false
-homepageSections = ["recent_posts", "posts"]
+homepageSections = ["main-posts", "latest-posts"]
 
 # Enable / Disable algolia search
 algolia_search    = true

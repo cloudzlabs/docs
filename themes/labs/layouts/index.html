@@ -1,32 +1,25 @@
 {{ define "main" }}
 
-<body naver_screen_capture_injected="true" class='{{ partial "header/bodyClasses" . }} hasScrollbar'>
+<body naver_screen_capture_injected='true' class='{{ partial "header/bodyClasses" . }} hasScrollbar'>
 
     {{ partial "nav/menus/mobile" . }}
 
     {{ partial "header/header" . }}
 
-    <div class="offcanvas-wrapper">
+    <div class='offcanvas-wrapper'>
 
         {{ partial "home/introduction" . }}
 
-        <div id='main' class='container'>
-            {{ if .Content }}
-            <article class='entry'>
-                {{ partial "entry/cover" . }}
-                {{ partial "entry/content" . }}
-            </article>
-            {{ end }}
-
-            {{- with .Site.Params.settings.homepageSections -}}
-                {{- range . -}}
-                    {{- partial ( print "home/" . ) $ -}}
-                {{- end -}}
-            {{- else -}}
-                {{- partial "home/recent_posts" . -}}
+        {{- with .Site.Params.settings.homepageSections -}}
+            {{- range . -}}
+                {{- partial ( print "home/" . ) $ -}}
             {{- end -}}
-            {{ partial "nav/load-more" . }}
-        </div>
+        {{- else -}}
+            {{- partial "home/main-posts" . -}}
+        {{- end -}}
+
+        {{ partial "component/load-more" . }}
+
     </div>
 
     {{ partial "footer/footer" . }}
