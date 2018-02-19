@@ -28,20 +28,15 @@
 
 <div class="toolbar">
     <div class="inner">
-        <div class="sns">
-            {{- if not .Site.Params.settings.hideSocialMenu -}}
-            {{- $social := ( .Site.Params.social ) -}}
-            {{- range $platform := $social.config.platforms -}}
-                {{- with $username := ( index $social $platform ) -}}
-                    <a class='social-button' href='{{ print ( index $.Site.Data.theme.social.base $platform ) $username }}' target='_blank' rel='noopener'>
-                        <i class='fa fa-{{- $platform -}}' aria-hidden='true'></i>
-                    </a>
-                {{- end -}}
-            {{- end -}}
-            {{- end -}}
-            <a class="social-button" href="#" target="_blank">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-            </a>
+        <ul class="sns">
+
+            {{- partial "component/social" $ -}}
+
+            <li>
+                <a class="social-button" href="#" target="_blank">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                </a>
+            </li>
         </div>
         <div class="tools">
             <div class="search">
