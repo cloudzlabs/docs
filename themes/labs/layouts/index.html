@@ -2,25 +2,39 @@
 
 <body naver_screen_capture_injected="true" class='{{ partial "header/bodyClasses" . }} hasScrollbar'>
 
-    {{ partial "header" . }}
+    {{ partial "nav/menus/mobile" . }}
 
-    <div id='main' class='container'>
-        {{ if .Content }}
-        <article class='entry'>
-            {{ partial "entry/cover" . }}
-            {{ partial "entry/content" . }}
-        </article>
-        {{ end }}
+    {{ partial "header/header" . }}
 
-        {{- with .Site.Params.settings.homepageSections -}}
-            {{- range . -}}
-                {{- partial ( print "home/" . ) $ -}}
+    <div class="offcanvas-wrapper">
+        <section class="visual-area text-center">
+            <div class="visual">
+                {{ if eq .Kind "home" }}
+                <h3>{{ .Site.Title }}</h3>
+                {{ else }}
+                <p>{{ .Site.Title }}</p>
+                {{ end }}
+                <p>{{ .Site.Params.info.description }}</p>
+            </div>
+        </section>
+
+        <div id='main' class='container'>
+            {{ if .Content }}
+            <article class='entry'>
+                {{ partial "entry/cover" . }}
+                {{ partial "entry/content" . }}
+            </article>
+            {{ end }}
+
+            {{- with .Site.Params.settings.homepageSections -}}
+                {{- range . -}}
+                    {{- partial ( print "home/" . ) $ -}}
+                {{- end -}}
+            {{- else -}}
+                {{- partial "home/recent_posts" . -}}
             {{- end -}}
-        {{- else -}}
-            {{- partial "home/recent_posts" . -}}
-        {{- end -}}
-        {{ partial "nav/load-more" . }}
-    </div>
+            {{ partial "nav/load-more" . }}
+        </div>
 
     {{ partial "footer" . }}
 

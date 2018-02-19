@@ -1,69 +1,52 @@
-<!-- Off-Canvas Mobile Menu-->
-<div class="offcanvas-container" id="mobile-menu"><a class="account-link" href="">
-    <div class="user-ava"><img src="img/user/user-ava-md.png" alt="Daniel Adams"> </div>
-    <div class="user-info">
-        <h6 class="user-name">Daniel Adams</h6>
-        <span class="text-sm text-white opacity-60">290 Reward points</span> </div>
-    </a>
-    <nav class="offcanvas-menu">
-        <ul class="menu">
-        <li class="has-children active"><span><a href="sub.html"><span>블로그</span></a></span> </li>
-        <li class="has-children"><span><a href="sub.html"><span>기술지원</span></a></span> </li>
-        </ul>
-    </nav>
+<form class="site-search" method="get">
+    <input id="search" type="text" name="site_search" placeholder="Type to search...">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</form>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+    </div>
 </div>
-<header class="navbar navbar-sticky">
-    <form class="site-search" method="get">
-        <input id="search" type="text" name="site_search" placeholder="Type to search...">
-        <div class="search-tools">
-            <span class="clear-search">Clear</span>
-            <span class="close-search">
-                <i class="icon-cross"></i>
-            </span>
-        </div>
-    </form>
-    <div class="site-branding">
-        <div class="inner">
-            <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
-            <a class="site-logo" href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
-        </div>
-    </div>
-    <nav id='main-menu' class='site-menu' aria-label='{{ i18n "mainMenu" }}'>
-        <ul>
-            {{ range .Site.Menus.main }}
-            {{- $isCurrent := ( or ( $.IsMenuCurrent "main" . ) ( $.HasMenuCurrent "main" . ) ) -}}
-            <li {{ if $isCurrent -}} class='has-megamenu active' aria-current='page' {{ end -}}>
-                <a href='{{ .URL }}'>
-                    <span>{{- .Name -}}</span>
-                </a>
-            </li>
-            {{ end }}
-        </ul>
-    </nav>
+<nav id='main-menu' class='site-menu' aria-label='{{ i18n "mainMenu" }}'>
+    <ul>
+        {{ range .Site.Menus.main }}
+        {{- $isCurrent := ( or ( $.IsMenuCurrent "main" . ) ( $.HasMenuCurrent "main" . ) ) -}}
+        <li {{ if $isCurrent -}} class='has-megamenu active' aria-current='page' {{ end -}}>
+            <a href='{{ .URL }}'>
+                <span>{{- .Name -}}</span>
+            </a>
+        </li>
+        {{ end }}
+    </ul>
+</nav>
 
-    <div class="toolbar">
-        <div class="inner">
-            <div class="sns">
-                {{- if not .Site.Params.settings.hideSocialMenu -}}
-                {{- $social := ( .Site.Params.social ) -}}
-                {{- range $platform := $social.config.platforms -}}
-                    {{- with $username := ( index $social $platform ) -}}
-                        <a class='social-button' href='{{ print ( index $.Site.Data.theme.social.base $platform ) $username }}' target='_blank' rel='noopener'>
-                            <i class='fa fa-{{- $platform -}}' aria-hidden='true'></i>
-                        </a>
-                    {{- end -}}
+<div class="toolbar">
+    <div class="inner">
+        <div class="sns">
+            {{- if not .Site.Params.settings.hideSocialMenu -}}
+            {{- $social := ( .Site.Params.social ) -}}
+            {{- range $platform := $social.config.platforms -}}
+                {{- with $username := ( index $social $platform ) -}}
+                    <a class='social-button' href='{{ print ( index $.Site.Data.theme.social.base $platform ) $username }}' target='_blank' rel='noopener'>
+                        <i class='fa fa-{{- $platform -}}' aria-hidden='true'></i>
+                    </a>
                 {{- end -}}
-                {{- end -}}
-                <a class="social-button" href="#" target="_blank">
-                    <i class="fa fa-envelope" aria-hidden="true"></i>
-                </a>
-            </div>
-            <div class="tools">
-                <div class="search">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </div>
+            {{- end -}}
+            {{- end -}}
+            <a class="social-button" href="#" target="_blank">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class="tools">
+            <div class="search">
+                <i class="fa fa-search" aria-hidden="true"></i>
             </div>
         </div>
     </div>
-</header>
-
+</div>
