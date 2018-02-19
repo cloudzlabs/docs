@@ -1,10 +1,17 @@
 <section class="visual-area text-center">
     <div class="visual">
+
         {{ if eq .Kind "home" }}
+
         <h3>{{ .Site.Title }}</h3>
+
         {{ else }}
+
         <p>{{ .Site.Title }}</p>
+
         {{ end }}
+
         <p>{{ .Site.Params.info.description }}</p>
+
     </div>
 </section>
