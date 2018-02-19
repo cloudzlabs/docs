@@ -1,57 +1,57 @@
 {{ define "main" }}
 
-<body naver_screen_capture_injected="true" class='{{ partial "header/bodyClasses" . }} hasScrollbar'>
+<body naver_screen_capture_injected="true" class="hasScrollbar">
 
     {{ partial "nav/menus/mobile" . }}
 
-    {{ partial "nav/menus/main" . }}
+    {{ partial "header/header" . }}
 
-<div class="offcanvas-wrapper page-body">
-    <div class="container">
-        <div class="row justify-content-center">
+    <div class="offcanvas-wrapper page-body">
+        <div class="container">
+            <div class="row justify-content-center">
 
-            <div class="col-lg-10">
-                {{ partial "entry/header" . }}
+                <div class="col-lg-10">
+                    {{ partial "entry/header" . }}
 
-                <div class="page-con">
-                    <h2>{{ .Title }}</h2>
-                    <p class="post-authorName">
-                        {{- with .Params.authors -}}
-                        {{- $lang := ( $.Params.lang | default $.Lang ) -}}
-                        {{ i18n "by" }}&nbsp;
-                            {{- range $i, $authorID := . -}}
-                            {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-                            {{- $i18nAuthor := ( index $author $lang ) -}}
-                            {{- $name := ( or $i18nAuthor.name $author.name ) -}}
-                            {{- if gt $i 0 }}, {{ end -}}
-                            <a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">
-                                {{- $name.display -}}
-                            </a>
-                        {{- end -}}
-                        {{- end -}}
-                    </p>
-                    <blockquote>
-                        <p>{{ .Description }}</p>
-                    </blockquote>
+                    <div class="page-con">
+                        <h2>{{ .Title }}</h2>
+                        <p class="post-authorName">
+                            {{- with .Params.authors -}}
+                            {{- $lang := ( $.Params.lang | default $.Lang ) -}}
+                            {{ i18n "by" }}&nbsp;
+                                {{- range $i, $authorID := . -}}
+                                {{- $author := ( index $.Site.Data.authors $authorID ) -}}
+                                {{- $i18nAuthor := ( index $author $lang ) -}}
+                                {{- $name := ( or $i18nAuthor.name $author.name ) -}}
+                                {{- if gt $i 0 }}, {{ end -}}
+                                <a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">
+                                    {{- $name.display -}}
+                                </a>
+                            {{- end -}}
+                            {{- end -}}
+                        </p>
+                        <blockquote>
+                            <p>{{ .Description }}</p>
+                        </blockquote>
 
-                    {{ partial "entry/cover" . }}
+                        {{ partial "entry/cover" . }}
 
-                    {{ partial "entry/toc" . }}
+                        {{ partial "entry/toc" . }}
 
-                    {{ partial "entry/content" . }}
+                        {{ partial "entry/content" . }}
 
-                    {{ partial "entry/footer" . }}
-                    {{ partial "entry/comments" . }}
+                        {{ partial "entry/footer" . }}
+                        {{ partial "entry/comments" . }}
+                    </div>
+                    {{ partial "nav/entry_nav" . }}
                 </div>
-                {{ partial "nav/entry_nav" . }}
             </div>
         </div>
     </div>
-</div>
 
-{{ partial "footer/footer" . }}
+    {{ partial "footer/footer" . }}
 
-{{- partial "footer/scripts" . -}}
+    {{- partial "footer/scripts" . -}}
 
 </body>
 
