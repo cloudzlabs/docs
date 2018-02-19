@@ -1,5 +1,8 @@
 {{ define "main" }}
-{{ partial "header-single" . }}
+
+<body naver_screen_capture_injected="true" class='{{ partial "header/bodyClasses" . }} hasScrollbar'>
+
+    {{ partial "nav/menus/main" . }}
 
 <div class="offcanvas-wrapper page-body">
     <div class="container">
@@ -43,5 +46,9 @@
         </div>
     </div>
 </div>
+
 {{ partial "footer" . }}
+
+</body>
+
 {{ end }}

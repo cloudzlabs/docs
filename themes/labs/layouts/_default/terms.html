@@ -1,4 +1,7 @@
 {{ define "main" }}
+
+<body naver_screen_capture_injected="true" class='{{ partial "header/bodyClasses" . }} hasScrollbar'>
+
 {{ partial "header" . }}
 
 <main id='main' class='main'>
@@ -22,4 +25,7 @@
 </main>
 
 {{ partial "footer" . }}
+
+</body>
+
 {{ end }}

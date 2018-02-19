@@ -1,25 +1,29 @@
 {{ define "main" }}
 
-{{ partial "header" . }}
+<body naver_screen_capture_injected="true" class='{{ partial "header/bodyClasses" . }} hasScrollbar'>
 
-<div id='main' class='container'>
-    {{ if .Content }}
-    <article class='entry'>
-        {{ partial "entry/cover" . }}
-        {{ partial "entry/content" . }}
-    </article>
-    {{ end }}
+    {{ partial "header" . }}
 
-    {{- with .Site.Params.settings.homepageSections -}}
-        {{- range . -}}
-            {{- partial ( print "home/" . ) $ -}}
+    <div id='main' class='container'>
+        {{ if .Content }}
+        <article class='entry'>
+            {{ partial "entry/cover" . }}
+            {{ partial "entry/content" . }}
+        </article>
+        {{ end }}
+
+        {{- with .Site.Params.settings.homepageSections -}}
+            {{- range . -}}
+                {{- partial ( print "home/" . ) $ -}}
+            {{- end -}}
+        {{- else -}}
+            {{- partial "home/recent_posts" . -}}
         {{- end -}}
-    {{- else -}}
-        {{- partial "home/recent_posts" . -}}
-    {{- end -}}
-    {{ partial "nav/load-more" . }}
-</div>
+        {{ partial "nav/load-more" . }}
+    </div>
 
-{{ partial "footer" . }}
+    {{ partial "footer" . }}
+
+</body>
 
 {{ end }}
