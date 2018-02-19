@@ -2,8 +2,6 @@
 
 <body naver_screen_capture_injected="true" class='hasScrollbar'>
 
-    {{ partial "nav/menus/mobile" . }}
-
     {{ partial "header/header" . }}
 
     <div class='offcanvas-wrapper'>
@@ -33,7 +31,7 @@
                     {{ .Render "li" }}
                 {{ end }}
 
-                {{ partial "nav/pagination" . }}
+                {{ partial "component/pagination" . }}
 
             </article>
         </section>
