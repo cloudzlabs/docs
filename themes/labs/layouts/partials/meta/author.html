@@ -1,0 +1,27 @@
+<div class="author">
+    {{- with .Params.authors -}}
+    {{- range $i, $authorID := . -}}
+        {{- $author := ( index $.Site.Data.authors $authorID ) -}}
+        {{- if gt $i 0 }}, {{ end -}}
+        <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $author.info.image }}"/>
+        <div class="author-info">
+            <h3>
+                <a href='{{ $.Site.BaseURL }}authors/{{ $author.id }}'>
+                    {{- $author.name.display -}}{{ $.LanguagePrefix }}
+                </a>
+            </h3>
+            <p>{{- $author.info.description -}}</p>
+        {{- end -}}
+    {{- end -}}
+        <ul class="cover-byline">
+            {{- $dateFormat := ( .Site.Params.settings.dateFormat | default "2006, Jan 02" ) -}}
+            <li><i class="fa" aria-hidden="true"></i>
+            {{- .Date.Format $dateFormat -}}
+            {{ if .Site.Params.settings.showReadingTime }}
+            <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+            {{ i18n "readingTime" .ReadingTime }}
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+</div>

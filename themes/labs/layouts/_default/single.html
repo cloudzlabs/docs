@@ -9,17 +9,15 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10">
 
-                    {{ partial "single/author" . }}
+                    {{ partial "meta/author" . }}
 
                     <div class="page-con">
 
-                        {{- with .Site.Params.settings.singlepageHeader -}}
-                            {{- range . -}}
-                                {{- partial ( print "single/header/" . ) $ -}}
-                            {{- end -}}
-                        {{- else -}}
-                            {{- partial "single/header/info" . -}}
-                        {{- end -}}
+                        {{- partial "single/info" . -}}
+
+                        {{- partial "single/cover" . -}}
+
+                        {{- partial "single/toc" . -}}
 
                         {{ .Content }}
 
@@ -27,13 +25,9 @@
                             {{- partial "meta/tag" $ -}}
                         </div>
 
-                        {{- with .Site.Params.settings.singlepageFooter -}}
-                            {{- range . -}}
-                                {{- partial ( print "single/footer/" . ) $ -}}
-                            {{- end -}}
-                        {{- else -}}
-                            {{- partial "single/footer/comments" . -}}
-                        {{- end -}}
+                        {{- partial "component/recommend" . -}}
+
+                        {{- partial "component/comments" . -}}
 
                     </div>
 

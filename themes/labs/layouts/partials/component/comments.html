@@ -1,9 +1,9 @@
 {{- if not ( eq .Params.comments false ) -}}
-
 {{ if .Site.DisqusShortname }}
 <section class="mt-30">
-  {{ template "_internal/disqus.html" . }}
+
+    {{ template "_internal/disqus.html" . }}
+
 </section>
 {{ end }}
-
 {{- end -}}

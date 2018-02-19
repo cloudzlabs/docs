@@ -45,8 +45,6 @@ hideSocialMenu = false
 showReadingTime = true
 noTermCloudShuffle = false
 homepageSections = ["main-posts", "latest-posts"]
-singlepageHeader = ["info", "cover", "toc"]
-singlepageFooter = ["recommend", "comments"]
 
 # Enable / Disable algolia search
 algolia_search    = true
