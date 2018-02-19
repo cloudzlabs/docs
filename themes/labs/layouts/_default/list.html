@@ -1,46 +1,49 @@
 {{ define "main" }}
 
 <body naver_screen_capture_injected="true" class='{{ partial "header/bodyClasses" . }} hasScrollbar'>
+
+    {{ partial "nav/menus/mobile" . }}
+
     {{ partial "header/header" . }}
 
-<div id='main' class='container'>
-    <header class='header-container'>
-        <div class='header list-header'>
-            <div class='header-info'>
-                <h1 class='title'>
-                    {{- if eq .Kind "taxonomy" -}}
-                    <span class='taxonomy-type'>
-                        {{- ( ( i18n .Data.Singular 1 ) | default .Data.Singular ) | title -}} {{- print ": " -}}
-                    </span>
-                    {{- end -}} {{- if eq .Data.Singular "author" -}} {{- partial "data/author/displayName" . -}} {{- else -}} {{- .Title -}}
-                    {{- end -}}
-                </h1>
+    <div class='offcanvas-wrapper'>
 
-                {{ partial "header/subtitle" . }}
+        <header class='header-container'>
+            <div class='header list-header'>
+                <div class='header-info'>
+                    <h1 class='title'>
+                        {{- if eq .Kind "taxonomy" -}}
+                        <span class='taxonomy-type'>
+                            {{- ( ( i18n .Data.Singular 1 ) | default .Data.Singular ) | title -}} {{- print ": " -}}
+                        </span>
+                        {{- end -}} {{- if eq .Data.Singular "author" -}} {{- partial "data/author/displayName" . -}} {{- else -}} {{- .Title -}}
+                        {{- end -}}
+
+                    </h1>
+
+                    {{ partial "header/subtitle" . }}
+                </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    {{ if .Content }}
-    <div class='entry'>
-        {{ partial "entry/content" . }}
+        <section class='container'>
+            <article class="post">
+                <h3 class="title mb-10">Latest</h3>
+
+                {{ range .Paginator.Pages }}
+                    {{ .Render "li" }}
+                {{ end }}
+
+                {{ partial "nav/pagination" . }}
+
+            </article>
+        </section>
     </div>
-    {{ end }}
 
-    <section class='container'>
-        <article class="post">
-            {{ range .Paginator.Pages }}
-                {{ .Render "li" }}
-            {{ end }}
+    {{ partial "footer/footer" . }}
 
-            {{ partial "nav/pagination" . }}
-        </article>
-    </section>
-</div>
-
-{{ partial "footer/footer" . }}
-
-{{- partial "footer/scripts" . -}}
+    {{- partial "footer/scripts" . -}}
 
 </body>
+
 {{ end }}
