@@ -9,41 +9,30 @@
     <div class="offcanvas-wrapper page-body">
         <div class="container">
             <div class="row justify-content-center">
-
                 <div class="col-lg-10">
-                    {{ partial "entry/header" . }}
+
+                    {{ partial "single/author" . }}
 
                     <div class="page-con">
-                        <h2>{{ .Title }}</h2>
-                        <p class="post-authorName">
-                            {{- with .Params.authors -}}
-                            {{- $lang := ( $.Params.lang | default $.Lang ) -}}
-                            {{ i18n "by" }}&nbsp;
-                                {{- range $i, $authorID := . -}}
-                                {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-                                {{- $i18nAuthor := ( index $author $lang ) -}}
-                                {{- $name := ( or $i18nAuthor.name $author.name ) -}}
-                                {{- if gt $i 0 }}, {{ end -}}
-                                <a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">
-                                    {{- $name.display -}}
-                                </a>
-                            {{- end -}}
-                            {{- end -}}
-                        </p>
-                        <blockquote>
-                            <p>{{ .Description }}</p>
-                        </blockquote>
 
-                        {{ partial "entry/cover" . }}
+                        {{ partial "single/info" . }}
 
-                        {{ partial "entry/toc" . }}
+                        {{ partial "single/cover" . }}
 
-                        {{ partial "entry/content" . }}
+                        {{ partial "single/toc" . }}
 
-                        {{ partial "entry/footer" . }}
-                        {{ partial "entry/comments" . }}
+                        {{ .Content }}
+
+                        {{ partial "single/tag" . }}
+
+                        {{ partial "single/recommend" . }}
+
+                        {{ partial "single/comments" . }}
+
                     </div>
-                    {{ partial "nav/entry_nav" . }}
+
+                    {{ partial "component/entry_nav" . }}
+
                 </div>
             </div>
         </div>

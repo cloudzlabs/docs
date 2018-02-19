@@ -11,11 +11,12 @@
 
 {{ if gt ( len ( where .Site.RegularPages "Section" .Section ) ) 1 }}
 <div class="mt-30 row">
+
     {{- if .PrevInSection -}}
     <div class="col-md-6 post-pre">
         <a href='{{ .PrevInSection.Permalink | relURL }}'>
             <div class="author">
-                <img class="img-circle" alt="" src="img/user/user-ava-md.png">
+                <img class="img-circle" alt="" src="img/user/user-ava-md.png" />
                 <div class="author-info">
                     <h3>{{- .PrevInSection.Title -}}</h3>
                     <p>{{- .PrevInSection.Summary -}}</p>
