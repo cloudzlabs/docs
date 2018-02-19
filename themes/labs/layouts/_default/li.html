@@ -49,10 +49,7 @@
             </span>
             <div class="tag">
                 {{ if .Params.tags }}
-                <div class="tag">
-                    {{ range $index, $tag := .Params.tags }}{{ if gt $index 0 }} {{ end }}
-                    <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">{{ . }}</a>{{ end }}
-                </div>
+                    {{- partial "meta/tag" $ -}}
                 {{ end }}
                 {{- /* vim: set ts=2 sw=2 et: */}}
             </div>

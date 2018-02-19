@@ -23,6 +23,10 @@
 
                         {{ .Content }}
 
+                        <div class="single-post-footer">
+                            {{- partial "meta/tag" $ -}}
+                        </div>
+
                         {{- with .Site.Params.settings.singlepageFooter -}}
                             {{- range . -}}
                                 {{- partial ( print "single/footer/" . ) $ -}}
