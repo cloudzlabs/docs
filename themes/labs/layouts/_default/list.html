@@ -11,8 +11,12 @@
         <section class="visual-area text-center">
             <div class="visual">
                 {{- if eq .Kind "taxonomy" -}}
-                <h3>{{- ( ( i18n .Data.Singular 1 ) | default .Data.Singular ) | title -}} {{- print ": " -}}</h3>
-                {{- end -}} {{- if eq .Data.Singular "author" -}} {{- partial "data/author/displayName" . -}} {{- else -}} {{- .Title -}}
+                <h3>{{- ( default .Data.Singular ) | title -}} {{- print ": " -}}</h3>
+                {{- end -}}
+                {{- if eq .Data.Singular "author" -}}
+                    {{- partial "data/author/displayName" . -}}
+                {{- else -}}
+                    {{- .Title -}}
                 {{- end -}}
 
                 {{ with .Description }}

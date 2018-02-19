@@ -8,8 +8,6 @@
   {{- $.Scratch.Set "authorID" ( index .Params.authors 0 ) -}}
 {{- end -}}
 
-{{- $lang := ( .Params.lang | default .Lang ) -}}
 {{- $author := ( index $.Site.Data.authors ( $.Scratch.Get "authorID" ) ) -}}
-{{- $i18nAuthor := ( index $author $lang ) -}}
-{{- $name := ( or $i18nAuthor.name $author.name ) -}}
+{{- $name := $author.name -}}
 {{- $name.display -}}
