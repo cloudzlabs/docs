@@ -21,9 +21,7 @@
 
                         {{ .Content }}
 
-                        <div class="single-post-footer">
-                            {{- partial "meta/tag" $ -}}
-                        </div>
+                        {{- partial "content/tag-list" . -}}
 
                         {{- partial "component/recommend" . -}}
 
