@@ -8,46 +8,45 @@ tags:
   - Docker
   - Cloud
 cover:
-  image: /docs/images/container-layers.jpg
+  image: /docs/images/boston_2946x1907.jpg
   caption: Eden Farm Children's Village by Gareth Harper on Unsplash
-  style: full
+  style: wide
 description: "Docker는 애플리케이션을 신속하게 구축, 테스트 및 배포할 수 있는 소프트웨어 플랫폼입니다. Docker는 소프트웨어를 Container라는 표준화된 유닛으로 패키징하며, 이 Container에는 라이브러리, 시스템 도구, 코드, 런타임 등 소프트웨어를 실행하는 데 필요한 모든 것이 포함되어 있습니다. Docker를 사용하면 환경에 구애받지 않고 애플리케이션을 신속하게 배포 및 확장할 수 있으며 코드가 문제없이 실행될 것임을 확신할 수 있습니다."
 draft: false
 ---
 # Docker
 
 - [Docker](#docker)
-  - [Overview](#overview)
-    - [Docker Platform](#docker-platform)
-    - [Docker 구성](#docker-%EA%B5%AC%EC%84%B1)
-    - [Why Docker](#why-docker)
-    - [What can I use Docker for?](#what-can-i-use-docker-for)
-    - [Docker는 무엇을 사용할 수 있습니까?](#docker%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%A0-%EC%88%98-%EC%9E%88%EC%8A%B5%EB%8B%88%EA%B9%8C)
-    - [Solution: Container](#solution-container)
-  - [Architecture](#architecture)
-    - [Docker Daemon](#docker-daemon)
-    - [Docker Client](#docker-client)
-    - [Docker Registry](#docker-registry)
-    - [Docker Object](#docker-object)
-      - [Image](#image)
-      - [container](#container)
-      - [service](#service)
-  - [Container](#container)
-    - [Container에 대하여](#container%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC)
-    - [Container의 특징](#container%EC%9D%98-%ED%8A%B9%EC%A7%95)
-      - [Lightweight](#lightweight)
-      - [Standard](#standard)
-      - [Secure](#secure)
-    - [Container VS VM](#container-vs-vm)
-      - [Container](#container)
-      - [Virtual Machines(흔히 아는 가상화방식: VMWare, VirtualBox)](#virtual-machines%ED%9D%94%ED%9E%88-%EC%95%84%EB%8A%94-%EA%B0%80%EC%83%81%ED%99%94%EB%B0%A9%EC%8B%9D-vmware-virtualbox)
-      - [요약](#%EC%9A%94%EC%95%BD)
-      - [Container and Virtual machines Together](#container-and-virtual-machines-together)
-  - [Flow](#flow)
-    - [Basic](#basic)
-    - [Change or Update](#change-or-update)
-      - [Image와 Container의 Layer](#image%EC%99%80-container%EC%9D%98-layer)
-  - [Get Started](#get-started)
+    - [Overview](#overview)
+        - [Docker Platform](#docker-platform)
+        - [Docker 구성](#docker-%EA%B5%AC%EC%84%B1)
+        - [Why Docker](#why-docker)
+        - [What can I use Docker for?](#what-can-i-use-docker-for)
+        - [Docker는 무엇을 사용할 수 있습니까?](#docker%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%A0-%EC%88%98-%EC%9E%88%EC%8A%B5%EB%8B%88%EA%B9%8C)
+        - [Solution: Container](#solution-container)
+    - [Architecture](#architecture)
+        - [Docker Daemon](#docker-daemon)
+        - [Docker Client](#docker-client)
+        - [Docker Registry](#docker-registry)
+        - [Docker Object](#docker-object)
+            - [Image](#image)
+            - [container](#container)
+            - [service](#service)
+    - [Container](#container)
+        - [Container에 대하여](#container%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC)
+        - [Container의 특징](#container%EC%9D%98-%ED%8A%B9%EC%A7%95)
+            - [Lightweight](#lightweight)
+            - [Standard](#standard)
+            - [Secure](#secure)
+        - [Container VS VM](#container-vs-vm)
+            - [Containers](#containers)
+            - [Virtual Machines(흔히 아는 가상화방식: VMWare, VirtualBox)](#virtual-machines%ED%9D%94%ED%9E%88-%EC%95%84%EB%8A%94-%EA%B0%80%EC%83%81%ED%99%94%EB%B0%A9%EC%8B%9D-vmware-virtualbox)
+            - [요약](#%EC%9A%94%EC%95%BD)
+            - [Container and Virtual machines Together](#container-and-virtual-machines-together)
+    - [Flow](#flow)
+        - [Basic](#basic)
+        - [Change or Update](#change-or-update)
+            - [Image와 Container의 Layer](#image%EC%99%80-container%EC%9D%98-layer)
 
 ## Overview
 

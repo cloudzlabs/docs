@@ -10,7 +10,7 @@ tags:
   - Container As a Service
 description: "asdlkfjalksdjflkasdjflkasdjf"
 cover:
-  image: /docs/images/container-layers.jpg
+  image: /docs/images/aurora_2000x1091.jpg
   caption: Eden Farm Children's Village by Gareth Harper on Unsplash
   style: full
 draft: false
