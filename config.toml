@@ -61,7 +61,7 @@ titleSeparator = "•"
 [params.social]
 facebook = "cloudzlabs"
 twitter = "cloudzlabs"
-github = "withdtlabs"
+github = "cloudzlabs"
 email = "withdtlabs@gmail.com"
 
 [params.social.config]
