@@ -258,7 +258,6 @@ draft: false
 
      여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.   
 
-     ​
 
 ### GG
 
@@ -267,8 +266,6 @@ draft: false
 ## Conclusion
 
 1. eureka.instance.lease-expiration-duration-in-seconds 설정은 eureka client에 세팅을 해줘야한다. 이 말은 어플리케이션 마다 eureka server에서 unregist 되는 시간을 달리 해줄 수 있다는 의미이다. 활용할 방법을 고민해볼만 하다.
-
-   ​
 
 2. Cloud Foundry의 custom command 사용시 exec prefix를 달아줘야 한다. Cloud Foundry 기반의 플랫폼을 구축할 때 or buildpack을 개발해서 제공할 때 유의해야 할 부분이다.
 
