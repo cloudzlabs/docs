@@ -186,7 +186,7 @@ draft: true
 <!-- 글 내용 -->
 ```
 
-### Git Repository에 Push
+### Git Pull 후, Git Repository에 Push
 
 ``` bash
 /docs $ git add .
