@@ -252,7 +252,7 @@ draft: false
 
       **Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.**
 
-     buildpack 별 exec prefix가 적용되어 있는가 ?
+     buildpack 별 exec prefix가 적용되어 있는가 ? 
 
      ​
 
