@@ -4,7 +4,7 @@ theme = "labs"
 
 # for smart copyright line, leave this blank and check [params.copyright]
 copyright = ""
-disqusShortname = "cloudzlabs"
+disqusShortname = "cloudz-labs"
 googleAnalytics = ""
 
 Paginate = 5
@@ -59,14 +59,13 @@ page = "" # Twitter page username
 titleSeparator = "•"
 
 [params.social]
-google = "dtlabs"
 facebook = "cloudzlabs"
 twitter = "cloudzlabs"
 github = "dtlabs"
 email = "withdtlabs@gmail.com"
 
 [params.social.config]
-platforms = ["google", "twitter", "facebook", "github"]
+platforms = ["twitter", "facebook", "github"]
 
 [taxonomies]
 author = "authors"
