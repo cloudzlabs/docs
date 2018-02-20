@@ -2,7 +2,7 @@
 
 ## 개요
 
-[![Build Status](https://travis-ci.org/withdtlabs/docs.svg?branch=master)](https://travis-ci.org/withdtlabs/docs)
+[![Build Status](https://travis-ci.org/cloudzlabs/docs.svg?branch=master)](https://travis-ci.org/cloudzlabs/docs)
 
 ### 개발 환경
 
@@ -12,10 +12,10 @@
 
 ## 환경 구성
 
-### Git Clone https://github.com/withdtlabs/docs.git
+### Git Clone https://github.com/cloudzlabs/docs.git
 
 ``` bash
-$ git clone https://github.com/withdtlabs/docs.git
+$ git clone https://github.com/cloudzlabs/docs.git
 Cloning into 'docs'...
 remote: Counting objects: 214, done.
 remote: Compressing objects: 100% (97/97), done.
@@ -203,10 +203,10 @@ Compressing objects: 100% (4/4), done.
 Writing objects: 100% (5/5), 3.53 KiB | 3.53 MiB/s, done.
 Total 5 (delta 2), reused 0 (delta 0)
 remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
-To https://github.com/withdtlabs/docs.git
+To https://github.com/cloudzlabs/docs.git
    ef2cbb9..8b97416  master -> master
 ```
 
 ### Travis CI에서 자동 빌드 및 gh-pages에서 배포
 
-### [Labs 블로그](https://withdtlabs.github.io/docs)에서 확인
+### [Labs 블로그](https://clouzlabs.github.io/docs)에서 확인
