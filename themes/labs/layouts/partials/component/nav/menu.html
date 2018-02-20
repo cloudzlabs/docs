@@ -13,11 +13,11 @@
         <a class="site-logo" href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
     </div>
 </div>
-<nav id='main-menu' class='site-menu' aria-label='{{ i18n "mainMenu" }}'>
+<nav class='site-menu'>
     <ul>
         {{ range .Site.Menus.main }}
         {{- $isCurrent := ( or ( $.IsMenuCurrent "main" . ) ( $.HasMenuCurrent "main" . ) ) -}}
-        <li {{ if $isCurrent -}} class='has-megamenu active' aria-current='page' {{ end -}}>
+        <li {{ if $isCurrent -}} class='has-megamenu active' {{ end -}}>
             <a href='{{ .URL }}'>
                 <span>{{- .Name -}}</span>
             </a>
