@@ -122,7 +122,7 @@ draft: false
            defaultZone: ${vcap.services.dtlabs-service-discovery.credentials.uri}/eureka/
      ```
 
-   - eureka.instance.lease-expiration-duration-in-seconds 설정 코드 내 주석
+   - eureka.instance.lease-expiration-duration-in-seconds 설정 코드 내 주석
      ```java
      @Data
      @ConfigurationProperties("eureka.instance")
@@ -150,12 +150,14 @@ draft: false
    eureka.instance.lease-expiration-duration-in-seconds 설정을 eureka server에 세팅하고 eureka client에는 세팅을 하지 않았다.
 
    eureka.instance 설정의 개념을 살펴보니,
+   
    > eureka.instance: eureka service가 자신이 eureka 서버에 등록될 때 사용하는 설정
    > erueka.client: 다른 erueka service를 찾으려고 할 때 사용하는 설정
 
     **eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다.**
 
    - eureka client에 설정 적용 후 eureka/apps 로 확인
+   
      ![erureka-apps](/docs/images/erureka-apps.PNG)
 
    하지만 eureka client 설정변경과 관계없이, default 값이 90초로 세팅되어 있는데 eureka server dashboard 에서 어플리케이션 정보가 삭제될 때까지 수 분이 걸리는 것으로 봐서 해당 사유는 아닌 듯 하다.
@@ -165,7 +167,6 @@ draft: false
 3. 어플리케이션 종료 체크
 
    - buildpack 별 종료 로그 비교
-
      - java buildpack
        ```bash
        2017-10-11T10:50:49.32+0900 [API/1]      OUT Updated app with guid 1d6ccdc9-730d-459d-a9fe-c097abee52cb ({"state"=>"STOPPED"})
@@ -256,9 +257,8 @@ draft: false
      CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
      ```
 
-     여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.   
-
-
+     여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.
+     
 ### GG
 
 
@@ -269,6 +269,6 @@ draft: false
 
 2. Cloud Foundry의 custom command 사용시 exec prefix를 달아줘야 한다. Cloud Foundry 기반의 플랫폼을 구축할 때 or buildpack을 개발해서 제공할 때 유의해야 할 부분이다.
 
-3. liberty-for-java buildpack 은 2017년 10월 exec prefix가 적용된 buildpack을 release 했으나, 원인 모를 곳에서 막히고 말았다. 
+liberty-for-java buildpack 은 2017년 10월 exec prefix가 적용된 buildpack을 release 했으나, 원인 모를 곳에서 막히고 말았다. 
 
-   내가 잘못한 것 인지, buildpack이 잘못한 것인지 시간이 지나고 확인을 해보자.
+내가 잘못한 것 인지, buildpack이 잘못한 것인지 시간이 지나고 확인을 해보자.
