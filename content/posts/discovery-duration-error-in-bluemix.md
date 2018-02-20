@@ -43,7 +43,6 @@ draft: false
 1. ### eureka 설정이 잘못됐을 가능성
 
    eureka server 적용된 설정은 아래와 같다.
-
    ```yaml
    eureka:
      instance:
@@ -60,19 +59,15 @@ draft: false
        service-url:
          defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
    ```
-
    eureka.instance.lease-expiration-duration-in-seconds 을 5초로 세팅했다.
 
    eureka server에서 eureka client의 health check를 수행하고, health check가 5초를 넘어서면 eureka server에서 해당 eureka client가 unregist 되는 것으로 이해하고 적용했다.
 
    해당 설정은 의도에 적합하게 사용된 것일까 ?  
 
-   ​
-
 2. ### 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
 
    Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까 ? 
-
    해당 프로세스에 적합하게 어플리케이션이 종료된 것인가 ?
 
 
@@ -82,24 +77,16 @@ draft: false
 1. 테스트 준비
 
    - java 어플리케이션
-
      - eureka client 어플리케이션 (dtlabs-service-admin)
      - eureka server 어플리케이션 (dtlabs-service-discovery)
-
    - bluemix
-
    - buildpack
-
      - liberty-for-java buildpack
-
      - java buildpack
-
-       ​
 
 2. eureka 설정 체크
 
    - eureka server 적용된 설정
-
      ```yaml
      eureka:
        instance:
@@ -118,7 +105,6 @@ draft: false
      ```
 
    - eureka client 적용된 설정
-
      ```yaml
      eureka:
        instance:
@@ -137,7 +123,6 @@ draft: false
      ```
 
    - eureka.instance.lease-expiration-duration-in-seconds 설정 코드 내 주석
-
      ```java
      @Data
      @ConfigurationProperties("eureka.instance")
@@ -165,27 +150,23 @@ draft: false
    eureka.instance.lease-expiration-duration-in-seconds 설정을 eureka server에 세팅하고 eureka client에는 세팅을 하지 않았다.
 
    eureka.instance 설정의 개념을 살펴보니,
-
-   > eureka.instance: eureka service가 자신이 eureka 서버에 등록될 때 사용하는 설정
-   >
-   > erueka.client: 다른 erueka service를 찾으려고 할 때 사용하는 설정
+   > eureka.instance: eureka service가 자신이 eureka 서버에 등록될 때 사용하는 설정
+   > erueka.client: 다른 erueka service를 찾으려고 할 때 사용하는 설정
 
     **eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다.**
 
    - eureka client에 설정 적용 후 eureka/apps 로 확인
-
      ![erureka-apps](/docs/images/erureka-apps.PNG)
 
    하지만 eureka client 설정변경과 관계없이, default 값이 90초로 세팅되어 있는데 eureka server dashboard 에서 어플리케이션 정보가 삭제될 때까지 수 분이 걸리는 것으로 봐서 해당 사유는 아닌 듯 하다.
 
-   ​
+
 
 3. 어플리케이션 종료 체크
 
    - buildpack 별 종료 로그 비교
 
      - java buildpack
-
        ```bash
        2017-10-11T10:50:49.32+0900 [API/1]      OUT Updated app with guid 1d6ccdc9-730d-459d-a9fe-c097abee52cb ({"state"=>"STOPPED"})
        2017-10-11T10:50:49.33+0900 [CELL/0]     OUT Exit status 0
@@ -217,7 +198,6 @@ draft: false
        ```
 
      - liberty-for-java buildpack
-
        ```bash
        2017-10-11T10:55:52.45+0900 [API/0]      OUT Updated app with guid 1d6ccdc9-730d-459d-a9fe-c097abee52cb ({"state"=>"STOPPED"})
        2017-10-11T10:55:52.45+0900 [CELL/0]     OUT Exit status 0
@@ -231,8 +211,6 @@ draft: false
 
      liberty-for-java buildpack 의 강제종료 사유는 ?
 
-     ​
-
    - Cloud Foundry의 어플리케이션 종료 프로세스 ([CF-appl-lifecycle](https://docs.cloudfoundry.org/devguide/deploy-apps/app-lifecycle.html))
 
      1. 어플리케이션 종료 요청 발생
@@ -244,8 +222,6 @@ draft: false
 
      이것 때문에 강제종료 처리가 되는 것일까 ? SIGTERM 이후 10초 내에 어플리케이션이 종료되지 않은 이유는 무엇인가 ?
 
-     ​
-
    - Cloud Foundry의 custom command 가이드 체크
 
      - Cloud Foundry위의 어플리케이션을 사용할 때, Cloud Foundry가 보내는 SIGTERM 시그널을 받기 위해서 어플리케이션 프로세스를 exec prefix를 사용해서 start해야 한다. ([CF custorm command](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#start-commands))
@@ -254,29 +230,20 @@ draft: false
 
      buildpack 별 exec prefix가 적용되어 있는가 ? 
 
-     ​
-
    - buildpack 별 exec prefix 적용 여부
 
      - java buildpack
-
        - https://github.com/cloudfoundry/java-buildpack/blob/master/lib/java_buildpack/container/tomcat.rb#L46
        - https://github.com/cloudfoundry/java-buildpack/commit/df964cdbb70dabe4cceee80a30f03a4206ac01a1#diff-7fac9479a5b3e17b9b3210c9fa06eca9
        - 2015년 11월에 적용되었다.
 
      - liberty-for-java buildpack
-
        - https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/blob/master/lib/liberty_buildpack/container/liberty.rb#L123
-
        - https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/commit/8eb1bd0180366661988362d123db72a9b67246e9
-
        - 2017년 10월 18일에 적용되었다. (어플리케이션 배포 시점은 2017년 10월 11일)
-
          ![liberty-version](/docs/images/liberty-version.PNG)
 
      예전에 적용된 빌드팩에 exec prefix가 적용되지 않은 것이 문제라면, 빌드팩을 최신 버전(v.3.1.5)으로 변경해서 재배포를 해보자.
-
-     ​
 
    - liberty-for-java buildpack 최신버전으로 변경해서 재배포
 
@@ -294,7 +261,6 @@ draft: false
      ​
 
 ### GG
-
 
 
 
