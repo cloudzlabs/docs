@@ -62,11 +62,11 @@ titleSeparator = "•"
 google = "dtlabs"
 facebook = "dtlabs"
 twitter = "dtlabs"
-github-alt = "dtlabs"
+github = "dtlabs"
 email = "withdtlabs@gmail.com"
 
 [params.social.config]
-platforms = ["google", "twitter", "facebook", "github-alt"]
+platforms = ["google", "twitter", "facebook", "github"]
 
 [taxonomies]
 author = "authors"
