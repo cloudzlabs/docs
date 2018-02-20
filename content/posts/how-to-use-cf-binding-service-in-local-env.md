@@ -13,8 +13,8 @@ tags:
   - Spring Cloud
 description: "로컬 개발 환경과 PaaS 환경을 분리해서 개발환경을 구성하는 경우의 불편한점을 개선하기 위한 방법을 찾아보자"
 cover:
-  image: /docs/images/141231.png
-  style: full
+  image: /docs/images/boston_2946x1907.jpg
+  style: normal
 draft: false
 typora-copy-images-to: ..\images
 ---
@@ -188,7 +188,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
      - VCAP_SERVICES : cf env {어플리케이션명} 으로 조회된 value를 엔터키 없이 복사해서 넣는다.
 
-       ![141231](/docs/images/1518492727313.png)
+       ![141231](/docs/images/141231.png)
 
        ![1518493193055](/docs/images/1518493193055.png)
 

@@ -10,12 +10,23 @@ tags:
   - Container As a Service
 description: "asdlkfjalksdjflkasdjflkasdjf"
 cover:
-  image: /docs/images/container-layers.jpg
+  image: /docs/images/aurora_2000x1091.jpg
   caption: Eden Farm Children's Village by Gareth Harper on Unsplash
   style: full
 draft: false
 ---
 # Container Layer
+
+- [Container Layer](#container-layer)
+    - [Images와 Layers](#images%EC%99%80-layers)
+    - [Container와 Layers](#container%EC%99%80-layers)
+    - [Disk상의 Container 크기](#disk%EC%83%81%EC%9D%98-container-%ED%81%AC%EA%B8%B0)
+    - [Copy-on-Write(CoW) 전략](#copy-on-writecow-%EC%A0%84%EB%9E%B5)
+        - [공유는 더 작은 Image를 조장합니다](#%EA%B3%B5%EC%9C%A0%EB%8A%94-%EB%8D%94-%EC%9E%91%EC%9D%80-image%EB%A5%BC-%EC%A1%B0%EC%9E%A5%ED%95%A9%EB%8B%88%EB%8B%A4)
+        - [복사는 Container를 효율적으로 만듭니다](#%EB%B3%B5%EC%82%AC%EB%8A%94-container%EB%A5%BC-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C-%EB%A7%8C%EB%93%AD%EB%8B%88%EB%8B%A4)
+    - [Data Volume과 Storage Driver](#data-volume%EA%B3%BC-storage-driver)
+    - [샘플 텍스트](#%EC%83%98%ED%94%8C-%ED%85%8D%EC%8A%A4%ED%8A%B8)
+    - [샘플 표](#%EC%83%98%ED%94%8C-%ED%91%9C)
 
 ## Images와 Layers
 
@@ -222,7 +233,7 @@ CMD /app/hello.sh
    파일을 저장하고 실행 가능한 상태로 변경합니다.
 
    ```sh
-   chmod +x hello.sh 
+   chmod +x hello.sh
    ```
 
 3. 위의 Base Image의 Dockerfile 내용을 `Dockerfile.base`라는 이름으로 생성합니다.
@@ -418,7 +429,7 @@ Docker가 새 Container를 시작할 때마다 기본 Image Stack의 전체 복�
 
 ## Data Volume과 Storage Driver
 
-Container가 삭제되면, *데이터 볼륨*에 저장되지 않은 Container에 쓰여진 모든 Data가 Container와 함께 삭제됩니다.
+Container가 삭제되면, **데이터 볼륨**에 저장되지 않은 Container에 쓰여진 모든 Data가 Container와 함께 삭제됩니다.
 
 Data Volume은 Container에 직접 마운트된 Docker Host의 파일 시스템에 있는 디렉토리 또는 파일입니다. Data Volume은 Storage Driver에 의해 제어되지 않습니다. Data Volume에 대한 읽기 및 쓰기는 Storage Driver를 우회하고 기본 Host 속도로 작동합니다. 원하는 수의 Data Volume을 Container에 마운트할 수 있습니다. 여러 Container들은 하나 이상의 Data Volume을 공유할 수도 있습니다.
 
@@ -434,3 +445,27 @@ dtlabs-mysql
 ```
 
 Data Volume은 Docker Host의 로컬 스토리지 영역 외부에 있으므로, Storage Driver의 제어로부터 독립성이 더욱 강화됩니다. Container가 삭제되면, Data Volume에 저장된 모든 Data는 Docker Host에 유지됩니다.
+
+## 샘플 텍스트
+
+*기울임꼴*
+
+**굵기**
+
+_기울임꼴_
+
+__굵게__
+
+## 샘플 표
+| 항목              | 내용                        | 비고                         |
+|-----------------|---------------------------|----------------------------|
+| /docs           | 프로젝트 홈                    |                            |
+| archetypes      | 컨텐츠 기본 구조 정의              | default.md 파일에서 마크다운 구조 설정 |
+| content/posts   | 블로그에 올라갈 마크다운 파일 위치       |                            |
+| data            | 태그, 카테고리, 저자 등 기타 항목 정의   |                            |
+| layouts, static | 블로그의 템플릿 및 정적 리소스 위치      | 현재는 테마를 사용하기 때문에 사용안함      |
+| public          | 블로그 빌드 타켓 폴더              | gh-pages 브랜치에 Push될 결과물    |
+| themes          | 사용할 Hugo 테마 위치            |                            |
+| .editorconfig   | 프로젝트 내의 코딩 컨벤션 설정 파일      |                            |
+| .travis.yml     | 빌드/배포를 위한 Travis CI 설정 파일 |                            |
+| config.toml     | Hugo 블로그 전체 설정 파일         |                            |
