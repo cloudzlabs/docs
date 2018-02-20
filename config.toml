@@ -65,7 +65,7 @@ github = "dtlabs"
 email = "withdtlabs@gmail.com"
 
 [params.social.config]
-platforms = ["twitter", "facebook", "github"]
+platforms = ["twitter", "facebook", "github", "email"]
 
 [taxonomies]
 author = "authors"
