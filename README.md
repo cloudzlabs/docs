@@ -100,7 +100,7 @@ Press Ctrl+C to stop
 | .travis.yml     | 빌드/배포를 위한 Travis CI 설정 파일 |                            |
 | config.toml     | Hugo 블로그 전체 설정 파일         |                            |
 
-## Blogging
+## How to posting
 
 ### New Document
 
@@ -207,4 +207,4 @@ To https://github.com/withdtlabs/docs.git
 
 ### Travis CI에서 자동 빌드 및 gh-pages에서 배포
 
-### https://withdtlabs.github.io/docs에서 확인
+### [블로그](https://withdtlabs.github.io/docs) 확인
