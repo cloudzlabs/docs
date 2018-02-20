@@ -36,6 +36,8 @@ draft: false
 
 어디서 꼬인 것인가 ? 
 
+
+
 ## Why ?
 
 #### eureka 설정이 잘못됐을 가능성
@@ -63,38 +65,38 @@ eureka.instance.lease-expiration-duration-in-seconds 을 5초로 세팅했다.
 
 eureka server에서 eureka client의 health check를 수행하고, health check가 5초를 넘어서면 eureka server에서 해당 eureka client가 unregist 되는 것으로 이해하고 적용했다.
 
-해당 설정은 의도에 적합하게 사용된 것일까 ? 
+해당 설정은 의도에 적합하게 사용된 것일까 ?  
+
+
+
+#### 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
+
+Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까 ? 
+
+해당 프로세스에 적합하게 어플리케이션이 종료된 것인가 ?
 
 ​
 
-1. ####  어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
-
-   Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까 ? 
-
-   해당 프로세스에 적합하게 어플리케이션이 종료된 것인가 ?
-
-   ​
-
 ## How ?
 
-- 테스트 준비
+1. 테스트 준비
 
-  - java 어플리케이션
+   - java 어플리케이션
 
-    - eureka client 어플리케이션 (dtlabs-service-admin)
-    - eureka server 어플리케이션 (dtlabs-service-discovery)
+     - eureka client 어플리케이션 (dtlabs-service-admin)
+     - eureka server 어플리케이션 (dtlabs-service-discovery)
 
-  - bluemix
+   - bluemix
 
-  - buildpack
+   - buildpack
 
-    - liberty-for-java buildpack
+     - liberty-for-java buildpack
 
-    - java buildpack
+     - java buildpack
 
-      ​
+       ​
 
-1. eureka 설정 체크
+2. eureka 설정 체크
 
    - eureka server 적용된 설정
 
@@ -178,7 +180,7 @@ eureka server에서 eureka client의 health check를 수행하고, health check�
 
    ​
 
-2. 어플리케이션 종료 체크
+3. 어플리케이션 종료 체크
 
    - buildpack 별 종료 로그 비교
 
@@ -276,21 +278,20 @@ eureka server에서 eureka client의 health check를 수행하고, health check�
 
      ​
 
-3. liberty-for-java buildpack 최신버전으로 변경해서 재배포
+   - liberty-for-java buildpack 최신버전으로 변경해서 재배포
 
-   ![cfpush](/docs/images/cfpush.PNG)
+     ![cfpush](/docs/images/cfpush.PNG)
 
-   ```
-   API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
-   APP/0	.app-management/scripts/start: 1: kill: invalid signal number or name: igterm		2018년 2월 19일 06:46:24.266 오후
-   CELL/0	Exit status 0																		2018년 2월 19일 06:46:24.268 오후
-   CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
-   ```
+     ```
+     API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
+     APP/0	.app-management/scripts/start: 1: kill: invalid signal number or name: igterm		2018년 2월 19일 06:46:24.266 오후
+     CELL/0	Exit status 0																		2018년 2월 19일 06:46:24.268 오후
+     CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
+     ```
 
-   여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.  
+     여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.  
 
-   ​
-
+     ​
 
 ### GG
 
