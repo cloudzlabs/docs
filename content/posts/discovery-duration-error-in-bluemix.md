@@ -40,42 +40,42 @@ draft: false
 
 ## Why ?
 
-#### eureka 설정이 잘못됐을 가능성
+1. ### eureka 설정이 잘못됐을 가능성
 
-eureka server 적용된 설정은 아래와 같다.
+   eureka server 적용된 설정은 아래와 같다.
 
-```
-eureka:
-  instance:
-    instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
-    hostname: ${vcap.application.uris[0]}
-    prefer-ip-address: false
-    non-secure-port: 80
-    lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 5
-  client:
-    region: default
-    fetch-registry: false
-    register-with-eureka: false
-    service-url:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-```
+   ```yaml
+   eureka:
+     instance:
+       instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+       hostname: ${vcap.application.uris[0]}
+       prefer-ip-address: false
+       non-secure-port: 80
+       lease-renewal-interval-in-seconds: 5
+       lease-expiration-duration-in-seconds: 5
+     client:
+       region: default
+       fetch-registry: false
+       register-with-eureka: false
+       service-url:
+         defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+   ```
 
-eureka.instance.lease-expiration-duration-in-seconds 을 5초로 세팅했다.
+   eureka.instance.lease-expiration-duration-in-seconds 을 5초로 세팅했다.
 
-eureka server에서 eureka client의 health check를 수행하고, health check가 5초를 넘어서면 eureka server에서 해당 eureka client가 unregist 되는 것으로 이해하고 적용했다.
+   eureka server에서 eureka client의 health check를 수행하고, health check가 5초를 넘어서면 eureka server에서 해당 eureka client가 unregist 되는 것으로 이해하고 적용했다.
 
-해당 설정은 의도에 적합하게 사용된 것일까 ?  
+   해당 설정은 의도에 적합하게 사용된 것일까 ?  
+
+   ​
+
+2. ### 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
+
+   Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까 ? 
+
+   해당 프로세스에 적합하게 어플리케이션이 종료된 것인가 ?
 
 
-
-#### 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
-
-Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까 ? 
-
-해당 프로세스에 적합하게 어플리케이션이 종료된 것인가 ?
-
-​
 
 ## How ?
 
@@ -100,7 +100,7 @@ Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻�
 
    - eureka server 적용된 설정
 
-     ```
+     ```yaml
      eureka:
        instance:
          instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
@@ -119,7 +119,7 @@ Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻�
 
    - eureka client 적용된 설정
 
-     ```
+     ```yaml
      eureka:
        instance:
          instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
@@ -138,7 +138,7 @@ Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻�
 
    - eureka.instance.lease-expiration-duration-in-seconds 설정 코드 내 주석
 
-     ```
+     ```java
      @Data
      @ConfigurationProperties("eureka.instance")
      public class EurekaInstanceConfigBean implements CloudEurekaInstanceConfig, EnvironmentAware {
@@ -176,7 +176,7 @@ Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻�
 
      ![erureka-apps](/docs/images/erureka-apps.PNG)
 
-   하지만 default 값이 90초로 세팅되어 있는데, 현재 eureka server dashboard 에서 어플리케이션 정보가 삭제될 때까지 수 분이 걸리는 것으로 봐서 해당 사유는 아닌 듯 하다.
+   하지만 eureka client 설정변경과 관계없이, default 값이 90초로 세팅되어 있는데 eureka server dashboard 에서 어플리케이션 정보가 삭제될 때까지 수 분이 걸리는 것으로 봐서 해당 사유는 아닌 듯 하다.
 
    ​
 
@@ -186,7 +186,7 @@ Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻�
 
      - java buildpack
 
-       ```
+       ```bash
        2017-10-11T10:50:49.32+0900 [API/1]      OUT Updated app with guid 1d6ccdc9-730d-459d-a9fe-c097abee52cb ({"state"=>"STOPPED"})
        2017-10-11T10:50:49.33+0900 [CELL/0]     OUT Exit status 0
        2017-10-11T10:50:49.33+0900 [APP/0]      OUT [CONTAINER] org.apache.coyote.http11.Http11NioProtocol         INFO    Pausing ProtocolHandler ["http-nio-8080"]
@@ -218,7 +218,7 @@ Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻�
 
      - liberty-for-java buildpack
 
-       ```
+       ```bash
        2017-10-11T10:55:52.45+0900 [API/0]      OUT Updated app with guid 1d6ccdc9-730d-459d-a9fe-c097abee52cb ({"state"=>"STOPPED"})
        2017-10-11T10:55:52.45+0900 [CELL/0]     OUT Exit status 0
        2017-10-11T10:56:03.46+0900 [CELL/0]     OUT Destroying container
@@ -282,14 +282,14 @@ Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻�
 
      ![cfpush](/docs/images/cfpush.PNG)
 
-     ```
+     ```bash
      API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
      APP/0	.app-management/scripts/start: 1: kill: invalid signal number or name: igterm		2018년 2월 19일 06:46:24.266 오후
      CELL/0	Exit status 0																		2018년 2월 19일 06:46:24.268 오후
      CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
      ```
 
-     여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.  
+     여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.   
 
      ​
 
