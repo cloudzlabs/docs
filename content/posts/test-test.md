@@ -1,6 +1,6 @@
 ---
-date: "{{ .Date }}"
-title: "{{ replace .TranslationBaseName '-' ' ' | title }}"
+date: "2018-02-20T13:28:54+09:00"
+title: "Test-Test"
 authors: []
 categories:
   -
