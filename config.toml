@@ -1,4 +1,4 @@
-baseURL = "https://withdtlabs.github.io/docs/"
+baseURL = "https://cloudzlabs.github.io/docs/"
 title = "CloudZ Labs Tech"
 theme = "labs"
 
@@ -66,6 +66,19 @@ email = "withdtlabs@gmail.com"
 
 [params.social.config]
 platforms = ["twitter", "facebook", "github", "email"]
+
+[params.social.share]
+# Sets Social Share links to appear on posts
+enabled = true
+# Sets specific share to appear on posts (default behavior is to appear)
+twitter = true
+google = true
+facebook = true
+reddit = true
+linkedin = true
+stumbleupon = true
+pinterest = true
+email = true
 
 [taxonomies]
 author = "authors"
