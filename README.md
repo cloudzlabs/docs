@@ -99,3 +99,112 @@ Press Ctrl+C to stop
 | .editorconfig   | 프로젝트 내의 코딩 컨벤션 설정 파일      |                            |
 | .travis.yml     | 빌드/배포를 위한 Travis CI 설정 파일 |                            |
 | config.toml     | Hugo 블로그 전체 설정 파일         |                            |
+
+## Blogging
+
+### New Document
+
+``` bash
+/docs $ hugo new posts/글_제목.md
+/docs/content/posts/글_제목.md created
+```
+
+### 생성된 마크다운 파일 확인
+
+#### /docs/content/posts/하위
+
+``` text
+/docs
+    +- archetypes/
+    |   +- default.md
+    |   +- page.md
+    +- content/
+    |   +- posts/
+    |       +- first-post.md
+    |       +- second-post.md
+    |       +- third-post.md
+    +- data/
+    |   +- authors/
+    |       +- first-author.toml
+    |       +- second-author.toml
+    +- layouts/
+    +- public/
+    +- static/
+    +- themes/
+    |   +- labs-theme/
+    +- .editorconfig
+    +- .gitignore
+    +- .gitmodules
+    +- .travis.yml
+    +- config.toml
+```
+
+``` markdown
+---
+date: "2018-02-07T13:18:35+09:00"
+title: "Test-Post"
+authors: []
+categories:
+  -
+tags:
+  -
+draft: true
+---
+
+
+<!-- 마크다운으로 글 작성 -->
+```
+
+- date: 파일 생성 일시
+- title: 글 제목. 파일명과 동일
+- authors: 저자
+- categories: 카테고리
+- tages: 태그
+- draft: 글 상태 설정. false일 경우, 블로그에 노출됨
+
+### Posting
+
+#### "draft" 항목을 false로 변경
+
+``` markdown
+---
+date: "2018-02-07T13:18:35+09:00"
+title: "글 제목"
+authors: ["저자", "저자"]
+categories:
+  - 카테고리 1
+  - 카테고리 2
+tags:
+  - 태그 1
+  - 태그 2
+draft: true
+---
+
+
+<!-- 글 내용 -->
+```
+
+### Git Repository에 Push
+
+``` bash
+/docs $ git add .
+/docs $ git commit -m "test"
+[master 8b97416] test
+ 1 file changed, 175 insertions(+)
+ create mode 100644 content/posts/new-post.md
+
+
+/docs $ git push
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 3.53 KiB | 3.53 MiB/s, done.
+Total 5 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/withdtlabs/docs.git
+   ef2cbb9..8b97416  master -> master
+```
+
+### Travis CI에서 자동 빌드 및 gh-pages에서 배포
+
+### https://withdtlabs.github.io/docs에서 확인
