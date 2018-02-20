@@ -1,5 +1,5 @@
 baseURL = "https://withdtlabs.github.io/docs/"
-title = "CloudZ Labs"
+title = "CloudZ Labs Tech"
 theme = "labs"
 
 # for smart copyright line, leave this blank and check [params.copyright]
@@ -19,7 +19,7 @@ pygmentsCodefences = true
 defaultContentLanguage = "en"
 
 [params.info]
-description = "Cloud의 시작. CloudZ Labs와 함께 하세요."
+# description = ""
 title404 = "Nothing's here!"
 
 [params.assets]
