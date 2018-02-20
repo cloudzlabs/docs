@@ -429,7 +429,7 @@ Docker가 새 Container를 시작할 때마다 기본 Image Stack의 전체 복�
 
 ## Data Volume과 Storage Driver
 
-Container가 삭제되면, *데이터 볼륨*에 저장되지 않은 Container에 쓰여진 모든 Data가 Container와 함께 삭제됩니다.
+Container가 삭제되면, **데이터 볼륨**에 저장되지 않은 Container에 쓰여진 모든 Data가 Container와 함께 삭제됩니다.
 
 Data Volume은 Container에 직접 마운트된 Docker Host의 파일 시스템에 있는 디렉토리 또는 파일입니다. Data Volume은 Storage Driver에 의해 제어되지 않습니다. Data Volume에 대한 읽기 및 쓰기는 Storage Driver를 우회하고 기본 Host 속도로 작동합니다. 원하는 수의 Data Volume을 Container에 마운트할 수 있습니다. 여러 Container들은 하나 이상의 Data Volume을 공유할 수도 있습니다.
 
