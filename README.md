@@ -207,4 +207,4 @@ To https://github.com/withdtlabs/docs.git
 
 ### Travis CI에서 자동 빌드 및 gh-pages에서 배포
 
-### [블로그](https://withdtlabs.github.io/docs) 확인
+### [Labs 블로그](https://withdtlabs.github.io/docs)에서 확인

@@ -46,12 +46,6 @@ showReadingTime = true
 noTermCloudShuffle = false
 homepageSections = ["main-posts", "latest-posts"]
 
-# Enable / Disable algolia search
-algolia_search    = true
-algolia_appId     = "Y2C4RWMPXW"
-algolia_apiKey    = "50ea7f8c41c0ad233926e0be2b769ed1"
-algolia_indexName = "default-content"
-
 [params.opengraph.facebook]
 admins = [] # array of Facebook IDs
 appID = ""
