@@ -155,7 +155,7 @@ draft: true
 <!-- 마크다운으로 글 작성 -->
 ```
 
-> 참고: [Mastering Markdown](https://guides.github.com/features/mastering-markdown/ )
+> 참고: [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
 
 - date: 파일 생성 일시
 - title: 글 제목. 파일명과 동일
