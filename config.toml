@@ -19,7 +19,7 @@ pygmentsCodefences = true
 defaultContentLanguage = "en"
 
 [params.info]
-# description = ""
+description = ""
 title404 = "Nothing's here!"
 
 [params.assets]
@@ -61,7 +61,7 @@ titleSeparator = "•"
 [params.social]
 google = "dtlabs"
 facebook = "dtlabs"
-twitter = "dtlabs"
+twitter = "cloudzlabs"
 github = "dtlabs"
 email = "withdtlabs@gmail.com"
 
