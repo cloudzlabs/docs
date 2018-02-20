@@ -38,7 +38,7 @@ draft: false
 
 ## Why ?
 
-1. eureka 설정이 잘못됐을 가능성
+1. ####  eureka 설정이 잘못됐을 가능성
 
    eureka server 적용된 설정은 아래와 같다.
 
@@ -67,7 +67,7 @@ draft: false
 
    ​
 
-2. 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
+2. ####  어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
 
    Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까 ? 
 
@@ -168,7 +168,7 @@ draft: false
    >
    > erueka.client: 다른 erueka service를 찾으려고 할 때 사용하는 설정
 
-   eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다.
+   #####  eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다.
 
    - eureka client에 설정 적용 후 eureka/apps 로 확인
 
@@ -225,7 +225,7 @@ draft: false
 
      buildpack 별 log를 확인해보니, 다른 점을 찾을 수 있다.
 
-     java buildpack 은 종료시  DispatcherServlet.destory() -> AbstractApplicationContext.close() 가 호출되는데, liberty-for-java buildpack은 여타 동작없이 어플리케이션을 강제종료 시킨 것 처럼 보인다.
+     #####  java buildpack 은 종료시  DispatcherServlet.destory() -> AbstractApplicationContext.close() 가 호출되는데, liberty-for-java buildpack은 여타 동작없이 어플리케이션을 강제종료 시킨 것 처럼 보인다.
 
      liberty-for-java buildpack 의 강제종료 사유는 ?
 
@@ -238,7 +238,7 @@ draft: false
      3. 어플리케이션 프로세스는 10초 내 종료되어야함
      4. 10초 내 종료되지 않으면, Cloud Foundry가 SIGKILL 시그널을 보내 어플리케이션을 종료한다.
 
-     10초 내로 SIGTERM 으로 종료되지 않으면 SIGKILL로 어플리케이션을 종료시킨다. 
+     #####  10초 내로 SIGTERM 으로 종료되지 않으면 SIGKILL로 어플리케이션을 종료시킨다. 
 
      이것 때문에 강제종료 처리가 되는 것일까 ? SIGTERM 이후 10초 내에 어플리케이션이 종료되지 않은 이유는 무엇인가 ?
 
@@ -248,7 +248,7 @@ draft: false
 
      - Cloud Foundry위의 어플리케이션을 사용할 때, Cloud Foundry가 보내는 SIGTERM 시그널을 받기 위해서 어플리케이션 프로세스를 exec prefix를 사용해서 start해야 한다. ([CF custorm command](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#start-commands))
 
-     Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.
+     #####  Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.
 
      buildpack 별 exec prefix가 적용되어 있는가 ?
 
@@ -268,7 +268,7 @@ draft: false
 
        - https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/commit/8eb1bd0180366661988362d123db72a9b67246e9
 
-       - 2017년 10월 18일에 적용되었다. (예전 배포 시점은 2017년 10월 11일)
+       - 2017년 10월 18일에 적용되었다. (어플리케이션 배포 시점은 2017년 10월 11일)
 
          ![liberty-version](/docs/images/liberty-version.PNG)
 
@@ -291,18 +291,8 @@ draft: false
 
    ​
 
-   # GG
 
-   ## GG
-
-   ### GG
-
-   #### GG
-
-   ##### GG
-
-   ###### GG
-
+### GG
 
 
 
