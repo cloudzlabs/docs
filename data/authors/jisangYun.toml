@@ -7,7 +7,11 @@ host = "naver.com"
 [name]
 display = "Jisang Yun"
 
+[info]
+image = "/images/authors/1000jaeh.jpg"
+description = "Microservice Architecture Design"
+
 [social]
-email = ""
+email = "jisang@sk.com"
 facebook  = ""
 twitter = ""
