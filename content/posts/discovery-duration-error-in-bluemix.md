@@ -16,7 +16,7 @@ description: "Bluemix에서 eureka server의 종료된 앱 정보가 삭제되�
 cover:
   image: /docs/images/liberty_buildpack.PNG
   caption: ""
-  style: normal
+  style: full
 draft: false
 ---
 
@@ -38,7 +38,7 @@ draft: false
 
 ## Why ?
 
-1. eureka 설정이 잘못됐을 가능성
+1. #### eureka 설정이 잘못됐을 가능성
 
    eureka server 적용된 설정은 아래와 같다.
 
@@ -67,7 +67,7 @@ draft: false
 
    ​
 
-2. 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
+2. #### 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
 
    Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까 ? 
 
@@ -168,7 +168,7 @@ draft: false
    >
    > erueka.client: 다른 erueka service를 찾으려고 할 때 사용하는 설정
 
-   eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다.
+   ##### eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다.
 
    - eureka client에 설정 적용 후 eureka/apps 로 확인
 
@@ -225,7 +225,7 @@ draft: false
 
      buildpack 별 log를 확인해보니, 다른 점을 찾을 수 있다.
 
-     java buildpack 은 종료시  DispatcherServlet.destory() -> AbstractApplicationContext.close() 가 호출되는데, liberty-for-java buildpack은 여타 동작없이 어플리케이션을 강제종료 시킨 것 처럼 보인다.
+     ##### java buildpack 은 종료시  DispatcherServlet.destory() -> AbstractApplicationContext.close() 가 호출되는데, liberty-for-java buildpack은 여타 동작없이 어플리케이션을 강제종료 시킨 것 처럼 보인다.
 
      liberty-for-java buildpack 의 강제종료 사유는 ?
 
@@ -244,7 +244,7 @@ draft: false
 
      - Cloud Foundry위의 어플리케이션을 사용할 때, Cloud Foundry가 보내는 SIGTERM 시그널을 받기 위해서 어플리케이션 프로세스를 exec prefix를 사용해서 start해야 한다. ([CF custorm command](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#start-commands))
 
-     Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.
+     ##### Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.
 
      buildpack 별 exec prefix가 적용되어 있는가 ?
 
@@ -266,11 +266,11 @@ draft: false
 
          ![liberty-version](/docs/images/liberty-version.PNG)
 
-     예전에 적용된 빌드팩에 exec prefix가 적용되지 않은 것이 문제라면, 빌드팩을 최신 버전(v.3.1.5)으로 변경해서 재배포를 해보자.
+     ##### 예전에 적용된 빌드팩에 exec prefix가 적용되지 않은 것이 문제라면, 빌드팩을 최신 버전(v.3.1.5)으로 변경해서 재배포를 해보자.
 
      ​
 
-3. liberty-for-java buildpack 최신버전으로 변경해서 체크
+3. liberty-for-java buildpack 최신버전으로 변경해서 재배포
 
    ![cfpush](/docs/images/cfpush.PNG)
 
@@ -285,7 +285,7 @@ draft: false
 
    ​
 
-   GG
+   ### GG
 
 
 
@@ -302,4 +302,3 @@ draft: false
 3. liberty-for-java buildpack 은 2017년 10월 exec prefix가 적용된 buildpack을 release 했으나, 원인 모를 곳에서 막히고 말았다. 
 
    내가 잘못한 것 인지, buildpack이 잘못한 것인지 시간이 지나고 확인을 해보자.
-
