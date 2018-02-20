@@ -8,8 +8,8 @@ host = "naver.com"
 display = "Jisang Yun"
 
 [info]
-image = "/images/authors/1000jaeh.jpg"
-description = "Microservice Architecture Design"
+image = "/images/authors/jisangYun.jpg"
+description = "Microservice Architecture Design&Dev"
 
 [social]
 email = "jisang@sk.com"
