@@ -86,16 +86,13 @@ page = "/:slug/"
 name = "Posts"
 weight = -10
 identifier = "posts"
-url = "/posts"
+url = "/posts/"
 
 [[menu.main]]
 name = "Registration"
 weight = 10
 identifier = "labs"
 url = "http://cloudz-labs.sk.com"
-
-[blackfriday]
-hrefTargetBlank = true
 
 [languages]
 # edit this block for your own language

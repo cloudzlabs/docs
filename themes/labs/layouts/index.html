@@ -1,31 +1,19 @@
 {{ define "main" }}
 
-<body naver_screen_capture_injected='true' class='hasScrollbar'>
+<div class='offcanvas-wrapper'>
 
-    {{ partial "header/header" . }}
+    {{ partial "home/intro" . }}
 
-    <div class='offcanvas-wrapper'>
-
-        {{ partial "home/intro" . }}
-
-        {{- with .Site.Params.settings.homepageSections -}}
-            {{- range . -}}
-                {{- partial ( print "home/" . ) $ -}}
-            {{- end -}}
-        {{- else -}}
-            {{- partial "home/main-posts" . -}}
+    {{- with .Site.Params.settings.homepageSections -}}
+        {{- range . -}}
+            {{- partial ( print "home/" . ) $ -}}
         {{- end -}}
+    {{- else -}}
+        {{- partial "home/main-posts" . -}}
+    {{- end -}}
 
-        {{ partial "component/load-more" . }}
+    {{ partial "component/load-more" . }}
 
-    </div>
-
-    {{ partial "footer/footer" . }}
-
-    {{ partial "component/scroll-back" . }}
-
-    {{- partial "footer/scripts" . -}}
-
-</body>
+</div>
 
 {{ end }}

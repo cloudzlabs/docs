@@ -1,47 +1,35 @@
 {{ define "main" }}
 
-<body naver_screen_capture_injected="true" class="hasScrollbar">
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
 
-    {{ partial "header/header" . }}
+                {{ partial "meta/author" . }}
 
-    <div class="offcanvas-wrapper page-body">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
+                <div class="page-con">
 
-                    {{ partial "meta/author" . }}
+                    {{- partial "content/info" . -}}
 
-                    <div class="page-con">
+                    {{- partial "content/cover" . -}}
 
-                        {{- partial "content/info" . -}}
+                    {{- partial "content/toc" . -}}
 
-                        {{- partial "content/cover" . -}}
+                    {{ .Content }}
 
-                        {{- partial "content/toc" . -}}
+                    {{- partial "content/tag-list" . -}}
 
-                        {{ .Content }}
+                    {{- partial "component/recommend" . -}}
 
-                        {{- partial "content/tag-list" . -}}
-
-                        {{- partial "component/recommend" . -}}
-
-                        {{- partial "component/comments" . -}}
-
-                    </div>
-
-                    {{ partial "component/entry_nav" . }}
+                    {{- partial "component/comments" . -}}
 
                 </div>
+
+                {{ partial "component/entry_nav" . }}
+
             </div>
         </div>
     </div>
-
-    {{ partial "footer/footer" . }}
-
-    {{ partial "component/scroll-back" . }}
-
-    {{- partial "footer/scripts" . -}}
-
-</body>
+</div>
 
 {{ end }}
