@@ -82,12 +82,6 @@ weight = -10
 identifier = "posts"
 url = "/posts/"
 
-[[menu.main]]
-name = "Registration"
-weight = 10
-identifier = "labs"
-url = "http://cloudz-labs.sk.com"
-
 [languages]
 # edit this block for your own language
 [languages.en]
