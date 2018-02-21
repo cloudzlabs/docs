@@ -2,6 +2,7 @@
 date: "2018-01-08T14:02:23+09:00"
 title: "Container-Layer"
 authors: ["1000jaeh"]
+series: ["Go Web Dev"]
 categories:
   - posts
 tags:
@@ -466,3 +467,22 @@ __굵게__
 | .editorconfig   | 프로젝트 내의 코딩 컨벤션 설정 파일      |                            |
 | .travis.yml     | 빌드/배포를 위한 Travis CI 설정 파일 |                            |
 | config.toml     | Hugo 블로그 전체 설정 파일         |                            |
+
+Cat
+: Fluffy animal everyone likes
+
+Internet
+: Vector of transmission for pictures of cats
+
+This is a footnote.[^1]
+
+[^1]: the footnote text.
+
+~~Vector of transmission for pictures of cats~~
+
+4/5
+
+asdf
+---
+
+1--2

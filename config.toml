@@ -18,6 +18,9 @@ pygmentsCodefences = true
 # Missing translations will default to this content language
 defaultContentLanguage = "en"
 
+[blackfriday]
+hrefTargetBlank = true
+
 [params.info]
 description = ""
 title404 = "Nothing's here!"
