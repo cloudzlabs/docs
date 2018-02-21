@@ -8,7 +8,7 @@ host = "sk.com"
 display = "Jaehoon Jung"
 
 [info]
-image = "/images/authors/1000jaeh.jpg"
+image = ""
 description = "Microservice Architecture Design"
 
 [social]

@@ -12,8 +12,7 @@
             <div class="cover-header">
                 <h5 class="cover-section">
                     {{ if .Params.tags }}
-                    {{ range $index, $tag := .Params.tags }}{{ if gt $index 0 }}, {{ end }}
-                    <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">{{ . }}</a>{{ end }}
+                    {{ partial "meta/tag" . }}
                     {{ end }}
                 </h5>
                 <h2 class="cover-title">
