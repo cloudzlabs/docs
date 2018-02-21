@@ -156,7 +156,7 @@ draft: false
    >
    > erueka.client: 다른 erueka service를 찾으려고 할 때 사용하는 설정
 
-    **eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다.**
+   eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다.
 
    - eureka client에 설정 적용 후 eureka/apps 로 확인
    
