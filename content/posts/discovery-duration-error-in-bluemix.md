@@ -226,7 +226,7 @@ draft: false
 
       **Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.**
 
-     liberty-for-java buildpack exec prefix가 적용되어 있는가 ? 
+     liberty-for-java buildpack은 exec prefix를 적용해 어플리케이션을 구동하고 있는가 ? 
 
    - buildpack 별 exec prefix 적용 여부
 
