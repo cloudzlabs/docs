@@ -82,6 +82,7 @@ draft: false
      - liberty-for-java buildpack
      - java buildpack
 
+
 2. eureka 설정 체크
    - eureka server 적용된 설정
      ```yaml
