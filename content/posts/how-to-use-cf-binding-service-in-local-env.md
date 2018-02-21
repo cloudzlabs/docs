@@ -41,7 +41,7 @@ typora-copy-images-to: ..\images
 
    H2:
 
-   ```
+   ```java
    DROP TABLE IF EXISTS users CASCADE;
    CREATE TABLE IF NOT EXISTS users (
      	id 			INTEGER,
@@ -54,7 +54,7 @@ typora-copy-images-to: ..\images
 
    MariaDB:
 
-   ```
+   ```java
    DROP TABLE IF EXISTS users CASCADE;
    CREATE TABLE IF NOT EXISTS users (
      	id 			INTEGER,
@@ -93,7 +93,6 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
   - Cloud Foundry 기반의 OpenPaaS
     - MariaDB 인스턴스
 
-  ​
 
 - 미리 준비한 것
 
@@ -109,7 +108,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
       - Bean 생성
 
-        ```
+        ```java
         @Configuration
         @Profile({"dev"})
         public class CloudConfiguration extends AbstractCloudConfig {
@@ -142,7 +141,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
       - application-dev.yml - datasource 설정
 
-        ```
+        ```yaml
         services:
           datasource: 
             initial-size: 1
@@ -170,7 +169,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
      PaaS 환경의 서비스 인스턴스는 로컬에서 연동시 바로 연동하지 못하고, ssh로 연동한다.
 
-     ```
+     ```bash
      cf ssh -N -L 63306:172.132.14.32:3306 js-local-paas-service-conn
      ```
 
@@ -202,24 +201,9 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
   5. 성공!
 
-  ​
+  
 
 ## Conclusion
 
 #### Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해, 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
 
-
-
-> 가나다라
-
-# 가
-
-## 나
-
-### 다
-
-#### 라
-
-##### 마
-
-###### 바
