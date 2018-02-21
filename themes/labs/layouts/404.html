@@ -1,31 +1,35 @@
-{{ partial "header/header" . }}
+{{ define "main" }}
 
-<main id='main' class='main'>
-  <div class='entry'>
-    <div class='entry-content'>
-      <span class='screen-reader'>
-        {{- .Site.Params.info.title404 | default .Title -}}
-      </span>
-      <figure class='gopher'>
-        <a href='{{ "/" | relLangURL }}'>
-          <img src='{{ ( .Site.Params.assets.gopher | default "assets/gopher.png" ) | relURL }}' alt='{{ i18n "gopher" }}'/>
-          <span class='screen-reader'>
-            {{- i18n "goHome" -}}
-          </span>
-        </a>
-        <figcaption>
-          <h1 class='title'>
-            <a href='{{ "/" | relLangURL }}'>
-              {{- .Site.Params.info.title404 | default .Title -}}
-            </a>
-          </h1>
-        </figcaption>
-      </figure>
+<div class='offcanvas-wrapper'>
+
+    <div class='entry'>
+        <div class='entry-content'>
+            <span class='screen-reader'>
+                {{- .Site.Params.info.title404 | default .Title -}}
+            </span>
+            <figure class='gopher'>
+                <a href='{{ "/" | relLangURL }}'>
+                    <img src='{{ ( .Site.Params.assets.gopher | default "assets/gopher.png" ) | relURL }}' alt='{{ i18n "gopher" }}' />
+                    <span class='screen-reader'>
+                        {{- i18n "goHome" -}}
+                    </span>
+                </a>
+                <figcaption>
+                    <h1 class='title'>
+                        <a href='{{ "/" | relLangURL }}'>
+                            {{- .Site.Params.info.title404 | default .Title -}}
+                        </a>
+                    </h1>
+                </figcaption>
+            </figure>
+        </div>
     </div>
-  </div>
 
-</main>
+    <gf-error type="app.viewErrorType">
+        <div class="error-emoji" ng-bind="error.emoji">(·_·)</div>
+        <div class="error-text" ng-bind-html="error.text">Unfortunately, this page doesn't exist.</div>
+    </gf-error>
 
-{{ partial "footer/footer" . }}
+</div>
 
-{{- partial "footer/scripts" . -}}
+{{ end }}
