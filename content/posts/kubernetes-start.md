@@ -1,6 +1,6 @@
 ---
 date: "2018-02-21T11:33:28+09:00"
-title: "Kubernetes 시작하기(1) - 애플리케이션 배포/접속"
+title: "[Kubernetes 활용(1/8)] 시작하기"
 authors: ["blingeeeee"]
 categories:
   - posts
@@ -9,12 +9,8 @@ tags:
   - Container
   - Container Orchestration
 description: ""
-cover:
-  image: /docs/images/kubernetes-start/kubernetes-start.png
 draft: false
 ---
-# Kubernetes 시작하기(1) - 애플리케이션 배포/접속
-
 여기서는 Kubernetes를 처음 접하는 사용자를 위해 Kubernetes 환경에서 애플리케이션을 배포/접속하고 관리하는 기본적인 방법에 대해 알아보도록 하겠습니다.
 
 ## 시작하기 전에
@@ -1041,4 +1037,4 @@ Deployment를 delete하게 되면 관련된 Replica Sets, Pod, Deployment가 모
         $ kubectl get pod
         No resources found.
         ```
-여기까지 Kubernetes 환경에서 애플리케이션을 배포하고 접속, 관리하는 방법까지 알아보았습니다. 다음에는 DB나 Redis 등과 같은 Backing 서비스의 연동 방법에 대해 실습해보도록 합시다.
+여기까지 Kubernetes 환경에서 애플리케이션을 배포하고 접속, 관리하는 방법에 대해 알아보았습니다. 다음에는 DB나 Redis 등과 같은 Backing 서비스의 연동 방법에 대해 실습해보도록 합시다.
