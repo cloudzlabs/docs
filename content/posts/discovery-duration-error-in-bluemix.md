@@ -225,8 +225,8 @@ draft: false
      - Cloud Foundry위의 어플리케이션을 사용할 때, Cloud Foundry가 보내는 SIGTERM 시그널을 받기 위해서 어플리케이션 프로세스를 exec prefix를 사용해서 start해야 한다. 
 
       **Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.**
-     
-      liberty-for-java buildpack은 exec prefix를 적용해 어플리케이션을 구동하고 있는가 ? 
+      
+      liberty-for-java buildpack은 exec prefix를 적용해 어플리케이션을 구동하고 있는가 ? 
 
    - buildpack 별 exec prefix 적용 여부
 
