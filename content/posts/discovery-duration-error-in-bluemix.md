@@ -56,7 +56,7 @@ draft: false
         service-url:
           defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
     ```
-   
+    
     eureka.instance.lease-expiration-duration-in-seconds 을 5초로 세팅했다.
 
     eureka server에서 eureka client의 health check를 수행하고,  5초를 넘어서면 eureka server에서 해당 eureka client가 unregist 되는 것으로 이해하고 적용했다.
