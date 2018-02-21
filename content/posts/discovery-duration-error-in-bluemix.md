@@ -22,8 +22,6 @@ draft: false
 
 
 
-
-
 ## What ?
 
 예전에 bluemix에 배포한 어플리케이션이 eureka와 연계했을 때 생각과 다르게 동작하는 것을 발견했다.
@@ -39,6 +37,8 @@ draft: false
 
 
 ## Why ?
+1. d
+2. d
 
 1. eureka 설정이 잘못됐을 가능성
 
