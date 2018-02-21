@@ -220,9 +220,9 @@ draft: false
 
      이것 때문에 강제종료 처리가 되는 것일까 ? SIGTERM 이후 10초 내에 어플리케이션이 종료되지 않은 이유는 무엇인가 ?
 
-   - Cloud Foundry의 custom command 가이드 체크
+   - Cloud Foundry의 custom command 가이드 체크 ([CF custorm command](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#start-commands))
 
-     - Cloud Foundry위의 어플리케이션을 사용할 때, Cloud Foundry가 보내는 SIGTERM 시그널을 받기 위해서 어플리케이션 프로세스를 exec prefix를 사용해서 start해야 한다. ([CF custorm command](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#start-commands))
+     - Cloud Foundry위의 어플리케이션을 사용할 때, Cloud Foundry가 보내는 SIGTERM 시그널을 받기 위해서 어플리케이션 프로세스를 exec prefix를 사용해서 start해야 한다. 
 
       **Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.**
 
