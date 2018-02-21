@@ -6,7 +6,6 @@ categories:
   - posts
 tags:
   -
-description: ""
 cover:
   image: /docs/images/file_name/file_name.png|jpg
   caption: ""

@@ -1,18 +1,16 @@
 ---
 date: "2018-01-08T14:02:23+09:00"
 title: "Container-Layer"
-authors: ["1000jaeh","1000jaeh","1000jaeh"]
+authors: ["1000jaeh"]
 categories:
   - posts
 tags:
   - Docker
   - Cloud
   - Container As a Service
-description: "asdlkfjalksdjflkasdjflkasdjf"
 cover:
   image: /docs/images/container-layer/aurora_2000x1091.jpg
   caption: Eden Farm Children's Village by Gareth Harper on Unsplash
-  style: full
 draft: false
 ---
 # Container Layer

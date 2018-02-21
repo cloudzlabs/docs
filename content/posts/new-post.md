@@ -13,7 +13,6 @@ tags:
 cover:
   image: /docs/images/container-layers.jpg
   caption: Eden Farm Children's Village by Gareth Harper on Unsplash
-  style: full
 draft: false
 ---
 
