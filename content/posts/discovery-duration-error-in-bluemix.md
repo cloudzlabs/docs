@@ -218,7 +218,9 @@ draft: false
 
       **10초 내로 SIGTERM 으로 종료되지 않으면 SIGKILL로 어플리케이션을 종료시킨다.** 
 
-     이것 때문에 강제종료 처리가 되는 것일까 ? SIGTERM 이후 10초 내에 어플리케이션이 종료되지 않은 이유는 무엇인가 ?
+     이것 때문에 강제종료 처리가 되는 것일까 ? 
+     
+     SIGTERM 이후 10초 내에 어플리케이션이 종료되지 않은 이유는 무엇인가 ?
 
    - Cloud Foundry의 custom command 가이드 체크 ([CF custorm command](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#start-commands))
 
@@ -255,8 +257,10 @@ draft: false
         CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
         ```
 
-     여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.
+     여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. 
      
+     sigterm의 오타인가 설마... 원인을 잘 모르겠다.
+
 ### GG
 
 

@@ -3,7 +3,7 @@
     {{- range $i, $authorID := . -}}
     {{- $author := ( index $.Site.Data.authors $authorID ) -}}
     {{- $length := ( len $.Site.Data.authors ) -}}
-    {{- if gt $length 3 -}}
+    {{- if gt $length 2 -}}
     <div class="col-lg-6 col-md-6 col-sm-12 ">
     {{- else -}}
     <div class="col-lg-{{ div 12 $length }} col-md-{{ div 12 $length }} col-sm-12 ">
