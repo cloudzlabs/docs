@@ -1,39 +1,37 @@
-<div class="col-lg-10">
-    <div class="row">
-        {{- with .Params.authors -}}
-        {{- range $i, $authorID := . -}}
-        {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-        {{- $length := ( len $.Site.Data.authors ) -}}
-        {{- if gt $length 3 -}}
-        <div class="col-lg-6 col-md-6 col-sm-12 ">
-        {{- else -}}
-        <div class="col-lg-{{- div 12 $length -}} col-md-{{- div 12 $length -}} col-sm-12 ">
-        {{- end -}}
-            <div class="author">
-                <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $author.info.image }}"/>
-                <div class="author-info">
-                    <h3>
-                        <a href='{{ $.Site.BaseURL }}authors/{{ $author.id }}'>
-                            {{- $author.name.display -}}{{ $.LanguagePrefix }}
-                        </a>
-                    </h3>
-                    <p>{{- $author.info.description -}}</p>
-                </div>
+<div class="row">
+    {{- with .Params.authors -}}
+    {{- range $i, $authorID := . -}}
+    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
+    {{- $length := ( len $.Site.Data.authors ) -}}
+    {{- if gt $length 3 -}}
+    <div class="col-lg-6 col-md-6 col-sm-12 ">
+    {{- else -}}
+    <div class="col-lg-{{ div 12 $length }} col-md-{{ div 12 $length }} col-sm-12 ">
+    {{- end -}}
+        <div class="author">
+            <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $author.info.image }}"/>
+            <div class="author-info">
+                <h3>
+                    <a href='{{ $.Site.BaseURL }}authors/{{ $author.id }}'>
+                        {{- $author.name.display -}}{{ $.LanguagePrefix }}
+                    </a>
+                </h3>
+                <p>{{- $author.info.description -}}</p>
             </div>
         </div>
-        {{- end -}}
-        {{- end -}}
     </div>
-    <div class="row col-lg-12">
-        <ul class="cover-byline">
-            {{- $dateFormat := ( .Site.Params.settings.dateFormat | default "2006, Jan 02" ) -}}
-            <li><i class="fa" aria-hidden="true"></i>
-            {{- .Date.Format $dateFormat -}}
-            {{ if .Site.Params.settings.showReadingTime }}
-            <li><i class="fa fa-clock-o" aria-hidden="true"></i>
-            {{ i18n "readingTime" .ReadingTime }}
-            </li>
-            {{ end }}
-        </ul>
-    </div>
+    {{- end -}}
+    {{- end -}}
+</div>
+<div class="row col-lg-12">
+    <ul class="cover-byline">
+        {{- $dateFormat := ( .Site.Params.settings.dateFormat | default "2006, Jan 02" ) -}}
+        <li><i class="fa" aria-hidden="true"></i>
+        {{- .Date.Format $dateFormat -}}
+        {{ if .Site.Params.settings.showReadingTime }}
+        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+        {{ i18n "readingTime" .ReadingTime }}
+        </li>
+        {{ end }}
+    </ul>
 </div>

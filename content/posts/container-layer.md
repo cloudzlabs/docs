@@ -60,7 +60,7 @@ Container와 Image의 주된 차이점은 최상단 Writable Layer의 존재입�
 
 ![multiple container](http://docs.docker.com/engine/userguide/storagedriver/images/sharing-layers.jpg)
 
-> 참고: 만약 여러 Image들이 동일한 데이터에 대한 접근을 공유할 필요한 경우, 해당 데이터를 Docker Volume에 저장하고 Container들에 마운트하십시오.
+> **참고:** 만약 여러 Image들이 동일한 데이터에 대한 접근을 공유할 필요한 경우, 해당 데이터를 Docker Volume에 저장하고 Container들에 마운트하십시오.
 
 Docker는 Storage Driver를 사용하여, Image Layers와 Writable Container Layer의 Contents들을 관리합니다. 각 Storage Driver는 구현은 다르게 되어있지만, 모든 드라이버는 Stackable Image Layers와 copy-on-write(CoW) 전략을 사용합니다.
 
@@ -131,7 +131,7 @@ Status: Downloaded newer image for ubuntu:14.04
 FROM scratch
 
 # 16.04 버전
-- ADD ubuntu-xenial-core-cloudimg-amd64-root.tar.gz / 
+- ADD ubuntu-xenial-core-cloudimg-amd64-root.tar.gz /
 
 # 14.04 버전
 + ADD ubuntu-trusty-core-cloudimg-amd64-root.tar.gz /
@@ -341,7 +341,7 @@ CMD /app/hello.sh
 
    두번째 Image의 맨 위 Layer를 제외한, 모든 Layer가 동일한 것을 확인할 수 있습니다. 그 외의 모든 Layer는 두 Image간에 공유되며, `/var/lib/docker/<storage_driver>/`에 한번만 저장됩니다. 새로 생성된 Layer는 파일을 변경하지 않고, `CMD` 명령만 실행하기 때문에 실제로 아무런 공간도 차지하지 않습니다.
 
-   > 참고: `docker history`안의 `<missing>`행은 해당 Layer가 다른 시스템에 의해 작성되었으며, Local에서 사용할 수 없음을 나타낸 것입니다.
+   > **참고:** `docker history`안의 `<missing>`행은 해당 Layer가 다른 시스템에 의해 작성되었으며, Local에서 사용할 수 없음을 나타낸 것입니다.
 
 10. 결과
 
@@ -363,17 +363,16 @@ Btrfs, ZFS 및 다른 드라이버는 copy-on-write를 다르게 처리합니다
 
 많은 양의 데이터를 쓰는 Container는 그렇지 않은 Container보다 더 많은 공간을 사용합니다. 이는 대부분의 쓰기 작업이 Container의 최상위에 있는 Writable Layer에서 새로운 공간을 사용하기 때문입니다.
 
-> 참고: 쓰기가 많은 응용 프로그램의 경우, Container에 데이터를 저장하지 마십시오. 대신 Docker Volume을 사용하십시오. Docker 볼륨은 실행중이 Container와 독립적이며, I/O을 효율적으로 할 수 있도록 설계되었습니다. 또한, Volume을 Container들간 공유가 가능하며, Container의 Writable Layer 크기는 증가하지 않습니다.
+> **참고:** 쓰기가 많은 응용 프로그램의 경우, Container에 데이터를 저장하지 마십시오. 대신 Docker Volume을 사용하십시오. Docker 볼륨은 실행중이 Container와 독립적이며, I/O을 효율적으로 할 수 있도록 설계되었습니다. 또한, Volume을 Container들간 공유가 가능하며, Container의 Writable Layer 크기는 증가하지 않습니다.
 
 `copy_up`은 성능 오버헤드가 발생할 수 있습니다. 이 오버헤드는 사용 중인 Storage Driver에 따라 다릅니다. 대용량 파일, 많은 Layer 및 Deep Directory Tree들이 오버헤드를 더 두드러지게 만들 수 있습니다. 각 `copy_up` 동작이 주어진 파일이 처음 수정 될 때만 발생한다는 사실은, 이러한 오버헤드를 완화시킵니다.
 
 copy-on-write가 작동 방식을 확인하기 위해, `acme/my-final-image:1.0` Image 기반의 Container 5개를 동작시키고 차지하는 공간을 확인해보겠습니다.
 
-> 참고: 이 절차는 Mac 용 Docker 또는 Windows 용 Docker에서 작동하지 않습니다.
+> **참고:** 이 절차는 Mac 용 Docker 또는 Windows 용 Docker에서 작동하지 않습니다.
 
 1. Docker Host의 터미널에서 `docker run`을 실행하십시오. 각 Container의 ID가 출력됩니다.
-
-   ``` shell
+   ```shell
    $ docker run -dit --name my_container_1 acme/my-final-image:1.0 bash \
    && docker run -dit --name my_container_2 acme/my-final-image:1.0 bash \
    && docker run -dit --name my_container_3 acme/my-final-image:1.0 bash \

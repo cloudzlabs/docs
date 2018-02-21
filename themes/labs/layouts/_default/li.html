@@ -1,5 +1,9 @@
 <div class="fulid-set-12 card mb-30">
-    <div class="row">
+    {{- if .Params.cover -}}
+    <div class="row card-style-1">
+    {{ else }}
+    <div class="row card-style-2">
+    {{ end }}
         {{- if .Params.cover -}}
         <a href="#" class="col-md-5 col-sm-12 col-xs-12">
             {{- with .Params.cover -}}
@@ -47,12 +51,10 @@
             <span class="btn-link">
                 <a href="{{ .URL }}">Read more...</a>
             </span>
-            <div class="tag">
-                {{ if .Params.tags }}
-                    {{- partial "meta/tag" $ -}}
-                {{ end }}
-                {{- /* vim: set ts=2 sw=2 et: */}}
-            </div>
+            {{ if .Params.tags }}
+                {{- partial "meta/tag" $ -}}
+            {{ end }}
+            {{- /* vim: set ts=2 sw=2 et: */}}
         </div>
     </div>
 </div>
