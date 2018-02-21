@@ -122,6 +122,7 @@ draft: false
            defaultZone: ${vcap.services.dtlabs-service-discovery.credentials.uri}/eureka/
      ```
 
+   - eureka server 적용된 설정
    - eureka.instance.lease-expiration-duration-in-seconds 설정 코드 내 주석
      ```java
      @Data
