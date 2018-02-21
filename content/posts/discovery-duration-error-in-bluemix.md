@@ -148,6 +148,7 @@ draft: false
    eureka.instance.lease-expiration-duration-in-seconds 설정을 eureka server에 세팅하고 eureka client에는 세팅을 하지 않았다.
    
    eureka.instance 설정의 개념을 살펴보니,
+   
    > eureka.instance: eureka service가 자신이 eureka 서버에 등록될 때 사용하는 설정
    > 
    > eureka.client: 다른 erueka service를 찾으려고 할 때 사용하는 설정
