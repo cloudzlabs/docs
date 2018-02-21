@@ -38,44 +38,44 @@ typora-copy-images-to: ..\images
 예를 들면,
 
   - 로컬 환경에서 H2 DB 를 쓰다가 MariaDB로 배포하는 경우 쿼리가 다르다.
-  
-  H2:
+    
+    H2:
 
-   ```java
-   DROP TABLE IF EXISTS users CASCADE;
-   CREATE TABLE IF NOT EXISTS users (
-     	id 			INTEGER,
-     	username 	VARCHAR(100) NOT NULL,
-     	age 		INTEGER NOT NULL,
-     	job      	VARCHAR(100) NOT NULL
-   );
-   ALTER TABLE users MODIFY id INTEGER NOT NULL AUTO_INCREMENT;
-   ```
+    ```java
+    DROP TABLE IF EXISTS users CASCADE;
+    CREATE TABLE IF NOT EXISTS users (
+       	id 			INTEGER,
+       	username 	VARCHAR(100) NOT NULL,
+        age 		INTEGER NOT NULL,
+        job      	VARCHAR(100) NOT NULL
+    );
+    ALTER TABLE users MODIFY id INTEGER NOT NULL AUTO_INCREMENT;
+    ```
 
-   MariaDB:
+    MariaDB:
 
-   ```java
-   DROP TABLE IF EXISTS users CASCADE;
-   CREATE TABLE IF NOT EXISTS users (
-     	id 			INTEGER,
-     	username 	VARCHAR(100) NOT NULL,
-     	age 		INTEGER NOT NULL,
-     	job      	VARCHAR(100) NOT NULL
-   );
-   ALTER TABLE users MODIFY id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT;
-   ```
+    ```java
+    DROP TABLE IF EXISTS users CASCADE;
+    CREATE TABLE IF NOT EXISTS users (
+       	id 			INTEGER,
+        username 	VARCHAR(100) NOT NULL,
+        age 		INTEGER NOT NULL,
+        job      	VARCHAR(100) NOT NULL
+    );
+    ALTER TABLE users MODIFY id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT;
+    ```
 
-   다른 점은 ... ?      MariaDB는 PRIMARY KEY가 빠지면 에러다.
+    다른 점은 ... ?      MariaDB는 PRIMARY KEY가 빠지면 에러다.
 
-2. local 환경에서 초기 데이터를 만들기 번거롭다. 
+  - local 환경에서 초기 데이터를 만들기 번거롭다. 
 
-   테스트 데이터를 매번 생성 or 초기화 하는 절차가 추가된다.
+    테스트 데이터를 매번 생성 or 초기화 하는 절차가 추가된다.
 
-   ![1518484130041](/docs/images/1518484130041.png)
+    ![1518484130041](/docs/images/1518484130041.png)
 
-3. 어플리케이션 수정 후 PaaS 환경에서 테스트를 할 때마다 매번 배포를 해야한다. -> CI/CD 배포 pipeline이 없다면 번거로운 절차다.
+  - 어플리케이션 수정 후 PaaS 환경에서 테스트를 할 때마다 매번 배포를 해야한다. -> CI/CD 배포 pipeline이 없다면 번거로운 절차다.
 
-4. 로컬에서는 잘 되는게 PaaS에서는 안된다. -> 서비스의 버전이 다른 경우,,,, 로컬에서 아무리 잘되도 서비스하는 환경에서 안되면 말짱 꽝이다. 버전 맞추는 것도 번거롭다.
+  - 로컬에서는 잘 되는게 PaaS에서는 안된다. -> 서비스의 버전이 다른 경우,,,, 로컬에서 아무리 잘되도 서비스하는 환경에서 안되면 말짱 꽝이다. 버전 맞추는 것도 번거롭다.
 
 
 
