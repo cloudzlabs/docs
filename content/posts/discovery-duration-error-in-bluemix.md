@@ -125,7 +125,6 @@ draft: false
 
    - eureka.instance.lease-expiration-duration-in-seconds 설정 코드 내 주석
    
-   
      ```java
      @Data
      @ConfigurationProperties("eureka.instance")
@@ -244,11 +243,13 @@ draft: false
        - https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/blob/master/lib/liberty_buildpack/container/liberty.rb#L123
        - https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/commit/8eb1bd0180366661988362d123db72a9b67246e9
        - 2017년 10월 18일에 적용되었다. (어플리케이션 배포 시점은 2017년 10월 11일)
+       
          ![liberty-version](/docs/images/liberty-version.PNG)
          
      예전에 적용된 빌드팩에 exec prefix가 적용되지 않은 것이 문제라면, 빌드팩을 최신 버전(v.3.1.5)으로 변경해서 재배포를 해보자.
 
    - liberty-for-java buildpack 최신버전으로 변경해서 재배포
+   
         ![cfpush](/docs/images/cfpush.PNG)
                    
         ```bash
