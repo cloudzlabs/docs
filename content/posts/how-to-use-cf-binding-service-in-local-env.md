@@ -187,7 +187,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
      - VCAP_SERVICES : cf env {어플리케이션명} 으로 조회된 value를 엔터키 없이 복사해서 넣는다.
 
-       ![141231](/docs/images/141231.png)
+       ![1518492727313](/docs/images/1518492727313.png)
 
        ![1518493193055](/docs/images/1518493193055.png)
 
