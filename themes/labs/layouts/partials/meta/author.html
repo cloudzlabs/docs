@@ -3,8 +3,6 @@
         {{- with .Params.authors -}}
         {{- range $i, $authorID := . -}}
         {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-        {{- if gt $i 0 }}, {{ end -}}
-
         {{- $length := ( len $.Site.Data.authors ) -}}
         {{- if gt $length 3 -}}
         <div class="col-lg-6 col-md-6 col-sm-12 ">
