@@ -1,6 +1,6 @@
 ---
 date: "2018-02-19T10:39:44+09:00"
-title: "Bluemix에서 종료된 앱 정보가  eureka server map에서 제거되기까지 delay가 발생하는 현상"
+title: "Bluemix에서 종료된 앱 정보가 eureka server 에서 제거되기까지 delay가 발생하는 현상"
 authors: [jisangYun]
 categories:
   - posts
