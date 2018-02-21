@@ -260,7 +260,7 @@ draft: false
      여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. 
      
      sigterm의 오타인가 설마... 원인을 잘 모르겠다.
-     
+
 ### GG
 
 
