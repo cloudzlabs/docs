@@ -151,7 +151,9 @@ draft: false
 
    eureka.instance 설정의 개념을 살펴보니,
    
-   > eureka.instance: eureka service가 자신이 eureka 서버에 등록될 때 사용하는 설정   
+   
+   > eureka.instance: eureka service가 자신이 eureka 서버에 등록될 때 사용하는 설정
+   > 
    > erueka.client: 다른 erueka service를 찾으려고 할 때 사용하는 설정
 
    **eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작을 하는 것을 알았다.**
@@ -165,7 +167,6 @@ draft: false
 
 
 3. 어플리케이션 종료 체크
-
    - buildpack 별 종료 로그 비교
      - java buildpack
        ```bash
@@ -250,13 +251,13 @@ draft: false
    - liberty-for-java buildpack 최신버전으로 변경해서 재배포
    
         ![cfpush](/docs/images/cfpush.PNG)
-
-     ```bash
-     API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
-     APP/0	.app-management/scripts/start: 1: kill: invalid signal number or name: igterm		2018년 2월 19일 06:46:24.266 오후
-     CELL/0	Exit status 0																		2018년 2월 19일 06:46:24.268 오후
-     CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
-     ```
+        
+        ```bash
+        API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
+        APP/0	.app-management/scripts/start: 1: kill: invalid signal number or name: igterm		2018년 2월 19일 06:46:24.266 오후
+        CELL/0	Exit status 0																		2018년 2월 19일 06:46:24.268 오후
+        CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
+        ```
 
      여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.
      
