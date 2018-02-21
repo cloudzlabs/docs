@@ -1,7 +1,7 @@
 <div class="fulid-set-12 card mb-30">
     <div class="row">
         {{- if .Params.cover -}}
-        <a href="#" class="col-md-4 col-sm-12 col-xs-12">
+        <a href="#" class="col-md-5 col-sm-12 col-xs-12">
             {{- with .Params.cover -}}
             {{- $type := ( printf "%T" . ) -}}
             {{- $isMap := ( not ( eq $type "string" ) ) -}}
@@ -13,7 +13,7 @@
         </a>
         {{- end -}}
         {{- if .Params.cover -}}
-        <div class="col-md-8 col-sm-12 col-xs-12 post-info">
+        <div class="col-md-7 col-sm-12 col-xs-12 post-info">
         {{- else -}}
         <div class="col-sm-12 col-xs-12 post-info">
         {{- end -}}
