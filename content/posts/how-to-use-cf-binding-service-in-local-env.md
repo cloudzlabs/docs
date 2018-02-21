@@ -37,9 +37,9 @@ typora-copy-images-to: ..\images
 
 예를 들면,
 
-1. 로컬 환경에서 H2 DB 를 쓰다가 MariaDB로 배포하는 경우 쿼리가 다르다.
-
-   H2:
+  - 로컬 환경에서 H2 DB 를 쓰다가 MariaDB로 배포하는 경우 쿼리가 다르다.
+  
+  H2:
 
    ```java
    DROP TABLE IF EXISTS users CASCADE;
