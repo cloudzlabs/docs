@@ -167,7 +167,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
   1. MariaDB ssh 연동
 
-     PaaS 환경의 서비스 인스턴스는 로컬에서 연동시 바로 연동하지 못하고, ssh로 연동한다.
+     PaaS 환경의 서비스 인스턴스는 로컬에서 바로 연동하지 못하고, ssh로 연동한다.
 
      ```bash
      cf ssh -N -L 63306:172.132.14.32:3306 js-local-paas-service-conn
