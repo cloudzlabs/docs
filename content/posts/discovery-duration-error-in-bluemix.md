@@ -243,26 +243,18 @@ draft: false
        - https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/blob/master/lib/liberty_buildpack/container/liberty.rb#L123
        - https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/commit/8eb1bd0180366661988362d123db72a9b67246e9
        - 2017년 10월 18일에 적용되었다. (어플리케이션 배포 시점은 2017년 10월 11일)
-       
          ![liberty-version](/docs/images/liberty-version.PNG)
-
+         
      예전에 적용된 빌드팩에 exec prefix가 적용되지 않은 것이 문제라면, 빌드팩을 최신 버전(v.3.1.5)으로 변경해서 재배포를 해보자.
 
    - liberty-for-java buildpack 최신버전으로 변경해서 재배포
         ![cfpush](/docs/images/cfpush.PNG)
-        
+                   
         ```bash
-        2017-10-11T10:55:52.45+0900 [API/0]      OUT Updated app with guid 1d6ccdc9-730d-459d-a9fe-c097abee52cb ({"state"=>"STOPPED"})
-        2017-10-11T10:55:52.45+0900 [CELL/0]     OUT Exit status 0
-        2017-10-11T10:56:03.46+0900 [CELL/0]     OUT Destroying container
-        2017-10-11T10:56:04.07+0900 [CELL/0]     OUT Successfully destroyed container
-        ```
-           
-        ```bash
-        API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
-        APP/0	.app-management/scripts/start: 1: kill: invalid signal number or name: igterm		2018년 2월 19일 06:46:24.266 오후
-        CELL/0	Exit status 0																		2018년 2월 19일 06:46:24.268 오후
-        CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
+        API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
+        APP/0	.app-management/scripts/start: 1: kill: invalid signal number or name: igterm		2018년 2월 19일 06:46:24.266 오후
+        CELL/0	Exit status 0																		2018년 2월 19일 06:46:24.268 오후
+        CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
         ```
 
      여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. sigterm의 오타인가 설마... 원인을 잘 모르겠다.
