@@ -142,6 +142,7 @@ draft: false
      	
      	...
      }
+     
      ```
 
    eureka server / eureka client / eureka.instance.lease-expiration-duration-in-seconds 설정을 다 확인해보니, 무언가 이상한게 보인다. 
