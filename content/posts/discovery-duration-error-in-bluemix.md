@@ -119,7 +119,7 @@ draft: false
      ```
 
    - eureka.instance.lease-expiration-duration-in-seconds 설정 코드 내 주석
-   
+     
      ```java
      @Data
      @ConfigurationProperties("eureka.instance")
