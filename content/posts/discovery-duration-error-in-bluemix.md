@@ -247,8 +247,7 @@ draft: false
      예전에 적용된 빌드팩에 exec prefix가 적용되지 않은 것이 문제라면, 빌드팩을 최신 버전(v.3.1.5)으로 변경해서 재배포를 해보자.
 
    - liberty-for-java buildpack 최신버전으로 변경해서 재배포
-
-     ![cfpush](/docs/images/cfpush.PNG)
+        ![cfpush](/docs/images/cfpush.PNG)
 
      ```bash
      API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
