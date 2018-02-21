@@ -38,6 +38,7 @@ draft: false
 
 ## Why ?
   - eureka 설정이 잘못됐을 가능성
+  
     eureka server 적용된 설정은 아래와 같다.
     
     ```yaml
@@ -57,17 +58,16 @@ draft: false
           defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
     ```
     
-    eureka.instance.lease-expiration-duration-in-seconds 을 5초로 세팅했다.
+   eureka.instance.lease-expiration-duration-in-seconds 을 5초로 세팅했다.
 
-    eureka server에서 eureka client의 health check를 수행하고,  5초를 넘어서면 eureka server에서 해당 eureka client가 unregist 되는 것으로 이해하고 적용했다.
-
-    해당 설정은 의도에 적합하게 사용된 것일까 ? 
-
-  - 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
+   eureka server에서 eureka client의 health check를 수행하고,  5초를 넘어서면 eureka server에서 해당 eureka client가 unregist 되는 것으로 이해하고 적용했다.
+   해당 설정은 의도에 맞게 적용된 것인가 ?
+   
+  - 어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
     
-    Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까 ?
+   Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까 ?
     
-    해당 프로세스에 적합하게 어플리케이션이 종료된 것인가 ?
+   해당 프로세스에 적합하게 어플리케이션이 종료된 것인가 ?
 
 
 ## How ?
