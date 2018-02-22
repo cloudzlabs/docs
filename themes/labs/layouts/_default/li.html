@@ -48,13 +48,13 @@
                     {{ end }}
                 {{- end -}}
             </p>
-            <span class="btn-link">
+            <p class="btn-link">
                 <a href="{{ .URL }}">Read more...</a>
-            </span>
+            </p>
             {{ if .Params.tags }}
-            <div class="tag">
+            <ul class="tag">
                 {{ partial "meta/tag" .}}
-            </div>
+            </ul>
             {{ end }}
             {{- /* vim: set ts=2 sw=2 et: */}}
         </div>
