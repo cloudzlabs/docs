@@ -28,9 +28,9 @@ draft: false
 
 해당 현상은 eureka client 어플리케이션이 종료됐을 때, eureka server에서 해당 어플리케이션 정보가 삭제되는데 생각보다 delay가 생기는 것이다. (예상 : 5초 내외, but 수 분이상 dashboard 상에서 조회가 된다.)
 
-![bluemix-run](/docs/images/bluemix-run.PNG)
+![bluemix-run](/docs/images/discovery-duration-error-in-bluemix/bluemix-run.PNG)
 
-![bluemix-stop](/docs/images/bluemix-stop.PNG)
+![bluemix-stop](/docs/images/discovery-duration-error-in-bluemix/bluemix-stop.PNG)
 
 어디서 꼬인 것인가 ? 
 
