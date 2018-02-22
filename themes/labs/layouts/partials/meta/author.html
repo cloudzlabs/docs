@@ -9,11 +9,7 @@
     <div class="col-lg-{{ div 12 $length }} col-md-{{ div 12 $length }} col-sm-12 ">
     {{- end -}}
         <div class="author">
-            {{ if $author.info.image }}
             <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $author.info.image }}"/>
-            {{ else }}
-            <img class="img-circle" alt="" src="/docs/assets/images/user.png"/>
-            {{ end }}
             <div class="author-info">
                 <h3>
                     <a href='{{ $.Site.BaseURL }}authors/{{ $author.id }}'>

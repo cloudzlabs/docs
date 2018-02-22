@@ -18,9 +18,16 @@
             <div class="author">
                 <img class="img-circle" alt="" src="img/user/user-ava-md.png" />
                 <div class="author-info">
-                    <h2 class="post-title">{{- .PrevInSection.Title -}}</h2>
-                    <h3>{{- .PrevInSection.Summary -}}</h3>
-                    <p>ㅁ니아러ㅣ만어리ㅏㅁㄴ어리ㅏㅁ넝ㄹ</p>
+                    <h2 class="post-title">{{- .PrevInSection.Title -}}&nbsp;{{- .PrevInSection.Authors -}}</h2>
+                    {{- with .PrevInSection.Authors -}}
+                    {{- range $i, $authorID := . -}}
+                    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
+                    {{- $length := ( len $.Site.Data.authors ) -}}
+                    <h3>{{- $author.name.display -}}{{ $.LanguagePrefix }}</a>
+                    </h3>
+                    <p>{{- $author.info.description -}}</p>
+                    {{- end -}}
+                    {{- end -}}
                 </div>
             </div>
         </a>
@@ -34,8 +41,14 @@
                 <img class="img-circle" alt="" src="img/user/user-ava-md.png">
                 <div class="author-info">
                     <h2 class="post-title">{{- .NextInSection.Title -}}</h2>
-                    <h3>{{- .NextInSection.Title -}}</h3>
-                    <p>{{- .NextInSection.Summary -}}</p>
+                    {{- with .Params.authors -}}
+                    {{- range $i, $authorID := . -}}
+                    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
+                    {{- $length := ( len $.Site.Data.authors ) -}}
+                    <h3>{{- $author.name.display -}}{{ $.LanguagePrefix }}</h3>
+                    <p>{{- $author.info.description -}}</p>
+                    {{- end -}}
+                    {{- end -}}
                 </div>
             </div>
         </a>
