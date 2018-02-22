@@ -12,13 +12,17 @@ tags:
 description: ""
 draft: false
 ---
-여기서는 Kubernetes를 처음 접하는 사용자를 위해 Kubernetes 환경에서 애플리케이션을 배포/접속하고 관리하는 기본적인 방법에 대해 알아보도록 하겠습니다.
+언젠가부터 클라우드 열풍이 불어 닥치고 있습니다.<br/>
+다들 IaaS, PaaS, SaaS의 차이점은 알고 계시죠? :) <br/>
+기술의 변화를 보면 IaaS보다는 PaaS나 SaaS를 선호하고, VM에서 직접 컨트롤 하기 보다는 컨테이너, 서버리스 형태의 기술들이 뜨고 있습니다.<br/>
+저도 그러한 이유로 작년부터 조금씩 회사에서 Kubernetes 스터디를 하고 있네요.<br/>
+이번 첫번째 챕터에서는 Kubernetes를 처음 접하는 사용자를 위해 Kubernetes 환경에서 애플리케이션을 배포/접속하고 관리하는 기본적인 방법에 대해 보도록 하겠습니다.
 
 ## 시작하기 전에
 
 ------------------------------------------------------------------------
 
-실습을 진행하기 전에 이해가 필요한 기본 개념입니다.
+애플리케이션 배포를 진행하기 전에 이해가 필요한 기본 개념입니다.
 
 ##### Kubernetes 
 
@@ -77,7 +81,7 @@ draft: false
 ## 애플리케이션 준비
 ------------------------------------------------------------------------
 
-Kubernetes에서 애플리케이션 배포를 위해 Docker Image를 사용합니다. 여기서는 Docker Hub에 미리 Push 해놓은 샘플 Image를 활용해 봅시다.
+Kubernetes에서 애플리케이션 배포를 위해 Docker Image를 사용합니다. 여기서는  제가 Docker Hub에 미리 Push 해놓은 샘플 Image를 활용해 봅시다.
 
 -   Image Name :
     [dtlabs](https://hub.docker.com/u/dtlabs/)[/](https://hub.docker.com/r/dtlabs/gs-spring-boot-docker/)[gs-spring-boot-docker](https://hub.docker.com/r/dtlabs/gs-spring-boot-docker/)[:1.0](https://hub.docker.com/r/dtlabs/gs-spring-boot-docker/)
@@ -95,9 +99,10 @@ Kubernetes에서 애플리케이션 배포를 위해 Docker Image를 사용합�
 
 ------------------------------------------------------------------------
 
-Kubernetes에서 애플리케이션 배포를 위해 Deployment object를 사용합니다.
+Kubernetes에서 애플리케이션 배포를 위해 Deployment object를 사용합니다.<br/>
 그리고, 배포된 애플리케이션 서비스 디스커버리 및 접속을 위해 Service
-object를 사용합니다.
+object를 사용합니다.<br/>
+먼저 Deployment object를 생성해볼까요?
 
 ### Deployment yaml 파일 생성 및 작성
 
@@ -379,6 +384,8 @@ beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,gpu/nvidia=NA,kubernet
     gs-spring-boot-docker-deployment-56fb494f67-g2lwr   1/1       Running   0          33m
     ```
 
+
+이어서 Service object 도 만들어 봅시다.
 ### Service object yaml 파일 생성 및 작성
 
 1.  \[애플리케이션명\]-service.yaml 파일 생성  
@@ -467,18 +474,21 @@ beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,gpu/nvidia=NA,kubernet
     Service object를 노출하기 위한 방식을 설정 합니다. 가능한 type으로는
     ClusterIP, NodePort, LoadBalancer가 있습니다.
 
-    -   -   ClusterIP - Service object의 cluster-internal IP만 노출
-            하고, Cluster 내부에서만 접근 가능 합니다.
-        -   NodePort - 각 Node에서 static 포트를 노출합니다. 클러스터
-            외부에서 :의 형태로 request가 가능 합니다. 앱을 배포후
-            테스트할 때 선택하기 좋은 type입니다.
-        -   LoadBalancer - 특정 cloud provider(GCE/AWS)의 load
-            balancer에게 Service object를 노출시키는 방법 입니다. 상세
-            내용은 이곳의 링크를 참고 바랍니다.
+    -   ClusterIP - Service object의 cluster-internal IP만 노출
+        하고, Cluster 내부에서만 접근 가능 합니다.
+    -   NodePort - 각 Node에서 static 포트를 노출합니다. 클러스터
+        외부에서 :의 형태로 request가 가능 합니다. 앱을 배포후
+        테스트할 때 선택하기 좋은 type입니다.
+    -   LoadBalancer - 특정 cloud provider(GCE/AWS)의 load
+        balancer에게 Service object를 노출시키는 방법 입니다. 상세
+        내용은 이곳의 링크를 참고 바랍니다.
 
     그 밖의 Service object yaml 파일 상세 작성 방법은 [Service
     공식가이드](https://kubernetes.io/docs/api-reference/v1.8/#service-v1-core)를
     참고 바랍니다.
+
+
+
 
 ### Service object 생성
 
