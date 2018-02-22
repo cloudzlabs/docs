@@ -1,15 +1,4 @@
-{{- $config := ( .Site.Params.settings.hideEntryNavigation ) -}}
-{{- $configType := ( printf "%T" $config ) -}}
 
-{{- if ( eq $configType "bool" ) -}}
-  {{- $.Scratch.Set "showEntryNav" ( not $config ) -}}
-{{- else -}}
-  {{- $.Scratch.Set "showEntryNav" ( not ( in $config .Section ) ) -}}
-{{- end -}}
-
-{{- if ( $.Scratch.Get "showEntryNav" ) -}}
-
-{{ if gt ( len ( where .Site.RegularPages "Section" .Section ) ) 1 }}
 <div class="mt-30 row">
 
     {{- if .PrevInSection -}}
@@ -55,5 +44,3 @@
     </div>
     {{- end -}}
 </div>
-{{ end }}
-{{- end -}}

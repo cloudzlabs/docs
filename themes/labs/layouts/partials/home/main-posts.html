@@ -14,7 +14,11 @@
                 <p class="cover-section">
                     {{ if .Params.tags }}
                     <div class="tag">
-                        {{ partial "meta/tag" .}}
+                        {{- with .Params.tags -}}
+                        {{- range first 1 . -}}
+                        <li><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">{{ . }}</a></li>
+                        {{ end }}
+                        {{ end }}
                     </div>
                     {{ end }}
                 </p>
