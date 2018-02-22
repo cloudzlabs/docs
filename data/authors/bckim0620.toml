@@ -1,0 +1,17 @@
+id = "bckim0620"
+
+[email]
+username = "bckim0620"
+host = "google.com"
+
+[name]
+display = "Bongchan Kim"
+
+[info]
+image = ""
+description = "Microservice Architecture Design&Dev"
+
+[social]
+email = "bckim0620@sk.com"
+facebook  = ""
+twitter = ""
