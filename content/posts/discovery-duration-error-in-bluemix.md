@@ -32,7 +32,7 @@ draft: false
 
 ![bluemix-stop](/docs/images/discovery-duration-error-in-bluemix/bluemix-stop.PNG)
 
-어디서 꼬인 것인가 ? 
+어디서 꼬인 것인가 ?  
 
 
 

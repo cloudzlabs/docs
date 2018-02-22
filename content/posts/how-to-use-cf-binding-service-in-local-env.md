@@ -16,7 +16,6 @@ cover:
   image: /docs/images/how-to-use-cf-binding-service-in-local-env/boston_2946x1907.jpg
   style: normal
 draft: false
-typora-copy-images-to: ..\images
 ---
 
 
