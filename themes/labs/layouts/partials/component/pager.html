@@ -5,19 +5,22 @@
     <div class="col-md-6 post-pre">
         <a href='{{ .PrevInSection.Permalink | relURL }}'>
             <div class="author">
-                {{- $title := .PrevInSection.Title -}}
-                {{- with .PrevInSection.Params.authors -}}
-                {{- range $i, $authorID := . -}}
-                {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-                <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $author.info.image }}"/>
                 <div class="author-info">
-                    <h2 class="post-title">{{ $title }}</h2>
-                    <h3>{{- $author.name.display -}}{{ $.LanguagePrefix }}</a>
-                    </h3>
+                    {{- $title := .PrevInSection.Title -}}
+                    {{- with .PrevInSection.Params.authors -}}
+                    {{- range $i, $authorID := . -}}
+                    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
+                    <h2 class="post-title">{{- $title -}}</h2>
+                    {{- if $author.info.image -}}
+                    <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $author.info.image }}"/>
+                    {{- else -}}
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                    {{- end -}}
+                    <h3>{{- $author.name.display -}}{{ $.LanguagePrefix }}</h3>
                     <p>{{- $author.info.description -}}</p>
+                    {{- end -}}
+                    {{- end -}}
                 </div>
-                {{- end -}}
-                {{- end -}}
             </div>
         </a>
     </div>
@@ -27,18 +30,22 @@
     <div class="col-md-6 post-next">
         <a href='{{ .NextInSection.Permalink | relURL }}'>
             <div class="author">
-                {{- $title := .NextInSection.Title -}}
-                {{- with .NextInSection.Params.authors -}}
-                {{- range $i, $authorID := . -}}
-                {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-                <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $author.info.image }}"/>
                 <div class="author-info">
+                    {{- $title := .NextInSection.Title -}}
+                    {{- with .NextInSection.Params.authors -}}
+                    {{- range $i, $authorID := . -}}
+                    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
                     <h2 class="post-title">{{- $title -}}</h2>
+                    {{- if $author.info.image -}}
+                    <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $author.info.image }}"/>
+                    {{- else -}}
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                    {{- end -}}
                     <h3>{{- $author.name.display -}}{{ $.LanguagePrefix }}</h3>
                     <p>{{- $author.info.description -}}</p>
+                    {{- end -}}
+                    {{- end -}}
                 </div>
-                {{- end -}}
-                {{- end -}}
             </div>
         </a>
     </div>

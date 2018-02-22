@@ -334,6 +334,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 .visual-title .visual .author { margin-top:-30px; display:inline-block; color: rgba(225,225,225,.95) !important; }
 .visual-title .visual .author img { width:80px; height:80px;}
+.visual-title .visual .author i {color: rgba(255, 255, 255,.4 );font-size: 80px;bottom: -2px;}
 .visual-title .visual .author-info { margin-left:15px;}
 .visual-title .visual .author-info h3 a { color: rgba(225,225,225,.95) !important; font-size:30px; }
 .visual-title .visual .author-info p { color: rgba(225,225,225,.95) !important;  }
@@ -404,6 +405,8 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 .post-pre .author img,
 .post-next .author img { bottom:2px;}
+.post-pre .author i,
+.post-next .author i {color: rgba(0, 0, 0, 0.2);font-size: 60px;bottom: 15px;}
 
 .post-pre .post-title,
 .post-next .post-title { font-size: 20px; font-weight: bold; color: #333;  margin-left:-60px; margin-bottom:20px; overflow: hidden; white-space: normal; text-align: left; word-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
@@ -417,9 +420,12 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 
 
-.author {display: block;position: relative;padding-left:70px;}
+
+
+.author { display: block; position: relative; padding-left:70px; }
 .author img {display: block;position: absolute;margin:15px;/* top: 0; */left: 0;width: 60px;height:60px;border-radius: 50%;overflow: hidden;background: #fff;}
-.author-info {padding: 15px 30px;}
+.author i {color: rgba(0, 0, 0, 0.2);display:  inline-block;position:  relative;float:  left;margin-left: -65px;margin-top: 10px;font-size: 60px;}
+.author-info {padding: 15px;}
 .author-info h3 {margin:0;padding:0;font-size: 20px;font-weight: bold;overflow: hidden;white-space: normal;text-align: left;word-wrap: break-word;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;}
 .author-info p {margin:0;padding:7px 0;font-size: 16px;color:#777;overflow:  hidden;white-space: normal;text-align: left;word-wrap: break-word;display: -webkit-box;-webkit-line-clamp: 5;-webkit-box-orient: vertical;}
 .author .cover-byline,
