@@ -10,24 +10,8 @@ tags:
   - Spring
   - Cloud
   - Spring Cloud
-cover:
-  image: /docs/images/container-layers.jpg
-  caption: Eden Farm Children's Village by Gareth Harper on Unsplash
 draft: false
 ---
-
-- [Staticfile Buildpack](#staticfile-buildpack)
-    - [Overview](#overview)
-    - [What](#what)
-        - [Staticfile app](#staticfile-app)
-        - [Staticfile buildpack](#staticfile-buildpack)
-    - [Staticfile Requirement](#staticfile-requirement)
-    - [Memory Usage](#memory-usage)
-    - [“Hello World” Tutorial](#%E2%80%9Chello-world%E2%80%9D-tutorial)
-        - [Step / Action](#step-action)
-    - [Buildpack Configuration & Application push](#buildpack-configuration-application-push)
-        - [Config option](#config-option)
-    - [Consideration](#consideration)
 
 ## Overview
 
