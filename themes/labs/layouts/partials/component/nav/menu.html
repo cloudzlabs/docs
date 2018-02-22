@@ -1,4 +1,4 @@
-<form class="site-search" method="get">
+<!-- <form class="site-search" method="get">
     <input id="search" type="text" name="site_search" placeholder="Type to search...">
     <div class="search-tools">
         <span class="clear-search">Clear</span>
@@ -13,7 +13,7 @@
             <li> <a href="#"> ABCDEFG </a> </li>
         </ul>
     </div>
-</form>
+</form> -->
 <div class="site-branding">
     <div class="inner">
         <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
@@ -41,7 +41,25 @@
 
         </ul>
         <div class="search">
-            <i class="fa fa-search" aria-hidden="true"></i>
+            <input data-search-input id="search-by" type="text" placeholder="{{T "Search-placeholder"}}">
         </div>
+        <div>
+                <div class="searchbox">
+                  <input data-search-input id="search-by" type="text" placeholder="{{T "Search-placeholder"}}">
+                </div>
+                <script type="text/javascript" src="/docs/assets/js/lunr.min.js"></script>
+                <script type="text/javascript" src="/docs/assets/js/auto-complete.js"></script>
+                <link href="/docs/assets/css/auto-complete.css" rel="stylesheet">
+                <script type="text/javascript">
+                  {{ if .Site.IsMultiLingual }}
+                      var baseurl = "{{.Site.BaseURL}}{{.Site.LanguagePrefix}}";
+                  {{ else }}
+                      var baseurl = "{{.Site.BaseURL}}";
+                  {{ end }}
+                </script>
+                <script type="text/javascript" src="/docs/assets/js/search.js"></script>
+              </div>
     </div>
 </div>
+
+
