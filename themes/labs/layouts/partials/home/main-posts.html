@@ -7,6 +7,7 @@
             {{- $isMap := ( not ( eq $type "string" ) ) -}}
             <div class="cover-image" src="{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}" style="background-image: url({{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }});"></div>
             {{- end -}}
+
             <a class="cover-trigger"></a>
             <div class="cover-gradient"></div>
             <div class="cover-header">
