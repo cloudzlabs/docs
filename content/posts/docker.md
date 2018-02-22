@@ -7,9 +7,6 @@ categories:
 tags:
   - Docker
   - Cloud
-cover:
-  image: /docs/images/boston_2946x1907.jpg
-  caption: Eden Farm Children's Village by Gareth Harper on Unsplash
 draft: false
 ---
 # Docker

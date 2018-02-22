@@ -9,9 +9,6 @@ tags:
   - Docker
   - Cloud
   - Container As a Service
-cover:
-  image: /docs/images/container-layer/aurora_2000x1091.jpg
-  caption: Eden Farm Children's Village by Gareth Harper on Unsplash
 draft: false
 ---
 # Container Layer
