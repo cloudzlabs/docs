@@ -1,7 +1,7 @@
 ---
 date: "2018-02-06T19:47:56+09:00"
 title: "RESTful API"
-authors: ["1000jaeh", "blingeeeee"]
+authors: ["1000jaeh"]
 categories:
   - Blog
 tags:

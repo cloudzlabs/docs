@@ -1,7 +1,7 @@
 ---
 date: "2018-02-13T08:34:45+09:00"
 title: "Spring Cloud Connector로 PaaS의 binding 서비스를 로컬에서 사용하기"
-authors: [jisangYun]
+authors: ["jisangYun"]
 categories:
   - posts
 tags:
