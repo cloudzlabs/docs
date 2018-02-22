@@ -14,7 +14,7 @@ tags:
   - Autoscale
   - Scale Out
 description: ""
-draft: true
+draft: false
 ---
 지난 챕터에서는 이미 배포되어 있는 애플리케이션을 무중단으로 업데이트하는 방법에 대해 보았습니다.<br/>
 이번에는 이어서 애플리케이션을 자동으로 Scale-out 할수 있는 Horizontal Pod Autoscaler 기능을 적용해보도록 하겠습니다.

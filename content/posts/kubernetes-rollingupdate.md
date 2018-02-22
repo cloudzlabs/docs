@@ -11,7 +11,7 @@ tags:
   - Container Orchestration
   - Rolling Update
 description: ""
-draft: true
+draft: false
 ---
 지난 챕터에서는 Kubernetes 환경에서 애플리케이션을 배포하고 접속하는 방법을 알아보았습니다. <br/>그렇다면 이미 배포되어 있는 애플리케이션을 업데이트할 때 중단 없이 처리할 수 있을까요??<br/><br/>
 네. 가능합니다!<br/>
