@@ -13,7 +13,7 @@ tags:
   - Spring Cloud
 description: "로컬 개발 환경과 PaaS 환경을 분리해서 개발환경을 구성하는 경우의 불편한점을 개선하기 위한 방법을 찾아보자"
 cover:
-  image: /docs/images/boston_2946x1907.jpg
+  image: /docs/images/how-to-use-cf-binding-service-in-local-env/boston_2946x1907.jpg
   style: normal
 draft: false
 typora-copy-images-to: ..\images
@@ -71,7 +71,7 @@ typora-copy-images-to: ..\images
 
     테스트 데이터를 매번 생성 or 초기화 하는 절차가 추가된다.
 
-    ![1518484130041](/docs/images/1518484130041.png)
+    ![1518484130041](/docs/images/how-to-use-cf-binding-service-in-local-env/1518484130041.png)
 
   - 어플리케이션 수정 후 PaaS 환경에서 테스트를 할 때마다 매번 배포를 해야한다. -> CI/CD 배포 pipeline이 없다면 번거로운 절차다.
 
@@ -102,7 +102,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
     - dependency 추가 - Spring Cloud Connector
 
-      ![1518495055690](/docs/images/1518495055690.png)
+      ![1518495055690](/docs/images/how-to-use-cf-binding-service-in-local-env/1518495055690.png)
 
     - datasource 설정
 
@@ -153,11 +153,11 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
   - js-local-paas-service-conn 을 PaaS에 배포한 후 js-test-MariaDB 와 binding 한다.
 
-    ![1518484942742](/docs/images/1518484942742.png)
+    ![1518484942742](/docs/images/how-to-use-cf-binding-service-in-local-env/1518484942742.png)
 
   - 로컬 환경과 PaaS 환경의 데이터가 다른 것을 확인한다.
 
-    ![151231](/docs/images/151231-8495551138.png)
+    ![151231](/docs/images/how-to-use-cf-binding-service-in-local-env/151231-8495551138.png)
 
   - 준비 끝!
 
@@ -177,7 +177,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
      어플리케이션의 수행 profile을 dev로 설정한다.
 
-     ![1518489287635](/docs/images/1518489287635.png)
+     ![1518489287635](/docs/images/how-to-use-cf-binding-service-in-local-env/1518489287635.png)
 
   3. STS - Run Configuration - Environment - Environment variables
 
@@ -187,9 +187,9 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
      - VCAP_SERVICES : cf env {어플리케이션명} 으로 조회된 value를 엔터키 없이 복사해서 넣는다.
 
-       ![1518492727313](/docs/images/1518492727313.png)
+       ![1518492727313](/docs/images/how-to-use-cf-binding-service-in-local-env/1518492727313.png)
 
-       ![1518493193055](/docs/images/1518493193055.png)
+       ![1518493193055](/docs/images/how-to-use-cf-binding-service-in-local-env/1518493193055.png)
 
        > cf env로 조회된 mariaDB credential 중 hostname과 port 정보를 ssh 연동한 정보로 수정이 필요하다.
        >
@@ -197,7 +197,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
   4. 로컬에서 PaaS 데이터 확인
 
-     ![1518495702705](/docs/images/1518495702705.png)
+     ![1518495702705](/docs/images/how-to-use-cf-binding-service-in-local-env/1518495702705.png)
 
   5. 성공!
 
