@@ -11,11 +11,13 @@
             <a class="cover-trigger"></a>
             <div class="cover-gradient"></div>
             <div class="cover-header">
-                <h5 class="cover-section">
+                <p class="cover-section">
                     {{ if .Params.tags }}
-                    {{ partial "meta/tag" . }}
+                    <ul class="tag">
+                        {{ partial "meta/tag" .}}
+                    </ul>
                     {{ end }}
-                </h5>
+                </p>
                 <h2 class="cover-title">
                     <a href="{{ .URL }}">{{ .Title }}</a>
                 </h2>
