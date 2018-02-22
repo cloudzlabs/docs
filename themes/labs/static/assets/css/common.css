@@ -327,6 +327,7 @@ table tbody tr:hover
 .cover-story .cover-byline { color:#ddd !important;}
 .cover-header, .cover-image, .cover-trigger { bottom: 4px; left: 4px; position: absolute; right: 4px; }
 .cover-header  { /*background: rgba(0, 0, 0, 0.9);*/ background-image: -webkit-gradient( linear, left top, left bottom, from(rgba(0,0,0,0.0)),  to(rgba(0,0,0,0.8)), color-stop(.9,#333333));}
+.cover-section li { list-style: none !important; }
 
 .cover-section { font-weight: bold;  overflow: hidden; white-space: normal; text-align: left; word-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .cover-title { font-weight: bold; overflow: hidden; white-space: normal; text-align: left; word-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
