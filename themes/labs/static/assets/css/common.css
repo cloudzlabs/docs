@@ -164,8 +164,8 @@ button:focus { outline: none; }
 .tag {margin:15px 0 0 0;  padding:0; display: inline-block; width: 100%; float:left; list-style:none;}
 .tag li { float:left; margin-right: 4px; line-height: 28px; }
 .tag li a{ display: inline-block; margin-bottom: 8px; padding: 0 12px; transition: all .3s; border: 1px solid #e1e7ec; border-radius: 4px; color: #606975 !important; font-size: 13px; font-weight: 500; text-decoration: none !important; white-space: nowrap; }
-.tag li a:hover { background-color: #fff; color: #ad4868 !important; border:1px solid #ad4868; -webkit-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); -moz-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); }
-.tag li a.active { border-color: #111; background-color: #111; color: #fff !important; cursor: default; }
+.tag li a:hover { background-color: #fff; color: #ad4868 ; border:1px solid #ad4868; -webkit-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); -moz-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); }
+.tag li a.active { border-color: #111; background-color: #111; color: #fff ; cursor: default; }
 .text-right .tag { margin-right: 0; margin-left: 4px; }
 .text-center .tag { margin-right: 2px; margin-left: 2px; }
 
@@ -327,10 +327,14 @@ table tbody tr:hover
 .cover-story .cover-byline { color:#ddd !important;}
 .cover-header, .cover-image, .cover-trigger { bottom: 4px; left: 4px; position: absolute; right: 4px; }
 .cover-header  { /*background: rgba(0, 0, 0, 0.9);*/ background-image: -webkit-gradient( linear, left top, left bottom, from(rgba(0,0,0,0.0)),  to(rgba(0,0,0,0.8)), color-stop(.9,#333333));}
-.cover-section li { list-style: none !important; }
+.cover-header .tag {margin:0;  padding:0; list-style:none; width: 100%; }
+.cover-header .tag li { float:left;  }
+.cover-header .tag li a{ color: #fff !important; border: none !important; margin:0; padding: 0; font-size: 16px; }
+.cover-header .tag li a:hover,
+.cover-header .tag li a.active { color: #fff !important; cursor: default; background: none; cursor: pointer; }
 
-.cover-section { font-weight: bold;  overflow: hidden; white-space: normal; text-align: left; word-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-.cover-title { font-weight: bold; overflow: hidden; white-space: normal; text-align: left; word-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.cover-section { font-weight: bold; color: #fff !important;  overflow: hidden; white-space: normal; text-align: left; word-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.cover-title { float: left; font-weight: bold; overflow: hidden; white-space: normal; text-align: left; word-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .cover-image {background-color: #000;background-size: cover;background-position: center center;top: 4px; z-index: 1;}
 .cover-trigger { -moz-transition: background-color .4s ease; -o-transition: background-color .4s ease; -webkit-transition: background-color .4s ease; transition: background-color .4s ease;
     background: rgba(0,0,0,0.2); background-size: 100% 100%; display: block; top: 4px; will-change: background-color; z-index: 2; }
@@ -339,6 +343,7 @@ table tbody tr:hover
 .cover-header h5 a:hover,
 .cover-header h2 a:hover {text-decoration: none;}
 .cover-header { padding: 14px 12px; z-index: 3; }
+
 .cover-byline { font-size: 14px; line-height: 16px; }
 .cover-byline li { display: inline-block; margin-left: 6px; }
 .cover-byline li:first-child { margin-left: 0; }
