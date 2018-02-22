@@ -2,22 +2,7 @@
 
 <div class='offcanvas-wrapper'>
 
-    <section class="visual-area text-center">
-        <div class="visual">
-            {{- if eq .Kind "taxonomy" -}}
-            <h3>{{- ( default .Data.Singular ) | title -}} {{- print ": " -}}</h3>
-            {{- end -}}
-            {{- if eq .Data.Singular "author" -}}
-                {{- partial "data/author/displayName" . -}}
-            {{- else -}}
-                {{- .Title -}}
-            {{- end -}}
-
-            {{ with .Description }}
-            <p class='subtitle'>{{- . -}}</p>
-            {{ end }}
-        </div>
-    </section>
+    {{ partial "component/subtitle" . }}
 
     <section class='container'>
         <article class="post">

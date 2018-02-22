@@ -86,7 +86,6 @@ blockquote {border-left: 3px solid #ad4868;padding-left: 10px;margin:30px 0 0 0;
 blockquote p {font-size:14px !important; padding:15px; color: #888 !important; line-height:24px !important;}
 
 /* common  *****************************************************/
-
 .left { float: left;}
 .right { float: right;}
 
@@ -177,8 +176,22 @@ table tbody { border-bottom: 1px solid #dee2e6; }
 table tbody tr:nth-of-type(odd) {	/*background: rgba(173, 72, 103, 0.05);*/ background:#f8f8f8; }
 table-hover tbody tr:hover { background-color: rgba(0,0,0,0.075); }
 table thead tr:hover,
-table tbody tr:hover
- { font-weight: bold; background: rgba(173, 72, 103, 0.15); color:#333 !important; }
+table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); color:#333 !important; }
+
+.mask {vertical-align: middle;overflow: hidden;background-color: rgba(0,0,0,.4);z-index: 2;width: 100%;}
+
+/* pagination */
+.pagination { margin:0; padding:0; display:inline-block; }
+.pagination li { list-style:none; float:left; margin:0 4px;}
+.pagination > li > a { border: 1px solid #ad4868; color:#ad4868; padding:5px 10px;  border-radius:4px; }
+.pagination > li > a:hover,
+.pagination > li > a:focus  { background: #ad4868; color:#fff; }
+
+.pagination > .active > a,
+.pagination > .active > a:hover,
+.pagination > .active > a:focus { z-index: 2; color: #fff; cursor: default; background: #ad4868; }
+
+.pagination > li > a > i { padding:5px 2px; }
 
 
 /* header *******************************************************/
@@ -306,10 +319,26 @@ table tbody tr:hover
 
 
 /* main *******************************************************/
-.visual-area {background-image: linear-gradient(-180deg, #D04D6F 20%, #413b54 100%);width: 100%;min-height: 430px;background-position: center;background-color: #f5f5f5;background-repeat: no-repeat;background-size: cover;overflow: hidden;}
-.visual-area .visual {margin-top: 150px;font-size: 60px;font-weight:  bold;color: rgba(255,255,255,.5) !important;letter-spacing: 2px;}
-.visual-area h3 { font-size: 70px; font-weight: bold; color: rgba(255,255,255,.8) !important; line-height: 70px; }
+.visual-area { text-align: center;  background-image: linear-gradient(-180deg, #D04D6F 20%, #413b54 100%);width: 100%; min-height: 430px; background-position: center;
+    background-color: #f5f5f5; background-repeat: no-repeat;background-size: cover;overflow: hidden; }
+.visual-area .visual { display:  inline-block; padding-top: 180px; font-size: 60px; font-weight:  bold;color: rgba(255,255,255,.5) !important;letter-spacing: 2px;}
+.visual-area h3 { display:  inline-block; font-size: 70px; font-weight: bold; color: rgba(255,255,255,.8) !important; line-height: 70px; }
 .visual-area p { font-size: 28px; color: #fff; margin-top: 30px; color: rgba(255,255,255,.6); line-height: 34px; }
+
+.visual-title {  min-height: 280px; text-align: center; }
+.visual-title .visual {display:  inline-block;padding-top: 140px; color: rgba(225,225,225,.95) !important;letter-spacing: 2px;font-size: 28px;min-height: 280px;}
+.visual-title h3 {display: inline-block;font-size: 40px;font-weight: bold;color: rgba(225,225,225,.95) !important;line-height: 40px;margin-right:10px;}
+.visual-title.bg-tags { background-position: center; background-repeat: no-repeat;  background-size: cover; background-image: url("/docs/images/tags.png");}
+.visual-title.bg-authors { background-position: center; background-repeat: no-repeat;  background-size: cover; background-image: url("/docs/images/authors.png");}
+.visual-title.bg-posts { background-position: center; background-repeat: no-repeat;  background-size: cover; background-image: url("/docs/images/posts.png");}
+
+.visual-title .visual .author { margin-top:-30px; display:inline-block; color: rgba(225,225,225,.95) !important; }
+.visual-title .visual .author img { width:80px; height:80px;}
+.visual-title .visual .author-info { margin-left:15px;}
+.visual-title .visual .author-info h3 a { color: rgba(225,225,225,.95) !important; font-size:30px; }
+.visual-title .visual .author-info p { color: rgba(225,225,225,.95) !important;  }
+
+
 
 
 .cover-story, .deals-header, .formField, .gallery .thumbs, .u-text-trunc { overflow: hidden; }
@@ -364,6 +393,7 @@ table tbody tr:hover
 
 
 /* sub *******************************************************/
+.container .post { margin-top:30px;}
 .page-body {padding-top:134px;color: #555;}
 .page-body a { color:#333;}
 
@@ -387,9 +417,9 @@ table tbody tr:hover
 
 
 
-.author { display: block; position: relative; padding-left:70px; }
+.author {display: block;position: relative;padding-left:70px;}
 .author img {display: block;position: absolute;margin:15px;/* top: 0; */left: 0;width: 60px;height:60px;border-radius: 50%;overflow: hidden;background: #fff;}
-.author-info {padding:15px;}
+.author-info {padding: 15px 30px;}
 .author-info h3 {margin:0;padding:0;font-size: 20px;font-weight: bold;overflow: hidden;white-space: normal;text-align: left;word-wrap: break-word;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;}
 .author-info p {margin:0;padding:7px 0;font-size: 16px;color:#777;overflow:  hidden;white-space: normal;text-align: left;word-wrap: break-word;display: -webkit-box;-webkit-line-clamp: 5;-webkit-box-orient: vertical;}
 .author .cover-byline,
@@ -566,5 +596,5 @@ h3, .h3 { font-size: 22px; }
 .visual-area p { font-size: 24px; line-height: 28px; }
 .post-pre,
 .post-next { margin:10px 0; }
-.card img { height: 100% !important; max-height:100%;  }
+.card img { height: 100% !important; max-height:100%; }
 }

@@ -5,7 +5,7 @@ authors: ["1000jaeh"]
 categories:
   - posts
 tags:
-  -
+  - markdown
 draft: true
 ---
 
