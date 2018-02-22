@@ -1,7 +1,7 @@
 ---
 date: "{{ .Date }}"
 title: "{{ replace .TranslationBaseName '-' ' ' | title }}"
-authors: ""
+authors: []
 categories:
   - posts
 tags:
