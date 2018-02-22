@@ -59,7 +59,7 @@ page = "" # Twitter page username
 
 [params.seo]
 # Title Separator: - – — · • * ⋆ | ~ « » < >
-titleSeparator = "•"
+titleSeparator = "-"
 
 [params.social]
 facebook = "cloudzlabs"
@@ -77,9 +77,7 @@ enabled = true
 twitter = true
 google = true
 facebook = true
-reddit = true
 linkedin = true
-stumbleupon = true
 pinterest = true
 email = true
 
