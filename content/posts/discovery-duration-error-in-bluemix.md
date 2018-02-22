@@ -211,10 +211,10 @@ draft: false
 
   - Cloud Foundry의 어플리케이션 종료 프로세스 ([CF-appl-lifecycle](https://docs.cloudfoundry.org/devguide/deploy-apps/app-lifecycle.html))
 
-    1. 어플리케이션 종료 요청 발생
-    2. Cloud Foundry가 SIGTERM 시그널을 어플리케이션 프로세스로 보냄
-    3. 어플리케이션 프로세스는 10초 내 종료되어야함
-    4. 10초 내 종료되지 않으면, Cloud Foundry가 SIGKILL 시그널을 보내 어플리케이션을 종료한다.
+      1. 어플리케이션 종료 요청 발생
+      2. Cloud Foundry가 SIGTERM 시그널을 어플리케이션 프로세스로 보냄
+      3. 어플리케이션 프로세스는 10초 내 종료되어야함
+      4. 10초 내 종료되지 않으면, Cloud Foundry가 SIGKILL 시그널을 보내 어플리케이션을 종료한다.
 
     **10초 내로 SIGTERM 으로 종료되지 않으면 SIGKILL로 어플리케이션을 종료시킨다.** 
 
