@@ -52,3 +52,17 @@ div.notices.tip p {
 div.notices.tip p:first-child:after {
     content: 'Tip';
 }
+
+.align-center {
+    text-align:center
+}
+.align-center > blockquote {
+    display:inline-block
+}
+.align-center > ol,.align-center > ul {
+    display:inline-block;
+    text-align:initial
+}
+.align-center li{
+    word-wrap:normal
+}
