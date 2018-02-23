@@ -301,7 +301,8 @@ cf push -f [manifest.yml file path]
 - manifest.yml 설정 정보는 [CF 공식가이드 문서의 manifest.yml 가이드 문서](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html)를 참고하세요. 
 
 #### 예시
-- 옵션 없이 사용하는 경우 
+- 옵션 없이 사용하는 경우
+
 ``` java
 $ ls
 log		mvnw		pom.xml		target
@@ -370,7 +371,8 @@ URL: cloud-movie-leathern-estrin.paas.sk.com
 #0   실행 중   2018-02-23 10:07:53 AM   0.0%   0 / 1G   0 / 1G
 ```
 
-- 옵션 사용 시 
+- 옵션 사용 시
+
 ```java
 $ cf push -f C:/Users/cf-sample-app-nodejs-master/manifest-dev.yml
 ``` 
