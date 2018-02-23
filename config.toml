@@ -10,6 +10,8 @@ googleAnalytics = ""
 Paginate = 5
 preserveTaxonomyNames = true
 
+disableInlineCopyToClipBoard = true
+
 enableRobotsTXT = true # generate robots.txt
 
 # Syntax Highlighting ( https://gohugo.io/content-management/syntax-highlighting/ )
@@ -30,8 +32,8 @@ home = [ "HTML", "RSS", "JSON"]
 
 [params.assets]
 favicon = "favicon.ico"
-customCSS = ["assets/css/bootstrap.css", "assets/css/common.css", "assets/css/font-awesome.css", "assets/css/markdown.css", "assets/css/auto-complete.css"]
-customJS = ["assets/js/common.js", "assets/js/scripts.js", "assets/js/lunr.min.js", "assets/js/auto-complete.js", "assets/js/search.js"]
+customCSS = ["assets/css/bootstrap.css", "assets/css/common.css", "assets/css/font-awesome.css", "assets/css/markdown.css", "assets/css/auto-complete.css", "assets/css/copy-clipboard.css", "assets/css/mermaid.css", "assets/css/mermaid.dark.css", "assets/css/mermaid.forest.css"]
+customJS = ["assets/js/common.js", "assets/js/scripts.js", "assets/js/lunr.min.js", "assets/js/auto-complete.js", "assets/js/search.js", "assets/js/clipboard.min.js", "assets/js/mermaid.js"]
 
 [params.copyright]
 prefix = "Copyright"
@@ -103,4 +105,3 @@ url = "/posts/"
 lang = "ko"
 languageName = "Korean"
 weight = 1
-
