@@ -2,7 +2,6 @@
 date: "2018-02-22T14:41:42+09:00"
 title: "[Kubernetes 활용(2/8)] Rolling Update(무중단 배포)"
 authors: ["blingeeeee"]
-topic: "k8s"
 categories:
   - posts
 tags:

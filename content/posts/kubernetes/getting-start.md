@@ -2,7 +2,6 @@
 date: "2018-02-21T11:33:28+09:00"
 title: "[Kubernetes 활용(1/8)] 시작하기"
 authors: ["blingeeeee"]
-topic: "k8s"
 categories:
   - posts
 tags:

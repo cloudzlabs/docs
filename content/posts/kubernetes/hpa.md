@@ -2,7 +2,6 @@
 date: "2018-02-22T14:41:49+09:00"
 title: "[Kubernetes 활용(3/8)] HPA(오토스케일링)"
 authors: ["blingeeeee"]
-topic: "k8s"
 categories:
   - posts
 tags:

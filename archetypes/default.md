@@ -7,7 +7,8 @@ categories:
 tags:
   -
 cover:
-  image: /docs/images/file_name/file_name.png|jpg
+  image: "/docs/images/file_name/file_name.png|jpg"
   caption: ""
+description: ""
 draft: true
 ---
