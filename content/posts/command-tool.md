@@ -8,9 +8,6 @@ tags:
   - CF
   - CF CLI
 description: ""
-cover:
-  image: ""
-  caption: ""
 draft: false
 ---
 {{% notice note %}}
