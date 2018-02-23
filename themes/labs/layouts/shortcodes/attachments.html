@@ -1,7 +1,7 @@
 <section class="attachments {{ with .Get "style"}}{{.}}{{ end }}">
 	<label>
 		<i class="fa fa-paperclip" aria-hidden="true"></i>
-		{{with .Get "title"}}{{.}}{{else}}{{T "Attachments-label"}}{{end}}
+		{{with .Get "title"}}{{.}}{{else}}{{T "attachmentsLabel"}}{{end}}
 	</label>
 	{{if eq .Page.File.BaseFileName "index"}}
 		{{$.Scratch.Add "filesName" "files"}}
