@@ -68,11 +68,11 @@ titleSeparator = "|"
 [params.social]
 facebook = "cloudzlabs"
 twitter = "cloudzlabs"
-github = "cloudzlabs"
+github-alt = "cloudzlabs"
 email = "withdtlabs@gmail.com"
 
 [params.social.config]
-platforms = ["twitter", "facebook", "github", "email"]
+platforms = ["twitter", "facebook", "github-alt", "email"]
 
 [params.social.share]
 # Sets Social Share links to appear on posts
