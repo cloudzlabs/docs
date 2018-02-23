@@ -5,7 +5,10 @@ authors: ["1000jaeh"]
 categories:
   - posts
 tags:
-  -
+  - 
+cover:
+  image: /docs/images/default/spring-boot.png
+  caption: ""
 draft: false
 ---
 
