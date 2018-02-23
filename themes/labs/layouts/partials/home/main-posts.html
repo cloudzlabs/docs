@@ -1,6 +1,6 @@
 <div class='container'>
     <section class="cover cover-grid3">
-        {{ range ( first .Site.Params.settings.recentPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) }}
+        {{ range $index, $main := ( first .Site.Params.settings.recentPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) }}
         <article class="cover-story">
             {{- with .Params.cover -}}
             {{- $type := ( printf "%T" . ) -}}
@@ -8,7 +8,7 @@
             <div class="cover-image" src="{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}" style="background-image: url({{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }});"></div>
             {{- end -}}
 
-            <a class="cover-trigger"></a>
+            <a class="cover-trigger bg-color-{{ add $index 1 }}"></a>
             <div class="cover-gradient"></div>
             <div class="cover-header">
                 <p class="cover-section">
