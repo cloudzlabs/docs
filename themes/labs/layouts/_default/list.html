@@ -2,7 +2,7 @@
 
 <div class='offcanvas-wrapper'>
 
-    {{ partial "component/subtitle" . }}
+    {{ .Render "subtitle" }}
 
     <section class='container'>
         <article class="post">
@@ -11,7 +11,7 @@
                 {{ .Render "li" }}
             {{ end }}
 
-            {{ partial "component/pagination" . }}
+            {{ partial "component/paging/pagination" . }}
 
         </article>
     </section>
