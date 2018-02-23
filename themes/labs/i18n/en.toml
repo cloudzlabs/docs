@@ -73,3 +73,6 @@ other = "Table of Contents"
 [tag]
 one = "Tag"
 other = "Tags"
+
+[attachmentsLabel]
+other = "Attachments"

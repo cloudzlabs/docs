@@ -1,0 +1,17 @@
+id = "sya"
+
+[email]
+username = "sya"
+host = "sk.com"
+
+[name]
+display = "Seoyoung Ahn"
+
+[info]
+image = "/images/authors/seoyoung.jpg"
+description = "Microservice Architecture Design"
+
+[social]
+email = "sya@sk.com"
+facebook  = ""
+twitter = ""
