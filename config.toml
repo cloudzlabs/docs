@@ -18,7 +18,7 @@ enableRobotsTXT = true # generate robots.txt
 pygmentsCodefences = true
 
 # Missing translations will default to this content language
-defaultContentLanguage = "en"
+defaultContentLanguage = "ko"
 
 [blackfriday]
 hrefTargetBlank = true
@@ -101,7 +101,7 @@ url = "/posts/"
 
 [languages]
 # edit this block for your own language
-[languages.en]
+[languages.ko]
 lang = "ko"
 languageName = "Korean"
 weight = 1

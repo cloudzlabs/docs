@@ -1,0 +1,75 @@
+[author]
+one = "저자"
+other = "공동 저자"
+
+[by]
+other = "by"
+
+[category]
+one = "카테고리"
+other = "카테고리"
+
+[contactViaEmail]
+other = "이메일 연락처"
+
+[currentPage]
+other = "현재 페이지"
+
+[goHome]
+other = "흠으로..."
+
+[mainMenu]
+other = "메인 메뉴"
+
+[next]
+other = "다음"
+
+[nextPage]
+other = "다음 페이지"
+
+[nextPost]
+other = "다음 글"
+
+[noTerm]
+other = "Not a single {{ .Term }}!"
+
+[openAccountInNewTab]
+other = "새 탭으로 {{ .Platform }} 계정 열기"
+
+[page]
+other = "페이지"
+
+[previous]
+other = "이전"
+
+[previousPage]
+other = "이전 페이지"
+
+[previousPost]
+other = "이전 글"
+
+[postedOn]
+other = "발행"
+
+[readingTime]
+one = "1분 읽기"
+other = "{{ .Count }} 분 읽기"
+
+[recentPosts]
+other = "최근 글"
+
+[skipToContent]
+other = "내용 건너뛰기"
+
+[socialMenu]
+other = "소셜 메뉴"
+
+[tableOfContents]
+other = "목차"
+
+[tag]
+one = "태그"
+other = "태그"
+
+[attachmentsLabel]
+other = "첨부파일"
