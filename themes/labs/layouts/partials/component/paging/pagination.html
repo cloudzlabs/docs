@@ -16,7 +16,7 @@
             {{ else }}
                 {{ if and ( not ( $.Scratch.Get "hasPrevDots" ) ) ( lt .PageNumber $.Paginator.PageNumber )  }}
                 {{- $.Scratch.Set "hasPrevDots" true -}}
-                <li><a href="#"></a>&hellip;</a></li>
+                <li><a href="#">&hellip;</a></li>
                 {{ else if and ( not ( $.Scratch.Get "hasNextDots" ) ) ( gt .PageNumber $.Paginator.PageNumber ) }}
                 {{- $.Scratch.Set "hasNextDots" true -}}
                 <li><a href="#">&hellip;</a></li>

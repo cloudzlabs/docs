@@ -73,3 +73,6 @@ other = "태그"
 
 [attachmentsLabel]
 other = "첨부파일"
+
+[seeAlso]
+other = "함께 보기"

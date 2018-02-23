@@ -2,12 +2,16 @@
 date: "2018-02-21T11:33:28+09:00"
 title: "[Kubernetes 활용(1/8)] 시작하기"
 authors: ["blingeeeee"]
+series: ["k8s"]
 categories:
   - posts
 tags:
   - Kubernetes
   - Container
   - Container Orchestration
+cover:
+  image: /docs/images/default/kubernetes.png
+  caption: ""
 description: ""
 draft: false
 ---

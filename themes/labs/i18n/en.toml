@@ -73,3 +73,6 @@ other = "Tags"
 
 [attachmentsLabel]
 other = "Attachments"
+
+[seeAlso]
+other = "See Also"
