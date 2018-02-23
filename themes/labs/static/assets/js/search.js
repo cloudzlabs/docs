@@ -4,6 +4,21 @@ function endsWith(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
+
+function setRandomColor() {
+$("#colorpad").css("background-color", getRandomColor());
+}
+
 // Initialize lunrjs using our generated index file
 function initLunr() {
     if (!endsWith(baseurl,"/")){
@@ -122,7 +137,7 @@ $( document ).ready(function() {
                 clipInit = true;
             }
 
-            code.after('<span class="copy-to-clipboard" title="Copy to clipboard" />');
+            code.after('<span class="copy-to-clipboard" title="Copy to clipboard"><i class="fa fa-clipboard" aria-hidden="true"></i></span>');
             code.next('.copy-to-clipboard').on('mouseleave', function() {
                 $(this).attr('aria-label', null).removeClass('tooltipped tooltipped-s tooltipped-w');
             });

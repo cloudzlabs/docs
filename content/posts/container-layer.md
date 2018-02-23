@@ -38,7 +38,7 @@ RUN make /app
 CMD python /app/app.py
 ```
 
- `FROM` 은 `ubuntu:15.04` Image에서 Layer를 생성하는 것으로 시작합니다.  `COPY` 는 Docker Client의 현재 디렉토리에서 일부 파일을 추가합니다. `RUN`은 `make`명령어를 사용하여, 응용프로그램을 빌드합니다. 마지막 Layer는 Container 내에서 실행할 명령을 지정합니다.
+`FROM` 은 `ubuntu:15.04` Image에서 Layer를 생성하는 것으로 시작합니다.  `COPY` 는 Docker Client의 현재 디렉토리에서 일부 파일을 추가합니다. `RUN`은 `make`명령어를 사용하여, 응용프로그램을 빌드합니다. 마지막 Layer는 Container 내에서 실행할 명령을 지정합니다.
 
 각각의 Layer는 이전 Layer와의 차이점 Set입니다. Layer는 서로 위에 겹쳐져 있습니다. 새로운 Container를 만들 때, 기본 Layer 위에 새로운 쓰기 가능한 Layer를 추가합니다. 이 Layer를 종종 "Container Layer"라고 합니다. 새 파일 작성, 기존 파일 수정과 삭제와 같은 Container 기동 중에 발생하는 모든 변화들은 Thin Writable Container Layer에 쓰여집니다.
 
