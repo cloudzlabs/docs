@@ -2,8 +2,6 @@
 
 <div class='offcanvas-wrapper'>
 
-    {{ partial "home/intro" . }}
-
     {{- with .Site.Params.settings.homepageSections -}}
         {{- range . -}}
             {{- partial ( print "home/" . ) $ -}}
