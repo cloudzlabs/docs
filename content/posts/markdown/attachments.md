@@ -6,10 +6,7 @@ categories:
   - posts
 tags:
   -
-cover:
-  image: /docs/images/file_name/file_name.png|jpg
-  caption: ""
-draft: true
+draft: false
 ---
 The Attachments shortcode displays a list of files attached to a page.
 
