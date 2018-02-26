@@ -39,7 +39,8 @@
                     </li>
                     {{- end -}}
                     {{ if .Site.Params.settings.showReadingTime }}
-                    <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <li>
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
                         {{ i18n "readingTime" .ReadingTime }}
                     </li>
                     {{ end }}
