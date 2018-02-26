@@ -1,11 +1,11 @@
 ---
-date: "2018-02-23T09:33:07+09:00"
-title: "Attachments"
-authors: []
+date: "2018-02-24T09:33:07+09:00"
+title: "[Markdown 작성하기(4/5)] Attachments 추가하기"
+authors: ["1000jaeh"]
 categories:
   - posts
 tags:
-  -
+  - Markdown
 draft: false
 ---
 The Attachments shortcode displays a list of files attached to a page.

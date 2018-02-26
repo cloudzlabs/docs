@@ -1,6 +1,6 @@
 ---
-date: "2018-02-22T18:52:17+09:00"
-title: "Markdown Syntax"
+date: "2018-02-21T18:52:17+09:00"
+title: "[Markdown 작성하기(1/5)] 기본 Markdown 문법"
 authors: ["1000jaeh"]
 categories:
   - posts
@@ -8,6 +8,7 @@ tags:
   - Markdown
 draft: false
 ---
+
 {{% notice note %}}
 This page is a shameful copy of the great [Grav original page](http://learn.getgrav.org/content/markdown).
 Only difference is information about image customization ([resizing]({{< relref "#resizing-image" >}}), [add CSS classes]({{< relref "#add-css-classes" >}})...)
