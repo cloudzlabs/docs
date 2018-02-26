@@ -10,8 +10,6 @@ googleAnalytics = ""
 Paginate = 5
 preserveTaxonomyNames = true
 
-disableInlineCopyToClipBoard = true
-
 enableRobotsTXT = true # generate robots.txt
 
 # Syntax Highlighting ( https://gohugo.io/content-management/syntax-highlighting/ )
@@ -115,9 +113,14 @@ includeNewer = true
 toLower = true
 
 [[related.indices]]
-name  = "author"
+name  = "slug"
 toLower = true
-weight = 30
+weight = 0
 [[related.indices]]
 name  = "tags"
+toLower = true
 weight = 100
+
+# Inline Code Copy
+[params.clipboard]
+disableInlineCopyToClipBoard = true
