@@ -7,15 +7,13 @@
 
                 {{ partial "meta/author" . }}
 
-                {{ partial "meta/date" . }}
+                {{ partial "meta/posting-date" . }}
 
                 <div class="page-con">
 
                     {{- partial "content/info" . -}}
 
                     {{- partial "content/cover" . -}}
-
-                    {{- partial "content/toc" . -}}
 
                     {{- .Content -}}
 
