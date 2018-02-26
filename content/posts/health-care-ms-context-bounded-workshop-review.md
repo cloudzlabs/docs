@@ -22,7 +22,7 @@ Cloud서비스개발팀 박준 팀장님의 Health-Care 관련 시스템의 MS �
 
 ## 기존의 문제점 - 언어의 문제
 
-Health-Care Application 요구사항에 의거한 용어들에 대해 끊임없는 자문자답을 해본다.
+Health-Care Application 요구사항에 의거한 용어들에 대해 끊임없는 질의해본다.
 
 - 보상/혜택
   - Reward가 사용자에게 주어지면 그게 사용자 입장에서는? Item인가 Reward인가?
