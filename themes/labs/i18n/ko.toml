@@ -53,7 +53,7 @@ other = "발행"
 
 [readingTime]
 one = "1분 읽기"
-other = "{{ .Count }} 분 읽기"
+other = "{{ .Count }} 분 소요"
 
 [recentPosts]
 other = "최근 글"
