@@ -1,6 +1,6 @@
 ---
 date: "2018-02-26T17:52:54+09:00"
-title: "Health-Care-Ms-Context-Bounded-Workshop-Review"
+title: "MSA에서 언어의 중요성"
 authors: [jisangYun]
 categories:
   - posts
