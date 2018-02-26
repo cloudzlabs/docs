@@ -115,9 +115,6 @@ includeNewer = true
 toLower = true
 
 [[related.indices]]
-name = "posts"
-weight = 150
-[[related.indices]]
 name  = "author"
 toLower = true
 weight = 30
