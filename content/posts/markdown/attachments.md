@@ -2,6 +2,7 @@
 date: "2018-02-24T09:33:07+09:00"
 title: "[Markdown 작성하기(4/5)] Attachments 추가하기"
 authors: ["1000jaeh"]
+series: ["markdown"]
 categories:
   - posts
 tags:
