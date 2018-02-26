@@ -1,4 +1,3 @@
-
 <div class="mt-30 row">
 
     {{- if .PrevInSection -}}
@@ -7,19 +6,17 @@
             <div class="author">
                 <div class="author-info">
                     {{- $title := .PrevInSection.Title -}}
-                    {{- with .PrevInSection.Params.authors -}}
-                    {{- range $i, $authorID := . -}}
-                    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
                     <h2 class="post-title">{{- $title -}}</h2>
-                    {{- if $author.info.image -}}
-                    <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $author.info.image }}"/>
-                    {{- else -}}
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    {{- end -}}
-                    <h3>{{- $author.name.display -}}{{ $.LanguagePrefix }}</h3>
-                    <p>{{- $author.info.description -}}</p>
-                    {{- end -}}
-                    {{- end -}}
+                    <ul class="cover-byline">
+                        {{- $dateFormat := ( .PrevInSection.Params.settings.dateFormat | default "2006, Jan 02" ) -}}
+                        <li><i class="fa fa-calendar" aria-hidden="true"></i>
+                        {{- .Date.Format $dateFormat -}}
+                        {{ if .PrevInSection.Params.settings.showReadingTime }}
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        {{ i18n "readingTime" .ReadingTime }}
+                        </li>
+                        {{ end }}
+                    </ul>
                 </div>
             </div>
         </a>
@@ -32,19 +29,17 @@
             <div class="author">
                 <div class="author-info">
                     {{- $title := .NextInSection.Title -}}
-                    {{- with .NextInSection.Params.authors -}}
-                    {{- range $i, $authorID := . -}}
-                    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
                     <h2 class="post-title">{{- $title -}}</h2>
-                    {{- if $author.info.image -}}
-                    <img class="img-circle" alt="" src="{{ $.Site.BaseURL | relURL }}{{ $author.info.image }}"/>
-                    {{- else -}}
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    {{- end -}}
-                    <h3>{{- $author.name.display -}}{{ $.LanguagePrefix }}</h3>
-                    <p>{{- $author.info.description -}}</p>
-                    {{- end -}}
-                    {{- end -}}
+                    <ul class="cover-byline">
+                        {{- $dateFormat := ( .NextInSection.Params.settings.dateFormat | default "2006, Jan 02" ) -}}
+                        <li><i class="fa fa-calendar" aria-hidden="true"></i>
+                        {{- .Date.Format $dateFormat -}}
+                        {{ if .NextInSection.Params.settings.showReadingTime }}
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        {{ i18n "readingTime" .ReadingTime }}
+                        </li>
+                        {{ end }}
+                    </ul>
                 </div>
             </div>
         </a>

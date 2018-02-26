@@ -266,7 +266,8 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 /* search answer */
 .autocomplete-suggestions {
     margin-top:-1px;
-    position:absolute;
+    position: fixed !important;
+    /* position: absolute !important; */
     text-align: left;
     cursor: default;
     border: 1px solid #ddd;
@@ -283,7 +284,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
     overflow-y: hidden;
     box-sizing: border-box;
     color:#777;
-
+    top: 64px !important;
 }
 .autocomplete-suggestion {
     cursor: pointer;
