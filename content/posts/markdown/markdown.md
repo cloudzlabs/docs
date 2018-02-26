@@ -2,6 +2,7 @@
 date: "2018-02-21T18:52:17+09:00"
 title: "[Markdown 작성하기(1/5)] 기본 Markdown 문법"
 authors: ["1000jaeh"]
+series: ["markdown"]
 categories:
   - posts
 tags:

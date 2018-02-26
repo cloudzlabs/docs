@@ -1,17 +1,22 @@
 <div class="mt-30 row">
 
     {{- if .PrevInSection -}}
+    {{- if .NextInSection -}}
     <div class="col-md-6 post-pre">
+    {{- else -}}
+    <div class="col-md-12 post-pre">
+    {{- end -}}
         <a href='{{ .PrevInSection.Permalink | relURL }}'>
             <div class="author">
                 <div class="author-info">
                     {{- $title := .PrevInSection.Title -}}
+                    {{ i18n "previous" }}&nbsp;{{ i18n "page" }}
                     <h2 class="post-title">{{- $title -}}</h2>
                     <ul class="cover-byline">
                         {{- $dateFormat := ( .PrevInSection.Params.settings.dateFormat | default "2006, Jan 02" ) -}}
                         <li><i class="fa fa-calendar" aria-hidden="true"></i>
                         {{- .Date.Format $dateFormat -}}
-                        {{ if .PrevInSection.Params.settings.showReadingTime }}
+                        {{ if .Site.Params.settings.showReadingTime }}
                         <li><i class="fa fa-clock-o" aria-hidden="true"></i>
                         {{ i18n "readingTime" .ReadingTime }}
                         </li>
@@ -24,17 +29,22 @@
     {{- end -}}
 
     {{- if .NextInSection -}}
+    {{- if .PrevInSection -}}
     <div class="col-md-6 post-next">
+    {{- else -}}
+    <div class="col-md-12 post-next">
+    {{- end -}}
         <a href='{{ .NextInSection.Permalink | relURL }}'>
             <div class="author">
                 <div class="author-info">
                     {{- $title := .NextInSection.Title -}}
+                    {{ i18n "next" }}&nbsp;{{ i18n "page" }}
                     <h2 class="post-title">{{- $title -}}</h2>
                     <ul class="cover-byline">
                         {{- $dateFormat := ( .NextInSection.Params.settings.dateFormat | default "2006, Jan 02" ) -}}
                         <li><i class="fa fa-calendar" aria-hidden="true"></i>
                         {{- .Date.Format $dateFormat -}}
-                        {{ if .NextInSection.Params.settings.showReadingTime }}
+                        {{ if .Site.Params.settings.showReadingTime }}
                         <li><i class="fa fa-clock-o" aria-hidden="true"></i>
                         {{ i18n "readingTime" .ReadingTime }}
                         </li>
