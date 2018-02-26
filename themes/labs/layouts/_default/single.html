@@ -15,18 +15,17 @@
 
                     {{- .Content -}}
 
-                    {{- partial "component/recommend" . -}}
-
                     {{- partial "content/series" . -}}
 
                     {{- partial "content/tag-list" . -}}
 
+                    {{- partial "component/social/share" . -}}
 
+                    {{ partial "meta/author" . }}
 
                     {{- partial "component/comments" . -}}
 
                 </div>
-                {{ partial "meta/author" . }}
 
                 {{ partial "component/paging/pager" . }}
 

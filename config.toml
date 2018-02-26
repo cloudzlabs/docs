@@ -24,7 +24,7 @@ defaultContentLanguage = "ko"
 hrefTargetBlank = true
 
 [params.info]
-description = ""
+description = "SK C&C Tech Blog"
 title404 = "Nothing's here!"
 
 [outputs]

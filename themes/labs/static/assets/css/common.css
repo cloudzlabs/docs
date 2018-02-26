@@ -98,6 +98,7 @@ blockquote p {font-size: 16px !important;color: #888 !important;line-height:24px
 /* common  *****************************************************/
 .left { float: left;}
 .right { float: right;}
+.center {text-align: center;}
 
 .top-0 { top: 0; }
 .right-0 { right: 0; }
@@ -665,7 +666,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .page-con h6:first-child { margin-top:0 !important; }
 
 .page-con ul,
-.page-con ol { padding-left: 40px;}
+.page-con ol {padding-left: 40px;}
 
 .page-con a:hover,
 .page-con a:active { text-decoration: underline; }
@@ -721,7 +722,6 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .page-con ol .copy-to-clipboard i:hover { background:#ddd; }
 */
 
-.page-con .box { padding:10px 15px; margin-top:30px; background:#ad4868; background-color:rgba(173, 72, 103, 0.05); }
 
 .page-con .post-authorName {margin:0;color:#999;padding: 0;}
 .page-con img {margin:0 auto; display:block;}
@@ -733,12 +733,13 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .attachments label { background-color: rgba(174, 72, 104, 0.15); padding:2px 15px; border-radius:4px; cursor:pointer;  font-size:16px; font-weight:bold; }
 .attachments label:hover { background-color: rgba(174, 72, 104, 0.2);}
 
-.recommended i { background-color: #fff; border-radius: 50%; padding:12px; margin:0 auto; color:#ad4868; font-weight: bold; font-size: 16px; }
-.comment i { border-radius: 50%; padding:12px; margin:0 auto; color:#777; font-weight: bold; font-size: 16px; }
-.comments { background: #f8f8f8; padding:120px 20px; font-size:20px; font-weight: bold; }
+.page-con .share {padding: 5px 15px; /*background:#ad4868;background-color:rgba(173, 72, 103, 0.05);*/display:  inline-block;width:  100%;border-top:1px solid #ddd;border-bottom:1px solid #ddd;text-align:  center;margin: 0 0 15px 0;}
+.page-con .share .sns {list-style:none;padding:0;margin: 0;display: inline-block;}
+.page-con .share .sns li {float:left;}
+.page-con .share .sns a { text-decoration:none !important; margin:0; padding:0;}
+.page-con .share .sns li i { border-radius: 50%; width:40px; height:40px; padding:12px; margin:0 auto; color:#777; font-weight: bold; font-size: 16px; }
+.page-con .share li i:hover { background-color:rgba(208, 77, 111, 1); color:#fff; }
 
-.recommended i:hover,
-.comment i:hover { background-color:rgba(208, 77, 111, 1); color:#fff; }
 
 .series {display: inline-block;width:  100%;margin: 20px 0;/* border:1px solid #ddd; */box-sizing:border-box;border-left: 3px solid #ad4868;padding-left: 10px;background-color:#fff;padding: 15px;margin-left: 40px;}
 .series h3 { font-size:20px; }
