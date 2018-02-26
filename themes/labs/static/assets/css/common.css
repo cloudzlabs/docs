@@ -263,6 +263,59 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .answer-list li:last-child { border-bottom:none; }
 .answer-list li:hover { background-color: #f2f2f2; }
 
+/* search answer */
+.autocomplete-suggestions {
+    margin-top:-1px;
+    position:absolute;
+    text-align: left;
+    cursor: default;
+    border: 1px solid #ddd;
+    border-top: 0;
+    background: #fff;
+    box-shadow: 0 1px 13px rgba(0,0,0,0.24);
+    transition: left 0.1s ease-in-out;
+    position: absolute;
+    display: none;
+    z-index: 9999;
+    max-height: 70vh;
+    width: 265px;
+    overflow: hidden;
+    overflow-y: hidden;
+    box-sizing: border-box;
+    color:#777;
+
+}
+.autocomplete-suggestion {
+    cursor: pointer;
+    padding: 7px;
+    line-height: 23px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #777;
+}
+
+.autocomplete-suggestion b {
+    font-weight: normal;
+    color: #777;
+}
+
+.autocomplete-suggestion.selected {
+    background: #f8f8f8;
+    color: #777;
+}
+
+.autocomplete-suggestion:hover {
+    background: #f2f2f2;
+    color: #333;
+}
+
+.autocomplete-suggestion > .context {
+    font-size: 12px;
+}
+
+
+
 
 .toolbar {position: absolute;top: 0;right: 0px;height: 100%;z-index: 5;}
 .toolbar .inner {display:block;}
