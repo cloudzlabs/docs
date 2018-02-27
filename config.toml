@@ -16,10 +16,10 @@ enableRobotsTXT = true # generate robots.txt
 pygmentsCodefences = true
 
 # if true, auto-detect Chinese/Japanese/Korean Languages in the content. (.Summary and .WordCount can work properly in CJKLanguage)
-hasCJKLanguage = true
-languageCode = "ko"
+# hasCJKLanguage = true
+# languageCode = "ko"
 # the length of text to show in a .Summary
-summaryLength = 70
+# summaryLength = 70
 
 # enables syntax guessing for code fences without specified language
 pygmentsCodeFencesGuessSyntax = true
