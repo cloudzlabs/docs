@@ -6,7 +6,7 @@ series: ["markdown"]
 categories:
   - posts
 tags:
-  - markdown
+  - Markdown
 draft: false
 ---
 
