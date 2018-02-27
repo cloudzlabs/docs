@@ -45,7 +45,7 @@ CMD python /app/app.py
 
 아래 다이어그램은 Ubuntu 15.04 Image를 기반으로하는 Container의 구조입니다.
 
-![image](/docs/images/container-layers.jpg)
+![image](/images/container-layers.jpg)
 
 *Storage Driver*가 Layers간 상호 작용 방식에 대한 세부 사항들을 처리합니다. 다양한 Storage Driver를 사용할 수 있으며, 상황에 따라 장점과 단점이 있습니다.
 

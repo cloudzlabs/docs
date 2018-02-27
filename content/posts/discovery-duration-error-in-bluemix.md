@@ -28,9 +28,9 @@ draft: false
 
 해당 현상은 eureka client 어플리케이션이 종료됐을 때, eureka server에서 해당 어플리케이션 정보가 삭제되는데 생각보다 delay가 생기는 것이다. (예상 : 5초 내외, but 수 분이상 dashboard 상에서 조회가 된다.)
 
-![bluemix-run](/docs/images/discovery-duration-error-in-bluemix/bluemix-run.PNG)
+![bluemix-run](/images/discovery-duration-error-in-bluemix/bluemix-run.PNG)
 
-![bluemix-stop](/docs/images/discovery-duration-error-in-bluemix/bluemix-stop.PNG)
+![bluemix-stop](/images/discovery-duration-error-in-bluemix/bluemix-stop.PNG)
 
 어디서 꼬인 것인가 ?  
 
@@ -158,7 +158,7 @@ draft: false
 
   - eureka client에 설정 적용 후 eureka/apps 로 확인
    
-    ![erureka-apps](/docs/images/discovery-duration-error-in-bluemix/erureka-apps.PNG)
+    ![erureka-apps](/images/discovery-duration-error-in-bluemix/erureka-apps.PNG)
 
     하지만 eureka client 설정변경과 관계없이, default 값이 90초로 세팅되어 있는데 eureka server dashboard 에서 어플리케이션 정보가 삭제될 때까지 수 분이 걸리는 것으로 봐서 해당 사유는 아닌 듯 하다.
 
@@ -242,13 +242,13 @@ draft: false
       - https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/commit/8eb1bd0180366661988362d123db72a9b67246e9
       - 2017년 10월 18일에 적용되었다. (어플리케이션 배포 시점은 2017년 10월 11일)
        
-         ![liberty-version](/docs/images/discovery-duration-error-in-bluemix/liberty-version.PNG)
+         ![liberty-version](/images/discovery-duration-error-in-bluemix/liberty-version.PNG)
          
     예전에 적용된 빌드팩에 exec prefix가 적용되지 않은 것이 문제라면, 빌드팩을 최신 버전(v.3.1.5)으로 변경해서 재배포를 해보자.
 
   - liberty-for-java buildpack 최신버전으로 변경해서 재배포
    
-    ![cfpush](/docs/images/discovery-duration-error-in-bluemix/cfpush.PNG)
+    ![cfpush](/images/discovery-duration-error-in-bluemix/cfpush.PNG)
                    
     ```bash
     API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
