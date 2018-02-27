@@ -14,7 +14,7 @@ tags:
   - Cloud Foundry
 description: "Bluemix에서 eureka server의 종료된 앱 정보가 삭제되는데 delay가 발생하는 현상이 발생했다. 어떤 문제일까 ?"
 cover:
-  image: /docs/images/discovery-duration-error-in-bluemix/liberty_buildpack.PNG
+  image: ""
   caption: ""
   style: full
 draft: false
