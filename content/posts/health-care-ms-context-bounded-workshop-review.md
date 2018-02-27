@@ -11,9 +11,6 @@ tags:
   - Bounded Context
   - MS 분리 워크샵
   - Domain Driven Design
-cover:
-  image: "/images/health-care-ms-context-bounded-workshop-review/health3.png"
-  caption: ""
 description: ""
 draft: false
 

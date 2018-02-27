@@ -1,6 +1,7 @@
 <div class='container'>
-    <section id="main-post" class="cover cover-grid3">
+    <section id="main-post" class="cover">
         {{ range $index, $main := ( first .Site.Params.settings.recentPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) }}
+        {{ if .Params.cover }}
         <article class="cover-story">
             {{- with .Params.cover -}}
             {{- $type := ( printf "%T" . ) -}}
@@ -46,6 +47,7 @@
                 </ul>
             </div>
         </article>
+        {{ end }}
         {{ end }}
     </section>
 </div>
