@@ -161,7 +161,7 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
 - 상세 적용 방법
 
-  1. MariaDB ssh 연동
+  - MariaDB ssh 연동
 
      PaaS 환경의 서비스 인스턴스는 로컬에서 바로 연동하지 못하고, ssh로 연동한다.
 
@@ -169,13 +169,13 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
      cf ssh -N -L 63306:172.132.14.32:3306 js-local-paas-service-conn
      ```
 
-  2. STS - Run Configuration - Spring Boot - Profiles 설정
+  - STS - Run Configuration - Spring Boot - Profiles 설정
 
      어플리케이션의 수행 profile을 dev로 설정한다.
 
      ![1518489287635](/docs/images/how-to-use-cf-binding-service-in-local-env/1518489287635.png)
 
-  3. STS - Run Configuration - Environment - Environment variables
+  - STS - Run Configuration - Environment - Environment variables
 
      어플리케이션의 PaaS 환경 변수(VCAP_APPLICATION, VCAP_SERVICES)를 설정한다.
 
@@ -191,11 +191,11 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
        >
        > ex. "hostname": "172.132.14.32" => "hostname": "127.0.0.1"
 
-  4. 로컬에서 PaaS 데이터 확인
+  - 로컬에서 PaaS 데이터 확인
 
      ![1518495702705](/docs/images/how-to-use-cf-binding-service-in-local-env/1518495702705.png)
 
-  5. 성공!
+  - 성공!
 
   
 
