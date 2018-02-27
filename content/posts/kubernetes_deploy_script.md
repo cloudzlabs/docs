@@ -8,7 +8,7 @@ tags:
 draft: false
 ---
 
-Kubernetes용 애플리케이션을 개발하기 위해서는 아래 과정을 수행해야 한다. 
+Kubernetes용 애플리케이션을 개발하기 위해서는 아래 과정을 수행해야 한다.
 
 - Project build
 - Docker image build

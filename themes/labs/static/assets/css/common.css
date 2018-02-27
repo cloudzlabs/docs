@@ -604,7 +604,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .post-next .author:hover { background-color: rgba(174, 72, 104, 0.2); }
 
 .post-pre .author .author-info,
-.post-next .author .author-info {margin-left:0;height: 130px;}
+.post-next .author .author-info {margin-left:0;height: 152px !important;}
 
 .post-pre .author img,
 .post-next .author img {width: 60px;height:  60px;margin: -3px 15px;}
@@ -643,7 +643,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .author .cover-byline a { margin:5px 0 0 0; color:#999; }
 .author .cover-byline a { margin:5px 0 0 0; color:#999; }
 
-.foot-author {  position:relative; margin:10px 0 50px 0; padding:20px 0;border-top:1px solid #ddd;border-bottom:1px solid #ddd;}
+.foot-author {position:relative;display:  inline-block;margin: 10px 0 10px 0;padding:20px 0;border-top:1px solid #ddd;border-bottom:1px solid #ddd;width:  100%;}
 .foot-author .author img {display: block;position: absolute;margin: 15px;left: 0;width: 60px;height:60px;border-radius: 50%;overflow: hidden;background: #fff;}
 .foot-author .author i {color: rgba(0, 0, 0, 0.2);display:  inline-block;position:  relative;float:  left;margin-left: -65px;margin-top: 15px;font-size: 60px;}
 .foot-author .author-info h3 { color:#333 !important; margin:0; padding:3px 0 0 0; font-size: 18px;font-weight: bold;overflow: hidden;white-space: normal;text-align: left;word-wrap: break-word;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;}
@@ -733,7 +733,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .attachments label { background-color: rgba(174, 72, 104, 0.15); padding:2px 15px; border-radius:4px; cursor:pointer;  font-size:16px; font-weight:bold; }
 .attachments label:hover { background-color: rgba(174, 72, 104, 0.2);}
 
-.page-con .share {padding: 5px 15px; /*background:#ad4868;background-color:rgba(173, 72, 103, 0.05);*/display:  inline-block;width:  100%;border-top:1px solid #ddd;border-bottom:1px solid #ddd;text-align:  center;margin: 0 0 15px 0;}
+.page-con .share {padding: 5px 15px;/*background:#ad4868;background-color:rgba(173, 72, 103, 0.05);*/display:  inline-block;width:  100%;border-top:1px solid #ddd;border-bottom:1px solid #ddd;text-align:  center;margin: 0 0 15px 0;}
 .page-con .share .sns {list-style:none;padding:0;margin: 0;display: inline-block;}
 .page-con .share .sns li {float:left;}
 .page-con .share .sns a { text-decoration:none !important; margin:0; padding:0;}
@@ -768,6 +768,9 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .page-body .error { position: absolute; top: 50%; left: 50%; -webkit-transform: translate(-50%,-50%); transform: translate(-50%,-50%);text-align:center; top:50%; }
 .error-emo { font-size:150px; color:rgba(0,0,0,0.4); }
 .error-text { font-size:16px; color:rgba(0,0,0,0.4); }
+
+/* single-post-footer */
+.single-post-footer .tag li {line-height: 28px;}
 
 
 
@@ -883,7 +886,6 @@ h3, .h3 { font-size: 22px; }
 .single-post-footer { display: table; width: 100%; }
 .single-post-footer>.column { display: table-cell; vertical-align: middle; }
 .single-post-footer>.column:last-child { text-align: right; }
-.single-post-footer { display: block; }
 }
 
 

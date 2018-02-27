@@ -1,5 +1,5 @@
 baseURL = "https://cloudzlabs.github.io/docs/"
-title = "CloudZ Labs Tech"
+title = "CloudZ Labs Tech Blog"
 theme = "labs"
 
 # for smart copyright line, leave this blank and check [params.copyright]
@@ -39,7 +39,8 @@ enableEmoji = true
 hrefTargetBlank = true
 
 [params.info]
-description = "SK C&C Tech Blog"
+home = "CloudZ Labs Tech"
+description = "SK C&C"
 title404 = "Nothing's here!"
 
 [outputs]
@@ -141,3 +142,6 @@ weight = 100
 # Inline Code Copy
 [params.clipboard]
 disableInlineCopyToClipBoard = true
+
+[params.attachments]
+path = "attachments/"

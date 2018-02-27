@@ -17,11 +17,15 @@
 
                     {{- partial "content/series" . -}}
 
-                    {{- partial "content/tag-list" . -}}
+                    <div class="single-post-footer">
 
-                    {{- partial "component/social/share" . -}}
+                        {{- partial "content/tag-list" . -}}
 
-                    {{ partial "meta/author" . }}
+                        {{- partial "component/social/share" . -}}
+
+                        {{ partial "meta/author" . }}
+
+                    </div>
 
                     {{- partial "component/comments" . -}}
 

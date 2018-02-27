@@ -5,17 +5,9 @@
         {{- range $i, $authorID := . -}}
         {{- $author := ( index $.Site.Data.authors $authorID ) -}}
         {{- if gt $i 0 }}, {{ end -}}
-        <i class="fa fa-user" aria-hidden="true"></i>
         <a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">
             {{- $author.name.display -}}
         </a>
     {{- end -}}
     {{- end -}}
-    {{- $dateFormat := ( .Site.Params.settings.dateFormat | default "2006, Jan 02" ) -}}
-    published on <i class="fa fa-calendar" aria-hidden="true"></i>
-    {{- .Date.Format $dateFormat -}}
-    {{ if .Site.Params.settings.showReadingTime }}
-    <i class="fa fa-clock-o" aria-hidden="true"></i>
-    {{ i18n "readingTime" .ReadingTime }}
-    {{ end }}
 </p>
