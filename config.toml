@@ -142,6 +142,3 @@ weight = 100
 # Inline Code Copy
 [params.clipboard]
 disableInlineCopyToClipBoard = true
-
-[params.attachments]
-path = "attachments/"

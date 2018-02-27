@@ -1,6 +1,6 @@
 ---
 date: "2018-02-23T15:21:51+09:00"
-title: "[Markdown 작성하기(3/5)] Notice 적용하기"
+title: "[Markdown 작성하기(3/4)] Notice 적용하기"
 authors: ["1000jaeh"]
 series: ["markdown"]
 categories:
