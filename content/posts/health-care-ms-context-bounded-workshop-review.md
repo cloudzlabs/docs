@@ -16,9 +16,8 @@ cover:
   caption: ""
 description: ""
 draft: false
----
 
-Health-Care 관련 시스템 - MS 분리 워크샵 이후 Cloud서비스개발팀 박준 팀장님의 Review 내용을 옮긴 글입니다.
+---
 
 ## 기존의 문제점 - 언어의 문제
 
