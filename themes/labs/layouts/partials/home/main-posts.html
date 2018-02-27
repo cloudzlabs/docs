@@ -1,5 +1,6 @@
 <div class='container'>
-    <section id="main-post" class="cover cover-grid3">
+
+    <section id="main-post" class="cover cover-grid{{ .Site.Params.settings.recentPostsLength }}">
         {{ range $index, $main := ( first .Site.Params.settings.recentPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) }}
         <article class="cover-story">
             {{- with .Params.cover -}}
