@@ -1,6 +1,6 @@
 ---
 date: "2018-02-13T08:34:45+09:00"
-title: "Spring Cloud Connector로 PaaS의 binding 서비스를 로컬에서 사용하기"
+title: "로컬에서 Spring Cloud Connector 사용하기"
 authors: ["jisangYun"]
 categories:
   - posts
@@ -13,6 +13,7 @@ tags:
   - Spring Cloud
 description: "로컬 개발 환경과 PaaS 환경을 분리해서 개발환경을 구성하는 경우의 불편한점을 개선하기 위한 방법을 찾아보자"
 draft: false
+
 ---
 
 
