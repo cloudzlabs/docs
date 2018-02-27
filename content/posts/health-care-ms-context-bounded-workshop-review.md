@@ -1,16 +1,16 @@
 ---
 date: "2018-02-26T17:52:54+09:00"
-title: "MSA에서 언어의 중요성"
+title: "MSA 에서 유비쿼터스 언어의 중요성"
 authors: [jisangYun]
 categories:
   - posts
 tags:
+  - Ubiquitous
   - HealthCare
   - Mobile
   - Bounded Context
   - MS 분리 워크샵
   - Domain Driven Design
-  - Ubiquitous
 cover:
   image: "/docs/images/health-care-ms-context-bounded-workshop-review/health3.png"
   caption: ""
