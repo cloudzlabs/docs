@@ -1,11 +1,12 @@
 ---
-date: "2018-02-23T09:24:41+09:00"
-title: "Mermaid"
-authors: []
+date: "2018-02-25T09:24:41+09:00"
+title: "[Markdown 작성하기(5/5)] Mermaid를 활용한 Flow Chart & Diagram 작성"
+authors: ["1000jaeh"]
+series: ["markdown"]
 categories:
   - posts
 tags:
-  -
+  - markdown
 draft: false
 ---
 

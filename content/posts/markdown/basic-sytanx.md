@@ -1,13 +1,15 @@
 ---
-date: "2018-02-22T18:52:17+09:00"
-title: "Markdown Syntax"
+date: "2018-02-21T18:52:17+09:00"
+title: "[Markdown 작성하기(1/5)] 기본 Markdown 문법"
 authors: ["1000jaeh"]
+series: ["markdown"]
 categories:
   - posts
 tags:
-  - Markdown
+  - markdown
 draft: false
 ---
+
 {{% notice note %}}
 This page is a shameful copy of the great [Grav original page](http://learn.getgrav.org/content/markdown).
 Only difference is information about image customization ([resizing]({{< relref "#resizing-image" >}}), [add CSS classes]({{< relref "#add-css-classes" >}})...)
@@ -30,7 +32,6 @@ John Gruber, the author of Markdown, puts it like this:
 
 > The overriding design goal for Markdown’s formatting syntax is to make it as readable as possible. The idea is that a Markdown-formatted document should be publishable as-is, as plain text, without looking like it’s been marked up with tags or formatting instructions. While Markdown’s syntax has been influenced by several existing text-to-HTML filters, the single biggest source of inspiration for Markdown’s syntax is the format of plain text email.
 > -- <cite>John Gruber</cite>
-
 
 Grav ships with built-in support for [Markdown](http://daringfireball.net/projects/markdown/) and [Markdown Extra](https://michelf.ca/projects/php-markdown/extra/). You must enable **Markdown Extra** in your `system.yaml` configuration file
 
@@ -87,7 +88,6 @@ Comment below should **NOT** be seen:
 <!--
 This is a comment
 -->
-
 
 ## Horizontal Rules
 

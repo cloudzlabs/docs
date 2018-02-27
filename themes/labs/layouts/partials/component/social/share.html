@@ -1,55 +1,59 @@
-{{ if .Site.Params.social.share.enabled | default true}}
-<!-- Google Plus -->
-{{ if .Site.Params.social.share.google | default true}}
-<li>
-    <a class="social-button" href="//plus.google.com/share?url={{ .Permalink }}" target="_blank" rel="noopener">
-        <i class="fa fa-google-plus" aria-hidden="true"></i>
-    </a>
-</li>
-{{ end }}
+<div class="share">
+    <ul class="sns center">
+        {{ if .Site.Params.social.share.enabled | default true}}
+        <!-- Google Plus -->
+        {{ if .Site.Params.social.share.google | default true}}
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url={{ .Permalink }}" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        {{ end }}
 
-<!-- Twitter -->
-{{ if .Site.Params.social.share.twitter | default true}}
-<li>
-    <a class="social-button" href="//twitter.com/share?url={{ .Permalink }}&amp;text={{ .Title }}&amp;via={{ .Site.Social.twitter }}" target="_blank" rel="noopener">
-        <i class="fa fa-twitter" aria-hidden="true"></i>
-    </a>
-</li>
-{{ end }}
+        <!-- Twitter -->
+        {{ if .Site.Params.social.share.twitter | default true}}
+        <li>
+            <a class="social-button" href="//twitter.com/share?url={{ .Permalink }}&amp;text={{ .Title }}&amp;via={{ .Site.Social.twitter }}" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        {{ end }}
 
-<!-- Facebook -->
-{{ if .Site.Params.social.share.facebook | default true}}
-<li>
-    <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener">
-        <i class="fa fa-facebook" aria-hidden="true"></i>
-    </a>
-</li>
-{{ end }}
+        <!-- Facebook -->
+        {{ if .Site.Params.social.share.facebook | default true}}
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        {{ end }}
 
-<!-- LinkedIn -->
-{{ if .Site.Params.social.share.linkedin | default true}}
-<li>
-    <a class="social-button" href="//www.linkedin.com/shareArticle?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" rel="noopener">
-        <i class="fa fa-linkedin" aria-hidden="true"></i>
-    </a>
-</li>
-{{ end }}
+        <!-- LinkedIn -->
+        {{ if .Site.Params.social.share.linkedin | default true}}
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        {{ end }}
 
-<!-- Pintrest -->
-{{ if .Site.Params.social.share.pinterest | default true}}
-<li>
-    <a class="social-button" href="//www.pinterest.com/pin/create/button/?url={{ .Permalink }}&amp;description={{ .Title }}" target="_blank" rel="noopener">
-        <i class="fa fa-pinterest-p" aria-hidden="true"></i>
-    </a>
-</li>
-{{ end }}
+        <!-- Pintrest -->
+        {{ if .Site.Params.social.share.pinterest | default true}}
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url={{ .Permalink }}&amp;description={{ .Title }}" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        {{ end }}
 
-<!-- Email -->
-{{ if .Site.Params.socialShareEmail | default true}}
-<li>
-    <a class="social-button" href="mailto:?subject=Check out this post by {{ .Params.author }}&amp;body={{ .Permalink }}" target="_blank" rel="noopener">
-        <i class="fa fa-envelope" aria-hidden="true"></i>
-    </a>
-</li>
-{{ end }}
-{{ end }}
+        <!-- Email -->
+        {{ if .Site.Params.socialShareEmail | default true}}
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by {{ .Params.author }}&amp;body={{ .Permalink }}" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        {{ end }}
+        {{ end }}
+    </ul>
+</div>

@@ -1,12 +1,12 @@
 ---
-date: "2018-02-22T15:21:51+09:00"
-title: "Notice"
+date: "2018-02-23T15:21:51+09:00"
+title: "[Markdown 작성하기(3/5)] Notice 적용하기"
 authors: ["1000jaeh"]
+series: ["markdown"]
 categories:
   - posts
 tags:
   - markdown
-description: ""
 draft: false
 ---
 The notice shortcode shows 4 types of disclaimers to help you structure your page.

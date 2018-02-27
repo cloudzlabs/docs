@@ -19,7 +19,7 @@ draft: false
 
 ## What?
 
-#### 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용하자. 
+**로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용하자.** 
 
 
 
@@ -201,5 +201,5 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
 ## Conclusion
 
-#### Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해, 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
+**Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해, 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.**
 

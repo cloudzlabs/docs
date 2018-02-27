@@ -5,8 +5,6 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
 
-                {{ partial "meta/author" . }}
-
                 {{ partial "meta/posting-date" . }}
 
                 <div class="page-con">
@@ -17,9 +15,17 @@
 
                     {{- .Content -}}
 
-                    {{- partial "content/tag-list" . -}}
-
                     {{- partial "content/series" . -}}
+
+                    <div class="single-post-footer">
+
+                        {{- partial "content/tag-list" . -}}
+
+                        {{- partial "component/social/share" . -}}
+
+                        {{ partial "meta/author" . }}
+
+                    </div>
 
                     {{- partial "component/comments" . -}}
 

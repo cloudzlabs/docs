@@ -1,11 +1,13 @@
 <div class="row col-lg-12">
     <ul class="cover-byline">
         {{- $dateFormat := ( .Site.Params.settings.dateFormat | default "2006, Jan 02" ) -}}
-        <li><i class="fa" aria-hidden="true"></i>
-        {{- .Date.Format $dateFormat -}}
+        <li>
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+            {{- .Date.Format $dateFormat -}}
         {{ if .Site.Params.settings.showReadingTime }}
-        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
-        {{ i18n "readingTime" .ReadingTime }}
+        <li>
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            {{ i18n "readingTime" .ReadingTime }}
         </li>
         {{ end }}
     </ul>

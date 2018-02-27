@@ -1,11 +1,12 @@
 ---
-date: "2018-02-23T09:33:07+09:00"
-title: "Attachments"
-authors: []
+date: "2018-02-24T09:33:07+09:00"
+title: "[Markdown 작성하기(4/5)] Attachments 추가하기"
+authors: ["1000jaeh"]
+series: ["markdown"]
 categories:
   - posts
 tags:
-  -
+  - markdown
 draft: false
 ---
 The Attachments shortcode displays a list of files attached to a page.
@@ -43,7 +44,6 @@ That's all !
 | Parameter | Default | Description |
 |:--|:--|:--|
 | title | "Attachments" | List's title  |
-| style | "" | Choose between "orange", "grey", "blue" and "green" for nice style |
 | pattern | ".*" | A regular expressions, used to filter the attachments by file name. <br/><br/>The **pattern** parameter value must be [regular expressions](https://en.wikipedia.org/wiki/Regular_expression).
 
 For example:
@@ -61,30 +61,3 @@ For example:
 renders as
 
 {{%attachments title="Related files" pattern=".*(pdf|mp4)"/%}}
-
-#### Colored styled box
-
-    {{%/*attachments style="orange" /*/%}}
-
-renders as
-
-{{% attachments style="orange" /%}}
-
-
-    {{%/*attachments style="grey" /*/%}}
-
-renders as 
-
-{{% attachments style="grey" /%}}
-
-    {{%/*attachments style="blue" /*/%}}
-
-renders as
-
-{{% attachments style="blue" /%}}
-    
-    {{%/*attachments style="green" /*/%}}
-
-renders as
-
-{{% attachments style="green" /%}}

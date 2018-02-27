@@ -3,7 +3,7 @@
 <div class="site-branding">
     <div class="inner">
         <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
-        <a class="site-logo" href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+        <a class="site-logo" href="{{ .Site.BaseURL }}">{{ .Site.Params.info.home }}</a>
     </div>
 </div>
 <nav class='site-menu'>
@@ -21,11 +21,6 @@
 
 <div class="toolbar">
     <div class="tools">
-        <ul class="sns">
-
-            {{- partial "component/social/share" $ -}}
-
-        </ul>
         <div class="search">
             <i class="fa fa-search" aria-hidden="true"></i>
         </div>
