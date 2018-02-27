@@ -79,9 +79,7 @@ Bounded Context와 용어를 명확하게 규정하고 책임을 제한할 필�
 
 각 Bounded Context는 밖의 세상을 알지 못한다.
 
-Health-Care Application에서 일어나고 있는 일들을 Bounded Context 내에서 바라보면 아래와 같이 바라보게 된다.
-
-이 용어들은 철저하게 Bounded Context 내에서 유비쿼터스 용어가 제한되어야 하며, 밖의 세상에 관여되어서는 안된다.
+Health-Care Application에서 일어나고 있는 일들을 Bounded Context 내에서 바라보면 아래와 같이 바라보게 된다. 이 용어들은 철저하게 Bounded Context 내에서 유비쿼터스 용어가 제한되어야 하며, 밖의 세상에 관여되어서는 안된다.
 
 예를 들면 상품관리 팀에서 걸음 수 미션 달성 따위를 얘기하면 안된다는 것이다.
 
