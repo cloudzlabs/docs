@@ -40,7 +40,7 @@ hrefTargetBlank = true
 
 [params.info]
 home = "CloudZ Labs Tech"
-description = "SK C&C"
+description = ""
 title404 = "Nothing's here!"
 
 [outputs]
@@ -53,7 +53,7 @@ customJS = ["assets/js/common.js", "assets/js/scripts.js", "assets/js/lunr.min.j
 
 [params.copyright]
 prefix = "Copyright"
-holder = "CloudZ Labs"
+holder = "SK 주식회사 C&C CloudZ Labs"
 startYear = "2018"
 suffix = "All Rights Reserved."
 
