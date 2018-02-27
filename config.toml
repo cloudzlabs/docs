@@ -1,4 +1,4 @@
-baseURL = "https://cloudzlabs.github.io/docs/"
+baseURL = "http://tech.cloudz-labs.sk.com/"
 title = "CloudZ Labs Tech Blog"
 theme = "labs"
 
@@ -40,7 +40,7 @@ hrefTargetBlank = true
 
 [params.info]
 home = "CloudZ Labs Tech"
-description = "SK C&C"
+description = ""
 title404 = "Nothing's here!"
 
 [outputs]
@@ -53,6 +53,7 @@ customJS = ["assets/js/common.js", "assets/js/scripts.js", "assets/js/lunr.min.j
 
 [params.copyright]
 prefix = "Copyright"
+text = "SK 주식회사 C&C "
 holder = "CloudZ Labs"
 startYear = "2018"
 suffix = "All Rights Reserved."

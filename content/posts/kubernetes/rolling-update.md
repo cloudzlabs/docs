@@ -11,7 +11,7 @@ tags:
   - Container Orchestration
   - Rolling Update
 cover:
-  image: /docs/images/discovery-duration-error-in-bluemix/liberty_buildpack.PNG
+  image: /images/discovery-duration-error-in-bluemix/liberty_buildpack.PNG
   caption: ""
 description: ""
 draft: false

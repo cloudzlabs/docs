@@ -1,26 +1,40 @@
 ---
 date: "2018-02-20T16:55:36+09:00"
-title: "CF CLI"
+title: "CF CLI 사용하기"
 authors: ["sya"]
 categories:
   - posts
 tags:
+  - CLOUD FOUNDRY
   - CF
   - CF CLI
+  - PAAS
 description: ""
 draft: false
 ---
 {{% notice note %}}
-CF 명령어 도구에서 **자주 사용하는 CF CLI 명령어**를 사용하는 방법을 정리하였습니다.
+오픈소스 CF CLI에서 **자주 사용하는 CF CLI 명령어**를 사용하는 방법을 정리하였습니다.
 CF CLI에서 사용 가능한 모든 명령어의 사용법은 [CF 공식 홈페이지 문서](https://docs.cloudfoundry.org/cf-cli/)를 참고하길 바랍니다.
 {{% /notice%}}
 
+# CF?
+CF CLI 사용 방법을 알아보기에 앞서 CF가 무엇인지 간단히 살펴보겠습니다. CF는 Cloud Foundry의 약자로, 2011년 VMWare가 업계 최초로 만든 오픈소스 PaaS 플랫폼입니다. 지금은 Cloud Foundry 재단에서 관리하고 있습니다.
+
+## 오픈소스 CF 제품
+Cloud Foundry의 오픈소스 Cloud Foundry 기술을 기반으로 만든 제품은 다음과 같습니다.
+- PCF (Pivotal Cloud Foundry)
+  - [Pivotal](https://pivotal.io/)에서 오픈소스 Cloud Foundry로 만든 상용 PaaS
+- (Bluemix)[https://www.ibm.com/cloud-computing/bluemix]
+  - IBM이 오픈 소스 Cloud Foundry로 만든 상용 PaaS
+
+
 # CF CLI?
 -------------------------------
-명령 프롬프트를 통해서 Cloud Foundry(PaaS) 의 기능을 사용할 수 있도록 해주는 도구입니다.
+GO 언어로 개발된 Cloud Foundry의 Command Line Interfacae입니다. 사용자가 CF CLI를 설치하면 명령 프롬프트를 통해서 CF기반의 PaaS 환경에 자신이 만든 애플리케이션을 배포하거나 서비스 생성하여 바인등하는 등의 다양한 기능을 사용할 수 있습니다. 
 
 ## CF CLI 설치 방법
-1. [cf cli 설치 가이드 페이지](https://github.com/cloudfoundry/cli/releases)에 접속합니다.
+CLI Installer를 다운로드하여 간단히 설치할 수 있습니다.
+1. [CF CLI 설치 가이드 페이지](https://github.com/cloudfoundry/cli/releases) 에 접속합니다.
 2. Installer 문단에서 컴퓨터 OS 정보에 맞는 파일을 다운로드합니다.
 
     > **Tip. 컴퓨터가 32bit인지 64bit인지 확인 방법**
@@ -298,74 +312,75 @@ cf push -f [manifest.yml file path]
 - manifest.yml 설정 정보는 [CF 공식가이드 문서의 manifest.yml 가이드 문서](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html)를 참고하세요. 
 
 #### 예시
-- 옵션 없이 사용하는 경우
+- 옵션 없이 사용하는 경우 
 
-    ``` java
-    $ ls
-    log		mvnw		pom.xml		target
-    manifest.yml	mvnw.cmd	src
-    $ cf push
+``` java
+$ ls
+log		mvnw		pom.xml		target
+manifest.yml	mvnw.cmd	src
+$ cf push
 
-    Manifest 파일 /Users/seoyoungahn/git/spring-boot-tutorial/cloud-movie/manifest.yml 사용
+Manifest 파일 /Users/seoyoungahn/git/spring-boot-tutorial/cloud-movie/manifest.yml 사용
 
-    sya@sk.com(으)로 dtlab 조직/dev 영역에서 cloud-movie 앱 업데이트 중...
-    확인
+sya@sk.com(으)로 dtlab 조직/dev 영역에서 cloud-movie 앱 업데이트 중...
+확인
 
-    cloud-movie 업로드 중...
-    업로드 중인 앱 파일 원본 위치: /var/folders/mc/0_v3hb1j2j71t_g53qg8qjg40000gn/T/unzipped-app239365053
-    443.5K, 105 파일 업로드
-    Done uploading               
-    확인
+cloud-movie 업로드 중...
+업로드 중인 앱 파일 원본 위치: /var/folders/mc/0_v3hb1j2j71t_g53qg8qjg40000gn/T/unzipped-app239365053
+443.5K, 105 파일 업로드
+Done uploading               
+확인
 
 
-    sya@sk.com(으)로 dtlab 조직/dev 영역에서 cloud-movie 앱 시작 중...
-    Downloading java_buildpack...
-    Downloaded java_buildpack
-    Creating container
-    Successfully created container
-    Downloading app package...
-    Downloaded app package (16.6M)
-    Staging...
-    -----> Java Buildpack Version: v3.11 | https://github.com/cloudfoundry/java-buildpack.git#eba4df6
-    -----> Downloading Open Jdk JRE 1.8.0_111 from https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_111.tar.gz (10.6s)
-        Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.3s)
-    -----> Downloading Open JDK Like Memory Calculator 2.0.2_RELEASE from https://java-buildpack.cloudfoundry.org/memory-calculator/trusty/x86_64/memory-calculator-2.0.2_RELEASE.tar.gz (0.0s)
-        Memory Settings: -Xmx681574K -XX:MaxMetaspaceSize=104857K -XX:MetaspaceSize=104857K -Xms681574K -Xss349K
-    -----> Downloading Spring Auto Reconfiguration 1.12.0_RELEASE from https://java-buildpack.cloudfoundry.org/auto-reconfiguration/auto-reconfiguration-1.12.0_RELEASE.jar (0.0s)
-    Exit status 0
-    Staging complete
-    Uploading droplet, build artifacts cache...
-    Uploading droplet...
-    Uploading build artifacts cache...
-    Uploaded build artifacts cache (44.9M)
-    Uploaded droplet (61.8M)
-    Uploading complete
-    Destroying container
-    Successfully destroyed container
+sya@sk.com(으)로 dtlab 조직/dev 영역에서 cloud-movie 앱 시작 중...
+Downloading java_buildpack...
+Downloaded java_buildpack
+Creating container
+Successfully created container
+Downloading app package...
+Downloaded app package (16.6M)
+Staging...
+-----> Java Buildpack Version: v3.11 | https://github.com/cloudfoundry/java-buildpack.git#eba4df6
+-----> Downloading Open Jdk JRE 1.8.0_111 from https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_111.tar.gz (10.6s)
+       Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.3s)
+-----> Downloading Open JDK Like Memory Calculator 2.0.2_RELEASE from https://java-buildpack.cloudfoundry.org/memory-calculator/trusty/x86_64/memory-calculator-2.0.2_RELEASE.tar.gz (0.0s)
+       Memory Settings: -Xmx681574K -XX:MaxMetaspaceSize=104857K -XX:MetaspaceSize=104857K -Xms681574K -Xss349K
+-----> Downloading Spring Auto Reconfiguration 1.12.0_RELEASE from https://java-buildpack.cloudfoundry.org/auto-reconfiguration/auto-reconfiguration-1.12.0_RELEASE.jar (0.0s)
+Exit status 0
+Staging complete
+Uploading droplet, build artifacts cache...
+Uploading droplet...
+Uploading build artifacts cache...
+Uploaded build artifacts cache (44.9M)
+Uploaded droplet (61.8M)
+Uploading complete
+Destroying container
+Successfully destroyed container
 
-    0 / 1 인스턴스 실행 중, 1 시작 중
-    1 / 1 인스턴스 실행 중
+0 / 1 인스턴스 실행 중, 1 시작 중
+1 / 1 인스턴스 실행 중
 
-    앱 시작됨
+앱 시작됨
 
-    확인
 
-    `CALCULATED_MEMORY=$($PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-2.0.2_RELEASE -memorySizes=metaspace:64m..,stack:228k.. -memoryWeights=heap:65,metaspace:10,native:15,stack:10 -memoryInitials=heap:100%,metaspace:100% -stackThreads=300 -totMemory=$MEMORY_LIMIT) && JAVA_OPTS="-Djava.io.tmpdir=$TMPDIR -XX:OnOutOfMemoryError=$PWD/.java-buildpack/open_jdk_jre/bin/killjava.sh $CALCULATED_MEMORY" && SERVER_PORT=$PORT eval exec $PWD/.java-buildpack/open_jdk_jre/bin/java $JAVA_OPTS -cp $PWD/. org.springframework.boot.loader.JarLauncher` 명령을 사용하여 cloud-movie 앱이 시작되었습니다.
+확인
 
-    sya@sk.com(으)로 dtlab 조직/dev 영역에서 cloud-movie 앱의 상태 표시 중...
-    확인
+`CALCULATED_MEMORY=$($PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-2.0.2_RELEASE -memorySizes=metaspace:64m..,stack:228k.. -memoryWeights=heap:65,metaspace:10,native:15,stack:10 -memoryInitials=heap:100%,metaspace:100% -stackThreads=300 -totMemory=$MEMORY_LIMIT) && JAVA_OPTS="-Djava.io.tmpdir=$TMPDIR -XX:OnOutOfMemoryError=$PWD/.java-buildpack/open_jdk_jre/bin/killjava.sh $CALCULATED_MEMORY" && SERVER_PORT=$PORT eval exec $PWD/.java-buildpack/open_jdk_jre/bin/java $JAVA_OPTS -cp $PWD/. org.springframework.boot.loader.JarLauncher` 명령을 사용하여 cloud-movie 앱이 시작되었습니다.
 
-    요청된 상태: started
-    인스턴스: 1/1
-    사용법: 1G x 1 인스턴스
-    URL: cloud-movie-leathern-estrin.paas.sk.com
-    마지막으로 업로드함: Fri Feb 23 01:02:09 UTC 2018
-    스택: cflinuxfs2
-    빌드팩: java_buildpack
+sya@sk.com(으)로 dtlab 조직/dev 영역에서 cloud-movie 앱의 상태 표시 중...
+확인
 
-        상태      이후                     CPU    메모리   디스크   세부사항
-    #0   실행 중   2018-02-23 10:07:53 AM   0.0%   0 / 1G   0 / 1G
-    ```
+요청된 상태: started
+인스턴스: 1/1
+사용법: 1G x 1 인스턴스
+URL: cloud-movie-leathern-estrin.paas.sk.com
+마지막으로 업로드함: Fri Feb 23 01:02:09 UTC 2018
+스택: cflinuxfs2
+빌드팩: java_buildpack
+
+     상태      이후                     CPU    메모리   디스크   세부사항
+#0   실행 중   2018-02-23 10:07:53 AM   0.0%   0 / 1G   0 / 1G
+```
 
 - 옵션 사용 시
 

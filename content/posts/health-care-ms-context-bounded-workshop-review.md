@@ -12,7 +12,7 @@ tags:
   - MS 분리 워크샵
   - Domain Driven Design
 cover:
-  image: "/docs/images/health-care-ms-context-bounded-workshop-review/health3.png"
+  image: "/images/health-care-ms-context-bounded-workshop-review/health3.png"
   caption: ""
 description: ""
 draft: false
@@ -60,7 +60,7 @@ Health-Care Application 요구사항에 의거한 용어들에 대해 끊임없�
 
 Health-Care Application이라는 컨텍스트는 게임과 유사하다.
 
-![game](/docs/images/health-care-ms-context-bounded-workshop-review/health1.jpg)
+![game](/images/health-care-ms-context-bounded-workshop-review/health1.jpg)
 
 게임에서 캐릭터가 활동하는 것이 실제 사람으로 바뀌었을 뿐이다.
 
