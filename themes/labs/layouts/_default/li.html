@@ -9,7 +9,7 @@
             {{- with .Params.cover -}}
             {{- $type := ( printf "%T" . ) -}}
             {{- $isMap := ( not ( eq $type "string" ) ) -}}
-            <img class="img-responsive" alt="Post Thumbnail" src='{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
+            <img class="img-responsive" alt="Post Thumbnail" src='{{ $.Site.BaseURL }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
                 {{- if $isMap }}
                     {{- with .caption }} alt='{{ . | markdownify }}'{{ end -}}
                 {{ end -}} />

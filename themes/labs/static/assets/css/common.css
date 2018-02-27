@@ -176,7 +176,7 @@ button:focus { outline: none; }
 .tag {/* margin:15px 0 0 0; */padding:0;display: inline-block;width: 100%;float:left;list-style:none;}
 .tag li { float:left; margin-right: 4px; line-height: 28px; }
 .tag li a{ display: inline-block; margin-bottom: 8px; padding: 0 12px; transition: all .3s; border: 1px solid #e1e7ec; border-radius: 4px; color: #606975 !important; font-size: 13px; font-weight: 500; text-decoration: none !important; white-space: nowrap; }
-.tag li a:hover { background-color: #fff; color: #ad4868 ; border:1px solid #ad4868; -webkit-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); -moz-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); }
+.tag li a:hover { text-decoration:none !important; background-color: #fff; color: #ad4868 ; border:1px solid #ad4868; -webkit-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); -moz-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); }
 .tag li a.active { border-color: #111; background-color: #111; color: #fff ; cursor: default; }
 .text-right .tag { margin-right: 0; margin-left: 4px; }
 .text-center .tag { margin-right: 2px; margin-left: 2px; }
@@ -388,9 +388,9 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .visual-title {  min-height: 280px; text-align: center; }
 .visual-title .visual {display:  inline-block;padding-top: 140px; color: rgba(225,225,225,.95) !important;letter-spacing: 2px;font-size: 28px;min-height: 280px;}
 .visual-title h3 {display: inline-block;font-size: 40px;font-weight: bold;color: rgba(225,225,225,.95) !important;line-height: 40px;margin-right:10px;}
-.visual-title.bg-tags { background-position: center; background-repeat: no-repeat;  background-size: cover; background-image: url("/images/tags.png");}
-.visual-title.bg-authors { background-position: center; background-repeat: no-repeat;  background-size: cover; background-image: url("/images/authors.png"); }
-.visual-title.bg-posts { background-position: center; background-repeat: no-repeat;  background-size: cover; background-image: url("/images/posts.png");}
+.visual-title.bg-tags { background-position: center; background-repeat: no-repeat;  background-size: cover; background-image: url("/docs/images/tags.png");}
+.visual-title.bg-authors { background-position: center; background-repeat: no-repeat;  background-size: cover; background-image: url("/docs/images/authors.png"); }
+.visual-title.bg-posts { background-position: center; background-repeat: no-repeat;  background-size: cover; background-image: url("/docs/images/posts.png");}
 
 .visual-title.bg-tags,
 .visual-title.bg-authors,
@@ -552,6 +552,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 /* card */
 .card { border-radius: 0; border:1px solid #eee; -webkit-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); -moz-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); }
+.card a:hover { text-decoration:underline !important;}
 .card .post-title {font-size: 28px;}
 .card img {overflow: hidden;margin: 0 auto;vertical-align:  middle;display:  inherit;height: 100%;width: 100%;max-height: 340px;}
 .card .post-info {min-height: 340px;overflow:  hidden;}
@@ -938,7 +939,6 @@ h3, .h3 { font-size: 22px; }
 .card .tag { margin:0; padding:0; padding-bottom:20px;}
 .foot-author {margin-top:0;border-top:none;}
 .foot-author .cover-byline { float: left; padding: 0 0 10px 0;}
-.page-con ol {padding-left: 0;}
 .page-con ul {padding-left: 20px;}
 .page-con ol { margin-left:0; }
 .page-con ol li { margin-left:20px; }
