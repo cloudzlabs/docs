@@ -59,7 +59,7 @@ figure figcaption {display: block;/* position: absolute; */bottom: 0;left: 0;wid
 .position-fixed { position: fixed !important; }
 .position-static { position: static !important; }
 
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {margin: 0;color: #374250 !important; font-family: inherit;font-style: normal;font-weight: 500;text-transform: none; font-weight: bold;}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {margin: 0;color: #374250 !important;font-family: inherit;font-style: normal;font-weight: 500;text-transform: none;font-weight: bold;}
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small { display: block; padding-top: 3px; color: #9da9b9; }
 h1 { font-size: 54px;}
 h2 { font-size: 46px;}
@@ -317,6 +317,8 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 }
 
 
+
+
 .toolbar {position: absolute;top: 0;right: 0px;height: 100%;z-index: 5;}
 .toolbar .inner {display:block;}
 .toolbar .sns {height: auto;display: inline-block;}
@@ -384,7 +386,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 .visual-main-title {min-height: 240px;background:#fff;/* border-bottom:1px solid #eee; */height: 200px !important;text-align:center;/*box-shadow: 0 1px 13px rgba(0,0,0,0.09);*/margin-bottom:  -60px;}
 .visual-main-title .visual {display:  inline-block;padding-top: 120px; color: rgba(0,0,0,.5) !important; letter-spacing: 2px;font-size: 28px;min-height: 280px;}
-.visual-main-title h3 {display: inline-block;font-size: 40px;font-weight: bold; color: rgba(0,0,0,.6) !important;line-height: 40px;margin-right:10px;}
+.visual-main-title h3 {display: inline-block;font-size: 40px;font-weight: bold;color: rgba(0,0,0,.6) !important;line-height: 40px;margin-right:10px;}
 .visual-main-title p { font-size:18px;}
 
 .visual-title {  min-height: 280px; text-align: center; }
@@ -883,7 +885,7 @@ h3, .h3 { font-size: 22px; }
 .single-post-meta .column { display: block; width: 100%; }
 .single-post-meta .column:last-child { padding-top: 5px; text-align: left; }
 .single-post-meta .column:last-child .meta-link { margin-right: 10px; margin-left: 0; }
-.cover .distraction-title, .cover h2 { font-size: 20px; line-height: 24px; }
+.cover .distraction-title, .cover h2 {font-size: 20px;line-height: 30px;}
 .cover article { min-height: 30vh; position: relative; }
 .cover-grid1 .cover-story { min-height: 50vh; }
 .cover-grid1 .cover-story .distraction-title, .cover-grid1 .cover-story h2 { font-size: 28px; line-height: 1; }
@@ -914,13 +916,14 @@ h3, .h3 { font-size: 22px; }
 .visual-area p { font-size: 24px; line-height: 28px; }
 .post-pre,
 .post-next { margin:10px 0; }
+
 /*.card img { height: 100% !important; max-height:100%; }*/
 .card.mb-30 { margin-bottom:10px !important;}
 .card .post-excerpt,
 .card .btn-link,
 .card img { display:none;}
 .card .post-info { min-height:auto;}
-.card .post-title>a {font-size: 20px; overflow: hidden; white-space: normal; text-align: left; display: inline-block;:}
+.card .post-title>a {font-size: 20px; overflow: hidden; white-space: normal; text-align: left; display: inline-block;}
 .card h4,
 .card .post-authorName a { font-size:13px; font-weight:normal; }
 .card .tag { margin:0; padding:0; padding-bottom:20px;}
