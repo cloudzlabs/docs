@@ -6,7 +6,7 @@
         <div class="author">
             <a href='{{ $.Site.BaseURL }}authors/{{ $author.id }}'>
                 {{- if $author.info.image -}}
-                <img class="img-circle" alt="" src='{{ .Site.BaseURL }}{{- partial "data/author/image" . -}}'>
+                <img class="img-circle" alt="" src='{{ $.Site.BaseURL }}{{- partial "data/author/image" . -}}'>
                 {{- else -}}
                 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                 {{- end -}}
