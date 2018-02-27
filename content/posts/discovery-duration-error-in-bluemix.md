@@ -1,16 +1,16 @@
 ---
 date: "2018-02-19T10:39:44+09:00"
-title: "Bluemix에서 종료된 앱 정보가 eureka server 에서 제거되기까지 delay가 발생하는 현상"
-authors: ["jisangYun","1000jaeh"]
+title: "Liberty BuildPack 버전에 따른 Eureka Server 매핑 정보 삭제 delay 현상 분석하기"
+authors: ["jisangYun"]
 categories:
   - posts
 tags:
+  - Liberty BuildPack
   - Spring Cloud
   - Spring Cloud Eureka
   - Bluemix
   - BuildPack
   - Java BuildPack
-  - Liberty BuildPack
   - Cloud Foundry
 description: "Bluemix에서 eureka server의 종료된 앱 정보가 삭제되는데 delay가 발생하는 현상이 발생했다. 어떤 문제일까 ?"
 cover:
@@ -260,8 +260,8 @@ draft: false
     여전히 수정되지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있다. 
      
     sigterm의 오타인가 설마... 원인을 잘 모르겠다.
-
-### GG
+    
+    **GG**
 
 
 
