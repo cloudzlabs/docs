@@ -18,9 +18,11 @@ CF CLI에서 사용 가능한 모든 명령어의 사용법은 [CF 공식 홈페
 {{% /notice%}}
 
 # CF?
+-------------------------------
 CF CLI 사용 방법을 알아보기에 앞서 CF가 무엇인지 간단히 살펴보겠습니다. CF는 Cloud Foundry의 약자로, 2011년 VMWare가 업계 최초로 만든 오픈소스 PaaS 플랫폼입니다. 지금은 Cloud Foundry 재단에서 관리하고 있습니다.
 
 ## 오픈소스 CF 제품
+
 Cloud Foundry의 오픈소스 Cloud Foundry 기술을 기반으로 만든 제품은 다음과 같습니다.
 - PCF (Pivotal Cloud Foundry)
   - [Pivotal](https://pivotal.io/)에서 오픈소스 Cloud Foundry로 만든 상용 PaaS
