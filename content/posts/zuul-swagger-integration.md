@@ -9,7 +9,10 @@ tags:
   - Zuul
   - Srping Cloud
 description: ""
-draft: true
+cover:
+  image: /images/default/swagger.png
+  caption: ""
+draft: false
 ---
 
 MSA(Micro Service Architecture) 활용하여 팀 홈페이지를 제작하는 과정에서 User BFF에서 백엔드 서비스를 호출하기 위해 Zuul을 사용하였습니다.

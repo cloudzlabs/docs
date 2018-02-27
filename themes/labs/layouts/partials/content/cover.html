@@ -8,7 +8,7 @@
     {{- with .style -}} {{ . }} {{- else -}} normal {{- end -}}
     {{- else -}} normal {{- end -}}
     '>
-    <img src='{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
+    <img src='{{ $.Site.BaseURL }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
         {{- if $isMap }}
             {{- with .caption }} alt='{{ . | markdownify }}'{{ end -}}
         {{ end -}} />

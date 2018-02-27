@@ -10,7 +10,7 @@ tags:
   - Container
   - Container Orchestration
 cover:
-  image: /images/default/kubernetes.png
+  image: /images/default/k8s.png
   caption: ""
 description: ""
 draft: false

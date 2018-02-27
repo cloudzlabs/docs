@@ -7,6 +7,9 @@ categories:
   - posts
 tags:
   - markdown
+cover:
+  image: /images/default/markdown.png
+  caption: ""
 draft: false
 ---
 

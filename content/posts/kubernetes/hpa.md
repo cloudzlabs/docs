@@ -14,7 +14,7 @@ tags:
   - Autoscale
   - Scale Out
 cover:
-  image: /images/discovery-duration-error-in-bluemix/liberty_buildpack.PNG
+  image: /images/default/k8s.png
   caption: ""
 description: ""
 draft: false
