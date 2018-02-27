@@ -11,22 +11,17 @@ tags:
 draft: false
 ---
 
-Kubernetes용 애플리케이션을 개발하기 위해서는 아래 과정을 수행해야 한다.
-
-- Project build
-- Docker image build
-- Docker push
-- Kubenetes apply
-
-이 과정은 생각보다 긴 시간이 소요되며, 많은 휴먼 에러를 발생시킨다. 이러한 문제를 해결하기 위해 위의 과정을 수행할 수 있는 스크립트를 작성하였다. 이어지는 내용은 이 스크립트의 사용방법이다.
+최근 Container 기술이 각광을 받고 있습니다. 그래서 저도 Kubernets 교육을 수강하고 있는데, Kubernets에 배포 한번 하기 참 힘드네요.
+Project build, Docker image build, Docker push, K8s deploy 총 4개의 과정을 거쳐야 애플리케이션 배포가 끝이 납니다.
+도저히 이 과정을 참을 수 없어서 배포 스크립트를 만들었습니다. 사용방법은 아래 설명하였으니, 잘 활용하시기 바랍니다.
 
 ### 사용법
 
 #### 1. deploy.sh 저장
-페이지 하단 deploy.sh 파일을 개발중인 프로젝트 루트에 저장한다.
+페이지 하단 deploy.sh 파일을 개발중인 프로젝트 루트에 저장합니다.
 
 #### 2. 설정
-deploy.sh 파일의 상단 설정을 입력한다.
+deploy.sh 파일의 상단 설정을 입력합니다.
 
   ```sh
   #!/bin/sh
@@ -71,7 +66,7 @@ deploy.sh 파일의 상단 설정을 입력한다.
   ```
 
 #### 3. deploy.sh 실행
-deploy.sh를 실행한다. 단, Windows docker toolbox를 사용할 경우 docker terminal에서 실행해야한다.
+deploy.sh를 실행합니다. 단, Windows docker toolbox를 사용할 경우 docker terminal에서 실행해야합니다.
 
 ```sh
 $ ./deploy.sh
