@@ -28,7 +28,7 @@
 
 
 /* body *****************************************************/
-html * {text-rendering: optimizeLegibility;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;}
+html * {text-rendering: optimizeLegibility;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale; word-break:break-all;}
 body { overflow-x:hidden; background-position: center;color:#333 !important;background-color: #fff;background-repeat: no-repeat;background-size: cover;font-family:'Noto Sans',"Nanum Gothic",  Arial, sans-serif;font-size: 14px;font-weight: normal;text-transform: none;line-height: 1.5;}
 a {text-decoration: none;color: #999; cursor: pointer; }
 a:hover { /*text-decoration:underline;*/ }
@@ -39,6 +39,7 @@ a:focus { outline: none; }
 .navi-link-light { color: #fff; }
 img, figure {max-width: 100%;height: auto;vertical-align: middle;}
 svg { max-width: 100%; }
+sup { color:#ad4868 !important;}
 * { box-sizing: border-box; }
 *::before, *::after { box-sizing: border-box; }
 hr { margin: 0; border: 0; border-top: 1px solid #e1e7ec; }
@@ -214,7 +215,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .offcanvas-toggle:hover { color: #111; }
 .offcanvas-toggle.menu-toggle { display: none; }
 
-.navbar { position: fixed; top: 0; left: 0; width: 100%; min-height: 64px; background-color: #D04D6F; z-index: 9000; box-shadow: 0 1px 13px rgba(0,0,0,0.24); }
+.navbar { position: fixed; top: 0; left: 0; width: 100%; min-height: 64px; background-color: #D04D6F; z-index: 9000; box-shadow: 0 1px 13px rgba(0,0,0,0.24); overflow-x: hidden; }
 .navbar.navbar-stuck { position: fixed; box-shadow: 0 3px 25px 0 rgba(47,56,68,0.22); z-index: 9010; }
 .site-branding { position: absolute; top: 0; left: 0; height: 100%; z-index: 5; }
 .site-branding .inner { display: table; height: 100%; min-height: 100%; }
@@ -265,9 +266,9 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 /* search answer */
 .autocomplete-suggestions {
+    overflow-y:scroll;
     margin-top:-1px;
     position: fixed !important;
-    /* position: absolute !important; */
     text-align: left;
     cursor: default;
     border: 1px solid #ddd;
@@ -275,17 +276,13 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
     background: #fff;
     box-shadow: 0 1px 13px rgba(0,0,0,0.24);
     transition: left 0.1s ease-in-out;
-    position: absolute;
-    display: none;
     z-index: 9999;
     max-height: 70vh;
-    width: 265px;
-    overflow: hidden;
-    overflow-y: hidden;
     box-sizing: border-box;
     color:#777;
     top: 64px !important;
 }
+
 .autocomplete-suggestion {
     cursor: pointer;
     padding: 7px;
@@ -827,7 +824,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 
 @media (max-width: 1070px) {
-.navbar { min-height: 64px; }
+.navbar { min-height: 64px;  }
 .site-logo { padding-left:0; }
 .toolbar {display: inline-block;}
 .offcanvas-toggle.menu-toggle {display: table-cell;}
