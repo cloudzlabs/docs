@@ -1,4 +1,4 @@
-baseURL = "https://tech.cloudz-labs.sk.com/"
+baseURL = "http://tech.cloudz-labs.sk.com/"
 title = "CloudZ Labs Tech Blog"
 theme = "labs"
 
