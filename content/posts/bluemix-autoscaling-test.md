@@ -16,6 +16,7 @@ cover:
   image: /docs/contents/images/bluemix-autoscaling-test/auto-scaling.png
   caption: ""
 draft: true
+
 ---
 
 ## What ?
