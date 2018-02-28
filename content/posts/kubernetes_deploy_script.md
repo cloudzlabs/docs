@@ -8,6 +8,9 @@ tags:
   - Kuberetes
   - Docker
   - Deploy
+cover:
+  image: /images/default/k8s.png
+  caption: ""
 draft: false
 ---
 
