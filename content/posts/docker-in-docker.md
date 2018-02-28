@@ -27,8 +27,6 @@ Docker CLI가 `/var/run/docker.sock`를 통해 daemon에 명령어를 전달한�
 결국 `/var/run/docker.sock` 파일만 공유를 하면 Local에 설치된 Docker를 컨테이너 내부에서 사용할 수 있고,
 또한 컨터에너 내부에 설치된 Docker를 다른 컨테이너 내부에서 사용이 가능해집니다.
 
-![dind-arch](content/images/docker-in-docker/dind-arch.png)
-
 ## 사용해보기
 
 로컬에 설치된 Docker를 컨테이너에서 사용하기 위해 아래 명령어를 통해 수행합니다.
