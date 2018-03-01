@@ -13,7 +13,7 @@ tags:
   - Auto Scaling
   - Spring Auto Reconfiguration
 cover:
-  image: /contents/images/bluemix-autoscaling-test/auto-scaling.png
+  image: posts/bluemix-autoscaling-test/auto-scaling.png
   caption: ""
 draft: true
 
@@ -24,7 +24,7 @@ draft: true
 PaaS 사용의 이점으로 항상 언급되는 것이 바로 Auto-Scaling 이다.
 
 Bluemix는 어플리케이션에 Auto-Scaling 서비스를 binding 해 Auto-Scaling을 적용할 수 있다.
-![bluemix-auto-scaling-info](contents/images/bluemix-autoscaling-test/bluemix-auto-scaling-info.PNG)
+![bluemix-auto-scaling-info](bluemix-auto-scaling-info.PNG)
 
 - [Bluemix Auto-Scaling 서비스](https://console.bluemix.net/catalog/services/auto-scaling/)
   - 어플리케이션의 scaling 정책을 정의할 수 있다.
@@ -37,7 +37,7 @@ Bluemix는 어플리케이션에 Auto-Scaling 서비스를 binding 해 Auto-Scal
 ## Why ?
 Bluemix Auto-Scaling 서비스의 사용 방법 및 [DOCS](https://console.bluemix.net/docs/services/Auto-Scaling/index.html)를 확인하니, 몇가지 제약사항이 언급되어 있다.
 
-![restriction](contents/images/bluemix-autoscaling-test/retriction.PNG)
+![restriction](retriction.PNG)
 
 > 참고: Auto-Scaling 메트릭 데이터를 수집하려면 Liberty 웹 컨테이너를 통해 HTTP/HTTPS 측정 요청이 처리되도록 애플리케이션이 Liberty 웹 앱으로 배치되어야 합니다. 
 

@@ -57,7 +57,7 @@ Health-Care Application 요구사항에 의거한 용어들에 대해 끊임없�
 
 Health-Care Application이라는 컨텍스트는 게임과 유사하다.
 
-![game](/images/health-care-ms-context-bounded-workshop-review/health1.jpg)
+![game](health1.jpg)
 
 게임에서 캐릭터가 활동하는 것이 실제 사람으로 바뀌었을 뿐이다.
 
