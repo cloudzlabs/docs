@@ -1,22 +1,16 @@
-<div class="foot-author row">
-    {{- with .Params.authors -}}
-    {{- range $i, $authorID := . -}}
+{{- range $i, $authorID := .Params.authors -}}
     {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-    <div class="col-lg-6 col-md-6 col-sm-12 ">
-        <div class="author">
-            <a href='{{ $.Site.BaseURL }}authors/{{ $author.id }}'>
-                {{- if $author.info.image -}}
-                <img class="img-circle" alt="" src='{{ $.Site.BaseURL }}{{ $author.info.image }}'>
-                {{- else -}}
-                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                {{- end -}}
-                <div class="author-info">
-                    <h3>{{- $author.name.display -}}{{ $.LanguagePrefix }}</h3>
-                    <p>{{- $author.info.description -}}</p>
-                </div>
-            </a>
-        </div>
+    <a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">
+    {{- if $author.info.image -}}
+    <img class="img-circle" alt="" src='{{ $.Site.BaseURL }}{{ $author.info.image }}'>
+    {{- else -}}
+    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+    {{- end -}}
+    <div class="author-info">
+        <h3>{{- $author.name.display -}}</h3>
+        <p>{{- $author.info.description -}}</p>
     </div>
-    {{- end -}}
-    {{- end -}}
-</div>
+</a>
+{{- end -}}
+
+

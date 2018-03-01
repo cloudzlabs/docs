@@ -26,8 +26,15 @@
 
                         {{- partial "component/social/share" . -}}
 
-                        {{ partial "meta/author" . }}
+                        <div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
 
+                                    {{ partial "meta/author" . }}
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {{- partial "component/comments" . -}}

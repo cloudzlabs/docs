@@ -1,0 +1,4 @@
+{{- range $i, $authorID := .Params.authors -}}
+{{- $author := ( index $.Site.Data.authors $authorID ) -}}
+<a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">{{- $author.name.display -}}</a>
+{{- end -}}

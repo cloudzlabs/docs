@@ -26,18 +26,10 @@
                 <a href="{{ .URL }}">{{ .Title }}</a>
             </h3>
 
-            {{- with .Params.authors -}}
-            <h4 class="post-authorName">by&nbsp;
-                {{- range $i, $authorID := . -}}
-                    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-                    {{- $name := $author.name -}}
-                    {{- if gt $i 0 }}, {{ end -}}
-                    <a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">
-                        {{- $name.display -}}
-                    </a>
-                {{- end -}}
+            <h4 class="post-authorName">
+                {{ i18n "by" }}&nbsp;
+                {{- partial "meta/author-name" . -}}
             </h4>
-            {{- end -}}
 
             <p class="post-excerpt">
                 {{- $page := . -}}
@@ -52,7 +44,7 @@
                 <a href="{{ .URL }}">Read more...</a>
             </p>
             {{ if .Params.tags }}
-                {{ partial "meta/tags" .}}
+                {{ partial "meta/tags" . }}
             {{ end }}
             {{- /* vim: set ts=2 sw=2 et: */}}
         </div>
