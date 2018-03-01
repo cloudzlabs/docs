@@ -10,7 +10,7 @@
 
         {{ range .Paginator.Pagers }}
             {{ if ( eq . $.Paginator ) }}
-            <li><a href="#">{{- .PageNumber -}}</a></li>
+            <li class="active"><a href="#">{{- .PageNumber -}}</a></li>
             {{ else if or ( or ( eq . $.Paginator.First ) ( eq . $.Paginator.Prev ) ) ( or ( eq . $.Paginator.Next ) ( eq . $.Paginator.Last ) ) }}
             <li><a href="{{ .URL }}">{{- .PageNumber -}}</a></li>
             {{ else }}
