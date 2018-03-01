@@ -13,13 +13,7 @@
             <div class="cover-header">
                 <p class="cover-section">
                     {{ if .Params.tags }}
-                    <div class="tag">
-                        {{ with .Params.tags }}
-                        {{ range first 1 . }}
-                        <li><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">{{ . }}</a></li>
-                        {{ end }}
-                        {{ end }}
-                    </div>
+                        {{ partial "meta/tags" .}}
                     {{ end }}
                 </p>
                 <h2 class="cover-title">

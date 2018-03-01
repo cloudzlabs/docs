@@ -52,9 +52,7 @@
                 <a href="{{ .URL }}">Read more...</a>
             </p>
             {{ if .Params.tags }}
-            <ul class="tag">
-                {{ partial "meta/tag" .}}
-            </ul>
+                {{ partial "meta/tags" .}}
             {{ end }}
             {{- /* vim: set ts=2 sw=2 et: */}}
         </div>
