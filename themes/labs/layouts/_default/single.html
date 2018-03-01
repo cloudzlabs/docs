@@ -4,12 +4,15 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10">
+                <div class="row col-lg-12">
 
-                {{ partial "meta/posting-date" . }}
+                    {{- partial "content/info" . -}}
+
+                </div>
 
                 <div class="page-con">
 
-                    {{- partial "content/info" . -}}
+                    {{- partial "content/frontmatter" . -}}
 
                     {{- partial "content/cover" . -}}
 
