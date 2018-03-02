@@ -6,9 +6,8 @@ categories:
   - posts
 tags:
   - microserve
-
 cover:
-  image: "/images/file_name/file_name.png|jpg"
+  image: "posts/microservices-io/PatternsRelatedToMicroservices.jpg"
   caption: ""
 description: ""
 draft: true
@@ -26,7 +25,7 @@ CloudZ Labs에서는 작년부터 마이크로 서비스 아키텍처 적용을 
     경우 한가지 솔루션을 선택 -&gt; 더 이상 해결할 문제가 없을때 까지
     반복   <br/>
 
- ![overview](/images/micorservices-io/PatternsRelatedToMicroservices.jpg)
+ ![overview](PatternsRelatedToMicroservices.jpg)
 
 ## 모놀리식 vs 마이크로 서비스 패턴 결정 
 애플리케이션 아키텍처 패턴으로 모놀리식과 마이크로 서비스 패턴 중에 선택하고, 마이크로 서비스 패턴을 선택했다면 마이크로 서비스 아키텍처에서 고려되어야 할 문제들을 도출하고 해결 방법을 찾아야 함. </br>
@@ -453,7 +452,7 @@ End- to -End Test는 어렵기 때문에.
 -   비지니스 기능에 해당하는 서비스 정의 
 -   비지니스 기능은 비지니스 아키텍처 모델링의 개념 
 -   온라인 상점의 비지니스 모델링  
-     ![business](/images/micoroservices-io/decompose-by-business-capability.png)
+     ![business](decompose-by-business-capability.png)
 -   #### 이점 
 
     -   비지니스 기능이 이미 안정적이기 때문에 안정적인 아키텍처가 됨
@@ -481,7 +480,7 @@ End- to -End Test는 어렵기 때문에.
     -   generic - 비지니스와 관련이 없는 기능으로 가능하다면 상용
         서비스들을 활용
 -   온라인 상점의 하위도메인   
-   ![subdomain](/images/micoroservices-io/decompose-by-subdomain.png)
+   ![subdomain](decompose-by-subdomain.png)
 -   #### 이점 
 
     -   하위 도메인이  이미 안정적이기 때문에 안정적인 아키텍처가 됨 
