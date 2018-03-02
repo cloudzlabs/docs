@@ -240,8 +240,8 @@ CloudZ Labs에서는 작년부터 마이크로 서비스 아키텍처 적용을 
 
 #### *<span class="underline">이와 관련되서 Cloudz Labs 에서는?</span>*
 
--   *<span class="underline">API Gateway(ZUUL) 가이드</span>*
--   *<span class="underline">BFF 가이드 </span>*
+- *<span class="underline">API Gateway(ZUUL) 가이드</span>*
+- *<span class="underline">BFF 가이드 </span>*
 
 ### Service Discovery
 
@@ -251,11 +251,9 @@ CloudZ Labs에서는 작년부터 마이크로 서비스 아키텍처 적용을 
 
 #### Client-side Discovery
 
--   클라이언트에서 서비스 레지스트리에 서비스 인스턴스의 수와 위치를
-    얻음 
--   Eureka 
--   서비스 ↔ 서비스 레지스트리  통신으로 요청하려는 서비스의 정보를 얻고
-    , 서비스 ↔  요청 서비스 통신 수행 
+- 클라이언트에서 서비스 레지스트리에 서비스 인스턴스의 수와 위치를 얻음
+- Eureka 
+- 서비스 ↔ 서비스 레지스트리  통신으로 요청하려는 서비스의 정보를 얻고, 서비스 ↔  요청 서비스 통신 수행 
 
 이점 
 

@@ -5,10 +5,10 @@ username = "1000jaeh"
 host = "sk.com"
 
 [name]
-display = "Jaehoon Jung"
+display = "정재훈"
 
 [info]
-image = ""
+image = "/images/authors/1000jaeh.jpeg"
 description = "Microservice Architecture Design"
 
 [social]
