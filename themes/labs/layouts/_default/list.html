@@ -2,7 +2,7 @@
 
 <div class='offcanvas-wrapper'>
 
-    {{ .Render "subtitle" }}
+    {{- partial "home/subtitle" . -}}
 
     <section class='container'>
         <article class="post">
@@ -16,5 +16,4 @@
         </article>
     </section>
 </div>
-
 {{ end }}
