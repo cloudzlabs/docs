@@ -1,0 +1,17 @@
+id = "jihyun"
+
+[email]
+username = "limjh82"
+host = "sk.com"
+
+[name]
+display = "임지현"
+
+[info]
+image = "/images/authors/jihyun.png" 
+description = "Microservice Architecture Design"
+
+[social]
+email = "limjh82@sk.com"
+facebook  = ""
+twitter = ""
