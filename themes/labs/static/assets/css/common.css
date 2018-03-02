@@ -556,7 +556,8 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .card .post-title {font-size: 28px;}
 .card img {overflow: hidden;margin: 0 auto;vertical-align:  middle;display:  inherit;height: 100%;width: 100%;max-height: 340px;object-fit: cover !important;}
 .card .post-info {min-height: 340px;overflow:  hidden;}
-.card .card-style-1 { padding:0; } /* 이미지가 있을 경우 */
+/* .card .card-style-1 { padding:0; } 이미지가 있을 경우 */
+.card .card-style-1 { padding:0px 0px 0px 30px;} /* 이미지가 있을 경우 */
 .card .card-style-1 .post-title { padding-top:20px; }
 .card .card-style-1 .post-title,
 .card .card-style-1 .post-authorName,
