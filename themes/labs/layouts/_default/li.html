@@ -4,38 +4,40 @@
     {{ else }}
     <div class="row card-style-2">
     {{ end }}
-    {{- if .Params.cover -}}
-    <div class="col-md-7 col-sm-12 col-xs-12 post-info">
-    {{- else -}}
-    <div class="col-sm-12 col-xs-12 post-info">
-    {{- end -}}
 
-        <h3 class="post-title">
-            <a href="{{ .URL }}">{{ .Title }}</a>
-        </h3>
+        {{- if .Params.cover -}}
+        <div class="col-md-7 col-sm-12 col-xs-12 post-info">
+        {{- else -}}
+        <div class="col-sm-12 col-xs-12 post-info">
+        {{- end -}}
 
-        <h4 class="post-authorName">
-            {{ i18n "by" }}&nbsp;
-            {{- partial "meta/author-name" . -}}
-        </h4>
+            <h3 class="post-title">
+                <a href="{{ .URL }}">{{ .Title }}</a>
+            </h3>
 
-        <p class="post-excerpt">
-            {{- $page := . -}}
-                {{- with .Description -}}
-                    {{ . | plainify | htmlUnescape | replaceRE "(?m)(\\s+)" " " }}
-                {{- else -}}
-                    {{ .Summary | plainify | htmlUnescape | replaceRE "(?m)(\\s+)" " " }}{{ if .Truncated }}
-                {{ end }}
-            {{- end -}}
-        </p>
-        <p class="btn-link">
-            <a href="{{ .URL }}">Read more...</a>
-        </p>
-        {{ if .Params.tags }}
-            {{ partial "meta/tags" . }}
-        {{ end }}
-        {{- /* vim: set ts=2 sw=2 et: */}}
-    </div>
+            <h4 class="post-authorName">
+                {{ i18n "by" }}&nbsp;
+                {{- partial "meta/author-name" . -}}
+            </h4>
+
+            <p class="post-excerpt">
+                {{- $page := . -}}
+                    {{- with .Description -}}
+                        {{ . | plainify | htmlUnescape | replaceRE "(?m)(\\s+)" " " }}
+                    {{- else -}}
+                        {{ .Summary | plainify | htmlUnescape | replaceRE "(?m)(\\s+)" " " }}{{ if .Truncated }}
+                    {{ end }}
+                {{- end -}}
+            </p>
+            <p class="btn-link">
+                <a href="{{ .URL }}">Read more...</a>
+            </p>
+            {{ if .Params.tags }}
+                {{ partial "meta/tags" . }}
+            {{ end }}
+            {{- /* vim: set ts=2 sw=2 et: */}}
+        </div>
+
         {{- if .Params.cover -}}
         <a href="#" class="col-md-5 col-sm-12 col-xs-12">
             {{- with .Params.cover -}}
