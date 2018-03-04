@@ -20,7 +20,7 @@ draft: false
 
 ## What?
 
-**로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용하자.** 
+**로컬 개발 환경에서 Spring Cloud Connector를 사용해서 Application에 binding 된 PaaS 서비스를 사용하자.** 
 
 
 
