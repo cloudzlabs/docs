@@ -80,73 +80,62 @@ draft: false
 
 Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입) 을 활용하자.
 
+### 개발 환경
+- STS(Spring Tool Suite)
+- Spring Boot 1.5.9
+- Spring Cloud Connector [Spring Cloud Connector Docs Link](http://cloud.spring.io/spring-cloud-connectors/spring-cloud-connectors.html)
+- Cloud Foundry 기반의 OpenPaaS
+  - MariaDB 인스턴스
 
 
-- 개발 환경
+### 미리 준비한 것
+- MariaDB 인스턴스 생성 : js-test-MariaDB
+- 어플리케이션 : js-local-paas-service-conn
+  - dependency 추가 - Spring Cloud Connector
+  
+    ![1518495055690](1518495055690.png)
+  - datasource 설정
+    - Bean 생성
+      ```java
+      @Configuration
+      @Profile({"dev"})
+      public class CloudConfiguration extends AbstractCloudConfig {
+        
+        @Value("${services.datasource.name}")
+        private String datasourceName;
 
-  - STS(Spring Tool Suite)
-  - Spring Boot 1.5.9
-  - Spring Cloud Connector [Spring Cloud Connector Docs Link](http://cloud.spring.io/spring-cloud-connectors/spring-cloud-connectors.html)
-  - Cloud Foundry 기반의 OpenPaaS
-    - MariaDB 인스턴스
+        @Value("${services.datasource.initial-size}")
+        private int minPoolSize;
 
+        @Value("${services.datasource.maximum-pool-size}")
+        private int maxPoolSize;
 
-- 미리 준비한 것
+        @Value("${services.datasource.max-wait-time}")
+        private int maxWaitTime;
 
-  - MariaDB 인스턴스 생성 : js-test-MariaDB
-
-  - 어플리케이션 : js-local-paas-service-conn
-
-    - dependency 추가 - Spring Cloud Connector
-
-      ![1518495055690](1518495055690.png)
-
-    - datasource 설정
-
-      - Bean 생성
-
-        ```java
-        @Configuration
-        @Profile({"dev"})
-        public class CloudConfiguration extends AbstractCloudConfig {
-        	
-        	@Value("${services.datasource.name}")
-        	private String datasourceName;
-
-        	@Value("${services.datasource.initial-size}")
-        	private int minPoolSize;
-
-        	@Value("${services.datasource.maximum-pool-size}")
-        	private int maxPoolSize;
-
-        	@Value("${services.datasource.max-wait-time}")
-        	private int maxWaitTime;
-
-        	/**
-        	 * configure datasource.
-        	 * @return dataSource object
-        	 */
-        	@Bean
-        	public DataSource dataSource() {
-        		PoolConfig poolConfig = new PoolConfig(minPoolSize, maxPoolSize, maxWaitTime);
-        		DataSourceConfig dbConfig = new DataSourceConfig(poolConfig, null);
-        		return connectionFactory().dataSource(datasourceName, dbConfig);
-        	}
+        /**
+          * configure datasource.
+          * @return dataSource object
+          */
+        @Bean
+        public DataSource dataSource() {
+          PoolConfig poolConfig = new PoolConfig(minPoolSize, maxPoolSize, maxWaitTime);
+          DataSourceConfig dbConfig = new DataSourceConfig(poolConfig, null);
+          return connectionFactory().dataSource(datasourceName, dbConfig);
         }
+      }
+      ```
 
-        ```
-
-      - application-dev.yml - datasource 설정
-
-        ```yaml
-        services:
-          datasource: 
-            initial-size: 1
-            maximum-pool-size: 100
-            max-wait-time: 3000
-            name: js-test-mariadb
-            initialize: false
-        ```
+    - application-dev.yml - datasource 설정
+      ```yaml
+      services:
+        datasource: 
+          initial-size: 1
+          maximum-pool-size: 100
+          max-wait-time: 3000
+          name: js-test-mariadb
+          initialize: false
+      ```
 
   - js-local-paas-service-conn 을 PaaS에 배포한 후 js-test-MariaDB 와 binding 한다.
 
@@ -155,48 +144,44 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
   - 로컬 환경과 PaaS 환경의 데이터가 다른 것을 확인한다.
 
     ![151231](151231-8495551138.png)
-
   - 준비 끝!
 
 
 
-- 상세 적용 방법
+### 상세 적용 방법
 
-  - MariaDB ssh 연동
+#### MariaDB ssh 연동
 
-     PaaS 환경의 서비스 인스턴스는 로컬에서 바로 연동하지 못하고, ssh로 연동한다.
+PaaS 환경의 서비스 인스턴스는 로컬에서 바로 연동하지 못하고, ssh로 연동한다.
 
-     ```bash
-     cf ssh -N -L 63306:172.132.14.32:3306 js-local-paas-service-conn
-     ```
+`cf ssh -N -L 63306:172.132.14.32:3306 js-local-paas-service-conn`
 
-  - STS - Run Configuration - Spring Boot - Profiles 설정
+#### STS - Run Configuration - Spring Boot - Profiles 설정
 
-     어플리케이션의 수행 profile을 dev로 설정한다.
+어플리케이션의 수행 profile을 dev로 설정한다.
 
-     ![1518489287635](1518489287635.png)
+![1518489287635](1518489287635.png)
 
-  - STS - Run Configuration - Environment - Environment variables
+#### STS - Run Configuration - Environment - Environment variables 설정
 
-     어플리케이션의 PaaS 환경 변수(VCAP_APPLICATION, VCAP_SERVICES)를 설정한다.
+어플리케이션의 PaaS 환경 변수(VCAP_APPLICATION, VCAP_SERVICES)를 설정한다.
 
-     - VCAP_APPLCATION : {} 로 세팅한다.
+  - VCAP_APPLCATION : {} 로 세팅한다.
+  - VCAP_SERVICES : cf env {어플리케이션명} 으로 조회된 value를 엔터키 없이 복사해서 넣는다.
 
-     - VCAP_SERVICES : cf env {어플리케이션명} 으로 조회된 value를 엔터키 없이 복사해서 넣는다.
+      ![1518492727313](1518492727313.png)
 
-       ![1518492727313](1518492727313.png)
+      ![1518493193055](1518493193055.png)
 
-       ![1518493193055](1518493193055.png)
+      > cf env로 조회된 mariaDB credential 중 hostname과 port 정보를 ssh 연동한 정보로 수정이 필요하다.
+      >
+      > ex. "hostname": "172.132.14.32" => "hostname": "127.0.0.1"
 
-       > cf env로 조회된 mariaDB credential 중 hostname과 port 정보를 ssh 연동한 정보로 수정이 필요하다.
-       >
-       > ex. "hostname": "172.132.14.32" => "hostname": "127.0.0.1"
+#### 로컬에서 PaaS 데이터 확인
 
-  - 로컬에서 PaaS 데이터 확인
+![1518495702705](1518495702705.png)
 
-     ![1518495702705](1518495702705.png)
-
-  - 성공!
+**성공!**
 
   
 
