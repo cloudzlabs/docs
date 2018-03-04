@@ -8,7 +8,7 @@ copyright = ""
 disqusShortname = "cloudz-labs"
 googleAnalytics = ""
 
-Paginate = 5
+Paginate = 10
 preserveTaxonomyNames = true
 
 enableRobotsTXT = true # generate robots.txt

@@ -6,9 +6,6 @@ categories:
   - posts
 tags:
   - microserve
-cover:
-  image: "posts/microservices-io/PatternsRelatedToMicroservices.jpg"
-  caption: ""
 description: ""
 draft: true
 ---

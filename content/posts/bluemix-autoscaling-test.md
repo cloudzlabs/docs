@@ -13,7 +13,7 @@ tags:
   - Auto Scaling
   - Spring Auto Reconfiguration
 cover:
-  image: posts/bluemix-autoscaling-test/auto-scaling.png
+  image: auto-scaling.png
   caption: ""
 draft: true
 

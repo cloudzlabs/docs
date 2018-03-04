@@ -10,7 +10,7 @@ tags:
   - MS 분리 워크샵
   - Domain Driven Design
 cover:
-  image: posts/ubiquitous-language-in-msa/ubi-lang.png
+  image: ubi-lang.png
   caption: ""
 description: ""
 draft: false

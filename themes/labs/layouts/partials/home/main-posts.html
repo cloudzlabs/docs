@@ -3,11 +3,13 @@
         {{ range $index, $main := ( first .Site.Params.settings.recentPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) }}
         {{ if .Params.cover }}
         <article class="cover-story">
+
             {{- with .Params.cover -}}
             {{- $type := ( printf "%T" . ) -}}
             {{- $isMap := ( not ( eq $type "string" ) ) -}}
-            <div class="cover-image" src="{{ $.Site.BaseURL }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}" style="background-image: url({{ $.Site.BaseURL }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }});"></div>
+            <div class="cover-image" src="{{ .Permalink }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}" style="background-image: url({{ $.Permalink }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }});"></div>
             {{- end -}}
+
             <a class="cover-trigger"></a>
             <div class="cover-gradient"></div>
             <div class="cover-header">

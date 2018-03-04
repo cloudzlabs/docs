@@ -2,7 +2,7 @@
 {{- $type := ( printf "%T" . ) -}}
 {{- $isMap := ( not ( eq $type "string" ) ) -}}
 
-<img class="img-responsive" src='{{ $.Site.BaseURL }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
+<img class="img-responsive" src='{{- $.Permalink -}}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
 {{- if $isMap }}
     {{- with .caption }} alt='{{ . | markdownify }}'{{ end -}}
 {{ end -}} />

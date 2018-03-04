@@ -8,7 +8,7 @@ categories:
 tags:
   - markdown
 cover:
-  image: /images/default/markdown.png
+  image: ../images/markdown.png
   caption: ""
 draft: false
 ---
