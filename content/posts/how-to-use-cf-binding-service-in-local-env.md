@@ -189,5 +189,7 @@ PaaS 환경의 서비스 인스턴스는 로컬에서 바로 연동하지 못하
 
 ## Conclusion
 
-Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해, 로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
+Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해
+
+로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
 
