@@ -13,44 +13,33 @@ description: ""
 draft: false
 ---
 {{% notice note %}}
-오픈소스 CF CLI에서 **자주 사용하는 CF CLI 명령어**를 사용하는 방법을 정리하였습니다.
+오픈소스 CF CLI에서 **자주 사용하는 CF CLI 명령어**를 사용하는 방법을 정리해보았습니다.  
 CF CLI에서 사용 가능한 모든 명령어의 사용법은 [CF 공식 홈페이지 문서](https://docs.cloudfoundry.org/cf-cli/)를 참고하길 바랍니다.
 {{% /notice%}}
 
-# CF?
+## CF?
 -------------------------------
 CF CLI 사용 방법을 알아보기에 앞서 CF가 무엇인지 간단히 살펴보겠습니다. CF는 Cloud Foundry의 약자로, 2011년 VMWare가 업계 최초로 만든 오픈소스 PaaS 플랫폼입니다. 지금은 Cloud Foundry 재단에서 관리하고 있습니다.
 
-## 오픈소스 CF 제품
+### 오픈소스 CF 제품
 
 Cloud Foundry의 오픈소스 Cloud Foundry 기술을 기반으로 만든 제품은 다음과 같습니다.
+
 - PCF (Pivotal Cloud Foundry)
   - [Pivotal](https://pivotal.io/)에서 오픈소스 Cloud Foundry로 만든 상용 PaaS
 - (Bluemix)[https://www.ibm.com/cloud-computing/bluemix]
   - IBM이 오픈 소스 Cloud Foundry로 만든 상용 PaaS
 
 
-# CF CLI?
+## CF CLI?
 -------------------------------
 GO 언어로 개발된 Cloud Foundry의 Command Line Interfacae입니다. 사용자가 CF CLI를 설치하면 명령 프롬프트를 통해서 CF기반의 PaaS 환경에 자신이 만든 애플리케이션을 배포하거나 서비스 생성하여 바인등하는 등의 다양한 기능을 사용할 수 있습니다. 
 
-## CF CLI 설치 방법
+### CF CLI 설치 방법
 CLI Installer를 다운로드하여 간단히 설치할 수 있습니다.
+
 1. [CF CLI 설치 가이드 페이지](https://github.com/cloudfoundry/cli/releases) 에 접속합니다.
-2. Installer 문단에서 컴퓨터 OS 정보에 맞는 파일을 다운로드합니다.
-
-    > **Tip. 컴퓨터가 32bit인지 64bit인지 확인 방법**
-    >
-    > 명령 프롬프트에서 `systeminfo`를 실행합니다.
-    ```java
-    $ systeminfo
-    ```
-    > 다음과 같이 시스템 종류 정보가 표시됩니다.
-    >
-    > - x86-based PC -> 32bit
-    > - x64-based PC -> 64bit
-
-
+2. Installer 문단에서 컴퓨터 OS 정보에 맞는 파일을 다운로드합니다.  
 3. 다운로드한 파일을 실행하여 CF CLI를 설치합니다.
 4. 명령어 프롬프트에 `cf`를 실행하여 정상 설치 여부를 확인합니다. 다음과 같은 정보가 표시되면 정상적으로 설치된 것을 확인할 수 있습니다.
 
@@ -89,6 +78,12 @@ Route and domain management:
 
 ...
 ```
+  
+  > **Tip. 컴퓨터가 32bit인지 64bit인지 확인 방법**  
+  > 1. 명령 프롬프트에서 `systeminfo`명령어를 입력합니다.  
+  > 2. 다음과 같이 시스템 종류 정보가 표시됩니다.  
+  > - x86-based PC -> 32bit  
+  > - x64-based PC -> 64bit
 
 ## Getting Started
 -------------------------------------------------
