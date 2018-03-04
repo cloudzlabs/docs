@@ -9,6 +9,9 @@ tags:
   - Bounded Context
   - MS 분리 워크샵
   - Domain Driven Design
+cover:
+  image: ubi-lang.png
+  caption: ""
 description: ""
 draft: false
 
@@ -62,11 +65,15 @@ Ubiquitous Language(보편 언어) 는 도메인 전문가, 아키텍트, 개발
 
 #### 1. 커뮤니케이션의 오류는 프로젝트 진행의 병목 지점이 된다.
 
+![comm-error](comm-error.jpg)
+
 구성원 간 각자의 언어를 사용하는 경우, 의사소통에 비용이 든다. 상대방이 내뱉은 단어를 내가 사용하는 단어로 번역해서 이해해야 하고, 회의 내용을 공유할 때 각자 해석이 분분한 지점에 첨언을 달아야 한다.
 
 혹은 전달받은 정의서대로 구현을 마치고 나면, 그 결과가 아니라고 할 때가 있다. 정의서를 펼쳐놓고 얼굴 맞대로 얘기하면 그제야 어디서 어긋 낫는지 파악된다. 재작업의 연속이다.
 
 #### 2. MSA를 도입한 조직에서 언어는 업무 범위와 책임을 정의한다.
+
+![bounded-context](bounded-context.png)
 
 Bounded Context는 Ubiquitous Language(보편 언어) 로 정의된 모델을 기반으로 경계를 만든다. MSA에서 각각의 마이크로 서비스는 Bounded Context와 대응된다. 그리고 마이크로 서비스는 담당 조직의 규모, 기술 스택, 책임 등에 매우 연관이 깊다.
 
