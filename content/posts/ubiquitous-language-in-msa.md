@@ -17,9 +17,9 @@ draft: false
 
 ---
 
-Health-Care Application의 MS 분리 워크샵을 진행한 후 자문해봤다.
+Health-Care Application의 MS 분리 워크샵을 진행한 후 자문해봤다. 
 
-- 보상/혜택
+- 보상/혜택 
   - Reward가 사용자에게 주어지면 그게 사용자 입장에서는? Item인가 Reward인가?
   - 운동을 안해서 주는 경고도 Reward인가?
   - 내가 운동을 많이 했다고 선물이 아니라 칭찬메시지가 오는 것도 Reward인가?
