@@ -140,11 +140,12 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
   - js-local-paas-service-conn 을 PaaS에 배포한 후 js-test-MariaDB 와 binding 한다.
 
-    ![1518484942742](1518484942742.png)
+      ![1518484942742](1518484942742.png)
 
   - 로컬 환경과 PaaS 환경의 데이터가 다른 것을 확인한다.
 
-    ![151231](151231-8495551138.png)
+      ![151231](151231-8495551138.png)
+      
   - 준비 끝!
 
 
