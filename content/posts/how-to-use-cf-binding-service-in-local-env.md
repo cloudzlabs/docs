@@ -96,7 +96,9 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
     ![1518495055690](1518495055690.png)
     
   - datasource 설정
+
     - Bean 생성
+
       ```java
       @Configuration
       @Profile({"dev"})
@@ -127,16 +129,16 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
       }
       ```
 
-    - application-dev.yml - datasource 설정
-      ```yaml
-      services:
-        datasource: 
-          initial-size: 1
-          maximum-pool-size: 100
-          max-wait-time: 3000
-          name: js-test-mariadb
-          initialize: false
-      ```
+      - application-dev.yml - datasource 설정
+        ```yaml
+        services:
+          datasource: 
+            initial-size: 1
+            maximum-pool-size: 100
+            max-wait-time: 3000
+            name: js-test-mariadb
+            initialize: false
+        ```
 
   - js-local-paas-service-conn 을 PaaS에 배포한 후 js-test-MariaDB 와 binding 한다.
 
