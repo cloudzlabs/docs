@@ -96,7 +96,6 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
     ![1518495055690](1518495055690.png)
     
   - datasource 설정
-
     - Bean 생성
 
       ```java
