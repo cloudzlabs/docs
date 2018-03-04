@@ -20,21 +20,21 @@ draft: false
 
 ## What?
 
-로컬 개발 환경에서 Spring Cloud Connector를 사용해서 Application에 binding 된 PaaS 서비스를 사용하자.
+로컬 개발 환경에서 Spring Cloud Connector를 사용해서 Application에 binding 된 PaaS 서비스를 사용해 봅시다.
 
 
 
 ## Why?
 
-로컬 개발 환경과 PaaS 환경(dev, stg, prod 등) 을 분리하여 개발환경을 구성하는 경우 몇가지 **불편한 점**이 있다.
+로컬 개발 환경과 PaaS 환경(dev, stg, prod 등) 을 분리하여 개발환경을 구성하는 경우 몇가지 **불편한 점**이 있습니다.
 
-그 중 하나가 로컬 개발 환경에서 사용하는 서비스와 PaaS 환경에서 사용하는 서비스가 다른 경우다.
+그 중 하나가 로컬 개발 환경에서 사용하는 서비스와 PaaS 환경에서 사용하는 서비스가 다른 경우입니다.
 
 
 
 예를 들면,
 
-  - 로컬 환경에서 H2 DB 를 쓰다가 MariaDB로 배포하는 경우 쿼리가 다르다.
+  - 로컬 환경에서 H2 DB 를 쓰다가 MariaDB로 배포하는 경우 쿼리가 다릅니다.
     
     H2:
 
@@ -62,23 +62,23 @@ draft: false
     ALTER TABLE users MODIFY id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT;
     ```
 
-    다른 점은 ... ?      MariaDB는 PRIMARY KEY가 빠지면 에러다.
+    다른 점은 ... ?      MariaDB는 PRIMARY KEY가 빠지면 에러입니다.
 
-  - local 환경에서 초기 데이터를 만들기 번거롭다. 
+  - local 환경에서 초기 데이터를 만들기 번거롭습니다. 
 
-    테스트 데이터를 매번 생성 or 초기화 하는 절차가 추가된다.
+    테스트 데이터를 매번 생성 or 초기화 하는 절차가 추가됩니다.
 
     ![1518484130041](1518484130041.png)
 
-  - 어플리케이션 수정 후 PaaS 환경에서 테스트를 할 때마다 매번 배포를 해야한다. -> CI/CD 배포 pipeline이 없다면 번거로운 절차다.
+  - 어플리케이션 수정 후 PaaS 환경에서 테스트를 할 때마다 매번 배포를 합니다. -> CI/CD 배포 pipeline이 없다면 번거로운 절차입니다.
 
-  - 로컬에서는 잘 되는게 PaaS에서는 안된다. -> 서비스의 버전이 다른 경우,,,, 로컬에서 아무리 잘되도 서비스하는 환경에서 안되면 말짱 꽝이다. 버전 맞추는 것도 번거롭다.
+  - 로컬에서는 잘 되는게 PaaS에서는 안됩니다. -> 서비스의 버전이 다른 경우,,,, 로컬에서 아무리 잘 동작해도 서비스하는 환경에서 안되면 말짱 꽝입니다. 버전 맞추는 것도 번거롭습니다.
 
 
 
 ## How?
 
-Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입) 을 활용하자.
+Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입) 을 활용합시다.
 
 ### 개발 환경
 - STS(Spring Tool Suite)
@@ -139,15 +139,15 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
             initialize: false
         ```
 
-  - js-local-paas-service-conn 을 PaaS에 배포한 후 js-test-MariaDB 와 binding 한다.
+  - js-local-paas-service-conn 을 PaaS에 배포한 후 js-test-MariaDB 와 binding 합니다.
 
       ![1518484942742](1518484942742.png)
 
-  - 로컬 환경과 PaaS 환경의 데이터가 다른 것을 확인한다.
+  - 로컬 환경과 PaaS 환경의 데이터가 다른 것을 확인합니다.
 
       ![151231](151231-8495551138.png)
       
-  - 준비 끝!
+  - **준비 끝!**
 
 
 
@@ -155,28 +155,28 @@ Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입
 
 #### MariaDB ssh 연동
 
-PaaS 환경의 서비스 인스턴스는 로컬에서 바로 연동하지 못하고, ssh로 연동한다.
+PaaS 환경의 서비스 인스턴스는 로컬에서 바로 연동하지 못하고, ssh로 연동합니다.
 
 `cf ssh -N -L 63306:172.132.14.32:3306 js-local-paas-service-conn`
 
 #### STS - Run Configuration - Spring Boot - Profiles 설정
 
-어플리케이션의 수행 profile을 dev로 설정한다.
+어플리케이션의 수행 profile을 dev로 설정합니다.
 
 ![1518489287635](1518489287635.png)
 
 #### STS - Run Configuration - Environment - Environment variables 설정
 
-어플리케이션의 PaaS 환경 변수(VCAP_APPLICATION, VCAP_SERVICES)를 설정한다.
+어플리케이션의 PaaS 환경 변수(VCAP_APPLICATION, VCAP_SERVICES)를 설정합니다.
 
-  - VCAP_APPLCATION : {} 로 세팅한다.
-  - VCAP_SERVICES : cf env {어플리케이션명} 으로 조회된 value를 엔터키 없이 복사해서 넣는다.
+  - VCAP_APPLCATION : {} 로 세팅합니다.
+  - VCAP_SERVICES : cf env {어플리케이션명} 으로 조회된 value를 엔터키 없이 복사해서 넣습니다.
 
       ![1518492727313](1518492727313.png)
 
       ![1518493193055](1518493193055.png)
 
-      > cf env로 조회된 mariaDB credential 중 hostname과 port 정보를 ssh 연동한 정보로 수정이 필요하다.
+      > cf env로 조회된 mariaDB credential 중 hostname과 port 정보를 ssh 연동한 정보로 수정이 필요합니다.
       >
       > ex. "hostname": "172.132.14.32" => "hostname": "127.0.0.1"
 
@@ -192,5 +192,5 @@ PaaS 환경의 서비스 인스턴스는 로컬에서 바로 연동하지 못하
 
 Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해
 
-로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있다.
+로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있습니다.
 
