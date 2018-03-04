@@ -241,8 +241,8 @@ liberty-for-java buildpack은 exec prefix를 적용해 어플리케이션을 구
 ![cfpush](cfpush.PNG)
                    
   ```bash
-  API/1	Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
-  APP/0	.app-management/scripts/start: 1: kill: invalid signal number or name: igterm		2018년 2월 19일 06:46:24.266 오후
+  API/1	  Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 ({"state"=>"STOPPED"})	2018년 2월 19일 06:46:24.264 오후
+  APP/0	  .app-management/scripts/start: 1: kill: invalid signal number or name: igterm		2018년 2월 19일 06:46:24.266 오후
   CELL/0	Exit status 0																		2018년 2월 19일 06:46:24.268 오후
   CELL/0	Successfully destroyed container													2018년 2월 19일 06:46:35.999 오후
   ```
