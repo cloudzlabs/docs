@@ -1,0 +1,9 @@
+{{- with .Params.cover -}}
+{{- $type := ( printf "%T" . ) -}}
+{{- $isMap := ( not ( eq $type "string" ) ) -}}
+
+<img src='{{ $.Site.BaseURL }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
+{{- if $isMap }}
+    {{- with .caption }} alt='{{ . | markdownify }}'{{ end -}}
+{{ end -}} />
+{{ end }}
