@@ -6,7 +6,7 @@ theme = "labs"
 # for smart copyright line, leave this blank and check [params.copyright]
 copyright = ""
 disqusShortname = "cloudz-labs"
-googleAnalytics = ""
+googleAnalytics = "UA-115004569-1"
 
 Paginate = 10
 preserveTaxonomyNames = true
