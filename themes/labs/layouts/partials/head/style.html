@@ -10,15 +10,11 @@
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
 
-<link rel='stylesheet' href='{{ print "/assets/css/" .Site.Data.assets.main.css | relURL  }}'>
+<link rel='stylesheet' href='{{ print "/assets/css/" .Site.Data.assets.main.css | relURL }}'>
 
 <!-- <link rel="stylesheet" media="screen" href="/docs/assets/css/bootstrap.css">
 <link id="mainStyles" media="screen" href="/docs/assets/css/common.css">
 <link rel="stylesheet" type="text/css" href="/docs/assets/css/font-awesome.css"> -->
-
-{{- range .AlternativeOutputFormats -}}
-<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}" title="{{ $.Site.Title }}">
-{{- end -}}
 
 {{- range .Site.Params.assets.customCSS -}}
   <link rel='stylesheet' href='{{ . | relURL }}'>
