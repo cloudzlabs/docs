@@ -16,9 +16,9 @@
   <meta property='og:image' content='
     {{- $.Permalink -}}
     {{- if $isMap -}}
-      {{- .image | absURL -}}
+      {{- .image -}}
     {{- else -}}
-      {{- . | absURL -}}
+      {{- . -}}
     {{- end -}}'>
 {{- end -}}
 
