@@ -11,7 +11,7 @@ cover:
   image: "/images/file_name/file_name.png|jpg"
   caption: ""
 description: ""
-draft: true
+draft: false
 ---
 
 최근 마이크로 서비스 아키텍처를 적용하는 사이트가 점차 많아지면서 Cloudz Labs에도 마이크로 서비스 아키텍처에 대한 문의가 부쩍 많아지고 있습니다. <br/>
