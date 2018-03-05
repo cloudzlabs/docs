@@ -213,7 +213,7 @@ hello-spring-cloud 프로젝트를 로컬 환경에서 구동해봅니다.
 2. 웹 브라우저에서 [http://localhost:8080](http://localhost:8080/welcome)으로 이동합니다.
 3. 화면에 **Spring Cloud Demo Application** 메시지가 출력되면 정상적으로 실행된 것입니다.
  
- ![Image of URL](docs/contents/images/cfurl.png)
+ ![Image of URL](cfurl.png)
 
 지금은 로컬 서버로 실행했기 때문에, 화면 중간에 'The application is not running in a cloud environment.' 문구를 볼 수 있습니다. 애플리케이션을 클라우드 환경에 배포하고 필요한 서비스를 바인딩하면 데이터를 정상적으로 가져오는 화면을 볼 수 있습니다. 이제 클라우드에 배포를 진행해보겠습니다.
 
@@ -848,7 +848,7 @@ mariadb-service를 바인딩해보겠습니다.
 
 3. 웹 브라우저로 URL에 접속했을 때, 아래 그림과 같이 **Spring Cloud Demo Application** 메시지가 출력되면 정상적으로 실행된 것입니다. 
     URL 값에 표시된 http://hello-spring-cloud-unskillful-contractor.paas.sk.com 으로 접속해보겠습니다.
-    ![Image of URL result](docs/contents/images/cfurl_final.png)
+    ![Image of URL result](cfurl_final.png)
 
 ## 마치며
 
