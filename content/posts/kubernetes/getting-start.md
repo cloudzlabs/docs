@@ -9,9 +9,6 @@ tags:
   - Kubernetes
   - Container
   - Container Orchestration
-cover:
-  image: ../images/k8s.png
-  caption: ""
 description: ""
 draft: false
 ---
