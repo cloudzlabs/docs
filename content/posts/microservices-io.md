@@ -90,13 +90,13 @@ CloudZ Labs에서는 작년부터 마이크로 서비스 아키텍처 적용을 
 
 #### *Service Instance per VM*
 
-#### *Service Instance per Container *
+#### *Service Instance per Container*
 
 #### *Serverless deployment*
 
 #### Service Deployment platform
 
-→ PaaS나 K8S를 활용한 배포 및 라우팅 로드밸런싱은 이 항목에 해당됨 
+- PaaS나 K8S를 활용한 배포 및 라우팅 로드밸런싱은 이 항목에 해당됨 
 
 #### *<span class="underline">이와 관련되서 Cloudz Labs 에서는?</span>*
 
