@@ -19,6 +19,9 @@
 {{ range .AlternativeOutputFormats -}}
 <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}" title="{{ $.Site.Title }}">
 {{ end -}}
+{{ with .OutputFormats.Get "rss" -}}
+  <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}" title="{{ $.Site.Title }}">
+{{ end -}
 
 {{- range .Site.Params.assets.customCSS -}}
   <link rel='stylesheet' href='{{ . | relURL }}'>
