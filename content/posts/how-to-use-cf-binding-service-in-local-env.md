@@ -1,7 +1,7 @@
 ---
 date: "2018-02-13T08:34:45+09:00"
 title: "로컬에서 Spring Cloud Connector 사용하기"
-authors: ["jisangYun"]
+authors: ["jisangyun"]
 categories:
   - posts
 tags:
