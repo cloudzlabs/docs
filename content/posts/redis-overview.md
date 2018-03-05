@@ -7,7 +7,7 @@ categories:
 tags:
   - Spring Boot
   - Redis
-description: "Spring Boot 환경에서 Redis를 사용하는 방법"
+description: ""
 draft: false
 ---
 
