@@ -5,11 +5,10 @@ authors: [jihyun]
 categories:
   - posts
 tags:
-  - microserve
+  - microservice
+  - microservices.io
+  - cloud application
 
-cover:
-  image: "/images/file_name/file_name.png|jpg"
-  caption: ""
 description: ""
 draft: false
 ---
