@@ -28,6 +28,14 @@
 .offcanvas-menu ul li.has-children>.offcanvas-submenu.in-view { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
 .offcanvas-menu ul li.has-children>.offcanvas-submenu.off-view { -webkit-transform: translate3d(-100%, 0, 0); transform: translate3d(-100%, 0, 0); }
 
+.no-csstransforms3d .offcanvas-wrapper, .no-csstransforms3d .navbar, .no-csstransforms3d .topbar { transition: left .4s ease-in-out, background-color .2s; }
+.no-csstransforms3d .site-backdrop { transition: left .4s ease-in-out, opacity .35s, visibility .35s; }
+.no-csstransforms3d .offcanvas-open .offcanvas-wrapper, .no-csstransforms3d .offcanvas-open .site-backdrop, .no-csstransforms3d .offcanvas-open .navbar, .no-csstransforms3d .offcanvas-open .topbar { left: 290px; }
+.no-csstransforms3d .offcanvas-open .site-backdrop { opacity: .2; visibility: visible; }
+.csstransforms3d .offcanvas-wrapper, .csstransforms3d .navbar, .csstransforms3d .topbar { transition: -webkit-transform .4s ease-in-out, background-color .2s; transition: transform .4s ease-in-out, background-color .2s; }
+.csstransforms3d .site-backdrop { transition: -webkit-transform .4s ease-in-out, opacity .35s, visibility .35s; transition: transform .4s ease-in-out, opacity .35s, visibility .35s; }
+.csstransforms3d .offcanvas-open .offcanvas-wrapper, .csstransforms3d .offcanvas-open .site-backdrop, .csstransforms3d .offcanvas-open .navbar, .csstransforms3d .offcanvas-open .topbar { -webkit-transform: translate3d(290px, 0, 0); transform: translate3d(290px, 0, 0); }
+.csstransforms3d .offcanvas-open .site-backdrop { opacity: .2; visibility: visible; }
 
 
 /* body *****************************************************/
@@ -264,7 +272,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .answer-list li:hover { background-color: #f2f2f2; }
 
 /* search answer */
-.autocomplete-suggestions { overflow-y:scroll; margin-top:-1px; position: fixed !important; text-align: left; cursor: default; border: 1px solid #ddd;
+.autocomplete-suggestions { overflow-y:scroll; margin-top:-1px; position: fixed !important; text-align: left; cursor: default; /*border: 1px solid #ddd;*/
     border-top: 0; background: #fff; box-shadow: 0 1px 13px rgba(0,0,0,0.24); transition: left 0.1s ease-in-out; z-index: 9999; max-height: 70vh;
     box-sizing: border-box; color:#777; top: 64px !important; }
 .autocomplete-suggestion { cursor: pointer; padding: 7px; line-height: 23px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #777; }
@@ -336,14 +344,6 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 
 /* main *******************************************************/
-/*
-.visual-area { text-align: center;  background-image: linear-gradient(-180deg, #D04D6F 20%, #413b54 100%);width: 100%; min-height: 430px; background-position: center;
-    background-color: #f5f5f5; background-repeat: no-repeat;background-size: cover;overflow: hidden; }
-.visual-area .visual { display:  inline-block; padding-top: 180px; font-size: 60px; font-weight:  bold;color: rgba(255,255,255,.5) !important;letter-spacing: 2px;}
-.visual-area h3 { display:  inline-block; font-size: 70px; font-weight: bold; color: rgba(255,255,255,.8) !important; line-height: 70px; }
-.visual-area p { font-size: 28px; color: #fff; margin-top: 30px; color: rgba(255,255,255,.6); line-height: 34px; }
-*/
-
 .visual-main-title {min-height: 200px;background:#fff;height: 200px !important;text-align:center;}
 .visual-main-title .visual {display: block;padding-top: 100px;color: rgba(0,0,0,.5) !important;letter-spacing: 2px;font-size: 28px;}
 .visual-main-title h3 { display: inline-block;  font-size: 60px; font-weight: bold; color: rgba(0,0,0,.6) !important; margin-right:10px; }
@@ -510,17 +510,16 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .card { border-radius: 0; border:1px solid #eee; -webkit-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); -moz-box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); box-shadow: -2px 0px 36px -11px rgba(0,0,0,0.20); }
 .card a:hover { text-decoration:underline !important;}
 .card .post-title {font-size: 28px;}
-.card img {overflow: hidden;margin: 0 auto;vertical-align:  middle;display:  inherit;height: 100%;width: 100%;max-height: 340px;object-fit: cover !important;}
+.card img {overflow: hidden;margin: 0 auto;vertical-align:  middle;display:  inherit;height: 100%;width: 100%;max-height: 340px; object-fit: cover !important;}
 .card .post-info {min-height: 340px;overflow:  hidden;}
-/* .card .card-style-1 { padding:0; } 이미지가 있을 경우 */
-.card .card-style-1 { padding:0px 0px 0px 30px;}
+.card .card-style-1 { padding:0 0 0 30px; } /* 이미지가 있을 경우 */
 .card .card-style-1 .post-title { padding-top:20px; }
 .card .card-style-1 .post-title,
 .card .card-style-1 .post-authorName,
 .card .card-style-1 .post-excerpt,
 .card .card-style-1 .btn-link,
-.card .card-style-1 .tag {padding-right:30px; }
-.card .card-style-2 {padding:20px 30px 0 30px;} /* 이미지가 없을 경우 */
+.card .card-style-1 .tag {padding-right:30px;/* padding-bottom:  20px; */}
+.card .card-style-2 {padding: 20px 30px 0 30px;} /* 이미지가 없을 경우 */
 
 .post .title {position:  relative;display:  block;font-weight: bold;font-size: 22px;line-height: 40px;}
 .post-title>a {transition: color .3s;color: #94475e;text-decoration: none;/* font-size:34px; */font-weight:bold;overflow: hidden;white-space: normal;text-align: left;word-wrap: break-word;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;}
@@ -618,7 +617,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .page-con ul li { line-height:34px; font-size: 16px;}
 .page-con ol {margin-top: 50px;}
 .page-con ol li,
-.page-con ol li p {font-size: 20px;color:#333;}
+.page-con ol li p {font-size: 16px; color:#666;}
 
 .page-con ul li p:nth-child(2),
 .page-con ol li p:nth-child(2) { padding-top:0; }
@@ -773,7 +772,12 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .cover-grid4 article .cover-byline li:last-child { display: none; }
 .cover-grid4 article:nth-child(1) { height: 60%; width: 100%; }
 .cover-grid4 article:nth-child(1) .distraction-title, .cover-grid4 article:nth-child(1) h2 { font-size: 40px; }
-.cover-grid4 article:nth-child(1) .cover-byline li:last-child { display: inline-block; };
+.cover-grid4 article:nth-child(1) .cover-byline li:last-child { display: inline-block; }
+.card .card-style-1 .post-title,
+.card .card-style-1 .post-authorName,
+.card .card-style-1 .post-excerpt,
+.card .card-style-1 .btn-link,
+.card .card-style-1 .tag { padding-left: 0; padding-right:0; }
 }
 
 
@@ -797,8 +801,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .card .card-style-1 .post-authorName,
 .card .card-style-1 .post-excerpt,
 .card .card-style-1 .btn-link,
-.card .card-style-1 .tag { padding-left: 30px; padding-right:30px; }
-.foot-author .cover-byline { float: right;}
+.card .card-style-1 .tag { padding-left: 0; padding-right:30px; }
 }
 
 
