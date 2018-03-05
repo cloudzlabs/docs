@@ -227,7 +227,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .site-branding { position: absolute; top: 0; left: 0; height: 100%; z-index: 5; }
 .site-branding .inner { display: table; height: 100%; min-height: 100%; }
 .site-logo, .offcanvas-toggle { display: table-cell; vertical-align: middle; }
-.site-logo {width: 200px;padding: 10px 0 10px 25px;text-decoration: none;color: #fff;font-size: 20px;font-weight: bold;}
+.site-logo {/* width: 200px; padding: 10px 0 10px 25px;*/ text-decoration: none;color: #fff;font-size: 20px;font-weight: bold;}
 .site-logo:hover { text-decoration: none; }
 .site-logo>img { display: block; width: 100%; }
 .site-logo.logo-stuck { display: none; }
@@ -844,7 +844,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .foot-author {margin-top:0;border-top:none; }
 .foot-author .cover-byline { float: left; padding: 0 0 10px 0; }
 .page-con ul {padding-left: 20px;}
-.page-con ol { margin-left:0; }
+.page-con ol { margin-left:-40px; }
 .page-con ol li { margin-left:20px; }
 .page-con ul li { text-indent:0;}
 .page-con .series { margin-left:0;}
