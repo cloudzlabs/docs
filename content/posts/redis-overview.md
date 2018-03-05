@@ -8,7 +8,7 @@ tags:
   - Spring Boot
   - Redis
 description: "Spring Boot 환경에서 Redis를 사용하는 방법"
-draft: true
+draft: false
 ---
 
 **Redis**는 Key/Value형태의 In-Memory 데이터베이스로서 데이터 저장 및 캐싱, 그리고 메시지 브로커로 널리 사용 되고 있습니다.
