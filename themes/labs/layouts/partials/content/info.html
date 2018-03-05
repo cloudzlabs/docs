@@ -1,13 +1,10 @@
-<h2>{{ .Title }}</h2>
-<p class="post-authorName">
-    by&nbsp;
-    {{- with .Params.authors -}}
-        {{- range $i, $authorID := . -}}
-        {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-        {{- if gt $i 0 }}, {{ end -}}
-        <a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">
-            {{- $author.name.display -}}
-        </a>
-    {{- end -}}
-    {{- end -}}
-</p>
+<ul class="cover-byline">
+    <li>
+        {{ partial "meta/posting-date" . }}
+    </li>
+    {{ if .Site.Params.settings.showReadingTime }}
+    <li>
+        {{ partial "meta/reading-time" . }}
+    </li>
+    {{ end }}
+</ul>

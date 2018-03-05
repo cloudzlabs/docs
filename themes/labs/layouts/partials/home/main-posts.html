@@ -1,52 +1,42 @@
 <div class='container'>
-    <section class="cover cover-grid3">
-        {{ range $index, $main := ( first .Site.Params.settings.recentPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) }}
-        <article class="cover-story">
+    {{ range $index, $main := ( first .Site.Params.settings.recentPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) }}
+    {{ if .Params.cover }}
+    <article class="cover cover-story col-lg-12 col-md-12 col-sm-12 ">
+        <div class="cover1 col-md-12">
             {{- with .Params.cover -}}
             {{- $type := ( printf "%T" . ) -}}
             {{- $isMap := ( not ( eq $type "string" ) ) -}}
-            <div class="cover-image" src="{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}" style="background-image: url({{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }});"></div>
+            <img class="cover-image" src="{{ .Permalink }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}" style="background-image: url({{ $.Permalink }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }});" />
             {{- end -}}
 
-            <a class="cover-trigger bg-color-{{ add $index 1 }}"></a>
-            <div class="cover-gradient"></div>
+            <a class="cover-trigger"></a>
+
             <div class="cover-header">
                 <p class="cover-section">
                     {{ if .Params.tags }}
-                    <div class="tag">
-                        {{- with .Params.tags -}}
-                        {{- range first 1 . -}}
-                        <li><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">{{ . }}</a></li>
-                        {{ end }}
-                        {{ end }}
-                    </div>
+                        {{ partial "meta/tags" .}}
                     {{ end }}
                 </p>
                 <h2 class="cover-title">
                     <a href="{{ .URL }}">{{ .Title }}</a>
                 </h2>
                 <ul class="cover-byline">
-                    {{- with .Params.authors -}}
-                    {{- $lang := ( $.Params.lang | default $.Lang ) -}}
-                    <li>{{ i18n "by" }}&nbsp;
-                        {{- range $i, $authorID := . -}}
-                        {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-                        {{- $i18nAuthor := ( index $author $lang ) -}}
-                        {{- $name := ( or $i18nAuthor.name $author.name ) -}}
-                        {{- if gt $i 0 }}, {{ end -}}
-                        <a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">{{- $name.display -}}</a>
-                        {{- end -}}
+                    <li>
+                        {{ i18n "by" }}&nbsp;
+                        {{- partial "meta/author-name" . -}}
                     </li>
-                    {{- end -}}
+                    <li>
+                        {{- partial "meta/posting-date" . -}}
+                    </li>
                     {{ if .Site.Params.settings.showReadingTime }}
                     <li>
-                        <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        {{ i18n "readingTime" .ReadingTime }}
+                        {{- partial "meta/reading-time" . -}}
                     </li>
                     {{ end }}
                 </ul>
             </div>
-        </article>
-        {{ end }}
-    </section>
+        </div>
+    </article>
+    {{ end }}
+    {{ end }}
 </div>

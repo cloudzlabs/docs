@@ -1,17 +1,15 @@
 <section class='visual-title {{ if eq .Data.Singular "author" }}bg-authors{{ else if eq .Kind "taxonomy" }}bg-tags{{ else }}bg-posts{{ end }}'>
     <div class="visual mask">
+
         {{- if eq .Data.Singular "author" -}}
         <div class="author">
-            <img class="img-circle" alt="" src='{{ .Site.BaseURL }}{{- partial "data/author/image" . -}}'>
-            <div class="author-info">
-                <h3><a href="#">{{- partial "data/author/displayName" . -}}</a></h3>
-                <p>{{- partial "data/author/description" . -}}</p>
-            </div>
+            {{- partial "meta/author" . -}}
         </div>
         {{- else if eq .Kind "taxonomy" -}}
         <h3>{{- .Title -}}</h3>
         {{- else -}}
         <h3>{{- .Title -}}</h3>
         {{- end -}}
+
     </div>
 </section>

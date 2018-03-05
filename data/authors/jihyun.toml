@@ -1,17 +1,17 @@
-id = "1000jaeh"
+id = "jihyun"
 
 [email]
-username = "1000jaeh"
+username = "limjh82"
 host = "sk.com"
 
 [name]
-display = "정재훈"
+display = "임지현"
 
 [info]
-image = "/images/authors/1000jaeh.jpeg"
+image = "/images/authors/jihyun.jpg" 
 description = "Microservice Architecture Design"
 
 [social]
-email = ""
+email = "limjh82@sk.com"
 facebook  = ""
 twitter = ""

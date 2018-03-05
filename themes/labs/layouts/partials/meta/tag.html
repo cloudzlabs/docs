@@ -1,3 +1,0 @@
-{{- range $index, $tag := .Params.tags -}}
-<li><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">{{- . -}}</a></li>
-{{- end -}}

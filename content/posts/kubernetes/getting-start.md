@@ -10,7 +10,7 @@ tags:
   - Container
   - Container Orchestration
 cover:
-  image: /docs/images/default/kubernetes.png
+  image: ../images/k8s.png
   caption: ""
 description: ""
 draft: false
@@ -565,7 +565,7 @@ beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,gpu/nvidia=NA,kubernet
 2.  브라우저 접속 테스트  
     위에서 알아낸 169.56.109.58:30993 을 브라우저로 접속하여 정상 접속
     됨을 확인 합니다.  
-    ![](/docs/images/kubernetes-start/37924032.png)
+    ![](37924032.png)
 
   
 
@@ -653,7 +653,7 @@ Kubernetes에서 소스 수정 및 버전을 업데이트 하는 방법입니다
       
     브라우저 접속 및 버전 2.0으로 업데이트된 것을 확인합니다.
 
-    ![](/docs/images/kubernetes-start/37923051.png)
+    ![](37923051.png)
      
 
 3.  버전 변경 history 확인
@@ -715,7 +715,7 @@ Kubernetes에서 소스 수정 및 버전을 업데이트 하는 방법입니다
     버전에서 아래와 같이 기존 버전(1.0)으로 변경된 것을 확인할 수
     있습니다.
 
-    ![](/docs/images/kubernetes-start/37924032.png) 
+    ![](37924032.png) 
       
 
 -   **--to-revision 방식**  
@@ -749,7 +749,7 @@ Kubernetes에서 소스 수정 및 버전을 업데이트 하는 방법입니다
     '1.0' 버전에서 아래와 같이 '2.0' 버전으로 변경된 것을 확인할 수
     있습니다.
 
-    ![](/docs/images/kubernetes-start/37923051.png)
+    ![](37923051.png)
 
 ### yaml 설정 변경
 

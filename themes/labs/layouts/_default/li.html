@@ -4,18 +4,7 @@
     {{ else }}
     <div class="row card-style-2">
     {{ end }}
-        {{- if .Params.cover -}}
-        <a href="#" class="col-md-5 col-sm-12 col-xs-12">
-            {{- with .Params.cover -}}
-            {{- $type := ( printf "%T" . ) -}}
-            {{- $isMap := ( not ( eq $type "string" ) ) -}}
-            <img class="img-responsive" alt="Post Thumbnail" src='{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
-                {{- if $isMap }}
-                    {{- with .caption }} alt='{{ . | markdownify }}'{{ end -}}
-                {{ end -}} />
-            {{- end -}}
-        </a>
-        {{- end -}}
+
         {{- if .Params.cover -}}
         <div class="col-md-7 col-sm-12 col-xs-12 post-info">
         {{- else -}}
@@ -26,18 +15,10 @@
                 <a href="{{ .URL }}">{{ .Title }}</a>
             </h3>
 
-            {{- with .Params.authors -}}
-            <h4 class="post-authorName">by&nbsp;
-                {{- range $i, $authorID := . -}}
-                    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-                    {{- $name := $author.name -}}
-                    {{- if gt $i 0 }}, {{ end -}}
-                    <a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">
-                        {{- $name.display -}}
-                    </a>
-                {{- end -}}
+            <h4 class="post-authorName">
+                {{ i18n "by" }}&nbsp;
+                {{- partial "meta/author-name" . -}}
             </h4>
-            {{- end -}}
 
             <p class="post-excerpt">
                 {{- $page := . -}}
@@ -48,15 +29,24 @@
                     {{ end }}
                 {{- end -}}
             </p>
+
             <p class="btn-link">
                 <a href="{{ .URL }}">Read more...</a>
             </p>
+
             {{ if .Params.tags }}
-            <ul class="tag">
-                {{ partial "meta/tag" .}}
-            </ul>
+                {{ partial "meta/tags" . }}
             {{ end }}
-            {{- /* vim: set ts=2 sw=2 et: */}}
+
         </div>
+
+        {{- if .Params.cover -}}
+        <a href="#" class="col-md-5 col-sm-12 col-xs-12">
+
+            {{- partial "content/cover-img" . -}}
+
+        </a>
+        {{- end -}}
+
     </div>
 </div>
