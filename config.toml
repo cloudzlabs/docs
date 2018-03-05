@@ -65,11 +65,12 @@ dateFormat = "Jan 02, 2006"
 listDateFormat = "Jan 02, 2006"
 hideEntryNavigation = ["page"] # boolean / array of sections
 recentPostsLength = 3
-latestPostsLength = 7
+latestPostsLength = 10
 hideSocialMenu = false
 showReadingTime = true
 noTermCloudShuffle = false
-homepageSections = ["main-posts", "latest-posts"]
+homepageSections = ["latest-posts"]
+# homepageSections = ["main-posts", "latest-posts"]
 
 [params.opengraph.facebook]
 admins = [] # array of Facebook IDs

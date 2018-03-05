@@ -2,7 +2,7 @@
     <article class="post">
         <h2 class="title mb-10">Latest</h2>
 
-        {{ range (first .Site.Params.settings.latestPostsLength ( after .Site.Params.settings.recentPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) )}}
+        {{ range ( first .Site.Params.settings.latestPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) }}
             {{ .Render "li" }}
         {{ end }}
 
