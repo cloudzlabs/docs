@@ -11,20 +11,3 @@
 {{- range .Site.Params.assets.customJS -}}
 <script src='{{ . | relURL }}'></script>
 {{- end -}}
-
-<script type="text/javascript">
-$( document ).ready(function() {
-    var num = 0;
-    {{ range $index, $main := ( first .Site.Params.settings.recentPostsLength ( where .Data.Pages "Type" "ne" "page" ) ) }}
-        {{ if .Params.cover }}
-        num += 1;
-        {{ end }}
-    {{ end }}
-    if (num == 0) {
-        $('#main-post').remove();
-    } else {
-        var grid = "cover-grid" + num;
-        $("#main-post").addClass(grid);
-    }
-});
-</script>
