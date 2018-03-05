@@ -1,7 +1,7 @@
 ---
 date: "2018-02-19T10:39:44+09:00"
 title: "Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix"
-authors: ["jisangYun"]
+authors: ["jisangyun"]
 categories:
   - posts
 tags:
