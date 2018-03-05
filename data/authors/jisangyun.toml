@@ -1,4 +1,4 @@
-id = "jisangYun"
+id = "jisangyun"
 
 [email]
 username = "yjs0997"
@@ -8,7 +8,7 @@ host = "naver.com"
 display = "윤지상"
 
 [info]
-image = "/images/authors/jisangYun.jpg"
+image = "/images/authors/jisangyun.jpg"
 description = "Microservice Architecture Design&Dev"
 
 [social]

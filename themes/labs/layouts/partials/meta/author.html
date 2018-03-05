@@ -9,7 +9,7 @@
 {{- $author := ( index $.Site.Data.authors ( $.Scratch.Get "authorID" ) ) -}}
 
 {{- if $author.info.image -}}
-<img class="img-circle" alt="" src='{{ $.Site.BaseURL }}{{ $author.info.image }}'>
+<img class="img-circle" alt="" src='{{ $.Site.BaseURL }}{{ $author.info.image }}'/>
 {{- else -}}
 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
 {{- end -}}
