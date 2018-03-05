@@ -1,0 +1,17 @@
+id = "hunkee1017"
+
+[email]
+username = "hunkee1017"
+host = "sk.com"
+
+[name]
+display = "강훈기"
+
+[info]
+image = "/images/authors/hunkeekang.jpg"
+description = "Microservice Architecture Design"
+
+[social]
+email = "hunkee1017@sk.com"
+facebook  = ""
+twitter = ""
