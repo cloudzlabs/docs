@@ -1,5 +1,5 @@
-# baseURL = "http://tech.cloudz-labs.sk.com/"
-baseURL = "https://cloudzlabs.github.io/docs/"
+baseURL = "http://tech.cloudz-labs.io/"
+# baseURL = "https://cloudzlabs.github.io/docs/"
 title = "CLOUDZ LABS 기술 블로그"
 theme = "labs"
 
