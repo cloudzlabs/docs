@@ -1,7 +1,7 @@
 ---
 date: "2018-02-26T17:52:54+09:00"
 title: "MSA 에서 유비쿼터스 언어(보편 언어)의 중요성"
-authors: [jisangYun]
+authors: [jisangyun]
 categories:
   - posts
 tags:
