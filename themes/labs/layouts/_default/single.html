@@ -14,15 +14,9 @@
 
                     {{- partial "content/frontmatter" . -}}
 
-                    <div class='entry-cover-container'>
-                        <figure class='entry-cover'>
-
-                            {{- partial "content/cover-img" . -}}
-
-                            {{- partial "content/caption" . -}}
-
-                        </figure>
-                    </div>
+                    {{- if .Params.cover -}}
+                        {{- partial "content/cover" . -}}
+                    {{- end -}}
 
                     {{- .Content -}}
 
