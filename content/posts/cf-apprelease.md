@@ -1,5 +1,5 @@
 ---
-date: "2018-02-27T11:07:05+09:00"
+date: "2018-03-02-T11:07:05+09:00"
 title: "CF에 Cloud Native Application 배포하기 "
 authors: ["sya"]
 categories:
@@ -8,11 +8,11 @@ tags:
   - Cloud Native Application
   - Cloud Foundry
   - CF
-draft: true
+draft: false
 ---
 
-PaaS에 Cloud Application을 배포하는 전 과정을 정리해보았습니다. Java로 만든 Cloud Native Application을 CF에 배포하는 간단한 실습인데요, 개발 환경 세팅부터 PaaS에 애플리케이션 배포하고 애플리케이션 동작을 조작할 수 있습니다.  
-초보 개발자 위주의 간단한 실습이라 처음 접하는 사람도 쉽게 따라할 수 있으실꺼예요. 처음부터 끝까지 따라하면서 Cloud Native Application 개발을 시작해보세요! 
+PaaS에 Cloud Application을 배포하는 전 과정을 정리해보았습니다. Java로 만든 Cloud Native Application을 CF에 배포하는 간단한 실습인데요, 개발 환경 세팅부터 PaaS에 애플리케이션 배포하기까지의 흐름을 살펴볼 수 있어요.
+코딩이 필요하지 않은 초보 개발자 위주의 간단한 실습이라 처음 접하는 사람도 쉽게 따라할 수 있으실꺼예요. 처음부터 끝까지 따라하면서 Cloud Native Application 개발을 시작해보세요! 
 
 ## 실습 과정
 ----------------
@@ -21,21 +21,22 @@ PaaS에 Cloud Application을 배포하는 전 과정을 정리해보았습니다
 ## 준비 사항
 ----------------
 ### 전제조건
-- **CF 기반의 PaaS**
+- CF 기반 PaaS
     - PaaS에 애플리케이션을 배포, 업데이트, 삭제, 스케일링 등의 작업을 할 수 있는 CF기반의 PaaS가 있어야 합니다.
 - 시스템 요구사항
-    - Java (1.8 권장)
+    - Java (1.8 버전 권장)
 
 ### 개발 환경 설정
 Cloud Native Application을 만들기 위해 필요한 개발 환경에 대한 설명과 설치 방법입니다.
 
 #### Framework
 ##### [Spring Boot](http://projects.spring.io/spring-boot)
-  - Spring Framework를 사용하는 프로젝트를 쉽고 빠르게 개발할 수 있는 Spring Framework의 서브 프로젝트입니다.
+- Spring Framework를 사용하는 프로젝트를 쉽고 빠르게 개발할 수 있는 Spring Framework의 서브 프로젝트입니다.
 
 #### Language
 ##### Java
-  - JDK와 같이 설치됩니다.
+- Java (1.8 버전 권장)
+- JDK와 같이 설치됩니다.
 
 #### Tool
 개발에 필요한 도구들입니다.
@@ -55,49 +56,46 @@ Cloud Native Application을 만들기 위해 필요한 개발 환경에 대한 �
     4. worksapce를 지정해주면 STS 설치가 완료됩니다.
 
 ##### JDK
-  - JDK는 Java Development Kit으로, Java로 애플리케이션을 개발하기 위해 설치해야 합니다.
-  - JDK 버전은 안정성을 위해 최신 버전보다 1.8버전 사용을 권장합니다.  
-  - 설치 방법
-
+- JDK는 Java Development Kit으로, Java로 애플리케이션을 개발하기 위해 설치해야 합니다.
+- JDK 버전은 안정성을 위해 최신 버전보다 1.8버전 사용을 권장합니다.  
+- 설치 방법
     1. JDK 설치 전, 설치 여부를 확인합니다.
 
-        > a. 명령 프롬프트 실행
-        >
-        > - Window OS: 윈도우키 + R 을 눌러 실행창에 cmd 입력하면 명령 프롬프트가 실행됩니다. 
-        > - Mac OS: 터미널을 실행합니다.
-        >
-        > b. 명령 프롬프트에 `java -version` 입력  
-        > c. 화면에 Java의 버전이 표시되지 않으면 JDK가 미설치되어있으므로 2번 과정을 이어서 하세요.
+        a. 명령 프롬프트 실행
+        
+        > - Window OS: 윈도우키 + R 을 눌러 실행창에 cmd 입력
+        > - Mac OS: 터미널 실행
+        
+        b. 명령 프롬프트에 `java -version` 입력  
+        c. 화면에 Java의 버전이 표시되지 않으면 JDK가 미설치되어있으므로 2번 과정을 이어서 하세요.
 
     2. [JDK 다운로드 페이지](http://www.oracle.com/technetwork/java/javase/downloads/index.html)에 접속합니다.
-    3. JDK → Accept License Agreement 체크 → 컴퓨터 OS 정보에 맞는 File 선택, 다운로드 후 설치합니다.
+    3. **JDK** → **Accept License Agreement** 체크 → 컴퓨터 OS 정보에 맞는 설치 파일을 선택하여 다운로드 후 설치합니다.
     4. Java 환경변수 설정 (Window OS만 해당)  
     JDK를 새로 설치한 경우, Java 환경 변수 설정이 필요합니다.  
 
-        > a. 제어판 → 시스템 → 고급시스템 설정을 실행시킵니다.  
-        > b. 다이얼로그 하단 오른쪽 환경 변수 클릭합니다.  
-        > c. 사용자 변수 항목에서 새로 만들기를 클릭합니다.  
-        >    
-        > > - JAVA_HOME 설정
-        >       - 변수 이름: **JAVA_HOME**
-        >       - 변수 값: JDK 경로
-        >            - 예시. C:\Program Files\Java\jdk1.8.0_77
-        >
-        > d. 시스템 변수 항목에서 환경 변수를 다음과 같이 설정합니다.
-        >
-        > >  - 변수 이름: **PATH**
-        >    - 변수 값
-        >       - **%JAVA_HOME%\bin**
-        >       - PATH 변수가 이미 등록되어있는 경우: 변수 값 뒤에 ;**%JAVA_HOME%\bin** 입력
-        >
-        > e. 확인을 클릭하여 모든 창을 닫습니다.
-    4. 1번 과정을 따라서 JDK가 정상적으로 설치되었는지 확인합니다.
+        a. **제어판** → **시스템** → **고급시스템 설정**을 클릭시킵니다.  
+        b. 다이얼로그 하단 오른쪽의 **환경 변수**를 클릭합니다.  
+        c. 사용자 변수 항목에서 새로 만들기를 클릭하고 **JAVA_HOME** 변수를 생성합니다.  
+            
+        > - JAVA_HOME 설정
+            - 변수 이름: **JAVA_HOME**
+            - 변수 값: JDK 경로 (예시. C:\Program Files\Java\jdk1.8.0_77)
+        
+        d. 시스템 변수 항목에서 **PATH** 환경 변수를 다음과 같이 설정합니다.
+        
+        >  - 변수 이름: **PATH**
+        >  - 변수 값
+            - **%JAVA_HOME%\bin**
+            - PATH 변수가 이미 등록되어있는 경우: 변수 값 뒤에 **;%JAVA_HOME%\bin**를 입력
+        
+        e. 확인을 클릭하여 모든 창을 닫습니다.
+    5. 1번 과정을 따라서 JDK가 정상적으로 설치되었는지 확인합니다.
 
 #### CF CLI
-  - PaaS에 애플리케이션을 배포할 때 사용할 명령어 도구 CF CLI( Cloud foundry Command
-    line interface)를 설치합니다. 
-  - 자세한 설치 방법이나 CF 명령어 정보는 [CF CLI 사용하기]()포스트를 참고하세요.
-  - 설치 방법
+- PaaS에 애플리케이션을 배포할 때 사용할 명령어 도구 CF CLI( Cloud foundry Command line interface)를 설치합니다. 
+- 자세한 설치 방법이나 CF 명령어 정보는 [CF CLI 사용하기](http://tech.cloudz-labs.sk.com/posts/command-tool/) 포스트를 참고하세요.
+- 설치 방법
     1. https://github.com/cloudfoundry/cli/releases에 접속합니다.
     2. 컴퓨터 OS 정보에 맞는 파일을 다운로드합니다. 
     3. 다운로드한 파일의 압축을 풀어서, CF CLI를 설치합니다. 
@@ -111,6 +109,7 @@ Cloud Native Application을 만들기 위해 필요한 개발 환경에 대한 �
     - STS에서 제공하는 플러그인을 사용하므로 별도의 설치가 필요하지 않습니다.
 
 ## 샘플 프로젝트 개발하기
+----------------
 Cloud Native Application 샘플 프로젝트를 Github에서 다운로드해서, STS에서 실행해 봅니다. 
 
 ### 샘플 프로젝트 다운로드 
@@ -129,26 +128,56 @@ Spring에서 제공하는 샘플 프로젝트를 사용합니다.
 2. **hello-spring-cloud** 프로젝트가 Package Explorer View에 애플리케이션이 정상적으로 추가되었는지 확인합니다. 
 3.  JDK 설정  
 
-   > a. STS 메뉴 **Window → Preference → Java → Installed
-        JREs**를 선택합니다.  
-   > b. 화면에 JRE 만 있다면 JDK를 추가합니다.  
-   > c. **Add → Next → Directory** 선택 후 JDK 경로를 입력합니다.   
-   > d. 추가한 JDK의 체크박스에 체크하여 defalut로 지정해 줍니다. 
+    > a. STS 메뉴 **Window → Preference → Java → Installed JREs**를 선택합니다.  
+    b. 화면에 JRE 만 있다면 JDK를 추가합니다.  
+    c. **Add → Next → Directory** 선택 후 JDK 경로를 입력합니다.   
+    d. 추가한 JDK의 체크박스에 체크하여 defalut로 지정해 줍니다. 
 
 ### 샘플 프로젝트 설명
-hello-spring-cloud 프로젝트는 spring-boot-starter Maven 프로젝트입니다.  
-Spring Boot의 자세한 가이드는  [Spring Boot
+hello-spring-cloud 프로젝트는 Spring Boot 프로젝트입니다.
+resources폴더의 home.html 페이지가 홈 화면이고, 클라우드 환경에서 helloworld 패키지의 HomeController 클래스에서 각 데이터베이스의 클래스명과 url 정보를 표시하는 애플리케이션입니다. 
+  
+> Spring Boot에 대한 자세한 가이드는  [Spring Boot
 Document](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-documentation)를
 참고하세요.
 
 #### hello-spring-cloud 특징
 -   hello-spring-cloud는 클라우드 환경과, 기존과 같은 물리 서버 환경
     모두에서 서비스할 수 있는 형태로 구성되어 있습니다. 
--   hello-spring-cloud 프로젝트에 연결되는 서비스는 아래와 같습니다. 
-    -   **Maria DB**
+-   hello-spring-cloud 프로젝트에 설정되어 있는 서비스는 아래와 같습니다. 
+    -   **MySql**
     -   **Redis**
     -   **Mongo DB**
     -   **Rabbit MQ**
+    
+    해당 미들웨어의 의존성 관계는 pom.xml에서 확인할 수 있습니다.
+
+    ```XML
+    	<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+        .
+        .
+        .
+    	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+    ```
 
 #### hello-spring-cloud 구조
 -   hello-spring-cloud
@@ -159,8 +188,7 @@ Document](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/html
         -   application.properties : Spirng boot 기본 설정 파일 
     -   src/test/java
     -   src
-    -   manifest.yml : PaaS 애플리케이션 배포 부가정보 설정 파일로
-         애플리케이션 이름 및 바인딩 되는 서비스 정보들을 기입
+    -   manifest.yml: PaaS 애플리케이션 배포 부가정보 설정 파일로 애플리케이션 이름 및 바인딩되는 서비스 정보들을 기입
     -   pom.xml: maven 설정 파일
 
 ### 샘플 프로젝트 빌드하기
@@ -176,6 +204,8 @@ hello-spring-cloud 프로젝트를 로컬 환경에서 구동해봅니다.
 3. 화면에 **Spring Cloud Demo Application** 메시지가 출력되면 정상적으로 실행된 것입니다.
  
  ![Image of URL](docs/contents/images/cfurl.png)
+
+지금은 로컬 서버로 실행했기 때문에, 화면 중간에 'The application is not running in a cloud environment.' 문구를 볼 수 있습니다. 애플리케이션을 클라우드 환경에 배포하고 필요한 서비스를 바인딩하면 데이터를 정상적으로 가져오는 화면을 볼 수 있습니다. 이제 클라우드에 배포를 진행해보겠습니다.
 
 #### 빌드 
 PaaS에 배포할 JAR 파일을 만들기 위해서 빌드를 진행합니다.
@@ -196,11 +226,11 @@ PaaS에 배포할 JAR 파일을 만들기 위해서 빌드를 진행합니다.
     2. workspace의 샘플 프로젝트 하위에 **tartget** 폴더에 JAR 파일이 생성되었는지 확인합니다. 
 
 ### 애플리케이션 배포하기
-샘플 애플리케이션을 CF CLI를 이용해서 PaaS에 배포해보겠습니다. 
+샘플 애플리케이션을 CF CLI를 이용해서 PaaS에 배포합니다. 
 
 #### PaaS에 애플리케이션 배포하기 
 ##### 1. manifest.yml 작성
-manifest.yml은 PaaS에 애플리케이션을 배포하는데 필요한 정보들을 작성하는 설정 파일입니다.
+manifest.yml은 CF PaaS에 애플리케이션을 배포하는데 필요한 정보들을 작성하는 설정 파일입니다.
 
 ```Emacs
 applications:
@@ -210,18 +240,27 @@ applications:
     path: target/hello-spring-cloud-0.0.1.BUILD-SNAPSHOT.jar
 ```
 
+설정 내용에 대한 간단한 설명입니다.
+
+- PaaS 환경에서 사용할 애플리케이션 이름: hello-spring-cloud
+- 인스탄스 갯수: 1개
+- host: hello-spring-cloud 뒤에 PaaS에서 설정하는 랜덤 문구를 사용
+- path: 빌드한 jar 경로
+
+> Manifest에 대한 자세한 설명은 [Cloud Foundry Documentaion](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html)을 확인하세요.
 
 ##### 2. PaaS 로그인
 1. 명령 프롬프트을 실행합니다. 
 2. 명령 프롬프트에서 **hello-spring-cloud** 프로젝트 경로로 이동합니다.
-- 예시
 
-    ```Emacs
-    $ cd C:/Users/hello-spring-cloud
-    ```
+    - 예시
+
+        ```Emacs
+        $ cd C:/Users/hello-spring-cloud
+        ```
 3.  PaaS에 로그인을 하기 위해 ` cf login -a [PaaS API URL]` 같이 명령어를 입력합니다.
     - `[PaaS API URL]` 로그인할 PaaS API URL
-    - 예시.  
+    - 예시 
         ```Emacs
         $ cf login -a http://api.paas.sk.com/
         ```
@@ -243,8 +282,8 @@ applications:
 
 5.  애플리케이션을 배포할 조직(Org)과 영역 (Space)을 선택합니다.   
     로그인이 성공하면 애플리케이션을 배포할 곳을 선택하는 창이 나옵니다.  
-    조직을 선택하면 조직 내 존재하는 영역 목록이 표시되고, 숫자키를 눌러서 내가 배포할 위치를 선택합니다. 선택을 마치면 API 엔드포인트, 사용자, 내가 선택한 조직과 영역 정보가 표시되요.  
-    전 dtlab 조직의 dev 영역에 애플리케이션을 배포할꺼예요.
+    조직을 선택하면 조직 내 존재하는 영역 목록이 표시되고, 숫자키를 눌러서 내가 배포할 위치를 선택합니다. 선택을 마치면 API 엔드포인트, 사용자, 내가 선택한 조직과 영역 정보가 표시됩니다.
+    전 dtlab 조직의 dev 영역에 애플리케이션을 배포하려고 합니다.
 
     ```Emacs
     조직 선택(또는 Enter를 눌러 건너뜀):
@@ -268,22 +307,20 @@ applications:
     영역:             dev
     ```
 
-
 ##### 3. 서비스 생성
-애플리케이션에서 서비스를 사용할 수 있도록 생성, 바인딩 하는
-작업이 필요합니다. 
+애플리케이션에서 서비스를 사용할 수 있도록 서비스 인스탄스를 생성하고 바인딩하는 작업이 필요합니다. 
 
 hello-spring-cloud 애플리케이션은 아래의 서비스를 사용할 것입니다.
 
-- MariaDB
+- MySql
 - Redis 
 - MongoDB 
 - Rabbit MQ 
 
 서비스 생성하는 과정은 요약하면 다음과 같습니다.
 
-1. 사용할 서비스의 인스탄스가 이미 생성되어 있는 지 확인.   
-2. 생성되어 있는 인스탄스를 그대로 사용하려면 서비스 생성 과정 필요 없음.  
+1. 사용할 서비스의 인스탄스가 이미 생성되어 있는 지 확인. 
+2. 생성되어 있는 인스탄스를 그대로 사용하려면 서비스 생성 과정 필요 없음. 
 없으면 서비스 인스탄스를 생성해야 한다.  
 마켓플레이스에 cf에서 제공하는 서비스 정보를 이용하여 서비스 인스탄스를 생성!
 
@@ -293,22 +330,22 @@ hello-spring-cloud 애플리케이션은 아래의 서비스를 사용할 것입
 명령 프롬프트에 `cf services` 명령어를 입력하면 선택한 영역에서 사용할 수 있는 서비스의 목록이 표시됩니다. 
 
 ```Emacs
-    $ cf services
+$ cf services
 ```
 
 제가 선택한 조직/영역에서 사용할 수 있는 서비스 인스탄스가 뭐가 있는지 볼까요?
 
-    ```Emacs
-    $ cf services
-    abc@sk.com(으)로 dtlab 조직/dev 영역의 서비스를 가져오는 중...
-    확인
+```Emacs
+$ cf services
+abc@sk.com(으)로 dtlab 조직/dev 영역의 서비스를 가져오는 중...
+확인
 
-    이름                        서비스             플랜                    바인딩된 앱                          마지막 조작                                                                                                                                     
-    amqp-service               RabbitMQ         standard                                                 create 성공                          
-    mariadb-dtlabs             MariaDB          Mysql-Plan2-100con     dtlabs-registration-service       update 성공                                                                                      
-    test-mongo                 Mongo-DB         default-plan           dtlabs-registration-service       create 성공                        
-    userbff_autoscaler         CF-AutoScaler    free                   dtlabs-user-bff-service           create 성공
-    ```
+이름                        서비스             플랜                    바인딩된 앱                          마지막 조작                                                                                                                                     
+amqp-service               RabbitMQ         standard                                                 create 성공                          
+mariadb-dtlabs             MariaDB          Mysql-Plan2-100con     dtlabs-registration-service       update 성공                                                                                      
+test-mongo                 Mongo-DB         default-plan           dtlabs-registration-service       create 성공                        
+userbff_autoscaler         CF-AutoScaler    free                   dtlabs-user-bff-service           create 성공
+```
 
 RabbitMQ, MariaDB, Mongo-DB, CF-AutoSacler 서비스 인스탄스들이 이미 존재하네요. 대부분의 서비스가 앱에 바인딩되어 사용 중인걸 보니 저희 팀원이 만들어서 사용 중인 서비스인 것 같아요.  
 전 RabbitMQ 서비스는 이미 만들어진 amqp-service를 사용하고, MariaDB 서비스 인스탄스는 이미 존재하는 인스탄스 말고 제가 새로 만들어서 사용해볼께요.
@@ -340,7 +377,7 @@ Redis-dev             Free Plen*                                  Shared Redis s
 
 ```
 
-우리가 사용할 서비스 MariaDB, Redis, MongoDB, Rabbit MQ 정보를 확인할 수 있어요. 이 정보로 서비스를 생성해볼께요.
+우리가 사용할 서비스 MySql, Redis, MongoDB, Rabbit MQ 정보를 확인할 수 있어요. 이 정보로 서비스를 생성해볼께요.
 
 서비스 생성 명령어 `cf create-service [서비스 명][plan][생성할 서비스명]`를 이용합니다.  
 `[서비스명][서비스 플랜][생성할 서비스 인스타스명]`에 `cf marketplace`로 조회한 서비스 정보를 입력하면 됩니다.  
@@ -348,9 +385,9 @@ Redis-dev             Free Plen*                                  Shared Redis s
 
 그럼 서비스를 하나씩 생성해보겠습니다.
 
-- MariaDB 서비스 생성
-
-    1. 마켓플레이스에서 MariaDB 서비스 정보 확인
+- MySql 서비스 생성
+    1. 마켓플레이스에서 MariaDB 서비스 정보 확인  
+    MySql과 호환되는 MariaDB 서비스를 사용하겠습니다.
         ```Emacs
         $ cf marketplace
         abc@sk.com(으)로 dtlab 조직/dev 영역에서 서비스를 가져오는 중...
@@ -431,8 +468,7 @@ Redis-dev             Free Plen*                                  Shared Redis s
             $ cf create-service RabbitMQ standard amqp-service
             ```
             
-            위에서 말했듯이 전 RabbitMQ 서비스 인스탄스는 이미 생성되어 있는 **amqp-service**를 사용할 것이지만 위의 `cf create-service` 명령어를 실행해보면,  
-            **amqp-service** 서비스 인스탄스가 이미 생성되어 있어서 아래와 같이 'Service amqp-service이(가) 이미 있음' 메세지를 볼 수 있죠.
+            위에서 말했듯이 전 RabbitMQ 서비스 인스탄스는 이미 생성되어 있는 **amqp-service**를 사용할 것이지만 위의 `cf create-service` 명령어를 실행해보면, **amqp-service** 서비스 인스탄스가 이미 생성되어 있어서 아래와 같이 "Service amqp-service이(가) 이미 있음" 메세지를 볼 수 있죠.
 
             ```Emacs
             $ cf create-service RabbitMQ standard amqp-service
@@ -455,7 +491,7 @@ Redis-dev             Free Plen*                                  Shared Redis s
 
         ```Emacs
         $ cf services
-        sya@sk.com(으)로 dtlab 조직/dev 영역의 서비스를 가져오는 중...
+        abc@sk.com(으)로 dtlab 조직/dev 영역의 서비스를 가져오는 중...
         확인
 
         이름                   서비스           플랜                   바인딩된 앱           마지막 조작
@@ -470,20 +506,24 @@ Redis-dev             Free Plen*                                  Shared Redis s
 
 ##### 3. 애플리케이션 배포 
 1. 명령 프롬프트에서 hello-spring-cloud 폴더 경로로 이동합니다.
-    - 예시.
+    - 예시
             
             $ cd Documents/workspace/hello-spring-cloud
 
 2. 하위에 **manifest.yml** 파일이 있는 지 확인합니다.
-    - 예시. Linux
-
-            $ ls
-            1			LICENSE			manifest.yml		src			system.properties
-            2			README.md		pom.xml			sya@sk.com		target
+    - Linux
+        
+        ```Emacs
+        $ ls
+        1			LICENSE			manifest.yml		src			system.properties
+        2			README.md		pom.xml			abc@sk.com		target
+        ```
 
     - Window OS
 
-            $ dir
+        ```Emacs
+        $ dir
+        ```
 
 2. 명령 프롬프트에 `cf push`를 입력합니다.
 
@@ -496,7 +536,7 @@ Redis-dev             Free Plen*                                  Shared Redis s
     ```Emacs
     Manifest 파일 /Users/seoyoungahn/git/hello-spring-cloud/manifest.yml 사용
 
-    sya@sk.com(으)로 dtlab 조직/dev 영역에서 hello-spring-cloud 앱 업데이트 중...
+    abc@sk.com(으)로 dtlab 조직/dev 영역에서 hello-spring-cloud 앱 업데이트 중...
     확인
 
     hello-spring-cloud-persistent-hypnotization.paas.sk.com 라우트 작성 중...
@@ -571,7 +611,7 @@ Redis-dev             Free Plen*                                  Shared Redis s
 
     `CALCULATED_MEMORY=$($PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-2.0.2_RELEASE -memorySizes=metaspace:64m..,stack:228k.. -memoryWeights=heap:65,metaspace:10,native:15,stack:10 -memoryInitials=heap:100%,metaspace:100% -stackThreads=300 -totMemory=$MEMORY_LIMIT) && JAVA_OPTS="-Djava.io.tmpdir=$TMPDIR -XX:OnOutOfMemoryError=$PWD/.java-buildpack/open_jdk_jre/bin/killjava.sh $CALCULATED_MEMORY" && SERVER_PORT=$PORT eval exec $PWD/.java-buildpack/open_jdk_jre/bin/java $JAVA_OPTS -cp $PWD/. org.springframework.boot.loader.JarLauncher` 명령을 사용하여 hello-spring-cloud 앱이 시작되었습니다.
 
-    sya@sk.com(으)로 dtlab 조직/dev 영역에서 hello-spring-cloud 앱의 상태 표시 중...
+    abc@sk.com(으)로 dtlab 조직/dev 영역에서 hello-spring-cloud 앱의 상태 표시 중...
     확인
 
     요청된 상태: started
@@ -608,7 +648,7 @@ mariadb-service를 바인딩해보겠습니다.
     $ cf restage hello-spring-cloud
     ```
 
-    제가 실행해보니,
+    제가 실행해보니 아래 메세지와 함께 서비스가 바인딩되고, 앱이 재시작하는 것을 확인할 수 있습니다.
 
     ```Emacs
     $ cf bind-service hello-spring-cloud mariadb-service
@@ -686,7 +726,6 @@ mariadb-service를 바인딩해보겠습니다.
         상태      이후                   CPU    메모리          디스크         세부사항
     #0   실행 중   2018-03-04T10:17:48Z   0.0%   76.2M of 256M   157.3M of 1G  
     ``` 
-    이런 메세지와 함께, 서비스가 바인딩되고, 앱이 재시작하는 것을 확인할 수 있습니다.
 
 마찬가지로, **redis-service, mongodb-service, amqp-service**도 `cf bind-service`로 서비스를 바인딩하고, `cf restage`로 애플리케이션에 서비스를 적용시킵니다. 3가지 서비스를 한꺼번에 적용하고 restage할께요.
 
@@ -715,8 +754,8 @@ mariadb-service를 바인딩해보겠습니다.
     $ cf restage hello-spring-cloud
     ```
 
-- 앱 서비스 인스탄스 Credential 확인  
-명령프롬프트에 `cf env hello-spring-cloud`을 입력하여, **hello-spring-cloud** 앱에 바인딩된 서비스의 Credential 정보가 출력됩니다.
+- 애플리케이션 서비스 인스탄스 Credential 확인  
+명령 프롬프트에 `cf env hello-spring-cloud`을 입력하여, **hello-spring-cloud** 앱에 바인딩된 서비스의 Credential 정보가 출력됩니다.
 
     ```Emacs
     abc@sk.com(으)로 dtlab 조직/dev 영역의 hello-spring-cloud 앱에 사용할 환경 변수를 가져오는 중...
@@ -776,16 +815,16 @@ mariadb-service를 바인딩해보겠습니다.
 
 
 ##### 5. 애플리케이션 확인 
-1. `cf apps`로 배포한 애플리케이션의 URL정보를 확인합니다.
+1. `cf apps`로 배포한 애플리케이션의 URL 정보를 확인합니다.
     ```Emacs
-        $ cf apps
+    $ cf apps
     ```
 
 2. 화면에 표시되는 URL로 접속해서 애플리케이션이 정상 동작하는 지 확인합니다. 
 
     ```Emacs
     $ cf apps
-    sya@sk.com(으)로 dtlab 조직/dev 영역의 앱 가져오는 중...
+    abc@sk.com(으)로 dtlab 조직/dev 영역의 앱 가져오는 중...
     확인
     이름                               요청된 상태   인스턴스   메모리   디스크   URL
     hello-spring-cloud                 started       1/1        256M     1G       hello-spring-cloud-unskillful-contractor.paas.sk.com, hello-spring-cloud-persistent-hypnotization.paas.sk.com
@@ -794,14 +833,15 @@ mariadb-service를 바인딩해보겠습니다.
     ```
 
 3. 웹 브라우저로 URL에 접속했을 때, 아래 그림과 같이 **Spring Cloud Demo Application** 메시지가 출력되면 정상적으로 실행된 것입니다. 
-    URL 값에 표시된 hello-spring-cloud-unskillful-contractor.paas.sk.com 으로 접속해보겠습니다.
+    URL 값에 표시된 http://hello-spring-cloud-unskillful-contractor.paas.sk.com 으로 접속해보겠습니다.
     ![Image of URL result](docs/contents/images/cfurl_final.png)
+ 
 
 
 ## 마치며..
 ---
 지금까지 Cloud Native Application을 개발하기 위한 간단한 개발 환경을 만들어보고,
 실제로 샘플 프로젝트를 통해서 애플리케이션 빌드와 PaaS에 애플리케이션 배포까지 전반의 과정을 같이 해보았습니다.
-어렵지 않죠? CF의 다양한 기능을 알고 싶다면 Cloud Foundry 공식 홈페이지에 가서 도움을 받을 수 있습니다. 참고하세요!
+어렵지 않죠? CF의 다양한 기능을 알고 싶다면 Cloud Foundry 공식 홈페이지에서 도움을 받을 수 있습니다. 참고하세요!
 
   

@@ -27,13 +27,13 @@ Cloud Foundry의 오픈소스 Cloud Foundry 기술을 기반으로 만든 제품
 
 - PCF (Pivotal Cloud Foundry)
   - [Pivotal](https://pivotal.io/)에서 오픈소스 Cloud Foundry로 만든 상용 PaaS
-- (Bluemix)[https://www.ibm.com/cloud-computing/bluemix]
-  - IBM이 오픈 소스 Cloud Foundry로 만든 상용 PaaS
+- [Bluemix] (https://www.ibm.com/cloud-computing/bluemix)
+  - IBM에서 오픈 소스 Cloud Foundry로 만든 상용 PaaS
 
 
 ## CF CLI?
 -------------------------------
-GO 언어로 개발된 Cloud Foundry의 Command Line Interfacae입니다. 사용자가 CF CLI를 설치하면 명령 프롬프트를 통해서 CF기반의 PaaS 환경에 자신이 만든 애플리케이션을 배포하거나 서비스 생성하여 바인등하는 등의 다양한 기능을 사용할 수 있습니다. 
+GO 언어로 개발된 Cloud Foundry의 Command Line Interface입니다. 사용자가 CF CLI를 설치하면 명령 프롬프트를 통해서 CF기반의 PaaS 환경에 자신이 만든 애플리케이션을 배포하거나 서비스 생성하여 바인등하는 등의 다양한 기능을 사용할 수 있습니다. 
 
 ### CF CLI 설치 방법
 CLI Installer를 다운로드하여 간단히 설치할 수 있습니다.
