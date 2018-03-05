@@ -8,7 +8,7 @@ copyright = ""
 disqusShortname = "cloudz-labs"
 googleAnalytics = ""
 
-Paginate = 5
+Paginate = 10
 preserveTaxonomyNames = true
 
 enableRobotsTXT = true # generate robots.txt
@@ -83,26 +83,6 @@ page = "" # Twitter page username
 # Title Separator: - – — · • * ⋆ | ~ « » < >
 titleSeparator = "|"
 
-[params.social]
-facebook = "cloudzlabs"
-twitter = "cloudzlabs"
-github-alt = "cloudzlabs"
-email = "withdtlabs@gmail.com"
-
-[params.social.config]
-platforms = ["twitter", "facebook", "github-alt", "email"]
-
-[params.social.share]
-# Sets Social Share links to appear on posts
-enabled = true
-# Sets specific share to appear on posts (default behavior is to appear)
-twitter = true
-google = true
-facebook = true
-linkedin = true
-pinterest = true
-email = true
-
 [taxonomies]
 author = "authors"
 category = "categories"
@@ -144,3 +124,23 @@ weight = 100
 # Inline Code Copy
 [params.clipboard]
 disableInlineCopyToClipBoard = true
+
+[params.social]
+facebook = "cloudzlabs"
+twitter = "cloudzlabs"
+github-alt = "cloudzlabs"
+email = "withdtlabs@gmail.com"
+
+[params.social.config]
+platforms = ["twitter", "facebook", "github-alt", "email"]
+
+[params.social.share]
+# Sets Social Share links to appear on posts
+enabled = true
+# Sets specific share to appear on posts (default behavior is to appear)
+twitter = true
+google = true
+facebook = true
+linkedin = true
+pinterest = true
+email = true

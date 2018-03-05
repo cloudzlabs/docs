@@ -1,0 +1,14 @@
+{{- with .Params.cover -}}
+{{- $type := ( printf "%T" . ) -}}
+{{- $isMap := ( not ( eq $type "string" ) ) -}}
+
+{{ if $isMap }}
+{{ with .caption }}
+<figcaption>
+    <span>
+    {{- . | markdownify -}}
+    </span>
+</figcaption>
+{{ end }}
+{{ end }}
+{{ end }}

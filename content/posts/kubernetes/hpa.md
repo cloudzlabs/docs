@@ -14,7 +14,7 @@ tags:
   - Autoscale
   - Scale Out
 cover:
-  image: /images/default/k8s.png
+  image: ../images/k8s.png
   caption: ""
 description: ""
 draft: false

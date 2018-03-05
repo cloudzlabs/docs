@@ -8,7 +8,7 @@ host = "sk.com"
 display = "임지현"
 
 [info]
-image = "/images/authors/jihyun.png" 
+image = "/images/authors/jihyun.jpg" 
 description = "Microservice Architecture Design"
 
 [social]

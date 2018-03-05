@@ -4,18 +4,7 @@
     {{ else }}
     <div class="row card-style-2">
     {{ end }}
-        {{- if .Params.cover -}}
-        <a href="#" class="col-md-5 col-sm-12 col-xs-12">
-            {{- with .Params.cover -}}
-            {{- $type := ( printf "%T" . ) -}}
-            {{- $isMap := ( not ( eq $type "string" ) ) -}}
-            <img class="img-responsive" alt="Post Thumbnail" src='{{ $.Site.BaseURL }}{{ if $isMap }}{{ .image }}{{ else }}{{ . }}{{ end }}'
-                {{- if $isMap }}
-                    {{- with .caption }} alt='{{ . | markdownify }}'{{ end -}}
-                {{ end -}} />
-            {{- end -}}
-        </a>
-        {{- end -}}
+
         {{- if .Params.cover -}}
         <div class="col-md-7 col-sm-12 col-xs-12 post-info">
         {{- else -}}
@@ -40,13 +29,24 @@
                     {{ end }}
                 {{- end -}}
             </p>
+
             <p class="btn-link">
                 <a href="{{ .URL }}">Read more...</a>
             </p>
+
             {{ if .Params.tags }}
                 {{ partial "meta/tags" . }}
             {{ end }}
-            {{- /* vim: set ts=2 sw=2 et: */}}
+
         </div>
+
+        {{- if .Params.cover -}}
+        <a href="#" class="col-md-5 col-sm-12 col-xs-12">
+
+            {{- partial "content/cover-img" . -}}
+
+        </a>
+        {{- end -}}
+
     </div>
 </div>

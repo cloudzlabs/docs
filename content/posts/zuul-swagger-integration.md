@@ -9,9 +9,6 @@ tags:
   - Zuul
   - Srping Cloud
 description: ""
-cover:
-  image: /images/default/swagger.png
-  caption: ""
 draft: false
 ---
 

@@ -1,16 +1,19 @@
-{{- range $i, $authorID := .Params.authors -}}
-    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-    <a href="{{ "/authors/" | relLangURL }}{{ . | urlize }}">
-    {{- if $author.info.image -}}
-    <img class="img-circle" alt="" src='{{ $.Site.BaseURL }}{{ $author.info.image }}'>
-    {{- else -}}
-    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-    {{- end -}}
-    <div class="author-info">
-        <h3>{{- $author.name.display -}}</h3>
-        <p>{{- $author.info.description -}}</p>
-    </div>
-</a>
+{{- $.Scratch.Set "authorID" "" -}}
+{{- if eq .Kind "taxonomy" -}}
+    {{- $.Scratch.Set "authorID" .Data.Term -}}
+{{- else if eq .Kind "taxonomyTerm" -}}
+    {{- $.Scratch.Set "authorID" .Name -}}
+{{- else if eq .Kind "page" -}}
+    {{- $.Scratch.Set "authorID" ( index .Params.authors 0 ) -}}
 {{- end -}}
+{{- $author := ( index $.Site.Data.authors ( $.Scratch.Get "authorID" ) ) -}}
 
-
+{{- if $author.info.image -}}
+<img class="img-circle" alt="" src='{{ $.Site.BaseURL }}{{ $author.info.image }}'>
+{{- else -}}
+<i class="fa fa-user-circle-o" aria-hidden="true"></i>
+{{- end -}}
+<div class="author-info">
+    <h3>{{- $author.name.display -}}</h3>
+    <p>{{- $author.info.description -}}</p>
+</div>

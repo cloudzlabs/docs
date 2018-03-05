@@ -14,7 +14,15 @@
 
                     {{- partial "content/frontmatter" . -}}
 
-                    {{- partial "content/cover" . -}}
+                    <div class='entry-cover-container'>
+                        <figure class='entry-cover'>
+
+                            {{- partial "content/cover-img" . -}}
+
+                            {{- partial "content/caption" . -}}
+
+                        </figure>
+                    </div>
 
                     {{- .Content -}}
 
@@ -29,9 +37,11 @@
                         <div class="foot-author row">
                             <div class="col-lg-6 col-md-6 col-sm-12 ">
                                 <div class="author">
+                                    <a href="{{ "/authors/" | relLangURL }}{{ ( index .Params.authors 0 ) | urlize }}">
 
-                                    {{ partial "meta/author" . }}
+                                        {{ partial "meta/author" . }}
 
+                                    </a>
                                 </div>
                             </div>
                         </div>
