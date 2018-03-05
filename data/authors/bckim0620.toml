@@ -5,10 +5,10 @@ username = "bckim0620"
 host = "google.com"
 
 [name]
-display = "Bongchan Kim"
+display = "김봉찬"
 
 [info]
-image = ""
+image = "/images/authors/bckim0620.jpg" 
 description = "Microservice Architecture Design&Dev"
 
 [social]
