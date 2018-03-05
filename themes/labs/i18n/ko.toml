@@ -76,3 +76,6 @@ other = "첨부파일"
 
 [seeAlso]
 other = "함께 보기"
+
+[Search-placeholder]
+other = "검색어를 3글자 이상 입력하세요."
