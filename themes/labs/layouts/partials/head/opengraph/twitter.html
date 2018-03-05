@@ -15,6 +15,7 @@
   {{- $type := ( printf "%T" . ) -}}
   {{- $isMap := ( not ( eq $type "string" ) ) -}}
   <meta property='twitter:image' content='
+  {{- $.Permalink -}}
   {{- if $isMap -}}
     {{- .image | absURL -}}
   {{- else -}}
