@@ -1,6 +1,6 @@
 ---
 date: "2018-03-05T13:10:36+09:00"
-title: "Redis in Spring Boot"
+title: "Redis Overview(with Spring Boot)"
 authors: ["hunkee1017"]
 categories:
   - posts
@@ -172,7 +172,7 @@ spring:
 
 1) Redis Transaction
 
-> 명시적으로 사용하기 위해서 multi
+> 명시적으로 사용하기 위해서 커스터마이징을 수행
 
 ```java
 // execute a transaction
@@ -190,6 +190,8 @@ System.out.println("Number of items added to set: " + txResults.get(0));
   
 
 2) @Transactional Support
+
+> Framework의 Transaction을 사용해서 처리
 
 ```java
 /* Sample Configuration */
@@ -241,7 +243,6 @@ Redis홈페이지에서 권장하는 방법은 **RDB와 AOF를 모두 사용**�
 *   **단점**
     *   Redis가 작동을 멈춘 경우(예 : 정전 후)에 데이터 손실 가능성을 최소화해야하는 경우 RDB가 좋지 않습니다. (예를 들어 데이터 세트에 대해 최소 5 분 및 100 회 기록 후, 여러 저장 지점을 가질 수 있음).
     *   RDB는 자식 프로세스를 사용하여 디스크에 저장하기 위해 fork ()를 자주 수행 해야 합니다. 데이터 세트가 크면 Fork ()에 시간이 많이 걸릴 수 있으며 CPU 성능이 좋지 않은 경우 Redis는 클라이언트에 수 밀리 초 또는 1 초간 서비스를 제공하지 않을 수 있습니다.
-    
 
 * *Synchronously 백업*
 
