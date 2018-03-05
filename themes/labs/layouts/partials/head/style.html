@@ -16,12 +16,12 @@
 <link id="mainStyles" media="screen" href="/docs/assets/css/common.css">
 <link rel="stylesheet" type="text/css" href="/docs/assets/css/font-awesome.css"> -->
 
-{{ range .AlternativeOutputFormats -}}
+{{- range .AlternativeOutputFormats -}}
 <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}" title="{{ $.Site.Title }}">
-{{ end -}}
-{{ with .OutputFormats.Get "rss" -}}
+{{- end -}}
+{{- with .OutputFormats.Get "rss" -}}
   <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}" title="{{ $.Site.Title }}">
-{{ end -}
+{{- end -}
 
 {{- range .Site.Params.assets.customCSS -}}
   <link rel='stylesheet' href='{{ . | relURL }}'>
