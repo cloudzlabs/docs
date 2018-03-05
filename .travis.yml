@@ -8,7 +8,7 @@ install:
 
 script:
   - hugo # This commands builds your website on travis
-  - echo 'tech.cloudz-labs.io' > public/CNAME # Create a CNAME file which maps your site to your custom domain
+  - echo tech.cloudz-labs.io >> CNAME # Create a CNAME file which maps your site to your custom domain
 
 deploy:
   local_dir: public # Default static site output dir for Hugo
