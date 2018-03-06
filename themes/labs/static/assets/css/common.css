@@ -222,7 +222,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .offcanvas-toggle:hover { color: #111; }
 .offcanvas-toggle.menu-toggle { display: none; }
 
-.navbar {position: fixed;top: 0;left: 0;width: 100%;min-height: 64px;background-color: #D04D6F;z-index: 9000;box-shadow: 0 0 13px rgba(0,0,0,0.24);overflow-x: hidden;border:  1px solid #D04D6F;}
+.navbar {position: fixed;top: 0;left: 0;width: 100%;min-height: 64px;background-color: #D04D6F;z-index: 9000;box-shadow: 0 0 13px rgba(0,0,0,0.24);overflow-x: hidden;border:  1px solid #D04D6F; overflow: hidden; }
 .navbar.navbar-stuck { position: fixed; box-shadow: 0 3px 25px 0 rgba(47,56,68,0.22); z-index: 9010; }
 .site-branding { position: absolute; top: 0; left: 0; height: 100%; z-index: 5; }
 .site-branding .inner { display: table; height: 100%; min-height: 100%; }
@@ -761,18 +761,6 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .cover-grid1 .cover-story
 .cover-byline li:last-child,
 .cover-byline li:last-child, .cover-grid3 article:nth-child(1) .cover-byline li:last-child { display: inline-block; }
-.cover-grid1 .cover-story { height: 100%; width: 100%; }
-.cover-grid1 .cover-story .distraction-title, .cover-grid1 .cover-story h2 { font-size: 40px; line-height: 1; }
-.cover-grid2 .cover-story { float: left; height: 100%; width: 50%; }
-.cover-grid3 article { float: left; height: 50%; width: 33.33333%; }
-.cover-grid3 article:nth-child(1) { height: 100%; width: 66.66666%; }
-.cover-grid3 article:nth-child(1) .distraction-title, .cover-grid3 article:nth-child(1) h2 {font-size: 40px;}
-.cover-grid4 article { float: left; height: 40%; width: 33.33333%; }
-.cover-grid4 article .distraction-title, .cover-grid4 article h2 { font-size: 20px; }
-.cover-grid4 article .cover-byline li:last-child { display: none; }
-.cover-grid4 article:nth-child(1) { height: 60%; width: 100%; }
-.cover-grid4 article:nth-child(1) .distraction-title, .cover-grid4 article:nth-child(1) h2 { font-size: 40px; }
-.cover-grid4 article:nth-child(1) .cover-byline li:last-child { display: inline-block; }
 .card .card-style-1 .post-title,
 .card .card-style-1 .post-authorName,
 .card .card-style-1 .post-excerpt,
