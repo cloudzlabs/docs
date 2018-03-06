@@ -358,7 +358,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .visual-main-title h3 { display: inline-block;  font-size: 60px; font-weight: bold; /*color: rgba(0,0,0,.6)*/ color:#666 !important; margin-right:10px; }
 .visual-main-title p { font-size:18px;}
 
-.visual-title {  min-height: 280px; text-align: center; }
+.visual-title {height: 280px;text-align: center;}
 .visual-title .visual {display:  inline-block;padding-top: 140px; color: rgba(225,225,225,.95) !important;letter-spacing: 2px;font-size: 28px;min-height: 280px;}
 .visual-title h3 {display: inline-block;font-size: 40px;font-weight: bold;color: rgba(225,225,225,.95) !important;line-height: 40px;margin-right:10px; }
 
@@ -409,9 +409,9 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .visual-title .visual .author { margin-top:-30px; display:inline-block; color: rgba(225,225,225,.95) !important; }
 .visual-title .visual .author img { width:80px; height:80px;}
 .visual-title .visual .author i {color: rgba(255, 255, 255,.4 );font-size: 80px;bottom: -2px;}
-.visual-title .visual .author-info { margin-left:15px;}
-.visual-title .visual .author-info h3 a { color: rgba(225,225,225,.95) !important; font-size:30px; }
-.visual-title .visual .author-info p { color: rgba(225,225,225,.95) !important;  }
+.visual-title .visual .author-info { margin: 10px 0 0 20px;}
+.visual-title .visual .author-info h3 a {color: rgba(225,225,225,.95) !important; font-size:30px; }
+.visual-title .visual .author-info p {margin-top:-10px;color: rgba(225,225,225,.95) !important;}
 
 .visual-title .visual .author-info .cover-byline,
 .visual-title .visual .author-info .cover-byline { float: left; font-size: 14px;list-style: none;margin: 0;padding: 0;display: inline-block; color: rgba(225,225,225,.95) !important;}
@@ -505,7 +505,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .cover-header h2 a:hover {text-decoration: underline;}
 .cover-header { padding: 14px 12px; z-index: 3; }
 
-.cover-byline {font-size: 14px; list-style: none;margin: 0;padding: 0;display: inline-block;color: #999;}
+.cover-byline {font-size: 14px; list-style: none;margin: 0; padding: 0 0 15px 0;display: inline-block;color: #999;}
 .cover-byline li {list-style: none;float: left; margin-right: 10px;}
 .cover-byline li:last-child { margin-right: 0; }
 .cover-byline li .icon { -moz-transform: scale(.875, .875); -ms-transform: scale(.875, .875); -webkit-transform: scale(.875, .875); transform: scale(.875, .875); float: left; margin-right: 4px; opacity: .6; vertical-align: middle; }
@@ -542,7 +542,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 
 /* sub *******************************************************/
-.container .post {display: inline-block;width:  100%;margin-top: 20px;}
+.container .post {display: inline-block;width:  100%; margin-top: 20px;}
 .page-body {padding-top:100px;color: #555;}
 .page-body a { color:#333;}
 
@@ -654,7 +654,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .page-con .highlight .copy-to-clipboard i:hover { background:#ddd; }
 
 .page-con li pre code {border:none; background:none;}
-.page-con .post-authorName {margin:0;color:#999;padding: 0;}
+.page-con .post-authorName {margin:-15px 0 0 0; color:#999; padding: 0;}
 .page-con .post-authorName a:hover { text-decoration:underline !important; font-weight:normal;}
 .page-con img {margin:0 auto; display:block;}
 .page-con .entry-cover-container figure { margin-bottom:50px;}
@@ -799,6 +799,19 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .card .card-style-1 .post-excerpt,
 .card .card-style-1 .btn-link,
 .card .card-style-1 .tag { padding-left: 0; padding-right:30px; }
+.page-con .post-authorName {margin:-5px 0 0 0; padding:0; font-size:16px;}
+.page-con h1 {}
+.page-con h2 { font-size:40px; line-height:46px;}
+.page-con h3 { font-size:35px;}
+.page-con h4 {}
+.page-con h5 {}
+.page-con h6 {}
+.page-con h1,
+.page-con h2,
+.page-con h3,
+.page-con h4,
+.page-con h5,
+.page-con h6 { margin-top:30px; }
 }
 
 
@@ -807,12 +820,14 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .single-post-footer { display: table; width: 100%; }
 .single-post-footer>.column { display: table-cell; vertical-align: middle; }
 .single-post-footer>.column:last-child { text-align: right; }
+
 }
 
 
 @media (max-width: 576px) {
 .visual-main-title .visual h3 { font-size:30px;}
 .single-post-footer { display: table; width: 100%; }
+
 }
 
 
@@ -823,13 +838,22 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .visual-main-title .visual h3 span { display:block;}
 .visual-area h3 { font-size: 60px; line-height:64px; }
 .visual-area p { font-size: 24px; line-height: 28px; }
-.offcanvas-wrapper .container {margin-top:-20px;}
+
+.visual-main-title + .container { margin-top:-20px !important;}
+.visual-title {height: 240px !important;}
+.visual-title .visual {min-height: 240px;padding-top:130px;}
+.visual-title .visual .author { margin-top:-40px; width: 90%; white-space: nowrap;}
+.visual-title .visual .author-info { margin:5px 0 0 25px; }
+.visual-title .visual .author-info h3 { margin-top:-12px;}
+.visual-title .visual .author-info p { padding-right:10px;}
+.offcanvas-wrapper .container {/* margin-top:-20px; */}
+
 .page-body { padding-top:80px;}
 .cover {display:inline-block;margin:0;}
 .cover:nth-child(2) { margin-top:0;}
 .cover1 {margin:0; padding:0; height:250px;}
 .cover2 {margin:0; padding:0; height:250px;}
-.site-footer .copyright {display: inline-block;width: 100%;text-align: center;padding: 5px 0;}
+.site-footer .copyright {display: inline-block;width: 100%;text-align: center; padding: 5px 0;}
 .site-footer .sns { display: block; width: 100%; text-align: center; padding: 5px 0; }
 .page-con ul {padding-left: 20px;}
 .page-con ol { margin-left:-40px; }
@@ -838,7 +862,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .page-con .series { margin-left:0;}
 .page-con blockquote { margin:0; margin-bottom:10px;}
 .page-con blockquote p { margin:0;}
-.page-con .post-authorName {font-size:14px;}
+.page-con .post-authorName {margin:-5px 0 0 0; padding:0; font-size:14px;}
 .page-con h1 {}
 .page-con h2 { font-size:30px; line-height:36px;}
 .page-con h3 { font-size:25px;}
