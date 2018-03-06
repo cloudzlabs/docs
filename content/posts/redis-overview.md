@@ -38,6 +38,16 @@ Redis를 Spring-boot에서 사용하기 위해서는 가장 먼저 Redis의 Depe
 </dependency>
 ```
 
+>Redis 접속 정보를 property에 등록합니다.
+
+```yaml
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: password
+```
+
 
 ### Redis Session
 
