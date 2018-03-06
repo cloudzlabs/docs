@@ -1,6 +1,6 @@
 baseURL = "http://tech.cloudz-labs.io/"
 # baseURL = "https://cloudzlabs.github.io/docs/"
-title = "CLOUDZ LABS 기술 블로그"
+title = "CLOUDZ LABS"
 theme = "labs"
 
 # for smart copyright line, leave this blank and check [params.copyright]
@@ -41,6 +41,7 @@ hrefTargetBlank = true
 
 [params.info]
 home = "CloudZ Labs Tech"
+suffix = "기술 블로그"
 description = ""
 title404 = "Nothing's here!"
 

@@ -809,6 +809,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 @media (max-width:480px) {
 .visual-main-title .visual h3 { font-size:30px;}
+.visual-main-title .visual h3 span { display:block;}
 .cover {display:inline-block;margin:0;}
 .cover:nth-child(2) { margin-top:0;}
 .cover1 {margin:0; padding:0; height:250px;}

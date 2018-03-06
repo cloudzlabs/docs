@@ -1,7 +1,12 @@
 <section class="visual-main-title">
     <div class="visual">
 
-        <h3>{{ .Site.Title }}</h3>
+        <h3>
+            {{ .Site.Title }}
+            {{ if .Site.Params.info.suffix }}
+            <span>{{ .Site.Params.info.suffix }}</span>
+            {{ end }}
+        </h3>
 
         {{ if .Site.Params.info.description }}
         <p>{{ .Site.Params.info.description }}</p>
