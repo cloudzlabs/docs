@@ -29,7 +29,7 @@ pygmentsCodeFencesGuessSyntax = true
 # true use pygments-css or false will color code directly
 pygmentsUseClasses = false
 # maximum number of items in the RSS feed
-rssLimit = 15
+# rssLimit = 15
 
 # Missing translations will default to this content language
 defaultContentLanguage = "ko"
@@ -53,7 +53,7 @@ customCSS = ["assets/css/bootstrap.css", "assets/css/common.css", "assets/css/fo
 customJS = ["assets/js/common.js", "assets/js/scripts.js", "assets/js/lunr.min.js", "assets/js/auto-complete.js", "assets/js/search.js", "assets/js/clipboard.min.js", "assets/js/mermaid.js"]
 
 [params.copyright]
-prefix = "Copyright"
+prefix = ""
 text = "SK 주식회사 C&C "
 holder = "CloudZ Labs"
 startYear = "2018"
@@ -129,11 +129,11 @@ disableInlineCopyToClipBoard = true
 [params.social]
 facebook = "cloudzlabs"
 twitter = "cloudzlabs"
-github-alt = "cloudzlabs"
+github = "cloudzlabs"
 email = "withdtlabs@gmail.com"
 
 [params.social.config]
-platforms = ["twitter", "facebook", "github-alt", "email"]
+platforms = ["twitter", "facebook", "github", "email"]
 
 [params.social.share]
 # Sets Social Share links to appear on posts

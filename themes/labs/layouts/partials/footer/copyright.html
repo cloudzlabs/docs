@@ -1,4 +1,4 @@
-<span class='copyright'>
+<span class='copyright'><b>
     {{- with .Site.Copyright -}}
         {{ . }}
     {{- else -}}
@@ -14,4 +14,4 @@
         {{ if .text }}{{ .text }}{{ end }}<span>{{ or .holder $.Site.Title | markdownify }}</span> {{ .suffix | markdownify }}
         {{- end -}}
     {{ end }}
-</span>
+</span></b>
