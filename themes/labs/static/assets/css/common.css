@@ -817,23 +817,20 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 
 @media (max-width:480px) {
+.toolbar .sns { display: none; }
 .visual-main-title .visual { padding-top:80px; }
 .visual-main-title .visual h3 { font-size:30px;}
 .visual-main-title .visual h3 span { display:block;}
 .visual-area h3 { font-size: 60px; line-height:64px; }
 .visual-area p { font-size: 24px; line-height: 28px; }
-
-.container {margin-top:-20px;}
+.offcanvas-wrapper .container {margin-top:-20px;}
 .page-body { padding-top:80px;}
-
 .cover {display:inline-block;margin:0;}
 .cover:nth-child(2) { margin-top:0;}
 .cover1 {margin:0; padding:0; height:250px;}
 .cover2 {margin:0; padding:0; height:250px;}
 .site-footer .copyright {display: inline-block;width: 100%;text-align: center;padding: 5px 0;}
 .site-footer .sns { display: block; width: 100%; text-align: center; padding: 5px 0; }
-.toolbar .sns { display: none; }
-
 .page-con ul {padding-left: 20px;}
 .page-con ol { margin-left:-40px; }
 .page-con ol li { margin-left:20px; }
@@ -841,7 +838,6 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .page-con .series { margin-left:0;}
 .page-con blockquote { margin:0; margin-bottom:10px;}
 .page-con blockquote p { margin:0;}
-
 .page-con .post-authorName {font-size:14px;}
 .page-con h1 {}
 .page-con h2 { font-size:30px; line-height:36px;}
@@ -849,14 +845,12 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .page-con h4 {}
 .page-con h5 {}
 .page-con h6 {}
-
 .page-con h1,
 .page-con h2,
 .page-con h3,
 .page-con h4,
 .page-con h5,
 .page-con h6 { margin-top:30px; }
-
 .post-pre,
 .post-next { margin:10px 0; }
 .card.mb-30 { margin-bottom:10px !important;}
