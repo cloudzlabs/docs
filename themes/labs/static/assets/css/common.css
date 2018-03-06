@@ -72,10 +72,19 @@ figure figcaption {display: block; bottom: 0;left: 0;width: 100%;margin: 0;paddi
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {margin: 0;color: #374250 !important;font-family: inherit;font-style: normal;font-weight: 500;text-transform: none;font-weight: bold;}
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small { display: block; padding-top: 3px; color: #9da9b9; }
+/*
 h1 { font-size: 54px;}
 h2 { font-size: 46px;}
 h3 { font-size: 38px;}
 h4 { font-size: 30px;}
+h5 { font-size: 24px;}
+h6 { font-size: 20px;}
+*/
+
+h1 { font-size: 48px;}
+h2 { font-size: 40px;}
+h3 { font-size: 32px;}
+h4 { font-size: 26px;}
 h5 { font-size: 24px;}
 h6 { font-size: 20px;}
 
@@ -346,7 +355,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 /* main *******************************************************/
 .visual-main-title {min-height: 200px;background:#fff;height: 200px !important;text-align:center;}
 .visual-main-title .visual {display: block;padding-top: 100px;color: rgba(0,0,0,.5) !important;letter-spacing: 2px;font-size: 28px;}
-.visual-main-title h3 { display: inline-block;  font-size: 60px; font-weight: bold; color: rgba(0,0,0,.6) !important; margin-right:10px; }
+.visual-main-title h3 { display: inline-block;  font-size: 60px; font-weight: bold; /*color: rgba(0,0,0,.6)*/ color:#666 !important; margin-right:10px; }
 .visual-main-title p { font-size:18px;}
 
 .visual-title {  min-height: 280px; text-align: center; }
@@ -534,7 +543,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 /* sub *******************************************************/
 .container .post {display: inline-block;width:  100%;margin-top: 20px;}
-.page-body {padding-top:134px;color: #555;}
+.page-body {padding-top:100px;color: #555;}
 .page-body a { color:#333;}
 
 
@@ -808,8 +817,15 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 
 
 @media (max-width:480px) {
+.visual-main-title .visual { padding-top:80px; }
 .visual-main-title .visual h3 { font-size:30px;}
 .visual-main-title .visual h3 span { display:block;}
+.visual-area h3 { font-size: 60px; line-height:64px; }
+.visual-area p { font-size: 24px; line-height: 28px; }
+
+.container {margin-top:-20px;}
+.page-body { padding-top:80px;}
+
 .cover {display:inline-block;margin:0;}
 .cover:nth-child(2) { margin-top:0;}
 .cover1 {margin:0; padding:0; height:250px;}
@@ -817,8 +833,30 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .site-footer .copyright {display: inline-block;width: 100%;text-align: center;padding: 5px 0;}
 .site-footer .sns { display: block; width: 100%; text-align: center; padding: 5px 0; }
 .toolbar .sns { display: none; }
-.visual-area h3 { font-size: 60px; line-height:64px; }
-.visual-area p { font-size: 24px; line-height: 28px; }
+
+.page-con ul {padding-left: 20px;}
+.page-con ol { margin-left:-40px; }
+.page-con ol li { margin-left:20px; }
+.page-con ul li { text-indent:0;}
+.page-con .series { margin-left:0;}
+.page-con blockquote { margin:0; margin-bottom:10px;}
+.page-con blockquote p { margin:0;}
+
+.page-con .post-authorName {font-size:14px;}
+.page-con h1 {}
+.page-con h2 { font-size:30px; line-height:36px;}
+.page-con h3 { font-size:25px;}
+.page-con h4 {}
+.page-con h5 {}
+.page-con h6 {}
+
+.page-con h1,
+.page-con h2,
+.page-con h3,
+.page-con h4,
+.page-con h5,
+.page-con h6 { margin-top:30px; }
+
 .post-pre,
 .post-next { margin:10px 0; }
 .card.mb-30 { margin-bottom:10px !important;}
@@ -832,11 +870,4 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .card .tag { margin:0; padding:0; padding-bottom:20px;}
 .foot-author {margin-top:0;border-top:none; }
 .foot-author .cover-byline { float: left; padding: 0 0 10px 0; }
-.page-con ul {padding-left: 20px;}
-.page-con ol { margin-left:-40px; }
-.page-con ol li { margin-left:20px; }
-.page-con ul li { text-indent:0;}
-.page-con .series { margin-left:0;}
-.page-con blockquote { margin:0;}
-.page-con blockquote p { margin:0;}
 }
