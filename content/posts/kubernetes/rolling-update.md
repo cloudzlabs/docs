@@ -10,9 +10,6 @@ tags:
   - Container
   - Container Orchestration
   - Rolling Update
-cover:
-  image: ../images/k8s.png
-  caption: ""
 description: ""
 draft: false
 ---

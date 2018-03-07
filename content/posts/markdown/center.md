@@ -10,7 +10,7 @@ tags:
 cover:
   image: ../images/markdown.png
   caption: ""
-draft: false
+draft: true
 ---
 
 ## Shortcode: center

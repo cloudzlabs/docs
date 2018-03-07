@@ -1,7 +1,7 @@
 ---
 date: "2018-02-22T10:37:45+09:00"
 title: "Bluemix Auto-scaling 서비스 테스트"
-authors: [jisangYun]
+authors: [jisangyun]
 categories:
   - posts
 tags:

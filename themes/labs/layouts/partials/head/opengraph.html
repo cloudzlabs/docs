@@ -14,10 +14,11 @@
   {{- $type := ( printf "%T" . ) -}}
   {{- $isMap := ( not ( eq $type "string" ) ) -}}
   <meta property='og:image' content='
+    {{- $.Permalink -}}
     {{- if $isMap -}}
-      {{- .image | absURL -}}
+      {{- .image -}}
     {{- else -}}
-      {{- . | absURL -}}
+      {{- . -}}
     {{- end -}}'>
 {{- end -}}
 

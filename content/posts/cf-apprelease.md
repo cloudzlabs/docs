@@ -1,5 +1,5 @@
 ---
-date: "2018-03-02-T11:07:05+09:00"
+date: "2018-03-02T11:07:05+09:00"
 title: "CF에 Cloud Native Application 배포하기 "
 authors: ["sya"]
 categories:
@@ -12,57 +12,67 @@ draft: false
 ---
 
 PaaS에 Cloud Application을 배포하는 전 과정을 정리해보았습니다. Java로 만든 Cloud Native Application을 CF에 배포하는 간단한 실습인데요, 개발 환경 세팅부터 PaaS에 애플리케이션 배포하기까지의 흐름을 살펴볼 수 있어요.
-코딩이 필요하지 않은 초보 개발자 위주의 간단한 실습이라 처음 접하는 사람도 쉽게 따라할 수 있으실꺼예요. 처음부터 끝까지 따라하면서 Cloud Native Application 개발을 시작해보세요! 
+코딩이 필요하지 않은 초보 개발자 위주의 간단한 실습이라 처음 접하는 사람도 쉽게 따라할 수 있으실꺼예요. 처음부터 끝까지 따라하면서 Cloud Native Application 개발을 시작해보세요!
 
 ## 실습 과정
-----------------
+
 아래 과정의 순서대로 진행합니다.
 
 ## 준비 사항
-----------------
+
 ### 전제조건
+
 - CF 기반 PaaS
-    - PaaS에 애플리케이션을 배포, 업데이트, 삭제, 스케일링 등의 작업을 할 수 있는 CF기반의 PaaS가 있어야 합니다.
+  - PaaS에 애플리케이션을 배포, 업데이트, 삭제, 스케일링 등의 작업을 할 수 있는 CF기반의 PaaS가 있어야 합니다.
 - 시스템 요구사항
-    - Java (1.8 버전 권장)
+  - Java (1.8 버전 권장)
 
 ### 개발 환경 설정
+
 Cloud Native Application을 만들기 위해 필요한 개발 환경에 대한 설명과 설치 방법입니다.
 
 #### Framework
+
 ##### [Spring Boot](http://projects.spring.io/spring-boot)
+
 - Spring Framework를 사용하는 프로젝트를 쉽고 빠르게 개발할 수 있는 Spring Framework의 서브 프로젝트입니다.
 
 #### Language
+
 ##### Java
+
 - Java (1.8 버전 권장)
 - JDK와 같이 설치됩니다.
 
 #### Tool
+
 개발에 필요한 도구들입니다.
 
-##### [Maven](https://maven.apache.org) 
- - 프로젝트 의존성 관리, 라이브러리 관리, 프로젝트 생명주기 관리, 빌드 기능을 제공하는 프로젝트 관리 도구입니다.
- - 설치 방법
-   - STS에서 제공하는 Maven 플러그인을 사용하므로 별도의 설치가 필요하지 않습니다.
+##### [Maven](https://maven.apache.org)
 
-##### STS 
- - STS는 spring에서 제공하는 이클립스 기반의 Spring 개발에 최적화되어 있는 개발 도구입니다.
- - 설치 방법
+- 프로젝트 의존성 관리, 라이브러리 관리, 프로젝트 생명주기 관리, 빌드 기능을 제공하는 프로젝트 관리 도구입니다.
+  - 설치 방법
+    - STS에서 제공하는 Maven 플러그인을 사용하므로 별도의 설치가 필요하지 않습니다.
+
+##### STS
+
+- STS는 spring에서 제공하는 이클립스 기반의 Spring 개발에 최적화되어 있는 개발 도구입니다.
+- 설치 방법
 
     1. https://spring.io/tools/sts/all 에 접속합니다.
-    2. 컴퓨터 OS 사양에 맞는 최신 파일을 다운로드합니다. 
+    2. 컴퓨터 OS 사양에 맞는 최신 파일을 다운로드합니다.
     3. 다운로드한 .zip 파일을 원하는 폴더에 압축 해제 한 후, sts-version.RELEASE 폴더 안에 STS 실행 파일을 실행시킵니다. 
     4. worksapce를 지정해주면 STS 설치가 완료됩니다.
 
 ##### JDK
+
 - JDK는 Java Development Kit으로, Java로 애플리케이션을 개발하기 위해 설치해야 합니다.
-- JDK 버전은 안정성을 위해 최신 버전보다 1.8버전 사용을 권장합니다.  
+- JDK 버전은 안정성을 위해 최신 버전보다 1.8버전 사용을 권장합니다.
 - 설치 방법
     1. JDK 설치 전, 설치 여부를 확인합니다.
 
         a. 명령 프롬프트 실행
-        
+
         > - Window OS: 윈도우키 + R 을 눌러 실행창에 cmd 입력
         > - Mac OS: 터미널 실행
         
@@ -77,7 +87,7 @@ Cloud Native Application을 만들기 위해 필요한 개발 환경에 대한 �
         a. **제어판** → **시스템** → **고급시스템 설정**을 클릭시킵니다.  
         b. 다이얼로그 하단 오른쪽의 **환경 변수**를 클릭합니다.  
         c. 사용자 변수 항목에서 새로 만들기를 클릭하고 **JAVA_HOME** 변수를 생성합니다.  
-            
+
         > - JAVA_HOME 설정
             - 변수 이름: **JAVA_HOME**
             - 변수 값: JDK 경로 (예시. C:\Program Files\Java\jdk1.8.0_77)
@@ -203,7 +213,7 @@ hello-spring-cloud 프로젝트를 로컬 환경에서 구동해봅니다.
 2. 웹 브라우저에서 [http://localhost:8080](http://localhost:8080/welcome)으로 이동합니다.
 3. 화면에 **Spring Cloud Demo Application** 메시지가 출력되면 정상적으로 실행된 것입니다.
  
- ![Image of URL](docs/contents/images/cfurl.png)
+ ![Image of URL](cfurl.png)
 
 지금은 로컬 서버로 실행했기 때문에, 화면 중간에 'The application is not running in a cloud environment.' 문구를 볼 수 있습니다. 애플리케이션을 클라우드 환경에 배포하고 필요한 서비스를 바인딩하면 데이터를 정상적으로 가져오는 화면을 볼 수 있습니다. 이제 클라우드에 배포를 진행해보겠습니다.
 
@@ -585,8 +595,8 @@ Redis-dev             Free Plen*                                  Shared Redis s
     Downloading app package...
     Downloaded app package (30.7M)
     Staging...
-    -----> Java Buildpack Version: v3.11 | https://github.com/cloudfoundry/java-buildpack.git#eba4df6
-    -----> Downloading Open Jdk JRE 1.8.0_111 from https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_111.tar.gz (0.9s)
+| -----> Java Buildpack Version: v3.11 | https://github.com/cloudfoundry/java-buildpack.git#eba4df6 |
+| ------------------------------------ |> Downloading Open Jdk JRE 1.8.0_111 from https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_111.tar.gz (0.9s)
         Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.2s)
     -----> Downloading Open JDK Like Memory Calculator 2.0.2_RELEASE from https://java-buildpack.cloudfoundry.org/memory-calculator/trusty/x86_64/memory-calculator-2.0.2_RELEASE.tar.gz (0.0s)
         Memory Settings: -Xss349K -Xmx681574K -XX:MaxMetaspaceSize=104857K -Xms681574K -XX:MetaspaceSize=104857K
@@ -694,8 +704,8 @@ mariadb-service를 바인딩해보겠습니다.
    Downloaded app package (30.7M)
    Staging...
    Downloaded build artifacts cache (44.9M)
-   -----> Java Buildpack Version: v3.11 | https://github.com/cloudfoundry/java-buildpack.git#eba4df6
-   -----> Downloading Open Jdk JRE 1.8.0_111 from https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_111.tar.gz (found in cache)
+| -----> Java Buildpack Version: v3.11 | https://github.com/cloudfoundry/java-buildpack.git#eba4df6 |
+| ------------------------------------ |> Downloading Open Jdk JRE 1.8.0_111 from https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_111.tar.gz (found in cache)
           Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.3s)
    -----> Downloading Open JDK Like Memory Calculator 2.0.2_RELEASE from https://java-buildpack.cloudfoundry.org/memory-calculator/trusty/x86_64/memory-calculator-2.0.2_RELEASE.tar.gz (found in cache)
           Memory Settings: -Xmx681574K -Xms681574K -XX:MetaspaceSize=104857K -XX:MaxMetaspaceSize=104857K -Xss349K
@@ -838,14 +848,10 @@ mariadb-service를 바인딩해보겠습니다.
 
 3. 웹 브라우저로 URL에 접속했을 때, 아래 그림과 같이 **Spring Cloud Demo Application** 메시지가 출력되면 정상적으로 실행된 것입니다. 
     URL 값에 표시된 http://hello-spring-cloud-unskillful-contractor.paas.sk.com 으로 접속해보겠습니다.
-    ![Image of URL result](docs/contents/images/cfurl_final.png)
- 
+    ![Image of URL result](cfurl_final.png)
 
+## 마치며
 
-## 마치며..
----
 지금까지 Cloud Native Application을 개발하기 위한 간단한 개발 환경을 만들어보고,
 실제로 샘플 프로젝트를 통해서 애플리케이션 빌드와 PaaS에 애플리케이션 배포까지 전반의 과정을 같이 해보았습니다.
 어렵지 않죠? CF의 다양한 기능을 알고 싶다면 Cloud Foundry 공식 홈페이지에서 도움을 받을 수 있습니다. 참고하세요!
-
-  

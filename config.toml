@@ -1,12 +1,12 @@
-# baseURL = "http://tech.cloudz-labs.io/"
-baseURL = "https://cloudzlabs.github.io/docs/"
-title = "CLOUDZ LABS 기술 블로그"
+baseURL = "http://tech.cloudz-labs.io/"
+# baseURL = "https://cloudzlabs.github.io/docs/"
+title = "CLOUDZ LABS"
 theme = "labs"
 
 # for smart copyright line, leave this blank and check [params.copyright]
 copyright = ""
 disqusShortname = "cloudz-labs"
-googleAnalytics = ""
+googleAnalytics = "UA-115004569-1"
 
 Paginate = 10
 preserveTaxonomyNames = true
@@ -29,7 +29,7 @@ pygmentsCodeFencesGuessSyntax = true
 # true use pygments-css or false will color code directly
 pygmentsUseClasses = false
 # maximum number of items in the RSS feed
-rssLimit = 15
+# rssLimit = 15
 
 # Missing translations will default to this content language
 defaultContentLanguage = "ko"
@@ -41,6 +41,7 @@ hrefTargetBlank = true
 
 [params.info]
 home = "CloudZ Labs Tech"
+suffix = "기술 블로그"
 description = ""
 title404 = "Nothing's here!"
 
@@ -53,7 +54,7 @@ customCSS = ["assets/css/bootstrap.css", "assets/css/common.css", "assets/css/fo
 customJS = ["assets/js/common.js", "assets/js/scripts.js", "assets/js/lunr.min.js", "assets/js/auto-complete.js", "assets/js/search.js", "assets/js/clipboard.min.js", "assets/js/mermaid.js"]
 
 [params.copyright]
-prefix = "Copyright"
+prefix = ""
 text = "SK 주식회사 C&C "
 holder = "CloudZ Labs"
 startYear = "2018"
@@ -65,11 +66,12 @@ dateFormat = "Jan 02, 2006"
 listDateFormat = "Jan 02, 2006"
 hideEntryNavigation = ["page"] # boolean / array of sections
 recentPostsLength = 3
-latestPostsLength = 7
+latestPostsLength = 10
 hideSocialMenu = false
 showReadingTime = true
 noTermCloudShuffle = false
-homepageSections = ["main-posts", "latest-posts"]
+homepageSections = ["latest-posts"]
+# homepageSections = ["main-posts", "latest-posts"]
 
 [params.opengraph.facebook]
 admins = [] # array of Facebook IDs
@@ -128,11 +130,11 @@ disableInlineCopyToClipBoard = true
 [params.social]
 facebook = "cloudzlabs"
 twitter = "cloudzlabs"
-github-alt = "cloudzlabs"
+github = "cloudzlabs"
 email = "withdtlabs@gmail.com"
 
 [params.social.config]
-platforms = ["twitter", "facebook", "github-alt", "email"]
+platforms = ["twitter", "facebook", "github", "email"]
 
 [params.social.share]
 # Sets Social Share links to appear on posts

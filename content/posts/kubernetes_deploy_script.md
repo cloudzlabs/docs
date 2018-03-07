@@ -5,7 +5,7 @@ authors: ["bckim0620"]
 categories:
   - posts
 tags:
-  - Kuberetes
+  - Kubernetes
   - Docker
   - Deploy
 draft: false

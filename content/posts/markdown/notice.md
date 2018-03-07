@@ -10,7 +10,7 @@ tags:
 cover:
   image: ../images/markdown.png
   caption: ""
-draft: false
+draft: true
 ---
 The notice shortcode shows 4 types of disclaimers to help you structure your page.
 

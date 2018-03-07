@@ -76,3 +76,6 @@ other = "Attachments"
 
 [seeAlso]
 other = "See Also"
+
+[search]
+other = "Type at least 3 characters."

@@ -13,9 +13,6 @@ tags:
   - Horizontal Pod Autoscaler
   - Autoscale
   - Scale Out
-cover:
-  image: ../images/k8s.png
-  caption: ""
 description: ""
 draft: false
 ---
