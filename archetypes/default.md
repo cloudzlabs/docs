@@ -7,7 +7,7 @@ categories:
 tags:
   -
 cover:
-  image: "/images/file_name/file_name.png|jpg"
+  image: ""
   caption: ""
 description: ""
 draft: true
