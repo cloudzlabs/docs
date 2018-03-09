@@ -49,7 +49,7 @@ Docker Client는 Docker Daemon과 UNIX Socket 또는 REST API를 사용하여
 Docker Client와 Daemon은 동일한 시스템에서 실행되거나, Docker Client를
 원격으로 Docker Daemon에 연결할 수 있습니다.
 
-![](https://docs.docker.com/engine/article-img/architecture.svg){height="400"}
+![](https://docs.docker.com/engine/article-img/architecture.svg)
 
 ### Docker Daemon
 
