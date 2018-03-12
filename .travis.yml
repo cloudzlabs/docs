@@ -10,8 +10,8 @@ script:
   - hugo # This commands builds your website on travis
 
 deploy:
-  edge:
-    branch: pages-ivar-set
+#   edge:
+#     branch: pages-ivar-set
   local_dir: public # Default static site output dir for Hugo
   repo: cloudzlabs/docs # This is the slug of the repo you want to deploy your site to
   target_branch: gh-pages # GitHub pages branch to deploy to (in other cases it can be gh-pages)
