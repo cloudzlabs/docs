@@ -14,7 +14,6 @@ cover:
   image: "../images/docker-official.svg"
 draft: true
 ---
-
 ## Docker 구성
 
 Doker의 주요 구성 요소는 다음과 같습니다.
@@ -49,7 +48,7 @@ Docker Client(docker)는 사용자가 Docker Daemon과 상호 작용하는 주�
 
 ### Docker Registry
 
-Docker Registry는 Docker Image를 저장합니다. Docker Hub 및 Docker Cloud는 누구나 사용할 수있는 Public Registry이며, Docker는 기본적으로 Docker Hub에서 Image를 찾아 Container를 구성하도록 되어 있습니다. 예를들어, `docker pull`을 사용하여 Image를 Registry에서 Local로 내려받을 수 있으며, `docker push`를 통해 Local의 Image를 Registry에 저장할 수도  있습니다.
+Docker Registry는 Docker Image를 저장합니다. Docker Hub 및 Docker Cloud는 누구나 사용할 수있는 Public Registry이며, Docker는 기본적으로 Docker Hub에서 Image를 찾아 Container를 구성하도록 되어 있습니다. 예를들어, `docker pull`을 사용하여 Image를 Registry에서 Local로 내려받을 수 있으며, `docker push`를 통해 Local의 Image를 Registry에 저장할 수도 있습니다.
 
 Docker Registry는 개개인이 구성할 수 있으며, Docker의 Enterprise Edition에서 제공되는 Docker Trusted Registry이 포함된 Docker Datacenter를 사용할 수도 있습니다.
 
@@ -70,10 +69,7 @@ Container는 Docker API 또는 CLI를 사용하여 생성, 시작, 중지, 이�
 Services는 Container들이 여러 Manager와 Worker들이 함께 있는 작동하는 Docker Daemon의 집합들(Swarm) 내에서 확장할 수 있도록 합니다. Swarm은 Docker Daemon들로 이루어져 있으며, Daemon들은 서로 Docker API를 통해 통신합니다. Services는 특정 시간 동안 사용 가능한 Service의 복제본 개수와 같은 상태 정보를 정의하여 사용할 수 있도록 해줍니다. 기본적으로 Services는 Worker 노드들 간의 부하 분산 기능을 제공하고 있기 때문에, 사용자 관점에서는 단일 Application으로 보입니다.
 
 참고
-
-Docker Engine은 Docker Version 1.12 이상에서 Swarm Mode를 지원합니다.
-Docker Swarm에 대한 내용은 [Docker Swarm이란](Docker_Swarm이란)에서
-확인하시기 바랍니다.
+Docker Engine은 Docker Version 1.12 이상에서 Swarm Mode를 지원합니다. Docker Swarm에 대한 내용은 [Docker Swarm이란](Docker_Swarm이란)에서 확인하시기 바랍니다.
 
 ## Public Image로 Contariner 기동하기
 
@@ -113,16 +109,9 @@ Docker Swarm에 대한 내용은 [Docker Swarm이란](Docker_Swarm이란)에서
     ```
 
     참고
+    Docker Hub는 각 Publisher들이 Image를 Upload하여 제공하는 Public Repository입니다. 제공되는 Image는 OFFICIAL로 분류된 공식 Image와 타 Publisher들에 의해 Customize하여 새로 Build된 AUTOMATED Image로 구성되어 있습니다.
 
-    Docker Hub는 각 Publisher들이 Image를 Upload하여 제공하는 Public
-    Repository입니다. 제공되는 Image는 OFFICIAL로 분류된 공식 Image와 타
-    Publisher들에 의해 Customize하여 새로 Build된 AUTOMATED Image로
-    구성되어 있습니다.
-
-2.  Container로 구성할 Image를 Docker Hub로 부터 `docker pull
-    \[OPTIONS\] NAME\[:TAG\|@DIGEST\]`를 이용하여 Pull 받습니다. 
-
-    **docker pull**
+2. Container로 구성할 Image를 Docker Hub로 부터 `docker pull \[OPTIONS\] NAME\[:TAG\|@DIGEST\]`를 이용하여 Pull 받습니다.
 
     ``` bash
     $ docker pull ubuntu
@@ -138,17 +127,9 @@ Docker Swarm에 대한 내용은 [Docker Swarm이란](Docker_Swarm이란)에서
     ```
 
     참고
+    Image를 Pull 받을 때, Image에 대한 Version을 Tag로 지정하여 받을 수 있으며, 지정되지 않을 경우 `latest` Version으로 Pull이 진행됩니다. 각 Image별 상세 정보는 [Docker Hub](https://store.docker.com/)에서 Image를 검색하여 나오는 상세 페이지에서 확인하실 수 있습니다.
 
-    Image를 Pull 받을 때, Image에 대한 Version을 Tag로 지정하여 받을 수
-    있으며, 지정되지 않을 경우 `latest` Version으로 Pull이
-    진행됩니다. 각 Image별 상세 정보는 [Docker
-    Hub](https://store.docker.com/)에서 Image를 검색하여 나오는 상세
-    페이지에서 확인하실 수 있습니다.
-
-3.  `docker images`로 로컬 Repository에 Pull된 Image 목록을
-    확인합니다.
-
-    **docker images**
+3. `docker images`로 로컬 Repository에 Pull된 Image 목록을 확인합니다.
 
     ``` bash
     $ docker images
@@ -157,16 +138,14 @@ Docker Swarm에 대한 내용은 [Docker Swarm이란](Docker_Swarm이란)에서
     hello-world         latest              05a3bd381fc2        5 weeks ago         1.84kB
     ```
 
-4. 로컬 Repository에 Pull된 Image를 `docker run \[OPTIONS\] IMAGE\[COMMAND\] \[ARG...\]`로 Container를 생성하여 실행시킵니다. 개별
-    `docker command`의 옵션 및 상세 사용법은 `docker run --help`와 같이 사용하여 확인하실 수 있습니다.
+4. 로컬 Repository에 Pull된 Image를 `docker run \[OPTIONS\] IMAGE\[COMMAND\] \[ARG...\]`로 Container를 생성하여 실행시킵니다. 개별 `docker command`의 옵션 및 상세 사용법은 `docker run --help`와 같이 사용하여 확인하실 수 있습니다.
 
     ``` bash
     $ docker run -i -t --name ubuntu-local ubuntu /bin/bash
     root@ebb7937d0325:/#
     ```
 
-5. `docker ps`로 실행되고 있는 Ubuntu Container를 확인할 수
-    있습니다.
+5. `docker ps`로 실행되고 있는 Ubuntu Container를 확인할 수 있습니다.
 
     ``` bash
     $ docker ps

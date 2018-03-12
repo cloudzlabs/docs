@@ -15,7 +15,6 @@ cover:
 description: ""
 draft: true
 ---
-
 Docker란 리눅스의 응용프로그램들을 소프트웨어 Container 안에 배치시키는 일을 자동화하는 오픈 소스 프로젝트로서, Docker 공식 문서에 따르면 **Containers as a Service(CaaS) Platform**으로 정의하고 있습니다.
 
 Docker는 홈페이지에 Docker의 기능을 아래와 같이 명시 하고 있습니다.
