@@ -29,14 +29,7 @@
 {{- end -}}
 
 {{- if not ( or .Params.images .Params.cover ) -}}
-  {{- range $authorID := .Params.authors -}}
-    {{- $author := ( index $.Site.Data.authors $authorID ) -}}
-    {{- with $author -}}
-      {{- if or .social.email ( and .email.username .email.host ) -}}
-      <meta property='og:image' content='/images/default.png'>
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
+    <meta property='og:image' content='/images/default.png'>
 {{- end -}}
 
 {{- with .Params.audios -}}
