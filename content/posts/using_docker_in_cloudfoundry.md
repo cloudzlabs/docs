@@ -11,12 +11,12 @@ description: ""
 draft: false
 ---
 
-Cloud에서 애플리케이션은 Cloud Fondry(CF), Docker 등 다양한 환경에 배포 할 수 있습니다. CF는 웹 애플리케이션 개발에 특화되어 있어 Docker에 비해 웹 애플리케이션 개발에 필요한 다양한 기능을 제공하고 있습니다. 반면에 Docker는 다양한 형태의 애플리케이션 개발이 가능하며 자유도가 높은 장점을 갖고 있습니다. 이 둘의 장점을 모두 사용하기 위해 Docker Image를 CF에 배포하는 리서치를 진행하여 이를 공유합니다.
+Cloud에서 애플리케이션은 Cloud Fondry(CF), Docker 등 다양한 환경에 배포할 수 있습니다. CF는 웹 애플리케이션 개발에 특화되어 있어 Docker에 비해 웹 애플리케이션 개발에 필요한 다양한 기능을 제공하고 있습니다. 반면에 Docker는 다양한 형태의 애플리케이션 개발이 가능하며 자유도가 높은 장점을 갖고 있습니다. 이 둘의 장점을 모두 사용하기 위해 Docker Image를 CF에 배포하는 리서치를 진행하여 이를 공유합니다.
 
 ## 사용법 
 
 ### CF 설정
-CF에 Docker image를 배포하기 위해서는 `diego_docker`플래그가 설정되어야 합니다. 아래 코드로 설정 할 수 있습니다.
+CF에 Docker image를 배포하기 위해서는 `diego_docker`플래그가 설정되어야 합니다. 아래 코드로 설정할 수 있습니다.
 ```
 cf enable-feature-flag diego_docker
 ```
