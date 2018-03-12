@@ -2,7 +2,7 @@
 date: "2018-03-09T08:27:01+09:00"
 title: "Swarm"
 authors: ["1000jaeh"]
-series: ["docker"]
+series: ["swarm"]
 categories:
   - posts
 tags:
