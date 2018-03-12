@@ -17,7 +17,7 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN # This is the authentication which you will setup in the next step in travis-ci dashboard
   email: withdtlabs@gmail.com
-  name: "cloudz-labs"
+  name: "cloudzlabs"
   fqdn: tech.cloudz-labs.io
   on:
     branch: master
