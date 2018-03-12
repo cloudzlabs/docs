@@ -5,6 +5,14 @@
 
             {{ partial "component/social/contact" . }}
 
+            {{ if .Site.Params.contribute.enabled }}
+            <li>
+                <a class='social-button' href='/contribute/' target='_blank' rel='noopener'>
+                    <i class='fa fa-book' aria-hidden='true'></i>
+                </a>
+            </li>
+            {{ end }}
+
         </ul>
 
         {{ partial "footer/copyright" . }}

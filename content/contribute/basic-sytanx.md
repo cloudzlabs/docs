@@ -4,7 +4,7 @@ title: "[Markdown 작성하기(1/4)] 기본 Markdown 문법"
 authors: ["1000jaeh"]
 series: ["markdown"]
 categories:
-  - posts
+  - contributes
 tags:
   - markdown
 cover:
@@ -44,52 +44,52 @@ Without further delay, let us go over the main elements of Markdown and what the
 <i class="fa fa-bookmark"></i> Bookmark this page for easy future reference!
 {{% /notice %}}
 
-## Headings
+## 제목
 
 Headings from `h1` through `h6` are constructed with a `#` for each level:
 
-```markdown
-# h1 Heading
-## h2 Heading
-### h3 Heading
-#### h4 Heading
-##### h5 Heading
-###### h6 Heading
+``` md
+# h1 제목
+## h2 제목
+### h3 제목
+#### h4 제목
+##### h5 제목
+###### h6 제목
 ```
 
 Renders to:
 
-# h1 Heading
-## h2 Heading
-### h3 Heading
-#### h4 Heading
-##### h5 Heading
-###### h6 Heading
+# h1 제목
+## h2 제목
+### h3 제목
+#### h4 제목
+##### h5 제목
+###### h6 제목
 
 HTML:
 
-```html
-<h1>h1 Heading</h1>
-<h2>h2 Heading</h2>
-<h3>h3 Heading</h3>
-<h4>h4 Heading</h4>
-<h5>h5 Heading</h5>
-<h6>h6 Heading</h6>
+``` html
+<h1>h1 제목</h1>
+<h2>h2 제목</h2>
+<h3>h3 제목</h3>
+<h4>h4 제목</h4>
+<h5>h5 제목</h5>
+<h6>h6 제목</h6>
 ```
 
-## Comments
+## 주석
 
 Comments should be HTML compatible
 
-```html
+``` html
 <!--
-This is a comment
+주석 입니다.
 -->
 ```
 Comment below should **NOT** be seen:
 
 <!--
-This is a comment
+주석 입니다.
 -->
 
 ## Horizontal Rules
@@ -120,36 +120,38 @@ Lorem ipsum dolor sit amet, graecis denique ei vel, at duo primis mandamus. Et l
 ```
 renders to this HTML:
 
-```html
+``` html
 <p>Lorem ipsum dolor sit amet, graecis denique ei vel, at duo primis mandamus. Et legere ocurreret pri, animal tacimates complectitur ad cum. Cu eum inermis inimicus efficiendi. Labore officiis his ex, soluta officiis concludaturque ei qui, vide sensibus vim ad.</p>
 ```
 
-## Emphasis
+## 강조
 
-### Bold
+### 굵게
+
 For emphasizing a snippet of text with a heavier font-weight.
 
 The following snippet of text is **rendered as bold text**.
 
-```markdown
+``` md
 **rendered as bold text**
 ```
+
 renders to:
 
 **rendered as bold text**
 
 and this HTML
 
-```html
+``` html
 <strong>rendered as bold text</strong>
 ```
 
-### Italics
+### 기울임꼴
 For emphasizing a snippet of text with italics.
 
 The following snippet of text is _rendered as italicized text_.
 
-```markdown
+``` md
 _rendered as italicized text_
 ```
 
@@ -159,15 +161,15 @@ _rendered as italicized text_
 
 and this HTML:
 
-```html
+``` html
 <em>rendered as italicized text</em>
 ```
 
 
-### strikethrough
+### 취소선
 In GFM (GitHub flavored Markdown) you can do strikethroughs.
 
-```markdown
+``` md
 ~~Strike through this text.~~
 ```
 Which renders to:
@@ -176,16 +178,16 @@ Which renders to:
 
 HTML:
 
-```html
+``` html
 <del>Strike through this text.</del>
 ```
 
-## Blockquotes
+## 인용구
 For quoting blocks of content from another source within your document.
 
 Add `>` before any text you want to quote.
 
-```markdown
+``` md
 > **Fusion Drive** combines a hard drive with a flash storage (solid-state drive) and presents it as a single logical volume with the space of both drives combined.
 ```
 
@@ -195,7 +197,7 @@ Renders to:
 
 and this HTML:
 
-```html
+``` html
 <blockquote>
   <p><strong>Fusion Drive</strong> combines a hard drive with a flash storage (solid-state drive) and presents it as a single logical volume with the space of both drives combined.</p>
 </blockquote>
@@ -203,7 +205,7 @@ and this HTML:
 
 Blockquotes can also be nested:
 
-```markdown
+``` md
 > Donec massa lacus, ultricies a ullamcorper in, fermentum sed augue.
 Nunc augue augue, aliquam non hendrerit ac, commodo vel nisi.
 >> Sed adipiscing elit vitae augue consectetur a gravida nunc vehicula. Donec auctor
@@ -224,15 +226,15 @@ odio non est accumsan facilisis. Aliquam id turpis in dolor tincidunt mollis ac 
 The old mechanism for notices overriding the block quote syntax (`>>>`) has been deprecated.  Notices are now handled via a dedicated plugin called [Markdown Notices](https://github.com/getgrav/grav-plugin-markdown-notices)
 {{% /notice %}}
 
+## 목록
 
-## Lists
+### 비순차 목록
 
-### Unordered
 A list of items in which the order of the items does not explicitly matter.
 
 You may use any of the following symbols to denote bullets for each list item:
 
-```markdown
+``` md
 * valid bullet
 - valid bullet
 + valid bullet
@@ -254,6 +256,7 @@ For example
 + Aenean sit amet erat nunc
 + Eget porttitor lorem
 ```
+
 Renders to:
 
 + Lorem ipsum dolor sit amet
@@ -271,7 +274,7 @@ Renders to:
 
 And this HTML
 
-```html
+``` html
 <ul>
   <li>Lorem ipsum dolor sit amet</li>
   <li>Consectetur adipiscing elit</li>
@@ -291,11 +294,11 @@ And this HTML
 </ul>
 ```
 
-### Ordered
+### 순차 목록
 
 A list of items in which the order of items does explicitly matter.
 
-```markdown
+``` md
 1. Lorem ipsum dolor sit amet
 2. Consectetur adipiscing elit
 3. Integer molestie lorem at massa
@@ -305,6 +308,7 @@ A list of items in which the order of items does explicitly matter.
 7. Aenean sit amet erat nunc
 8. Eget porttitor lorem
 ```
+
 Renders to:
 
 1. Lorem ipsum dolor sit amet
@@ -318,7 +322,7 @@ Renders to:
 
 And this HTML:
 
-```html
+``` html
 <ol>
   <li>Lorem ipsum dolor sit amet</li>
   <li>Consectetur adipiscing elit</li>
@@ -355,12 +359,13 @@ Renders to:
 7. Aenean sit amet erat nunc
 8. Eget porttitor lorem
 
-## Code
+## 코드
 
-### Inline code
+### 인라인 코드
+
 Wrap inline snippets of code with `` ` ``.
 
-```markdown
+``` md
 In this example, `<section></section>` should be wrapped as **code**.
 ```
 
@@ -370,11 +375,11 @@ In this example, `<section></section>` should be wrapped with **code**.
 
 HTML:
 
-```html
+``` html
 <p>In this example, <code>&lt;section&gt;&lt;/section&gt;</code> should be wrapped with <strong>code</strong>.</p>
 ```
 
-### Indented code
+### 코드 들여쓰기
 
 Or indent several lines of code by at least four spaces, as in:
 
@@ -394,7 +399,7 @@ Renders to:
 
 HTML:
 
-```html
+``` html
 <pre>
   <code>
     // Some comments
@@ -406,7 +411,7 @@ HTML:
 ```
 
 
-### Block code "fences"
+### 코드 블록 펜스
 
 Use "fences"  ```` ``` ```` to block in multiple lines of code.
 
@@ -416,14 +421,13 @@ Sample text here...
 ```
 </pre>
 
-
 ```
 Sample text here...
 ```
 
 HTML:
 
-```html
+``` html
 <pre>
   <code>Sample text here...</code>
 </pre>
@@ -479,11 +483,10 @@ grunt.initConfig({
 };
 ```
 
-## Tables
+## 표
 Tables are created by adding pipes as dividers between each cell, and by adding a line of dashes (also separated by bars) beneath the header. Note that the pipes do not need to be vertically aligned.
 
-
-```markdown
+``` md
 | Option | Description |
 | ------ | ----------- |
 | data   | path to data files to supply the data that will be passed into templates. |
@@ -501,7 +504,7 @@ Renders to:
 
 And this HTML:
 
-```html
+``` html
 <table>
   <tr>
     <th>Option</th>
@@ -522,11 +525,11 @@ And this HTML:
 </table>
 ```
 
-### Right aligned text
+### Text 정렬하기
 
 Adding a colon on the right side of the dashes below any heading will right align text for that column.
 
-```markdown
+``` md
 | Option | Description |
 | ------:| -----------:|
 | data   | path to data files to supply the data that will be passed into templates. |
@@ -540,11 +543,11 @@ Adding a colon on the right side of the dashes below any heading will right alig
 | engine | engine to be used for processing templates. Handlebars is the default. |
 | ext    | extension to be used for dest files. |
 
-## Links
+## 링크
 
-### Basic link
+### 기본 링크
 
-```markdown
+``` md
 [Assemble](http://assemble.io)
 ```
 
@@ -554,14 +557,13 @@ Renders to (hover over the link, there is no tooltip):
 
 HTML:
 
-```html
+``` html
 <a href="http://assemble.io">Assemble</a>
 ```
 
+### 링크에 타이틀 추가하기
 
-### Add a title
-
-```markdown
+``` md
 [Upstage](https://github.com/upstage/ "Visit Upstage!")
 ```
 
@@ -571,23 +573,24 @@ Renders to (hover over the link, there should be a tooltip):
 
 HTML:
 
-```html
+``` html
 <a href="https://github.com/upstage/" title="Visit Upstage!">Upstage</a>
 ```
 
-### Named Anchors
+### 제목에 컨텐츠 위치 연결
 
 Named anchors enable you to jump to the specified anchor point on the same page. For example, each of these chapters:
 
-```markdown
+``` md
 # Table of Contents
   * [Chapter 1](#chapter-1)
   * [Chapter 2](#chapter-2)
   * [Chapter 3](#chapter-3)
 ```
+
 will jump to these sections:
 
-```markdown
+``` md
 ## Chapter 1 <a id="chapter-1"></a>
 Content for chapter one.
 
@@ -597,29 +600,34 @@ Content for chapter one.
 ## Chapter 3 <a id="chapter-3"></a>
 Content for chapter one.
 ```
+
 **NOTE** that specific placement of the anchor tag seems to be arbitrary. They are placed inline here since it seems to be unobtrusive, and it works.
 
-## Images {#images}
+## 이미지 {#images}
 Images have a similar syntax to links but include a preceding exclamation point.
 
-```markdown
+``` md
 ![Minion](http://octodex.github.com/images/minion.png)
 ```
+
 ![Minion](http://octodex.github.com/images/minion.png)
 
 or
-```markdown
+
+``` md
 ![Alt text](http://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")
 ```
+
 ![Alt text](http://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")
 
 Like links, Images also have a footnote style syntax
 
 ### Alternative usage : note images
 
-```markdown
+``` md
 ![Alt text][id]
 ```
+
 ![Alt text][id]
 
 With a reference later in the document defining the URL location:
@@ -628,43 +636,46 @@ With a reference later in the document defining the URL location:
 
     [id]: http://octodex.github.com/images/dojocat.jpg  "The Dojocat"
 
-### Resizing image
+### 이미지 조정
 
 Add HTTP parameters `width` and/or `height` to the link image to resize the image. Values are CSS values (default is `auto`).
 
-```markdown
+``` md
 ![Minion](http://octodex.github.com/images/minion.png?width=20pc)
 ```
 
 ![Minion](http://octodex.github.com/images/minion.png?width=20pc)
 
-```markdown
+``` md
 ![Minion](http://octodex.github.com/images/minion.png?height=50px)
 ```
 
 ![Minion](http://octodex.github.com/images/minion.png?height=50px)
 
-```markdown
+``` md
 ![Minion](http://octodex.github.com/images/minion.png?height=50px&width=300px)
 ```
 
 ![Minion](http://octodex.github.com/images/minion.png?height=50px&width=300px)
 
-### Add CSS classes
+### CSS 클래스 추가하기
 
 Add a HTTP `classes` parameter to the link image to add CSS classes. `shadow`and `border` are available but you could define other ones.
 
-```markdown
+``` md
 ![stormtroopocat](http://octodex.github.com/images/stormtroopocat.jpg?classes=shadow)
 ```
+
 ![stormtroopocat](http://octodex.github.com/images/stormtroopocat.jpg?width=40pc&classes=shadow)
 
-```markdown
+``` md
 ![stormtroopocat](http://octodex.github.com/images/stormtroopocat.jpg?classes=border)
 ```
+
 ![stormtroopocat](http://octodex.github.com/images/stormtroopocat.jpg?width=40pc&classes=border)
 
-```markdown
+``` md
 ![stormtroopocat](http://octodex.github.com/images/stormtroopocat.jpg?classes=border,shadow)
 ```
+
 ![stormtroopocat](http://octodex.github.com/images/stormtroopocat.jpg?width=40pc&classes=border,shadow)

@@ -4,7 +4,7 @@ title: "[Markdown 작성하기(2/4)] Markdown내에서 가운데 정렬 적용�
 authors: ["1000jaeh"]
 series: ["markdown"]
 categories:
-  - posts
+  - contributes
 tags:
   - markdown
 cover:
@@ -12,23 +12,15 @@ cover:
   caption: ""
 draft: true
 ---
+`center` shortcode를 사용하여, 작성한 Content를 중앙정렬 할 수 있습니다.
 
-## Shortcode: center
-
-Center align you content.
-
-### center: Parameters
-
-- Markdown content between opening and closing tags.
-
-### center: Usage Example
 ```golang
 {{%/* center */%}}
 _Center Aligned Text_
 {{%/* /center */%}}
 ```
 
-**Output**
+render as
 
 {{% center %}}
 _Center Aligned Text_

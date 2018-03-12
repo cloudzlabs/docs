@@ -85,6 +85,9 @@ page = "" # Twitter page username
 # Title Separator: - – — · • * ⋆ | ~ « » < >
 titleSeparator = "|"
 
+[params.contribute]
+enabled = false
+
 [taxonomies]
 author = "authors"
 category = "categories"
