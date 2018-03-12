@@ -2,6 +2,7 @@
 date: "2018-03-08T23:23:28+09:00"
 title: "Image-Container"
 authors: ["1000jaeh"]
+series: ["docker"]
 categories:
   - posts
 tags:

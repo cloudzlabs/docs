@@ -2,6 +2,7 @@
 date: "2018-03-09T08:25:25+09:00"
 title: "Volume"
 authors: ["1000jaeh"]
+series: ["docker"]
 categories:
   - posts
 tags:

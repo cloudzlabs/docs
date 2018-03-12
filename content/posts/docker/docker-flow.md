@@ -2,6 +2,7 @@
 date: "2018-03-09T08:23:38+09:00"
 title: "Docker-Flow"
 authors: ["1000jaeh"]
+series: ["docker"]
 categories:
   - posts
 tags:

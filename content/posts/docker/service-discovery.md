@@ -2,6 +2,7 @@
 date: "2018-03-09T08:29:07+09:00"
 title: "Service-Discovery"
 authors: ["1000jaeh"]
+series: ["docker"]
 categories:
   - posts
 tags:

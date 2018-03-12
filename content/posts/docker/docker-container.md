@@ -2,6 +2,7 @@
 date: "2018-03-09T08:22:39+09:00"
 title: "Container"
 authors: ["1000jaeh"]
+series: ["docker"]
 categories:
   - posts
 tags:

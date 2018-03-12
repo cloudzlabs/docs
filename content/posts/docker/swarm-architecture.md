@@ -2,6 +2,7 @@
 date: "2018-03-09T08:27:58+09:00"
 title: "Swarm-Architecture"
 authors: ["1000jaeh"]
+series: ["docker"]
 categories:
   - posts
 tags:
