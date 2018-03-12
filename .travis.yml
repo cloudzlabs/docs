@@ -18,5 +18,6 @@ deploy:
   github_token: $GITHUB_TOKEN # This is the authentication which you will setup in the next step in travis-ci dashboard
   email: withdtlabs@gmail.com
   name: "cloudz-labs"
+  fqdn: tech.cloudz-labs.io
   on:
     branch: master
