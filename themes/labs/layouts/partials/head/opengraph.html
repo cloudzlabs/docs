@@ -33,7 +33,7 @@
     {{- $author := ( index $.Site.Data.authors $authorID ) -}}
     {{- with $author -}}
       {{- if or .social.email ( and .email.username .email.host ) -}}
-      <meta property='og:image' content='{{ $author.info.image }}'>
+      <meta property='og:image' content='/images/default.png'>
       {{- end -}}
     {{- end -}}
   {{- end -}}
