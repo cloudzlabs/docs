@@ -104,7 +104,7 @@ url = "/posts/"
 
 [[menu.main]]
 name = "About Us"
-weight = 0
+weight = -20
 identifier = "about"
 url = "http://cloudz-labs.sk.com"
 

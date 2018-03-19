@@ -45,7 +45,7 @@ Docker는 리눅스에서 운영체제 수준 가상화에 대한 추상화 및 
 ***따라서, Docker는 이런 Container들을 관리할 수 있는 Service를 제공함으로써,<br/> Application들이 다양한 환경 속에서 일관된 서비스를 제공할 수 있도록 보장합니다.***
 {{% /center %}}
 
-## Docker의 이점
+## Docker를 사용한다면
 
 ### 동일한 Application을 다양한 환경으로 빠르게 배포할 수 있습니다
 
