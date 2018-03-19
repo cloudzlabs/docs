@@ -102,6 +102,12 @@ weight = -10
 identifier = "posts"
 url = "/posts/"
 
+[[menu.main]]
+name = "About Us"
+weight = 0
+identifier = "about"
+url = "http://cloudz-labs.sk.com"
+
 [languages]
 # edit this block for your own language
 [languages.ko]
