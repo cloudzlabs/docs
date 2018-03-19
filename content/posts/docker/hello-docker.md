@@ -13,7 +13,7 @@ cover:
   image: "../images/docker-official.svg"
   caption: ""
 description: ""
-draft: true
+draft: false
 ---
 Docker란 리눅스의 응용프로그램들을 소프트웨어 Container 안에 배치시키는 일을 자동화하는 오픈 소스 프로젝트로서, Docker 공식 문서에 따르면 **Containers as a Service(CaaS) Platform**으로 정의하고 있습니다.
 
@@ -53,7 +53,7 @@ Docker는 Application 및 Service를 Container를 사용하여 표준화된 환�
 
 ### 환경에 따라, 배포와 확장이 자유롭습니다
 
-Docker는 개발자의 Laptop, Datacenter의 VM, Cloud 환경 또는 여러 다양한 환경에 쉽게 이식하여 사용할 수 있습니다. Docker의 이런 특성으로 인해, 비즈니스 요구 사항에 맞춰 Application과 Service를 부하에 따라 동적으로 관리할 수 있으며, 거의 실시간으로 축소 또는 확장할 수 있습니다. 타 Platform에 비해 같은 Hardware에서 더 많은 작업을 수행할 수 있습니다. Docker는 가볍고 빠르게 동작하기 때문에, Hypervisor 기반의 Virtual Machine 보다 실용적이고 비용 효율적입니다. 따라서, 적은 Resources로 많은 작업을 수행해야하는 중소규모의 배포 환경 및 고밀도 밀집 환경에 이상적입니다.
+Docker는 개발자의 Laptop, Datacenter의 VM, Cloud 환경 또는, 여러 다양한 환경에 쉽게 이식하여 사용할 수 있습니다. Docker의 이런 특성으로 인해, 비즈니스 요구 사항에 맞춰 Application과 Service를 부하에 따라 동적으로 관리할 수 있으며, 거의 실시간으로 축소 또는 확장할 수 있습니다. 타 Platform에 비해 같은 Hardware에서 더 많은 작업을 수행할 수 있습니다. Docker는 가볍고 빠르게 동작하기 때문에, Hypervisor 기반의 Virtual Machine 보다 실용적이고 비용 효율적입니다. 따라서, 적은 Resources로 많은 작업을 수행해야하는 중소규모의 배포 환경 및 고밀도 밀집 환경에 이상적입니다.
 
 ## Hello World
 
