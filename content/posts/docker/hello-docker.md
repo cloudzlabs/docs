@@ -74,30 +74,33 @@ Docker 환경 구성 방법은 다음과 같습니다.
     ```bash
       $ docker version
       Client:
-        Version:      17.09.0-ce
-        API version:  1.32
-        Go version:   go1.8.3
-        Git commit:   afdb6d4
-        Built:        Tue Sep 26 22:40:09 2017
+        Version:      18.03.0-ce-rc4
+        API version:  1.37
+        Go version:   go1.9.4
+        Git commit:   fbedb97
+        Built:        Thu Mar 15 07:33:28 2018
         OS/Arch:      darwin/amd64
+        Experimental: false
+        Orchestrator: swarm
 
       Server:
-        Version:      17.09.0-ce
-        API version:  1.32 (minimum version 1.12)
-        Go version:   go1.8.3
-        Git commit:   afdb6d4
-        Built:        Tue Sep 26 22:45:38 2017
-        OS/Arch:      linux/amd64
-        Experimental: false
+        Engine:
+          Version:      18.03.0-ce-rc4
+          API version:  1.37 (minimum version 1.12)
+          Go version:   go1.9.4
+          Git commit:   fbedb97
+          Built:        Thu Mar 15 07:42:29 2018
+          OS/Arch:      linux/amd64
+          Experimental: true
 
       $ docker-compose version
-      docker-compose version 1.16.1, build 6d1ac21
-      docker-py version: 2.5.1
-      CPython version: 2.7.12
-      OpenSSL version: OpenSSL 1.0.2j  26 Sep 2016
+      docker-compose version 1.20.0-rc2, build 8c4af54
+      docker-py version: 3.1.1
+      CPython version: 3.6.4
+      OpenSSL version: OpenSSL 1.0.2n  7 Dec 2017
 
       $ docker-machine version
-      docker-machine version 0.12.2, build 9371605
+      docker-machine version 0.14.0, build 89b8332
     ```
 3. 구성된 Docker 환경에 Server(Docker Daemon)과 Client외에도 docker-compose와 docker-machine Tool도 같이 설치된 것을 확인하실 수 있습니다.
 4. `docker run` 명령어로 `hello-world` Image를 Pull 받아서 Conatiner 생성하여 실행시킵니다.
@@ -105,8 +108,8 @@ Docker 환경 구성 방법은 다음과 같습니다.
         $ docker run hello-world
         Unable to find image 'hello-world:latest' locally
         latest: Pulling from library/hello-world
-        5b0f327be733: Pull complete
-        Digest: sha256:07d5f7800dfe37b8c2196c7b1c524c33808ce2e0f74e7aa00e603295ca9a0972
+        ca4f61b1923c: Pull complete
+        Digest: sha256:97ce6fa4b6cdc0790cda65fe7290b74cfebd9fa0c9b8c38e979330d547d22ce1
         Status: Downloaded newer image for hello-world:latest
 
         Hello from Docker!
@@ -115,6 +118,7 @@ Docker 환경 구성 방법은 다음과 같습니다.
         To generate this message, Docker took the following steps:
         1. The Docker client contacted the Docker daemon.
         2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+            (amd64)
         3. The Docker daemon created a new container from that image which runs the
             executable that produces the output you are currently reading.
         4. The Docker daemon streamed that output to the Docker client, which sent it
