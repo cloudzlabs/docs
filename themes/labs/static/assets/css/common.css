@@ -878,7 +878,7 @@ table tbody tr:hover { font-weight: bold; background: rgba(173, 72, 103, 0.15); 
 .post-pre,
 .post-next { margin:10px 0; }
 .card.mb-30 { margin-bottom:10px !important;}
-.card .post-excerpt,
+/* .card .post-excerpt, */
 .card .btn-link,
 .card img { display:none;}
 .card .post-info { min-height:auto;}

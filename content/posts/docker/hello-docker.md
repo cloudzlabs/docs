@@ -1,13 +1,13 @@
 ---
 date: "2018-03-08T18:47:30+09:00"
-title: "[Docker 1/8] Hello Docker!"
+title: "Hello Docker!"
 authors: ["1000jaeh"]
 series: ["docker"]
 categories:
   - posts
 tags:
   - docker
-  - container as a service
+  - caas
   - container
 cover:
   image: "../images/docker-official.svg"
