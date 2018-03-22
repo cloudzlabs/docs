@@ -53,7 +53,7 @@ Docker Network의 기본동작을 확인하고, 다양한 경우의 수를 대�
 
 ###### Docker Network 기본 동작
 
-docker network 명령어의 기본 동작을 확인해보겠습니다. 상세한 옵션 등은 Docker Docs나 Docker cli 상의 --help를 참조하시면 됩니다.
+docker network 명령어의 기본 동작을 확인해보겠습니다. 상세한 옵션 등은 Docker Docs나 Docker cli 상의 help option을 확인하시면 됩니다.
 
 - ls
   - docker network 의 목록을 조회합니다.
