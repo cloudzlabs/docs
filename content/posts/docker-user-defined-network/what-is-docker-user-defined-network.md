@@ -23,9 +23,7 @@ Docker는 몇가지 네트워크 드라이버를 기본 제공하여 강력한 �
 
 상세 내용은 Docker Docs를 참고하시기 바랍니다. ( [Docker Docs - Network](https://docs.docker.com/network/) )
 
-Docker는 User Defined Network로 사용자가 private network을 생성하고 컨테이너 간 접근할 수 있는 기능을 제공합니다.
-
-이를 사용해 private network 상의 API 서버를 구성해보겠습니다.
+Docker는 User Defined Network로 사용자가 private network을 구성하고 컨테이너 간 접근할 수 있는 기능을 제공합니다.
 
 ## What
 
