@@ -350,7 +350,7 @@ Docker에서 컨테이너의 접근은 컨테이너의 Port를 노출하고 해�
 
 user defined network에 컨테이너를 연결한 경우 서비스명으로 ip주소를 찾을 수 있는 Service Discovery 기능을 제공합니다. 또한, 컨테이너의 Port는 내부 Port를 사용해서 접근이 가능합니다.
 
-user defined network에 두 Application을 연결하고 jisang-ms1의 Port를 노출하지 않은 경우, 두 Application 간 내부 통신만 가능한 Private Network를 구성할 수 있습니다.
+user defined network에 두 Application을 연결하고 jisang-ms1의 Port를 노출하지 않은 경우, 두 Application 간 내부 통신만 가능한 Private Network를 구성할 수 있습니다. 아래와 같이 구성하면 jisang-ms2를 외부에 노출하지 않고 시스템 구성이 가능합니다.
 
 ![docker-private-network](dockerprivatenetwork.png)
 
