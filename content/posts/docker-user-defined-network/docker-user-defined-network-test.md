@@ -352,4 +352,6 @@ user defined network에 컨테이너를 연결한 경우 서비스명으로 ip�
 
 user defined network에 두 Application을 연결하고 jisang-ms1의 Port를 노출하지 않은 경우, 두 Application 간 내부 통신만 가능한 Private Network를 구성할 수 있습니다.
 
+![docker-private-network](dockerprivatenetwork.png)
+
 다음 포스팅에서는 Docker user defined network와 Spring Cloud를 사용해서 최소한의 시스템 구성을 해보겠습니다.
