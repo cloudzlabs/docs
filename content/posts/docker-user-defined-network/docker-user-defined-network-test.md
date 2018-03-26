@@ -11,7 +11,7 @@ tags:
 cover:
   image: docker-logo.png
 description: "Docker User Defined Bridge Network를 Spring Boot Application으로 테스트합니다."
-draft: true
+draft: false
 ---
 
 지난 포스팅에서 docker user defined network의 간단한 설명과 동작을 확인했습니다.
@@ -354,4 +354,4 @@ user defined network에 두 Application을 연결하고 jisang-ms1의 Port를 �
 
 ![docker-private-network](dockerprivatenetwork.png)
 
-다음 포스팅에서는 Docker user defined network와 Spring Cloud를 사용해서 최소한의 시스템 구성을 해보겠습니다.
+다음 포스팅에서는 Docker user defined network와 Spring Cloud를 사용해서 API 서버 구성을 해보겠습니다.
