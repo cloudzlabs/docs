@@ -17,11 +17,11 @@ draft: true
 
 근래에 많이 들려오는 단어 중 하나는 "Serverless"라는 단어일 것이다. Serverless Architecture, Serverless Application, Serverless Computing... 직역하자면, 서버가 없는 구조, 서버가 없는 애플리케이션 등으로 될 것인데... 도대체 서버없이, Client는 어떻게 자신들이 원하는 Data를 얻어올 수 있다는 것인가.
 
-이렇게 Serverless에 대한 불명확한 개념으로 머릿속이 안개로 뒤덮인 듯해서, Serverless에 대한 개념부터 정리해보고자 한다.
+이렇게 Serverless에 대한 개념이 불명확해서, 그것부터 정리해보고자 한다.
 
 ## BaaS와 FaaS
 
-Serverless라 하면, 바로 Google의 Firebase와 AWS의 Lambda다.
+Serverless에 제일 먼저 Serverless라 하면, 바로 Google의 Firebase와 AWS의 Lambda다.
 
 구글의 백엔드 애즈 어 서비스인데... 이건 또 뭔가..
 백엔드 전부를 제공 및 관리—> 클라이언트 개발에 집중

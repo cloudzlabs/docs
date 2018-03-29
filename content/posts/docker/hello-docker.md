@@ -11,8 +11,6 @@ tags:
   - container
 cover:
   image: "../images/docker-official.svg"
-  caption: ""
-description: ""
 draft: false
 ---
 Docker란 리눅스의 응용프로그램들을 소프트웨어 Container 안에 배치시키는 일을 자동화하는 오픈 소스 프로젝트로서, Docker 공식 문서에 따르면 **Containers as a Service(CaaS) Platform**으로 정의하고 있습니다.
@@ -55,7 +53,7 @@ Docker는 Application 및 Service를 Container를 사용하여 표준화된 환�
 
 Docker는 개발자의 Laptop, Datacenter의 VM, Cloud 환경 또는, 여러 다양한 환경에 쉽게 이식하여 사용할 수 있습니다. Docker의 이런 특성으로 인해, 비즈니스 요구 사항에 맞춰 Application과 Service를 부하에 따라 동적으로 관리할 수 있으며, 거의 실시간으로 축소 또는 확장할 수 있습니다. 타 Platform에 비해 같은 Hardware에서 더 많은 작업을 수행할 수 있습니다. Docker는 가볍고 빠르게 동작하기 때문에, Hypervisor 기반의 Virtual Machine 보다 실용적이고 비용 효율적입니다. 따라서, 적은 Resources로 많은 작업을 수행해야하는 중소규모의 배포 환경 및 고밀도 밀집 환경에 이상적입니다.
 
-## Hello World
+## Hello Docker
 
 Docker는 로컬 개발 환경 구성을 위한 Community Edition(CE) 과 실 운영 환경을 위한 Enterprise Edition(EE)의 두 가지 버전으로 제공되고 있습니다.
 **Docker Community Edition(CE)**은 각 운영체제 환경에 맞는 설치파일이 제공되고 있습니다.
@@ -134,3 +132,9 @@ Docker 환경 구성 방법은 다음과 같습니다.
         https://docs.docker.com/engine/userguide/
       ```
 5. 위와 같이 정상적으로 메시지가 나타난다면, Docker 환경 구성이 완료된 것입니다.
+
+## 한 번의 Build로 어디서든 Run
+
+지금까지 Docker환경을 구성하여, `hello-world`라는 Image로부터 Container를 구동시켰습니다. Docker가 설치되어 있다면, `hello-world`는 어디에서든지 100% 동일한 형태로 실행할 것입니다. 이는 Application들이 더 이상 환경에 제약받지 않고, 일관된 서비스를 제공할 수 있음을 의미합니다.
+
+한 번의 Build로 어디서든 Run할 수 있는 Docker. 다음 글에서는 이런 편리함을 제공하는 Docker가 어떻게 구성되어 있는지에 대해서 살펴보도록 하겠습니다.
