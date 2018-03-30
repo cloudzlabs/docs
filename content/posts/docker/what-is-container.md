@@ -24,13 +24,17 @@ Container는 가상화 방식의 한 종류입니다. 하지만, 흔히 우리�
 
 여기서, 가상 머신(VM)은 하나의 서버를 여러 서버로 전환시키는 물리적 하드웨어의 추상화로 **Hypervisor[^1] 기반의 시스템 가상화입니다.** Hypervisor는 기반이 되는 시스템 안에 또 다른 시스템을 구동 시킬 수 있게 시스템의 각 요소들을 가상화해서 제공합니다. 이 때, 기반 시스템을 보통 Host 시스템이라 하고 Hypervisor 위에서 돌아가는 시스템을 가상 시스템을 의미합니다. Hypervisor는 Host 시스템의 자원을 기반으로 가상 시스템이 독립적으로 움직일 수 있도록 합니다. 따라서, Hypervisor를 사용하여 여러 대의 VM을 단일 시스템에서 실행할 수 있지만, 호스트 시스템의 하드웨어 자원에 제한을 받습니다.
 
-![VM](../images/vm.png)
+{{% center %}}
+![VM](../images/vm.png)[출처: Docker Docs - Containers and virtual machines](https://docs.docker.com/get-started/#containers-and-virtual-machines)
+{{% /center %}}
 
 ### Container의 반가상화
 
 반면, Container는 공유된 운영체제에서 격리되어 실행할 수 있는 형식으로 소프트웨어를 가상화하는 방법입니다. Hypervisor처럼 시스템의 전반적인 것을 가상화하는 것이 아닌, Application을 구동할 수 있는 환경 즉, CPU와 Memory 영역 등을 가상화하고 구동하는데 필요한 운영체제나 라이브러리는 호스트 시스템과 공용으로 사용합니다.
 
-![container](../images/container.png)
+{{% center %}}
+![container](../images/container.png)[출처: Docker Docs - Containers and virtual machines](https://docs.docker.com/get-started/#containers-and-virtual-machines)
+{{% /center %}}
 
 ### VM VS Container
 
@@ -199,7 +203,9 @@ l
 
 아래는 Image와 Container Layer를 도식화한 것입니다.
 
-![layer](../images/layer.png)
+{{% center %}}
+![layer](../images/layer.png)[출처: Docker Docs - Images and layers](https://docs.docker.com/storage/storagedriver/#images-and-layers)
+{{% /center %}}
 
 ### Layer의 공유
 
@@ -277,6 +283,9 @@ Container Layer의 파일 쓰기 및 변경 대한 자세한 내용은 Docker Do
 
 이를 다이어그램으로 표현하면 다음과 같습니다.
 
-![share-layer](../images/share-layer.png)
+{{% center %}}
+![share-layer](../images/share-layer.jpg)
+[출처: Docker Docs - Images and layers](https://docs.docker.com/storage/storagedriver/#images-and-layers)
+{{% /center %}}
 
 [^1]:하이퍼바이저(hypervisor)는 호스트 컴퓨터에서 다수의 운영체제를 동시에 실행하기 위한 논리적 Platform을 말합니다. 가상화 머신 모니터(Virtual Machine Monitor, 줄여서 VMM)라고도 부릅니다.
