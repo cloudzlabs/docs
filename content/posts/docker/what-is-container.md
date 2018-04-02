@@ -219,7 +219,7 @@ cc2f62db98b4ed5aadc6904229db1c1f2f58d69f3ef4c120eb78402a12a96f7d
 f921b84e42d42bdad629f58398ac18d942c25c3451238a361f841b0b8d630523
 87fccd76cd1d195bc25dd0e30203c3d3f056bb69a2851a1feef8026386ccb440
 
-$ docker ps 
+$ docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 87fccd76cd1d        ubuntu              "/bin/bash"         About an hour ago   Up About an hour                        ubuntu-local-3
 f921b84e42d4        ubuntu              "/bin/bash"         About an hour ago   Up About an hour                        ubuntu-local-2
@@ -228,7 +228,7 @@ cc2f62db98b4        ubuntu              "/bin/bash"         About an hour ago   
 
 Local Docker에 실제로 저장된 Container와 Layer입니다. 각 Container 별 Container Layer가 추가되었으나, Image Layer는 추가되지 않았습니다.
 
-``` diff
+```diff
 / # ls /var/lib/docker/containers
 87fccd76cd1d195bc25dd0e30203c3d3f056bb69a2851a1feef8026386ccb440
 cc2f62db98b4ed5aadc6904229db1c1f2f58d69f3ef4c120eb78402a12a96f7d
@@ -250,7 +250,7 @@ fc83da02f8a1ec7f9cc40e512aafe550dd1030883ddc82c56e59d229dcda60f2
 
 기동 중인 Container의 대락젹인 크기는 `docker ps -s`으로 확인할 수 있습니다.
 
-``` bash
+```bash
 $ docker ps -s
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES               SIZE
 87fccd76cd1d        ubuntu              "/bin/bash"         About an hour ago   Up About an hour                        ubuntu-local-3      0B (virtual 122MB)
