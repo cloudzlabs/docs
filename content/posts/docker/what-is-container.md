@@ -6,10 +6,10 @@ series: ["docker"]
 categories:
   - posts
 tags:
-  - docker
-  - container
-  - virtualization
-  - layer
+  - Docker
+  - Container
+  - Virtualization
+  - Layer
 cover:
   image: "../images/container.jpg"
 draft: false

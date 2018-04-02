@@ -6,9 +6,9 @@ series: ["docker"]
 categories:
   - posts
 tags:
-  - docker
-  - caas
-  - container
+  - Docker
+  - CaaS
+  - Container
 cover:
   image: "../images/docker-official.svg"
 draft: false
