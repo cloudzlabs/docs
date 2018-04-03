@@ -16,7 +16,7 @@ cover:
 draft: false
 ---
 
-Docker는 Container를 구동시킬 수 있는 환경만 구성되어 있다면, Application들을 한 번의 Build로 어디서든 구동시킬 수 있습니다. 하지만 1차원적으로만 살펴보면, Java Application이 JVM 위에서 실행되는 모습과 크게 다르지 않아 보입니다. Java Application도 JVM만 설치되어 있다면, 어디에서든 실행되죠. 마찬가지로, Python Application도 동일합니다. 그렇다면, 이 모든 것들이 결국은 똑같ㅌ이 생겼고, 단지 실행되는 주체(Container, JAR, py)만 다른 것일까요?
+Docker는 Container를 구동시킬 수 있는 환경만 구성되어 있다면, Application들을 한 번의 Build로 어디서든 구동시킬 수 있습니다. 하지만 1차원적으로만 살펴보면, Java Application이 JVM 위에서 실행되는 모습과 크게 다르지 않아 보입니다. Java Application도 JVM만 설치되어 있다면, 어디에서든 실행되죠. 마찬가지로, Python Application도 동일합니다. 그렇다면, 이 모든 것들이 결국은 똑같이 생겼고, 단지 실행되는 주체(Container, JAR, py)만 다른 것일까요?
 
 ## Client-Server Model
 
