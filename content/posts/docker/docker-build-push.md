@@ -102,7 +102,7 @@ CONTAINER ID        IMAGE                           COMMAND             CREATED 
 8517d3ff5b8a        ${username}/my-base-image:1.0   "bash"              3 seconds ago       Up 4 seconds                            ${username}_container   0B (virtual 107MB)
 ```
 
-### Image를 Docker Hub 배포
+### Image를 Docker Hub에 배포
 
 이제는 생성한 Image를 Docker Registry에 배포해 보겠습니다. 따로, Docker Registry를 구성하지 않았기 때문에 배포되는 장소는 Docker Hub이며, 정상적으로 배포하기 위해서 먼저 Login을 하겠습니다.
 
