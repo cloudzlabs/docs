@@ -14,7 +14,7 @@ cover:
   image: "../images/container.jpg"
 draft: false
 ---
-Docker는 환경적 요인에 Lock-in되지 않고, Application의 배포와 운영을 쉽게 도와주는 'Containers as a Service(CaaS) Platform입니다. 이를 가능케 하는 것은 바로 **Container**라는 것입니다. Container란, 운영체제의 커널이 하나의 인스턴스가 아닌, 여러 개의 격리된 인스턴스들을 갖출 수 있도록 하는 서버 **가상화** 방식입니다. 이러한 인스턴스들은 이를 소유하고 있는 Host Machine과 사용자의 관점에서 바라보면, 실제 서버인 것처럼 보입니다.
+Docker는 Application의 배포와 운영을 쉽게 도와주는 'Containers as a Service(CaaS) Platform이며, Client-Server Model로 동작하고 있습니다. 여기서 **Container**란, 운영체제의 커널이 하나의 인스턴스가 아닌, 여러 개의 격리된 인스턴스들을 갖출 수 있도록 하는 서버 **가상화** 방식입니다. 이러한 인스턴스들은 이를 소유하고 있는 Host Machine과 사용자의 관점에서 바라보면, 실제 서버인 것처럼 보입니다.
 
 ## 가상화(Virtualization)
 
@@ -287,5 +287,7 @@ Container Layer의 파일 쓰기 및 변경 대한 자세한 내용은 Docker Do
 ![share-layer](../images/share-layer.jpg)
 [출처: Docker Docs - Images and layers](https://docs.docker.com/storage/storagedriver/#images-and-layers)
 {{% /center %}}
+
+Ubuntu Image를 통해, Image와 Container의 Layer 구조를 확인함으로써 Docker가 왜 가볍고 빠른지 알 수 있었습니다. 그렇다면, 이제 남은 것은 직접 만들어보는 것 밖에 없네요.
 
 [^1]:하이퍼바이저(hypervisor)는 호스트 컴퓨터에서 다수의 운영체제를 동시에 실행하기 위한 논리적 Platform을 말합니다. 가상화 머신 모니터(Virtual Machine Monitor, 줄여서 VMM)라고도 부릅니다.
