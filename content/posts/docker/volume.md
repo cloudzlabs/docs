@@ -6,8 +6,8 @@ series: ["docker"]
 categories:
   - posts
 tags:
-  - docker
-  - volume
+  - Docker
+  - Volume
 cover:
   image: "../images/docker-official.svg"
 draft: true
@@ -25,7 +25,7 @@ Docker는 Docker Host에 Data를 Mount하는 방식으로 `volume, bind mounts, 
 
 어떤 유형의 Mount를 사용하든, Data는 Container 내에서 동일하게 보이며, Container File System의 폴더나 개별적인 파일들로 표시됩니다. 올바른 Mount유형을 선택할 때 기준이 될 `volume, bind mounts, tmpfs mount`간의 가장 큰 차이점은, Data가 Docker Host내에서 어디에 존재하는지 입니다.
 
-![types of mounts and where they live on the Dockerhost](https://docs.docker.com/engine/admin/volumes/images/types-of-mounts.png)
+![types of mounts and where they live on the Dockerhost](../images/types-of-mounts.png)
 
 `volume`
 
@@ -67,9 +67,9 @@ Docker는 Docker Host에 Data를 Mount하는 방식으로 `volume, bind mounts, 
 - `bind mount`는 매우 효과적이지만, Host Machine의 File System 디렉토리 구조에 의존적입니다.
 - Docker CLI 명령어로 `bind mount`를 관리할 수 없습니다.
 
-경고
-
+{{% notice warning %}}
 `bind mount`는 Container에서 실행 중인 프로세스들이 Host File System의 중요한 시스템 파일들이나 디렉토리의 생성, 수정, 삭제 명령을 통해 변경시킬 수 있습니다. 이는 Host System의 Non-Docker 프로세스들에게 충돌이 발생하거나, 보안에 큰 영향을 줄 수 있습니다. 따라서, `bind mount`보다는 `volume`를 사용하는 것을 권장합니다.
+{{% /notice %}}
 
 ### tmfs mount
 
@@ -130,9 +130,9 @@ volume을 사용하기 전에, volume을 Mount하기 위한 Flag에 대해서 �
 
 원래는 독립형 Container에서는 `-v` 또는 `--volume`가 사용되었고, Swarm Mode의 Service에서는 `--mount`가 사용되었습니다. 하지만, Docker 17.06부터 독립형 Container에서도 `--mount`를 사용할 수 있게 되었습니다. 두 Flag 간 가장 큰 차이점은 `-v`구문은 모든 옵션들을 하나의 Field에 결합하여 사용하고, `--mount`구문은 옵션을 분리하여 사용합니다. 따라서, `--mount`가 보다 명확하고 자세하게 정보를 확인할 수 있습니다.
 
-참고
-
+{{% notice info %}}
 `-v` 또는 `--volume` 보다 `--mount`의 사용성이 더 쉽기 때문에 `--mount`를 사용하는 것을 권장합니다. 만약 특정 `volume driver` 옵션들이 필요하다면, `--mount`를 사용해야 합니다.
+{{% /notice %}}
 
 다음은 Flag별 사용법입니다.
 
@@ -157,14 +157,14 @@ volume을 사용하기 전에, volume을 Mount하기 위한 Flag에 대해서 �
 
 `docker volume create \[OPTIONS\] \[VOLUME\]`로 `volume`을 생성합니다.
 
-``` bash
+```bash
 $ docker volume create my-vol
 my-vol
 ```
 
 `docker volume ls \[OPTIONS\]`로 `volume`의 전체 목록을 확인합니다.
 
-``` bash
+```bash
 $ docker volume ls
 DRIVER              VOLUME NAME
 local               c6d60670aa3b05a06956839587ce608c67dbc0b14e5f13590f526ff149382bb0
@@ -173,7 +173,7 @@ local               my-vol
 
 `docker volume inspect \[OPTIONS\] VOLUME \[VOLUMES...\]`로 생성한 `volume`의 상세 정보를 확인합니다.
 
-``` bash
+```bash
 $ docker volume inspect my-vol
 [
     {
@@ -190,7 +190,7 @@ $ docker volume inspect my-vol
 
 `docker volume rm \[OPTIONS\] VOLUME \[VOLUME...\]`로 생성한 `volume`를 삭제합니다.
 
-``` bash
+```bash
 $ docker volume rm my-vol
 my-vol
 ```
@@ -199,7 +199,7 @@ my-vol
 
 `--mount` Flag를 사용하여 Container 기동 시, `volume`을 Mount합니다.
 
-``` bash
+```bash
 $ docker run -d \
 > -it \
 > --name devtest \
@@ -207,9 +207,9 @@ $ docker run -d \
 > nginx:latest
 Unable to find image 'nginx:latest' locally
 latest: Pulling from library/nginx
-bc95e04b23c0: Pull complete 
-a21d9ee25fc3: Pull complete 
-9bda7d5afd39: Pull complete 
+bc95e04b23c0: Pull complete
+a21d9ee25fc3: Pull complete
+9bda7d5afd39: Pull complete
 Digest: sha256:9fca103a62af6db7f188ac3376c60927db41f88b8d2354bf02d2290a672dc425
 Status: Downloaded newer image for nginx:latest
 6de449868f75c83a425ae33f46dde69f3287edb56af88dc616582fb0c3622166
@@ -217,7 +217,7 @@ Status: Downloaded newer image for nginx:latest
 
 생성된 Container의 상세 정보를 확인합니다. Mounts 필드에서 `volume`에 대한 상세정보를 확인할 수 있습니다. Mount형식은 `volume`이로 source 및 destination의 경로를 확인할 수 있으며, 읽기/쓰기가 모두 가능한 것을 확인할 수 있습니다.
 
-``` bash
+```bash
 $ docker inspect devtest
 [
     {
@@ -254,7 +254,7 @@ $ docker inspect devtest
 
 Container를 중지시키고, 생성한 Container와 `volume`을 제거합니다.
 
-``` bash
+```bash
 $ docker container stop devtest
 devtest
 
@@ -274,7 +274,7 @@ Container를 시작할 때 새로운 `volume`을 생성하고, 해당 Container�
 
 먼저 Container를 실행할 때, `destination`을 `/usr/share/nginx/html`로 지정하여, 해당 디렉토리의 내용으로 새로운 `nginx-vol`이름의 `volume`에 Data가 채워질 수 있도록 설장합니다. 해당 디렉토리는 Nginx가 기본 HTML 컨텐츠를 저장하는 곳입니다.
 
-``` bash
+```bash
 $ docker run -d \
 > -it \
 > --name=nginxtest \
@@ -285,7 +285,7 @@ $ docker run -d \
 
 생성된 Container의 상세 정보를 확인합니다. Mounts 필드에서 `volume`에 대한 상세정보를 확인할 수 있습니다.
 
-``` bash
+```bash
 $ docker inspect nginxtest
 [
     {
@@ -321,7 +321,7 @@ $ docker inspect nginxtest
 
 Container를 중지시키고, 생성한 Container와 `volume`을 제거합니다.
 
-``` bash
+```bash
 $ docker container stop nginxtest
 nginxtest
 
@@ -338,7 +338,7 @@ nginx-vol
 
 `--mount`에 `readonly` 옵션을 추가하여 Container와 volume을 생성합니다.
 
-``` bash
+```bash
 $ docker run -d \
 > -it \
 > --name=nginxtest \
@@ -349,7 +349,7 @@ $ docker run -d \
 
 생성된 Container의 상세 정보를 확인합니다. Mounts 필드에서 `volume`에 대한 상세정보를 확인할 수 있습니다. `readonly` 옵션이 적용되어, `RW` Key의 value가 `false`로 되어 있는 것을 확인할 수 있습니다.
 
-``` bash
+```bash
 $ docker inspect nginxtest
 [
     {
@@ -387,7 +387,7 @@ $ docker inspect nginxtest
 
 Container를 중지시키고, 생성한 Container와 `volume`을 제거합니다.
 
-``` bash
+```bash
 $ docker container stop nginxtest
 nginxtest
 
