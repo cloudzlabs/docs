@@ -9,6 +9,9 @@ tags:
   - Kubernetes
   - MariaDB
 description: "Kubernetes 환경에서 MariaDB(Mysql)의 컨테이너를 구성할 때 한글이 깨지는 현상을 해결해봅시다."
+cover:
+  image: "../mariadb/mariadb-usa-inc.png"
+  caption: ""
 draft: false
 ---
 
