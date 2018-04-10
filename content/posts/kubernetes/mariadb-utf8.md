@@ -1,6 +1,6 @@
 ---
 date: "2018-04-10T15:53:58+09:00"
-title: "Kubernetes 환경에서 MariaDB(Mysql) 한글이 깨질 때 해결방법"
+title: "Kubernetes에 구성한 MariaDB(Mysql)의 한글 깨짐 현상 해결방법"
 authors: ["hunkee1017"]
 series: []
 categories:
