@@ -15,8 +15,6 @@ cover:
 draft: false
 ---
 
-![mariadb](https://mariadb.org/wp-content/uploads/2015/10/mariadb-usa-inc.png)
-
 ### Why?
 
 Kubernetes(a.k.a. K8S)에서 Mysql 또는 Mariadb 이미지를 사용해서 컨테이너를 구성할 때 initialize된 Data에 한글이 깨지는 현상이 발생하는 경우가 있습니다.
