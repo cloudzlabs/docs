@@ -1,0 +1,17 @@
+id = "junepark"
+
+[email]
+username = "1000jaeh"
+host = "sk.com"
+
+[name]
+display = "정재훈"
+
+[info]
+image = "/images/authors/1000jaeh.jpeg"
+description = "Microservice Architecture Design"
+
+[social]
+email = ""
+facebook  = ""
+twitter = ""
