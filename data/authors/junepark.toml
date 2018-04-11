@@ -1,15 +1,15 @@
 id = "junepark"
 
 [email]
-username = "1000jaeh"
+username = "junepark"
 host = "sk.com"
 
 [name]
-display = "정재훈"
+display = "박준"
 
 [info]
-image = "/images/authors/1000jaeh.jpeg"
-description = "Microservice Architecture Design"
+image = "/images/authors/junepark.jpg"
+description = "Cloud Service Development Team"
 
 [social]
 email = ""
