@@ -20,9 +20,9 @@ draft: false
 이번에는 이어서 애플리케이션을 자동으로 Scale-out 할수 있는 Horizontal Pod Autoscaler 기능을 적용해보도록 하겠습니다.
 
 ## Horizontal Pod Autoscaler 란
-
 ------------------------------------------------------------------------
 Horizontal Pod Autoscaler는 지정된 CPU 사용률을 기반으로 Replication Controller, Deployment 또는 Replica Set의 Pod 수를 자동으로 조정합니다.
+![](hpa.png)
 Kubernetes에서는 CPU 자원에 대한 사용량을 다음과 같은 식으로 계산하여
 Pod을 자동 Scale-out 할 수 있습니다.
 
@@ -32,7 +32,7 @@ Pod을 자동 Scale-out 할 수 있습니다.
 
 주기적으로 Pod의 자원 사용을 체크하고, 특정 시간의 여유를 두고
 downscale/upscale이 이루어지는데, 이는 kube-controller-manager가
-담당합니다.
+담당합니다. 아래와 같은 설정은 HPA 개별적으로 적용할 수 있는 부분은 아니고 kube-controller-manager에 적용이 된다면 전체적으로 적용이 되는 것 같습니다.
 
 kube-controller-manager는 Kubernetes 내 daemon 중 하나이고, default로
 설정된 사항은 다음과 같습니다.
@@ -130,45 +130,14 @@ Deployment object yaml에 작성할 수 있습니다.
     $ kubectl apply -f ./gs-spring-boot-docker-service.yaml
     service "gs-spring-boot-docker-service" created
     ```
-      
-     
-
-3.  Ingress 생성
-
-    Multi Node 환경에서의 Service에 대한 외부 접속을 위해[Ingress를
-    생성](https://myshare.skcc.com/pages/viewpage.action?pageId=37919737)
-    합니다. <span class="underline">**Ingress 테스트를 위해 외부 접속이
-    가능한 Domain이 필요합니다. 예를들어, 'cberry.xyz'이라는 Domain을
-    사용할 경우 아래와 같이 설정할 수 있습니다. (테스트를 위해 Sub
-    Domain을 'gs-spring-boot-docker-service'로 하여 host:
-    `gs-spring-boot-docker-service.cberry.xyz`로
-    설정하였습니다)**</span>
-
-    **gs-spring-boot-docker-ingress.yaml**
-
-    ```yaml
-    apiVersion: extensions/v1beta1
-    kind: Ingress
-    metadata:
-      name: gs-spring-boot-docker-ingress
-      annotations:
-        ingress.kubernetes.io/rewrite-target: /
-    spec:
-      rules:                  
-      - host: gs-spring-boot-docker-service.cberry.xyz
-        http:
-          paths:            
-          - path: /
-            backend:
-              serviceName: gs-spring-boot-docker-service
-              servicePort: 8081
-    ```
 
     ``` bash
-    # Ingress 생성
-    # kubectl apply 명령어에서 -f 옵션을 통해 파일명이 gs-spring-boot-docker-ingress.yaml 임을 인자로 전달합니다.
-    $ kubectl apply --save-config -f ./gs-spring-boot-docker-ingress.yaml
-    Ingress "gs-spring-boot-docker-ingress" created
+    # Service object 조회를 통해 NodePort를 알아냅니다.
+    # 8081:30993/TCP 에서 30993이 외부로 노출된 NodePort 입니다.
+    $ kubectl get svc
+    NAME                            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+    gs-spring-boot-docker-service   NodePort    10.99.197.147   <none>        8081:30993/TCP   12m
+    kubernetes                      ClusterIP   10.96.0.1       <none>        443/TCP          14d
     ```
 
 
@@ -207,7 +176,8 @@ Deployment object yaml에 작성할 수 있습니다.
     실험 단계의 API를 'beta' 형태로 지원하고, 지속 업데이트 하고
     있습니다. 따라서 Kubernetes API 공식문서를 통해 현재 사용자의
     Kubernetes 버전 별 호환 및 사용 가능한 API를 확인 후 사용해야
-    합니다.
+    합니다. 현재 HPA의 경우 stable 버전(autoscaling/v1)에서는 CPU 리소스에 대해서만 오토스케일링을 지원하며, beta버전(autoscaling/v2beta1)에서 Memory 또는 사용자의 custom metrics 등의 리소스를 추가적으로 지원하고 있습니다.
+
 
     ###### line2 kind
 
@@ -301,11 +271,8 @@ Deployment object yaml에 작성할 수 있습니다.
 
 1.  사용량 모니터링 시작
 
-        kubectl get hpa 명령어에서 옵션으로 '-w '을 사용하게 되면, 실시간으로 갱신되는 정보를 지속 조회할 수 있습니다.
-
-        'hpa'는 'Horizontal Pod Autoscaler'의 간소화 버전의 단어 입니다.
-
-        지속적인 모니터링을 위해 별개의 커맨드 창에서 수행하시기 바랍니다.
+    `kubectl get hpa`  명령어에서 옵션으로 '-w '을 사용하게 되면, 실시간으로 갱신되는 정보를 지속 조회할 수 있습니다.
+    지속적인 모니터링을 위해 별개의 커맨드 창에서 수행하시기 바랍니다.
 
     ``` bash
     $ kubectl get hpa -w
@@ -318,10 +285,10 @@ Deployment object yaml에 작성할 수 있습니다.
     URL 요청 테스트를 위해 wget 커맨드를 통해 접속 테스트의 반복 요청을
     합니다.
 
-    URL은 Ingress를 통해 설정한 Host를 사용합니다.
+    URL은 Node의 IP와 Service가 NodePort 방식을 통해 외부로 노출된 Port를 사용합니다. 
 
     ``` bash
-    $ while true; do wget -q -O- http://gs-spring-boot-docker-service.cberry.xyz; done
+    $ while true; do wget -q -O- http://169.56.109.58:30993; done
     Hello Docker World
     Hello Docker World
     Hello Docker World

@@ -479,12 +479,7 @@ beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,gpu/nvidia=NA,kubernet
         외부에서 :의 형태로 request가 가능 합니다. 앱을 배포후
         테스트할 때 선택하기 좋은 type입니다.
     -   LoadBalancer - 특정 cloud provider(GCE/AWS)의 load
-        balancer에게 Service object를 노출시키는 방법 입니다. 상세
-        내용은 이곳의 링크를 참고 바랍니다.
-
-    그 밖의 Service object yaml 파일 상세 작성 방법은 [Service
-    공식가이드](https://kubernetes.io/docs/api-reference/v1.8/#service-v1-core)를
-    참고 바랍니다.
+        balancer에게 Service object를 노출시키는 방법 입니다.
 
 
 

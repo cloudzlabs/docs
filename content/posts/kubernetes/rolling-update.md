@@ -15,7 +15,7 @@ draft: false
 ---
 지난 챕터에서는 Kubernetes 환경에서 애플리케이션을 배포하고 접속하는 방법을 알아보았습니다. <br/>그렇다면 이미 배포되어 있는 애플리케이션을 업데이트할 때 중단 없이 처리할 수 있을까요??<br/><br/>
 네. 가능합니다!<br/>
-Kubernetes에서는 배포된 애플리케이션을 무중단으로 배포하기 위해 Rolling Update라는 기능을 지원하고 있습니다.<br/>
+Kubernetes에서는 중단 없이 애플리케이션을 배포할 수 있도록 Rolling Update라는 기능을 지원하고 있습니다.<br/>
 지난 챕터에서 간단히 나오긴 했지만 다시 한번 자세히 알아봅시다.
 
 ## Rolling Update 란?
@@ -44,8 +44,7 @@ Kubernetes에서는
 우선 Rolling Update 테스트를 위한 애플리케이션 버전 1.0을 아래와 같이
 배포 합니다. (Deployment, Service 생성 필요)
 
-아래의 설정 내용 중, 'dtlabs/gs-spring-boot-docker:1.0' 설정을 통해
-Image 버전이 1.0인 상태임을 확인 합니다.
+아래의 설정 내용 중, Image 설정이 'dtlabs/gs-spring-boot-docker:1.0' 임을 통해 Image 버전(1.0)을 확인 합니다.
 
   
 
@@ -66,7 +65,8 @@ Image 버전이 1.0인 상태임을 확인 합니다.
       strategy:
         type: RollingUpdate
         rollingUpdate:
-          maxUnavailable: 25%
+          maxSurge: 1
+          maxUnavailable: 0
       selector:
         matchLabels:
           app: gs-spring-boot-docker
@@ -105,19 +105,26 @@ Image 버전이 1.0인 상태임을 확인 합니다.
     ###### line11 spec.strategy.type
 
     "Recreate" or "RollingUpdate"를 설정 가능 합니다. 기본값은
-    "RollingUpdate" 입니다.
+    "RollingUpdate" 입니다. Recreate의 경우 Pod가 삭제된 후 재생성 됩니다.
 
     ###### line12 spec.strategy.rollingUpdate
 
     spec.strategy.type에서 "RollingUpdate"를 설정한 경우,
     RollingUpdate에 대한 상세 설정을 합니다.
 
-    ###### line13 spec.strategy.rollingUpdate.maxUnavailable
+    ###### line13 spec.strategy.rollingUpdate.maxSurge
 
-    rolling update 중 unabailable 상태인 Pod의 최대 개수를 설정 합니다.
+    rolling update 중 정해진 Pod 수 이상으로 만들 수 있는 Pod의 최대 개수입니다.
+    기본값은 25% 입니다.
+
+    ###### line14 spec.strategy.rollingUpdate.maxUnavailable
+
+    rolling update 중 unavailable 상태인 Pod의 최대 개수를 설정 합니다.
+    rollgin update 중 사용할 수 없는 Pod의 최대 개수입니다.
     값은 0보다 큰 정수를 통해 Pod의 절대 개수 설정이 가능하고, "25%"와
     같이 percentage 표현 또한 가능 합니다. maxUnavailable에서 percentage
-    계산은 rounding down(내림) 방식이고, 최소 값은 1 입니다.
+    계산은 rounding down(내림) 방식이며 기본값은 25% 입니다.
+    maxSurge와 maxUnavailable 값이 동시에 0이 될 수는 없습니다.
 
     -   replica: 3인 경우, 25%는 0.75개 이지만, 최소값이 1이기 때문에
         maxUnavailable은 1개로 계산 됩니다.
@@ -167,10 +174,8 @@ Deployment를 이용한 애플리케이션 배포 방식에서는 rolling update
 
 1.  Rolling Update 진행 모니터링
 
-    `kubectl get pod` 명령어에서 옵션으로 '-w '을 사용하게 되면, 실시간으로 갱신되는 정보를 지속 조회할 수 있습니다.
-
-    별개의 커맨드창을 사용하여 버전 업데이트 수행 전부터 실시간 갱신 정보의 모니터링을 시작합니다.
-
+    `kubectl get pod` 명령어에서 옵션으로 '-w '을 사용하게 되면, 실시간으로 갱신되는 정보를 지속 조회할 수 있습니다.<br/>
+    별개의 커맨드창을 사용하여 버전 업데이트 수행 전부터 실시간 갱신 정보의 모니터링을 시작합니다.<br/>
     Deployment를 통해 'replica: 3' 을 설정 하였기 때문에 3개의 Pod이 Running 되는 것을 확인할 수 있습니다. 
 
     ``` bash
@@ -181,7 +186,7 @@ Deployment를 이용한 애플리케이션 배포 방식에서는 rolling update
     gs-spring-boot-docker-deployment-2374595156-zb0nt   1/1       Running   0          1m
     ```
 
-2.  kubectl set image 명령어를 통한 Image 2.0 버전 업데이트 수행
+2.  `kubectl set image` 명령어를 통한 Image 2.0 버전 업데이트 수행
 
     ``` bash
     $ kubectl set image deployment/gs-spring-boot-docker-deployment gs-spring-boot-docker=dtlabs/gs-spring-boot-docker:2.0
