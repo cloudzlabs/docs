@@ -13,6 +13,9 @@ tags:
   - Service
   - Ingress
   - nginx
+cover:
+  image: "../ingress/ingress.png"
+  caption: ""
 description: ""
 draft: false
 ---
