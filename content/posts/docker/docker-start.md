@@ -10,7 +10,7 @@ tags:
   - Container
   - CaaS
 cover:
-  image: "../images/docker-start.svg"
+  image: "../images/docker-start.png"
 draft: false
 ---
 리눅스의 컨테이너 기술은 굉장히 오래전부터 있던 기술입니다. <br/>그런데 왜 최근에 화두로 떠오르고 있는걸까요? <br/><br/>저는 컨테이너 기술 활성화에 크게 기여한 것이 바로 Docker라고 생각합니다.<br/><br/>
