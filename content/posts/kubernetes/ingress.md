@@ -62,7 +62,7 @@ Kubernetes에서는 애플리케이션을 외부로 노출하기 위해 Service 
               image: dtlabs/gs-spring-boot-docker:1.0
               ports:
               - containerPort: 8080
-              imagePullPolicy: IfNotPresent
+              imagePullPolicy: Always
       ```
 
   2.  Kubernetes 환경에 애플리케이션을 배포하기 위해, **Service

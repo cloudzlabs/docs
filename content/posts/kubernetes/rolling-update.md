@@ -78,7 +78,7 @@ Kubernetes에서는
           containers:
           - name: gs-spring-boot-docker
             image: dtlabs/gs-spring-boot-docker:1.0
-            imagePullPolicy: IfNotPresent
+            imagePullPolicy: Always
             ports:
             - containerPort: 8080
     ```

@@ -32,7 +32,7 @@ Pod을 자동 Scale-out 할 수 있습니다.
 
 주기적으로 Pod의 자원 사용을 체크하고, 특정 시간의 여유를 두고
 downscale/upscale이 이루어지는데, 이는 kube-controller-manager가
-담당합니다. 아래와 같은 설정은 HPA 개별적으로 적용할 수 있는 부분은 아니고 kube-controller-manager에 적용이 된다면 전체적으로 적용이 되는 것 같습니다.
+담당합니다. 아래와 같은 설정은 HPA 개별적으로 적용할 수 있는 부분은 아니고 kube-controller-manager에 적용이 된다면 클러스터 환경에 전체적으로 적용이 됩니다. Minikube의 경우 kube-controller-manager를 위한 설정 파일이 존재합니다. (/etc/kubernetes/manifests/kube-controller-manager.yaml) 
 
 kube-controller-manager는 Kubernetes 내 daemon 중 하나이고, default로
 설정된 사항은 다음과 같습니다.
@@ -54,7 +54,7 @@ Horizontal Pod Autoscaler는 Kubernetes에서 축약어로 HPA 또는 hpa라고
 ### Resources Requests 설정 및 애플리케이션 배포
 
 HPA가 부하 발생에 따른 필요한 Pod의 수를 계산하기 위해 기준이 되는
-Resources Requests 사용량을 설정해야 합니다. 최대 자원 사용량은
+Resources Requests 사용량을 설정해야 합니다. 최대 자원 사용량도
 Deployment object yaml에 작성할 수 있습니다.
 
 1.  Deployment를 통한 Resources Requests 설정 
@@ -65,7 +65,7 @@ Deployment object yaml에 작성할 수 있습니다.
     **gs-spring-boot-docker-deployment.yaml**
 
     ``` yaml
-    apiVersion: apps/v1beta1 # for versions before 1.8.0 use apps/v1beta1
+    apiVersion: apps/v1beta2 # for versions before 1.8.0 use apps/v1beta1
     kind: Deployment
     metadata:
       name: gs-spring-boot-docker-deployment
@@ -89,12 +89,16 @@ Deployment object yaml에 작성할 수 있습니다.
           containers:
           - name: gs-spring-boot-docker
             image: dtlabs/gs-spring-boot-docker:1.0
-            imagePullPolicy: IfNotPresent
+            imagePullPolicy: Always
             ports:
             - containerPort: 8080
             resources:
               requests:
+                memory: "256Mi"
                 cpu: "200m"
+              limits:
+                memory: "1Gi"
+                cpu: "500m"
     ```
 
     ``` bash
@@ -143,7 +147,7 @@ Deployment object yaml에 작성할 수 있습니다.
 
 ### HorizontalPodAutoscaler 생성
 
-1.  \[애플리케이션명\]-hpa.yaml 파일 생성
+1. \[애플리케이션명\]-hpa.yaml 파일 생성
 
     테스트하기 위한 애플리케이션명은 'gs-spring-boot-docker' 입니다.
     여기에 suffix로 '-hpa'를 추가 합니다. suffix는 선택사항으로 필수는
@@ -155,7 +159,7 @@ Deployment object yaml에 작성할 수 있습니다.
 
     **gs-spring-boot-docker-hpa.yaml**
 
-    ``` xml
+    ``` yml
     apiVersion: autoscaling/v1
     kind: HorizontalPodAutoscaler
     metadata:
@@ -164,6 +168,7 @@ Deployment object yaml에 작성할 수 있습니다.
       maxReplicas: 10
       minReplicas: 1
       scaleTargetRef:
+        apiVersion: apps/v1beta2
         kind: Deployment
         name: gs-spring-boot-docker-deployment
       targetCPUUtilizationPercentage: 50
@@ -211,27 +216,43 @@ Deployment object yaml에 작성할 수 있습니다.
 
     HorizontalPodAutoscaler object가 동작할 대상에 대한 설정 입니다.
 
-    ###### line9 spec.scaleTargetRef.kind
+    ###### line9 spec.scaleTargetRef.apiVersion
 
-    HorizontalPodAutoscaler object는 Deployment object와 매핑시킬 수
-    있고, Deployment object 생성할 Pod을 대상으로 업스케일/다운스케일
+    HorizontalPodAutoscaler object는 Deployment object 또는 ReplicaController object 등에 맵핑시킬 수
+    있고, 맵핑한 object의 apiVersion입니다.
+
+    ###### line10 spec.scaleTargetRef.kind
+
+    HorizontalPodAutoscaler와 맵핑 될 object의 종류를 설정합니다. 해당 예제는 Deployment object가 관리하는 Pod을 대상으로 업스케일/다운스케일
     됩니다.
 
-    ###### line10 spec.scaleTargetRef.name
+    ###### line11 spec.scaleTargetRef.name
 
-    HorizontalPodAutoscaler object와 매핑 될 Deployment object의 name을
+    HorizontalPodAutoscaler와 맵핑 될 Deployment object의 name을
     설정 합니다.
 
-    ###### line11 spec.targetCPUUtilizationPercentage
+    ###### line12 spec.targetCPUUtilizationPercentage
 
     Pod에 설정된 CPU resource에 대한 request 설정 기준대비 CPU 사용
     임계치를 퍼센트(%)로 설정하는데, 숫자만 입력 합니다. 해당 임계치를
     넘어서면 업스케일이 동작하게 됩니다.
 
-    그 밖의 HorizontalPodAutoscaler object yaml 파일 상세 작성 방법은
-    HorizontalPodAutoscaler API 공식문서 를 참고 바랍니다.
+  {{% notice tip %}}
+  **kubectl autoscale 명령어를 통한 생성**<br/>
+  HPA object는 파일 기반으로 생성하는 것 외에 아래와 같은 명령어를 통해서도 생성이 가능합니다.
+  {{% /notice %}}
+    
+  ``` bash
+  # HorizontalPodAutoscaler 생성
+  $ kubectl autoscale deployment gs-spring-boot-docker-deployment --cpu-percent=50 --min=1 --max=10
+  deployment "gs-spring-boot-docker-deployment" autoscaled  
+  ```
 
--   **HorizontalPodAutoscaler 생성 확인**
+  그 밖의 HorizontalPodAutoscaler object yaml 파일 상세 작성 방법은
+  HorizontalPodAutoscaler API 공식문서 를 참고 바랍니다.
+
+
+* HorizontalPodAutoscaler 생성 확인
 
     '0% / 50%'과 같이 사용량이 정상 표시 된 경우, <span
     class="underline">**Horizontal Pod Autoscaling의 준비가 완료된 것
