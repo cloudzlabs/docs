@@ -12,7 +12,7 @@ tags:
 cover:
   image: docker-logo.png
 description: "Docker User Defined Bridge Network와 Spring Cloud를 활용해 최소 단위의 MSA가 적용된 system을 구성합니다."
-draft: true
+draft: false
 ---
 
 지난 포스팅에서 Docker의 네트워크 기능과 연관된 factors를 경우의 수에 따라 검증을 했습니다.
