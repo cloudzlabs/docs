@@ -5,13 +5,13 @@ authors: ["jisangyun"]
 categories:
   - posts
 tags:
-  - Liberty BuildPack
-  - Spring Cloud
-  - Spring Cloud Eureka
-  - Bluemix
-  - BuildPack
-  - Java BuildPack
-  - Cloud Foundry
+  - liberty buildpack
+  - spring cloud
+  - spring cloud eureka
+  - bluemix
+  - buildpack
+  - java buildpack
+  - cloud foundry
 description: "Bluemix에서 eureka server의 종료된 앱 정보가 삭제되는데 delay가 발생하는 현상이 발생했다. 어떤 문제일까 ?"
 draft: false
 

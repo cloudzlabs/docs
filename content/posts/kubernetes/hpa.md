@@ -6,13 +6,13 @@ series: ["k8s"]
 categories:
   - posts
 tags:
-  - Kubernetes
-  - Container
-  - Container Orchestration
-  - HPA
-  - Horizontal Pod Autoscaler
-  - Autoscale
-  - Scale Out
+  - kubernetes
+  - container
+  - container orchestration
+  - hpa
+  - horizontal pod autoscaler
+  - autoscale
+  - scale out
 description: ""
 draft: false
 ---

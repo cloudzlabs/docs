@@ -5,10 +5,10 @@ authors: [jisangyun]
 categories:
   - posts
 tags:
-  - Docker  
-  - User Defined Network
-  - Spring Boot
-  - Spring Cloud
+  - docker  
+  - user defined network
+  - spring boot
+  - spring cloud
 cover:
   image: docker-logo.png
 description: "Docker User Defined Bridge Network와 Spring Cloud를 활용해 최소 단위의 MSA가 적용된 system을 구성합니다."

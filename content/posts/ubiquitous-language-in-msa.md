@@ -5,10 +5,10 @@ authors: [jisangyun]
 categories:
   - posts
 tags:
-  - Ubiquitous Language
-  - Bounded Context
+  - ubiquitous language
+  - bounded context
   - MS 분리 워크샵
-  - Domain Driven Design
+  - domain driven design
 cover:
   image: ubi-lang.png
   caption: ""

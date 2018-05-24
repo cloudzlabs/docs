@@ -6,10 +6,10 @@ series: ["k8s"]
 categories:
   - posts
 tags:
-  - Kubernetes
-  - Container
-  - Container Orchestration
-  - Rolling Update
+  - kubernetes
+  - container
+  - container orchestration
+  - rolling update
 description: ""
 draft: false
 ---

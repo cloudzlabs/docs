@@ -6,8 +6,8 @@ series: ["Go Web Dev"]
 categories:
   - posts
 tags:
-  - Cloud
-  - 12-Factors
+  - cloud
+  - 12 factors
 draft: false
 ---
 

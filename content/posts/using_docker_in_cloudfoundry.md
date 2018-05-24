@@ -5,8 +5,8 @@ authors: ["bckim0620"]
 categories:
   - posts
 tags:
-  - Cloud Founcry
-  - Docker
+  - cloud founcry
+  - docker
 description: ""
 draft: false
 ---

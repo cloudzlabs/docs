@@ -5,8 +5,8 @@ authors: ["hunkee1017"]
 categories:
   - posts
 tags:
-  - Spring Boot
-  - Redis
+  - spring boot
+  - redis
 description: ""
 draft: false
 ---

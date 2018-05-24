@@ -5,12 +5,12 @@ authors: ["jisangyun"]
 categories:
   - posts
 tags:
-  - Spring Cloud Connector
-  - Cloud Foundry
-  - MariaDB
-  - H2
-  - PaaS
-  - Spring Cloud
+  - spring cloud connector
+  - cloud foundry
+  - mariaDB
+  - h2
+  - paaS
+  - spring cloud
 description: "로컬 개발 환경과 PaaS 환경을 분리해서 개발환경을 구성하는 경우의 불편한점을 개선하기 위한 방법을 찾아보자"
 draft: false
 

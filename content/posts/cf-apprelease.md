@@ -5,9 +5,9 @@ authors: ["sya"]
 categories:
   - posts
 tags:
-  - Cloud Native Application
-  - Cloud Foundry
-  - CF
+  - cloud native application
+  - cloud foundry
+  - cf
 draft: false
 ---
 

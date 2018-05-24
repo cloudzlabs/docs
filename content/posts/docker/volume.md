@@ -6,8 +6,8 @@ series: ["docker"]
 categories:
   - posts
 tags:
-  - Docker
-  - Volume
+  - docker
+  - volume
 draft: false
 ---
 

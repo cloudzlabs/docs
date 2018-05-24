@@ -6,11 +6,11 @@ series: []
 categories:
   - posts
 tags:
-  - Kubernetes
-  - Container
-  - Container Orchestration
+  - kubernetes
+  - container
+  - container orchestration
   - k8s
-  - Secret
+  - secret
 description: ""
 draft: false
 ---
