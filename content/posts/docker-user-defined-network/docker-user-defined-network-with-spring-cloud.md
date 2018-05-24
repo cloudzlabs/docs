@@ -93,6 +93,9 @@ spring:
 
 - Docker Hub에 배포된 [mariadb 공식 이미지](https://hub.docker.com/_/mariadb/)의 10.2.13 버전을 사용했습니다. 
 - docker run 수행시 기본 설정 및 인코딩 방식을 설정합니다.
+- 해당 테스트에서 샘플 데이터는 cloud-movie 구동시 초기화하도록 설정했습니다.
+
+> 실제 Docker 에서 DB 구동시 volume을 설정해 데이터의 연속성을 보장합니다.
 
 #### cloud-movie-front 
 
