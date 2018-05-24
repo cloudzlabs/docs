@@ -6,12 +6,12 @@ series: []
 categories:
   - posts
 tags:
-  - Kubernetes
-  - Container
-  - Container Orchestration
+  - kubernetes
+  - container
+  - container orchestration
   - k8s
-  - Service
-  - Ingress
+  - service
+  - ingress
   - nginx
 cover:
   image: "../ingress/ingress.png"

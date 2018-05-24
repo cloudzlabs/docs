@@ -6,9 +6,9 @@ series: ["k8s"]
 categories:
   - posts
 tags:
-  - Kubernetes
-  - Container
-  - Container Orchestration
+  - kubernetes
+  - container
+  - container Orchestration
 description: ""
 draft: false
 ---

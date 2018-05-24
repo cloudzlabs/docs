@@ -5,12 +5,12 @@ authors: ["blingeeeee"]
 categories:
   - posts
 tags:
-  - Kubernetes
-  - Container
-  - Container Orchestration
+  - kubernetes
+  - container
+  - container orchestration
   - 서비스 연동
   - DB 연동
-  - Service Discovery
+  - service discovery
   - k8s
 description: ""
 draft: false

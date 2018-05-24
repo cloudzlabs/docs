@@ -6,10 +6,10 @@ series: ["docker"]
 categories:
   - posts
 tags:
-  - Docker
-  - Image
-  - Container
-  - Dockerfile
+  - docker
+  - image
+  - container
+  - dockerfile
 draft: false
 ---
 Docker 환경에 Service 및 Application을 구동시키 위한 전체적인 과정은 다음과 같습니다.

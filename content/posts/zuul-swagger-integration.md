@@ -5,9 +5,9 @@ authors: [bckim0620]
 categories:
   - posts
 tags:
-  - Swagger
-  - Zuul
-  - Srping Cloud
+  - swagger
+  - zuul
+  - srping cloud
 description: ""
 draft: false
 ---

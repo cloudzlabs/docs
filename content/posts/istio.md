@@ -5,10 +5,10 @@ authors: ["bckim0620"]
 categories:
   - posts
 tags:
-  - Istio
-  - MSA
-  - Service mesh
-  - Spring Cloud Netflix
+  - istio
+  - msa
+  - service mesh
+  - spring cloud netflix
 draft: false
 ---
 

@@ -5,10 +5,10 @@ authors: ["sya"]
 categories:
   - posts
 tags:
-  - CLOUD FOUNDRY
-  - CF
-  - CF CLI
-  - PAAS
+  - cloud foundry
+  - cf
+  - cf cli
+  - paas
 description: ""
 draft: false
 ---

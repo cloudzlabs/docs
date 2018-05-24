@@ -10,7 +10,7 @@ tags:
   - kubernetes
   - istio
   - citizen developer
-  - MASA
+  - masa
   - event driven
   - microservices
   - hybrid application platform

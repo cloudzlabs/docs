@@ -5,8 +5,8 @@ authors: ["bckim0620"]
 categories:
   - posts
 tags:
-  - Docker in docker
-  - Docker
+  - docker in docker
+  - docker
   - dind
 draft: false
 ---

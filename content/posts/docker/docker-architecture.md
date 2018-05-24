@@ -6,10 +6,10 @@ series: ["docker"]
 categories:
   - posts
 tags:
-  - Docker
-  - Docker Daemon
-  - Docker Registry
-  - Docker Object
+  - docker
+  - docker daemon
+  - docker registry
+  - docker object
 cover:
   image: "../images/blue-whale-hintze-hall-news.jpg"
   caption: "Natural History Museum: The blue whale skeleton in its new Hintze Hall home"
