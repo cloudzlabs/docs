@@ -7,8 +7,8 @@ categories:
 tags:
   - docker
   - user defined network
-  - Spring Boot
-  - Spring Cloud
+  - spring boot
+  - spring cloud
 cover:
   image: docker-logo.png
 description: "Docker User Defined Bridge Network와 Spring Cloud를 활용해 최소 단위의 시스템을 구성합니다."
