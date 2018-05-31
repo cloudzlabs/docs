@@ -2,7 +2,7 @@
 date: "2018-03-09T08:27:01+09:00"
 title: "Docker의 Container Ochestartion: Swarm"
 authors: ["1000jaeh"]
-series: ["swarm"]
+series: ["docker"]
 categories:
   - posts
 tags:
