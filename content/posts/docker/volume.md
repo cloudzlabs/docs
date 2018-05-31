@@ -397,4 +397,4 @@ nginx-vol
 
 이렇게 `volume`을 사용하여, Container의 Data들을 영구적으로 존속시킬 수 있었습니다. 또한 다양한 Driver를 사용하여 NFS 또는 AWS의 S3와 같은 외부 Storage System과의 연동을 통해 Data를 Docker Machine간에 Data를 공유할 수도 있습니다. 이 때, `volume driver`는 Storage System을 추상화하여 사용하기 때문에, Application의 로직 변경없이도 자유롭게 Data를 유지시킬 수 있습니다.
 
-Container란 무엇인가라는 주제부터 시작해서 Volume을 활용한 Container Data관리까지, Application이 Container화하여 어떤 식으로 동작하고, 무엇을 고려해야할지에 대해서 기초적인 항목들을 확인하였습니다. 현재까지는 모든 것들을 단일 Docker Machine 환경으로 한정하여 생각했습니다. 다음에는 Docker Cluster인 Swarm을 구성하여 이런 Container들을 어떤 방식으로 Orchestration할 수 있는지 알아봐야겠네요. 
+Container란 무엇인가라는 주제부터 시작해서 Volume을 활용한 Container Data관리까지, Application이 Container화하여 어떤 식으로 동작하고, 무엇을 고려해야할지에 대해서 기초적인 항목들을 확인하였습니다. 현재까지는 모든 것들을 단일 Docker Machine 환경으로 한정하여 생각했습니다. 다음에는 Docker Cluster인 Swarm을 구성하여 이런 Container들을 어떤 방식으로 Orchestration할 수 있는지 알아봐야겠네요.

@@ -13,83 +13,8 @@ cover:
   image: "../images/docker-official.svg"
 draft: true
 ---
-## Swarm의 구조
 
-![swarm](https://learning-continuous-deployment.github.io/assets/images/docker-swarm.png)
 
-구성된  Docker Swarm의 구조는 위의 그림과 같으며, 각 항목에 대해서 자세히 살펴보도록 하겠습니다.
-
-### Nodes
-
-Node는 Swarm에 참여하는 Docker Engine의 Instance들 입니다. 하나의 물리적인 Server 또는 Cloud Server에서 하나 이상의 Node를 실행할 수 있지만, 일반적으로 Production 환경에서의 Swarm은 여러 물리적인
-Server와 Cloud System에 걸쳐 분산된 Docker Node들이 배포되는 형태로 사용됩니다.
-
-#### Manager Node
-
-Application을 Swarm에 배포하기 위해서는, 먼저 Manager Node에 Service 정의서를 제출해야합니다. 그 후, Manager Node는 Worker Node들에 Task라고 불리는 작업 단위를 전달하여, Service를 정상적으로 생성합니다. 기본적으로, Manager Node는 Service를 Worker Node로 실행하지만, Manager 전용 Task를 Manager 전용 Node에서만 실행하도록 구성할 수도 있습니다. 또한, Manager Node는 안정적인 Swarm 상태를 유지하는데 필요한 Ochestration 및 Cluster 관리 기능들을 수행합니다. 많은 Manager Node들 중에서 Ochestration 작업을 수행할 단일 리더를 선출하기도 합니다.
-
-#### Worker Node
-
-Worker Node는 Manager Node로부터 Task를 수신받고 Container를 실행합니다. Worker Node에서는 각각의 Agent들이 존재하며, Worker Node에서 실행되고 할당된 Task의 상태에 대해서 Manager Node에 알립니다. 이를 통해, Manager Node가 Worker Node들이 안정적인 상태를 유지할 수 있도록 합니다.
-
-참고
-역할별 Node의 상태에 대한 자세한 내용은 [Manage node in a Swarm](https://docs.docker.com/engine/swarm/manage-nodes/)문서를 참고하시기 바랍니다.
-
-### Services and tasks
-
-#### Service
-
-Service는 Manager 또는 Worker Node에서 실행되는 Task에 대한 정의라고 할 수 있습니다. Service는 Swarm System의 중심적인 구성요소이며, Swarm과 사용자 사이에서 상호작용하고 있는 주요 근본입니다.
-
-Service를 생성할 때, 사용할 Container Image와 Container에서 실행할 명령을 지정할 수 있으며, Replicated된 Service Model에서는, Swarm Manager에 의해 Scale된 Node들의 Replica 개수만큼 Task를 배포합니다. Global Service들의 경우, Swarm은 Cluster에서 사용 가능한 모든 Node에서 해당 Service에 대해 하나의 Task만을 실행합니다.
-
-#### Task
-
-Task는 Docker Container와 Container 내에서 실행될 명령을 전달하는 역할을 하며, Swarm에서 가장 작은 Scheduling 단위입니다. Manager Node는 Service Scale에 설정된 Replica 개수에 따라 Worker Node에
-Task를 할당합니다. 일단 Task가 Node에 할당되면, 해당 Task는 다른 Node로 이동할 수 없으면, 지정된 Node에서만 실행되거나 중지될 수 있습니다.
-
-## Swarm Node 동작 방식
-
-![](https://docs.docker.com/engine/swarm/images/swarm-diagram.png)
-
-### Manager nodes
-
-Manager Node는 Cluster 관리 Task를 처리합니다.
-
-- Cluster 상태 유지
-- Scheduling Service
-- Swarm Mode의 HTTP API Endpoints 제공
-
-Raft 합의 알고리즘을 사용하여 구현되었기 때문에, Manager들은 Swarm 내의 모든 실행 중이 Service들의 내부 상태를 일관되게 유지할 수 있습니다.
-
-참고
-Raft 합의 알고리즘에 대한 자세한 내용은 [Raft Consensus Algorithm](https://raft.github.io/)문서를 참고하시기 바랍니다. Swarm을 Test 목적으로 사용하기 위해서는, Single Manager로 구성하여 사용하는 것이 좋습니다. 단, Single Manager로 구성된 Swarm의 Manager Node에서 이슈가 발생했을 경우, Swarm상의 Service들은 정상적인 상태로 계속 실행되지만, 새로운 Cluster를 구성하거나 Manager를 복구시켜야 합니다.
-
-Swarm Mode의 Fault-Tolerance 이점을 활용하기 위해서는, Docker의 고가용성 요구사항에 따라 홀수개의 Node로 구성하는 것을 권장합니다. Swarm을 Multi Manager로 구성할 경우, Manager Node의 중단 시간 없이
-Manager Node에서 발생한 오류를 복구할 수 있습니다.
-
-다음을 참고하여 Swarm의 Manager Node를 구성할 수 있습니다.
-
-- 3-Manager Swarm은 최대 1개 Manager Node의 손실에 대해서 허용 가능
-- 5-Manager Swarm은 최대 2개 Manager Node의 동신 손실에 대해서 허용 가능
-- n 개의 Manager Cluster는 최대 `(n-1)/2`개의 Manager Node의 손실에 대해서 허용 가능
-- Docker는 최대 7개의 Manager Node를 구성할 것을 권장합니다.
-
-참고
-더 많은 Manager Node를 추가한다고 해서, Swarm의 확장성 또는 성능이 향상된다는 의미는 아닙니다.
-
-### Worker Nodes
-
-Worker Node는 Container를 실행하는 것이 유일한 목적인 Docker Engine의 Instance입니다. Worker Node는 Manager Node와 다르게, Raft 분산 상태에 참여하지 않으며, Schedule에 대한 결정을 내리거나, Swarm Mode의 HTTP API를 제공하지 않습니다.
-
-Manager Node 하나로만 구성된 Swarm을 구성할 수 있지만, 반대로 Manager Node 없이 Worker Node로만 구성할 수는 없습니다. 기본적으로, 모든 Manager Node들은 Worker의 역할도 같이 수행합니다. Single Manager Node로 구성된 Cluster에서, `docker service create`와 같은 명령을 실행하면, 스케쥴러는 모든 Task를 Local Engine에 배치시킵니다.
-
-스케쥴러가 Multi Node로 구성된 Swarm내의 Manager Node에 Task를 배치시키는 것을 막으려면, Manager Node의 가용성 Option을 Drain으로 설정하시기 바랍니다. 그러면 스케쥴러는 Drain Mode의 Node에서는 Task를 정상적으로 중지(Gracefully Stop)하고, 활성화된 Node에 Task를 예약합니다. 스케쥴러는 Drain Mode의 가용성을 가진 Node에는 새로운 Task를 할당하지 않습니다.
-
-### Node간 역할 변경
-
-`docker node promete`를 사용하여, Worker Node를 Manager Node로 변경할 수 있습니다. 예를들어, Manager Node를 오프라인 상태로 유지해야 할 필요가 있을 때, 임시로 Worker Node를 Manager Node로 변경하여 사용할 수 있을 것입니다. 반대로, `docker node demote`를 사용하여, Manager Node를 Worker
-Node로 강등시킬 수도 있습니다.
 
 ## Swarm Service 동작 방식
 
@@ -102,6 +27,12 @@ Service를 생성하고자 할 때, 사용할 Container Image와 Container 내�
 - CPU 및 Memory
 - Rolling Update 정책
 - Image의 Replica 개수
+
+## 동작 흐름
+
+Swarm Service가 독립형 Container들에 비해 갖는 주요 장점 중 하나는, 수동으로 Service를 다시 시작할 필요없이 연결된 Network 및 Volume등의 Service의 구성을 수정할 수 있습니다. Docker는 Configuration을 수정할 것이고, 만료된 Configuration의 Service Task를 중지할 것이며, 원하는 Configuration과 일치하는 새로운 Task를 생성할 것입니다. Docker가 Swarm Mode에서 실행 중이라고 한다면, Swarm Service들 뿐만아니라 Swarm에 참여하고 있는 어떠한 Docker Host들 위에서 독립 실행형 Container를 계속 실행할 수 있습니다.
+
+Swarm Service와 독립형 Container의 주요 차이점은 Service는 Swarm Manager로 선정된 Docker Daemon만 관리할 수 있고, 독립형 Container들은 모든 Docker Daemon에서 실행 될 수 있다는 점입니다.
 
 ### Services, tasks, and containers
 
