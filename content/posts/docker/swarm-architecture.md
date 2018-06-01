@@ -1,6 +1,6 @@
 ---
 date: "2018-03-09T08:27:58+09:00"
-title: "Service 배포하기"
+title: "Docker Swarm의 구조와 Service 배포하기"
 authors: ["1000jaeh"]
 series: ["docker"]
 categories:
@@ -14,7 +14,7 @@ tags:
 draft: false
 ---
 
-이제 구성된 Docker Swarm에 Application을 배포해보겠습니다. Docker Swarm에 Application Image를 배포하기 위해선, Service를 생성해야 합니다. Service는 큰 Application Context 내의 Microservice들의 Image를 의미하며, 예로 HTTP Server, Database 또는 분산 환경에서 실행하고자 하는 다양한 유형의 Runtime Program들이 여기에 속한다고 할 수 있습니다. Service를 생성하고자 할 때, 사용할 Container Image와 Container 내에서 실행할 명령을 지정합니다. 또한, 다음과 같은 Option들을 정의하여 사용합니다.
+이제는 구성된 Docker Swarm에 Application을 배포해보겠습니다. Docker Swarm에 Application Image를 배포하기 위해선, Service를 생성해야 합니다. Service는 큰 Application Context 내의 Microservice들의 Image를 의미하며, 예로 HTTP Server, Database 또는 분산 환경에서 실행하고자 하는 다양한 유형의 Runtime Program들이 여기에 속한다고 할 수 있습니다. Service를 생성하고자 할 때, 사용할 Container Image와 Container 내에서 실행할 명령을 지정합니다. 또한, 다음과 같은 Option들을 정의하여 사용합니다.
 
 - Docker Swarm 외부에서 접속할 수 있는 Port
 - Docker Swarm 내부의 다른 Service와 통신하기 위한 Overlay Network
