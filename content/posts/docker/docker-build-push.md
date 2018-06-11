@@ -1,6 +1,6 @@
 ---
 date: "2018-03-09T08:23:38+09:00"
-title: "docker build & push"
+title: "[Docker 기본(4/8)] docker build & push"
 authors: ["1000jaeh"]
 series: ["docker"]
 categories:

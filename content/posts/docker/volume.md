@@ -1,6 +1,6 @@
 ---
 date: "2018-03-09T08:25:25+09:00"
-title: "Volume을 활용한 Data 관리"
+title: "[Docker 기본(5/8)] Volume을 활용한 Data 관리"
 authors: ["1000jaeh"]
 series: ["docker"]
 categories:

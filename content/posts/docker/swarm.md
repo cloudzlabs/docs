@@ -1,6 +1,6 @@
 ---
 date: "2018-03-09T08:27:01+09:00"
-title: "Docker의 Container Ochestartion: Swarm"
+title: "[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm"
 authors: ["1000jaeh"]
 series: ["docker"]
 categories:

@@ -1,6 +1,6 @@
 ---
 date: "2018-03-08T23:23:28+09:00"
-title: "Docker's Skeleton"
+title: "[Docker 기본(2/8)] Docker's Skeleton"
 authors: ["1000jaeh"]
 series: ["docker"]
 categories:

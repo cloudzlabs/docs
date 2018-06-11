@@ -1,6 +1,6 @@
 ---
 date: "2018-03-09T08:27:58+09:00"
-title: "Docker Swarm의 구조와 Service 배포하기"
+title: "[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기"
 authors: ["1000jaeh"]
 series: ["docker"]
 categories:
@@ -576,4 +576,4 @@ docker@default:~$ docker service ps web
 no such service: web
 ```
 
-Docker Swarm의 Service는 배포된 Application들의 고가용성을 보장하고 있습니다. Rolling Update와 Roll Back 기능을 제공함으로써, 배포 시 발생할 수 있는 서비스 중단 상황에 대한 대비도 할 수 있도록 되어 있으며, 정의된 Replica의 개수만큼 정상동작하는 Container들을 유지시켜주기도 합니다. 또한, Traffic에 따라 Load Balancing이 적절히 이루어지도록 관리됩니다. 이 모든 것들이 유기적으로 동작할 수 있었던 점은, Cluster Node간 또는 배포된 Service나 Container 간 연결된 Docker의 Network 구조 때문이라 생각할 수 있습니다. 따라서, 다음 챕터에서는 Docker의 Network에 대해서 알아보도록 하겠습니다.
+Docker Swarm의 Service는 배포된 Application들의 고가용성을 보장하고 있습니다. Rolling Update와 Roll Back 기능을 제공함으로써, 배포 시 발생할 수 있는 서비스 중단 상황에 대한 대비도 할 수 있도록 되어 있으며, 정의된 Replica의 개수만큼 정상동작하는 Container들을 유지시켜주기도 합니다. 또한, Traffic에 따라 Load Balancing이 적절히 이루어지도록 관리됩니다. 이 모든 것들이 유기적으로 동작할 수 있었던 점은, Cluster Node간 또는 배포된 Service나 Container간 연결된 Docker의 Network 구조 때문이라 생각할 수 있습니다. 따라서, 다음 챕터에서는 Docker의 Network에 대해서 알아보도록 하겠습니다.
