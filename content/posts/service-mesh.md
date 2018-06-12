@@ -171,7 +171,7 @@ Service Mesh 장단점
 Conclusion
 ----------
 
-Service Mesh Architecture는 MicroService Architecture가 유발하는 새로운 문제점을 보완하는 개념입니다. 경량화 Proxy를 통해 서비스 간 통신에 Routing Rules 설정, Circuit Breaker 등의 공통 기능을 적용합니다. 새롭게 떠오르는 키워드지만 속을 자세히 들여다보면 분산 처리 환경에서 네트워크를 안정적으로 다루기 위한 기술들의 발전 양상을 따르고 있습니다. Service Mesh를 도입해 MicroService Architecture가 적용된 시스템의 안정성, 가시성, 신뢰성, 표준화 등을 달성할 수 있습니다.
+Service Mesh Architecture는 MicroService Architecture가 유발하는 새로운 문제점을 보완하는 개념입니다. 경량화 Proxy를 통해 서비스 간 통신에 Routing Rules 설정, Circuit Breaker 등의 공통 기능을 적용합니다. 새롭게 떠오르는 키워드지만 그 속을 자세히 들여다보면 분산 처리 환경에서 네트워크를 안정적으로 다루기 위한 기술들의 발전 양상을 따르고 있습니다. Service Mesh를 도입해 MicroService Architecture가 적용된 시스템의 안정성, 가시성, 신뢰성, 표준화 등을 달성할 수 있습니다.
 
 물론 만능은 아닙니다. 서비스 간 통신에 네트워크 레이어가 추가되므로 오버헤드가 발생하기도 하고, 사이드카 패턴으로 배포된 경량화 Proxy도 시스템의 리소스를 소모하는 Application입니다. 또한, 아직 오래되지 않은 기술로 Spring Cloud Netflix OSS 등의 유명하고 안정된 라이브러리와 비교해 기능이 충분치 않을 수도 있습니다. 하지만 Application의 수정없이 공통 기능을 추가할 수 있어 적용 부담이 적고, 시스템에 Polyglot 프로그래밍을 보장할 수 있는 등의 장점이 많이 있습니다.
 
