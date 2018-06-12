@@ -64,7 +64,7 @@ MicroService Architecture를 도입시 복잡성이 증가하는 명백한 이�
 
 ![](mono_micro.png)
 
-###### Service & Instance 의 증가
+###### 서비스 & Instance 의 증가
 
 시스템의 규모에 따라 다르지만 활발히 운영되는 MSA 시스템에는 수십개의 MicroService가 분리되어 있고, 운영 환경에 수백 ~ 수천개의 서비스 Instance가 동작하고 있습니다.
 
