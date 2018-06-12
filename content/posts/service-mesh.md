@@ -39,7 +39,7 @@ Service Mesh는 모티브와 정의, 구현체의 기능 등 다양한 관점에
 2.  Service Mesh 는 서비스 간 통신을 추상화하여 안전하고, 빠르고, 신뢰할 수 있게 만드는 전용 InfraStructure Layer입니다.  
     추상화를 통해 복잡한 네트워크를 제어하고, 추적하고, 네트워크 로직을 추가함으로써 안정성, 신뢰성, 탄력성, 표준화, 가시성, 보안성 등을 확보합니다.
 3.  Service Mesh 는 URL 경로, 호스트 헤더, API 버전 또는 기타 응용 프로그램 수준 규칙을 기반으로하는 계층 7 네트워크 Layer 입니다.  
-    Service Mesh 의 구현체인 경량화 Proxy를 통해 다양한 Routing Rules를 설정할 수 있습니다. 이는 서비스 간 통신 뿐만 아니라, 서비스의 배포 전략에도 도움을 줍니다.
+    Service Mesh 의 구현체인 경량화 Proxy를 통해 다양한 Routing Rules, circuit breaker 등 공통기능을 설정할 수 있습니다. 이는 서비스 간 통신에 연관된 로직 뿐만 아니라, 서비스의 배포 전략에도 도움을 줍니다.
 
 왜 Service Mesh 를 적용하는가?
 -----------------------
@@ -98,7 +98,9 @@ Service Mesh 기능
 Service Mesh 구현
 ---------------
 
-Service Mesh Architecture의 구현은 보통 서비스의 앞단에 **경량화 프록시를 사이드카 패턴으로 배치**하여 서비스 간 통신을 제어하는 방법을 구현합니다.
+Service Mesh Architecture의 구현은 보통 서비스의 앞단에 **경량화 프록시를 사이드카 패턴으로 배치**하여 서비스 간 통신을 제어하는 방법으로 구현합니다.
+
+서비스 간 통신은 사이드카로 배치된 경량화 Proxy를 통해서 동작합니다. 이 경량화 Proxy에 Routing rules, retry, timeout 등을 설정하고 로직을 작성하여 공통 기능을 기본 어플리케이션에서 분리시킬 수 있습니다.
 
 ![](sidecarr.png)
 
