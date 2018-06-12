@@ -175,4 +175,4 @@ Service Mesh Architecture는 MicroService Architecture가 유발하는 새로운
 
 물론 만능은 아닙니다. 서비스 간 통신에 네트워크 레이어가 추가되므로 오버헤드가 발생하기도 하고, 사이드카 패턴으로 배포된 경량화 Proxy도 시스템의 리소스를 소모하는 Application입니다. 또한, 아직 오래되지 않은 기술로 Spring Cloud Netflix OSS 등의 유명하고 안정된 라이브러리와 비교해 기능이 충분치 않을 수도 있습니다. 하지만 Application의 수정없이 공통 기능을 추가할 수 있어 적용 부담이 적고, 시스템에 Polyglot 프로그래밍을 보장할 수 있는 등의 장점이 많이 있습니다.
 
-Monolitic Architecture의 단점에 질려서, 혹은 시스템을 Cloud에 구축할 때 얻을 수 있는 이점과 MicroService Architecture의 장점에 끌려서 MicroService Architecture의 도입을 결정했다면 그 다음에 닥칠 문제를 대비해 Service Mesh Architecture 및 istio, linkerd, conduit 등을 유심히 지켜볼 필요가 있습니다. 특히 kubernetes 등 Service Mesh Architecture 구현체를 적용하기 쉬운 환경을 사용중이라면 바로 테스트해보는 것을 추천드립니다.
+Monolitic Architecture의 단점에 질려서, 혹은 시스템을 Cloud 에 구축할 때 얻을 수 있는 이점과 MicroService Architecture의 장점에 끌려서 MicroService Architecture의 도입을 결정했다면 그 다음에 닥칠 문제를 대비해 Service Mesh Architecture 및 istio, linkerd, conduit 등을 유심히 지켜볼 필요가 있습니다. 특히 kubernetes 등 Service Mesh Architecture 구현체를 적용하기 쉬운 환경을 사용중이라면 바로 테스트해보는 것을 추천드립니다.
