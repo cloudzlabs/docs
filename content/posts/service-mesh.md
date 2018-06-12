@@ -120,7 +120,7 @@ Service Mesh Architecture의 구현은 보통 서비스의 앞단에 **경량화
 현재 활발히 발전하고 있는 Service Mesh 구현체를 소개합니다.
 
 *   [istio](https://istio.io/) : Google, IBM, Lyft가 함께 기여하고 있는 오픈소스 Service Mesh 구현체입니다. kubernetes를 기본으로 지원합니다. Control Plane - Data Plane 구조로 동작합니다. Envoy를 기본 Proxy로 사용하지만 nginx나 linkerd 등으로 대체할 수 있다고 합니다. **([istio 소개글](http://tech.cloudz-labs.io/posts/istio/))**
-*   [linkerd](https://linkerd.io/) : Buoyant에서 기여하고 있는 오픈소스 Service Mesh 구현체입니다. Twitter의 Finagle을 운영하던 인물들이 주축이라고 합니다. Local, DC/OS, kubernetes, docker,AWS ECS 등 다양한 환경에 Service Mesh를 적용할 수 있게 합니다. Host(or Node) 당 linkerd를 배포해서 동작을 하는 것을 기본동작으로 소개합니다. 이는 '전형적인 사이드카 패턴으로 배포하는 것'이 리소스를 많이 사용한다는 문제점에서 시작해 나름의 해법을 찾은 것으로 볼 수 있습니다. Buoyant에서 운영중인 blog를 참조하시면 재밌는 내용이 많습니다.
+*   [linkerd](https://linkerd.io/) : Buoyant에서 기여하고 있는 오픈소스 Service Mesh 구현체입니다. Twitter의 Finagle을 운영하던 인물들이 주축이라고 합니다. Local, DC/OS, kubernetes, docker, AWS ECS 등 다양한 환경에 Service Mesh를 적용할 수 있습니다. Host(or Node) 당 linkerd 하나를 배포해서 동작하는 것을 기본으로 소개합니다. 이는 '전형적인 사이드카 패턴으로 배포하는 것'이 리소스를 많이 사용한다는 문제점에서 시작해 나름의 해법을 찾은 것으로 볼 수 있습니다. Buoyant에서 운영중인 blog를 참조하시면 다양한 사례를 기반으로 하는 컨텐츠를 확인할 수 있습니다.
 *   [conduit](https://conduit.io/) : linkerd를 운영하고 있는 Buoyant에서 기여하고 있는 오픈소스 Service Mesh 구현체입니다. Control Plane - Data Plane 구조로 동작합니다. kubernetes에 최적화한다는 점에서 linkerd와 차이가 있습니다. 신규 프로젝트로 미성숙 단계로 보이지만 linkerd를 잘 운영하고 있다는 점에서 관심있게 보고 있습니다. istio 와 비교해서 확인하시면 흥미로울 것 같습니다.  
     
 
