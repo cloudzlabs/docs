@@ -131,7 +131,7 @@ SOA - ESB와 비교
 
 분산 처리 환경에서 기존과는 다른 문제가 발생하고, 새로 발생한 문제를 해결 하기 위한 다양한 해법을 제시하는 것. 어디서 많이 들어본 내용입니다.
 
-Service Oriented Architecture(SOA)는 비즈니스 로직에 집중하고 도메인 중심으로 서비스를 분화한다는 점에서 MicroService Architecture와 유사한 점이 많습니다. SOA는 분산처리 환경에서 발생하는 문제를 해결하기 위해 Enterprise Service Bus(ESB)를 도입했습니다. **분산 처리 환경에서의 문제를 기본 Application의 외부에서 해결하려고 한 점**이 ESB와 Service Mesh의 유사한 점이라고 할 수 있습니다. 하지만 ESB는 중앙집중형으로 공통 기능의 비대화에 따른 문제를 제대로 해소하지 못했습니다. Service Mesh는 각 MicroService 앞단에 경량화 Proxy를 배치하는 방법으로 공통 기능 처리를 분산화했다는 점이 가장 큰 차이로 보입니다.
+Service Oriented Architecture(SOA)는 비즈니스 로직에 집중하고 도메인 중심으로 서비스를 분화하는 등등, MicroService Architecture와 유사한 점이 많습니다. SOA는 분산처리 환경에서 발생하는 문제를 해결하기 위해 Enterprise Service Bus(ESB)를 도입했습니다. **분산 처리 환경에서의 문제를 기본 Application의 외부에서 해결하려고 한 점**이 ESB와 Service Mesh의 유사한 점이라고 할 수 있습니다. 하지만 ESB는 중앙집중형으로 공통 기능의 비대화에 따른 문제를 제대로 해소하지 못했습니다. Service Mesh는 각 MicroService 앞단에 경량화 Proxy를 배치하는 방법으로 공통 기능 처리를 분산화했다는 점이 가장 큰 차이로 보입니다.
 
 Cloud Native 문제 해결 History
 --------------------------
