@@ -19,7 +19,7 @@ cover:
   image: servicemesh.png
   caption: ""
 description: "우리는 Monolitic Architecture의 단점을 보완하고 새로운 이점을 얻기 위해 MicroService Architecture를 도입했습니다. 우리의 모든 문제들이 해결되었나요? 새로운 문제가 발생하지는 않았나요? 걱정하지 마세요. Service Mesh Architecture를 소개합니다."
-draft: true
+draft: false
 ---
 
 수년간 Enterprise IT환경은 급격하게 변하고 있습니다. 특히 Cloud로 대변되는 시스템 구축 환경의 변화에 따라 이를 잘 활용할 수 있는 다양한 Architecture들이 대두되고 있습니다.
