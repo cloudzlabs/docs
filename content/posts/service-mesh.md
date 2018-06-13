@@ -37,7 +37,7 @@ Service Mesh는 모티브와 정의, 구현체의 기능 등 다양한 관점에
 
 1.  MicroService Architecture를 적용한 시스템의 내부 통신이 Mesh 네트워크의 형태를 띄는 것에 빗대어 Service Mesh로 명명되었습니다.
 2.  Service Mesh 는 서비스 간 통신을 추상화하여 안전하고, 빠르고, 신뢰할 수 있게 만드는 전용 InfraStructure Layer입니다.  
-    추상화를 통해 복잡한 네트워크를 제어하고, 추적하고, 네트워크 로직을 추가함으로써 안정성, 신뢰성, 탄력성, 표준화, 가시성, 보안성 등을 확보합니다.
+    추상화를 통해 복잡한 내부 네트워크를 제어하고, 추적하고, 내부 네트워크 관련 로직을 추가함으로써 안정성, 신뢰성, 탄력성, 표준화, 가시성, 보안성 등을 확보합니다.
 3.  Service Mesh 는 URL 경로, 호스트 헤더, API 버전 또는 기타 응용 프로그램 수준 규칙을 기반으로하는 계층 7 네트워크 Layer 입니다.  
     Service Mesh 의 구현체인 경량화 Proxy를 통해 다양한 Routing Rules, circuit breaker 등 공통기능을 설정할 수 있습니다. 이는 서비스 간 통신에 연관된 기능 뿐만 아니라, 서비스의 배포 전략에도 도움을 줍니다.
 
@@ -78,7 +78,7 @@ Monolitic Architecture에서 프로세스나 쓰레드 간 메모리 공유 등 
 
   
 
-동적으로 수많은 Instance가 뜨고/지고, 서비스 간 통신이 유발하는 이런 복잡한 상황에서 네트워크를 안정적으로 다루기 위해 **새로운 기능(또는 요구사항, 관리 point)들이 필요**합니다.
+동적으로 수많은 Instance가 뜨고/지고, 서비스 간 통신이 유발하는 이런 복잡한 상황에서 내부 네트워크를 안정적으로 다루기 위해 **새로운 기능(또는 요구사항, 관리 point)들이 필요**합니다.
 
 Service Mesh 기능
 ---------------
@@ -117,7 +117,7 @@ Service Mesh Architecture의 구현은 보통 서비스의 앞단에 **경량화
 > 1.  사이드카 Application은 기본 Application과 별도의 Application입니다.
 >     -  기본 Application의 로직을 수정하지 않고도 추가 기능을 수행할 수 있습니다.
 >     -  기본 Application을 polyglot 프로그래밍을 적용해 요구 사항에 최적화된 환경에서 개발을 진행할 수 있습니다.
-> 2.  사이드카 Application은 기본 Application과 리소스를 공유합니다. 이를 통해 모니터링에 필요한 Metrics 수집, 프록시 동작 등을 수행할 수 있습니다.
+> 2.  사이드카 Application은 기본 Application과 리소스를 공유할 수 있습니다. 이를 통해 모니터링에 필요한 Metrics 수집, 프록시 동작 등을 수행할 수 있습니다.
 
 현재 활발히 발전하고 있는 Service Mesh 구현체를 소개합니다.
 
@@ -141,7 +141,7 @@ Cloud Native 문제 해결 History
 지금까지 Service Mesh에 대해 간략히 알아봤습니다. 위의 내용에 Cloud Native의 문제 해결 History를 추가로 살펴봄으로써 Service Mesh의 이해도를 높여보겠습니다. ([http://philcalcado.com/2017/08/03/pattern\_service\_mesh.html](http://philcalcado.com/2017/08/03/pattern_service_mesh.html) 참고)
 
 1.  Application level에서 해결
-    -  Application에 네트워크 관련 로직을 구현해서 해결
+    -  Application에 내부 네트워크 관련 로직을 구현해서 해결
     -  Application을 구현할 때마다 소스를 붙여넣어야하는 비용이 발생한다.
 2.  공통 기능을 라이브러리화  
     -  공통적으로 적용되는 기능을 라이브러리화해서 Application을 구현할 때마다 Import하는 방식이다. (ex. spring cloud)
@@ -150,7 +150,7 @@ Cloud Native 문제 해결 History
     -  라이브러리를 가져다 쓰는 경우, 주도권이 우리에게 없다. 라이브러리 버전이 올라가면 Application을 수정하고 테스트 해야하는 부담을 가져야 한다.
     -  비즈니스 로직에 집중하기 어렵게 해당 라이브러리의 기능 및 비중이 점점 비대해진다는 의미에서 fat-라이브러리라고 언급되기도 한다.
 3.  사이드카 패턴으로 경량화 Proxy와 연계  
-    -  비즈니스 로직과 네트워크 관련 로직을 분리한다. 하지만 MicroService Architecture에서 필요한 네트워크 로직을 OS단의 Network Layer에 추가하는 것은 현실적으로 쉽지 않다.
+    -  비즈니스 로직과 내부 네트워크 관련 로직을 분리한다. 하지만 MicroService Architecture에서 필요한 내부 네트워크 로직을 OS단의 Network Layer에 추가하는 것은 현실적으로 쉽지 않다.
     -  해결책으로 별도의 사이드카 Application을 구현하고 기본 Application과 연계하여 서비스 간 통신을 수행한다. 이는 시스템에 공통 기능 추가를 자유롭게 한다.
     -  Service Mesh Architecture의 시작으로 data plane으로 언급되기도 한다.
 4.  분산된 기능의 관리를 중앙집중화  
