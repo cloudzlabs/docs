@@ -20,7 +20,7 @@ draft: true
 
 사이드카 Containers는 "main" 컨테이너를 확장 및 강화하고, 기존 컨테이너들을 사용하여 컨테이너를를 개선합니다. 예를 들어, Nginx 웹 서버를 실행하는 컨테이너를 고려하십시오. 파일 시스템을 git 저장소와 동기화하는 다른 컨테이너를 추가하고, 컨테이너간에 파일 시스템을 공유하면 Git push-to-deploy가 빌드됩니다. 그러나 모듈화 된 방식으로 git 동기화 기가 다른 팀에 의해 구축 될 수 있으며 여러 다른 웹 서버 (Apache, Python, Tomcat 등)에서 재사용 할 수 있습니다. 이 모듈성 때문에 git 동기화 기는 한번만 작성하고 테스트하고 수많은 앱에 다시 사용해야합니다. 다른 사람이 글을 쓰면 그걸 할 필요조차 없습니다.
 
-![](https://3.bp.blogspot.com/-IVsNKDqS0jE/WRnPX21pxEI/AAAAAAAABJg/lAj3NIFwhPwvJYrmCdVbq1bqNq3E4AkhwCLcB/s1600/Example%2B%25231-%2BSidecar%2Bcontainers%2B.png)ㅍ
+![](https://3.bp.blogspot.com/-IVsNKDqS0jE/WRnPX21pxEI/AAAAAAAABJg/lAj3NIFwhPwvJYrmCdVbq1bqNq3E4AkhwCLcB/s1600/Example%2B%25231-%2BSidecar%2Bcontainers%2B.png)
 
 
 
