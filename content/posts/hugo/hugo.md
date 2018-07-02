@@ -1,6 +1,6 @@
 ---
 date: "2018-06-21T10:01:45+09:00"
-title: "Hugo를 활용한 Blog 구축기"
+title: "Hugo를 활용한 기술 블로그 구축기"
 authors: [1000jaeh]
 series: [hugo]
 categories:
@@ -8,11 +8,12 @@ categories:
 tags:
   - static generator
   - hugo
-  - golang
   - go
+  - blog
+  - github pages
 cover:
   image: "../images/hugo.png"
-draft: true
+draft: false
 ---
 
 현재 보고계신 블로그는 **Hugo + Github Pages**로 운영되고 있습니다.
@@ -35,58 +36,55 @@ Wordpress는 PHP로 이루어진 [CMS의 최강자](https://stackshare.io/self-h
 
 Wordpress는 [오픈소스 버전](https://wordpress.org/)과 [상용 버전](https://ko.wordpress.com/)이 존재합니다. 오픈소스는 직접 Wordpress를 설치하여 구성해야합니다. 서버, 도메인, 호스팅까지 모든 것들을 사용자가 직접 설정하고 운영해야합니다. 반대로 상용버전은 가입만 하면 별도의 서버를 운영할 필요없습니다. 단, 요금제에 따라 제공되는 기능이 다릅니다. 그래서 저희는 상용 버전의 Wordpress를 사용했습니다. 별도의 서버 및 호스팅에 대한 부분을 Wordpress에 맡기고, 저희는 블로그를 간단히 구성하고 글만 잘 작성하여 관리하면 될 줄 알았습니다...
 
-### But...
+### 글쓰기가 스트레스가 되다
 
-저희가 Wordpress를 사용하면서 느낀 점은,
-첫번째. 너무 많다는 것입니다. 블로그를 기획하면서 가장 깊게 고민했던 사항은 얼마나 글을 쉽게 쓸 수 있는 환경이 제공되는지에 대한 여부였습니다. 
+Wordpress를 하면서, 가장 마음에 안들었던 점은 글쓰는 것이 너무 불편하고, 나타나는 결과물이 너무 만족스럽지 못했습니다. 현재, 저희는 업무 공유 Tool로 [Atlassian의 Confluence](https://ko.atlassian.com/software/confluence)를 사용하고 있습니다. Confluence에 온갖 내용들을 Draft형식으로 남기고, 그것을 직접 공유해서 사용했습니다. 별도로 글을 이쁘게 꾸밀 필요가 거의 없이, 깔끔하게 보여졌습니다. 바로, Wordpress에서 그런 것들을 기대했는데 전혀 아니었습니다. 글을 쓴 첫느낌은... Wordpad에 글을 적는 느낌을 받았고, 결국은 다시 깔끔하고 꾸미는 시간이 필요했습니다.
 
-두번째. 
+두번째는 너무 많고 복잡했습니다. 기본으로 제공되는 에디터의 기능이 너무 부족해서 플러그인을 설치하고, 표를 이쁘게 삽입하기 위해서 플러그인을 설치하고, 소셜을 연동하기 위해서 플러그인을 설치하고... 필요한 플러그인만 10개 이상이 넘어갔고, 주기적으로 업데이트도 해야했습니다. 그리고 제공되는 테마 중 마음에 드는 것이 없어서, 새로 적용하려고 해도 PHP를 어느정도 공부하고 Wordpress만의 구조를 이해하고 넣어야 했죠.
 
-스태틱제너레이터다
+이 2가지가 저희에게는 너무 큰 부담으로 다가왔습니다. 그래서 과감히 Wordpress를 버렸습니다.
 
-이런것들에는 지킬과 기타등등등이 있따.
+## Solutions
 
-휴고를 선ㅌ택하게 된 이유는?
+저희는 기술 블로그를 운영함에 있어서 가장 중요하게 고려되어야 할 점들에 대해서 다시 정리하고, 한가지씩 답을 도출했습니다.
 
-이런 것들이 있어서 그렇다.
+1. 글을 작성하고 꾸미는 것이 쉬울 것
+2. 테마를 자유롭게 바꿀 수 있을 것
+3. 운영이 쉬울 것
 
-Wordpress에서의 글을 작성하는 방식은 일반적인 웹 에디터(ex. tinymce)를 이용하여 작성하거나, 별도의 글쓰기 App을 설치하여 Wordpress와 연동해서 작성하는 방식이 있었습니다. 글쓰기 App은 당연히 추가로 구입을 해야하기 때문에, 
-
-웹 에디터의 경우, 
-플러그인을 통해서 다양한 기능을 확장
+3가지 항목을 모두 만족시킬 수 있는 방안에 대해서 고민한 결과, 최종적으로 도달한 결론은
 
 {{% center %}}
-***아무리 이 플러그인 저 플러그인을 설치해도 저희들에겐 글쓰기가 너무 불편하고 별로 였습니다.***
+***GitHub Pages + Static Generator(정적 웹사이트 생성기)***
 {{% /center %}}
 
-## 그래서 찾은 해답: Static Generator
+로 기술 블로그를 구성하는 방법이었습니다.
 
-저희는 기술 블로그를 운영함에 있어서 가장 중요하게 고려되어야 할 점들에 대해서 다시 정리했습니다.
+### GitHub Pages
 
-1. Blog를 운영하기 쉬울 것: 최대한 Backend, DB, Server 등등의 우리가 직접 관리해야할 포인트가 적으면 적을수록 좋다!
-2. 글을 쓰고 꾸미는 것이 쉬울 것: 작성한 글을 별도로 꾸미지 않아도 어느정도 가다듬어 나타날 수 있으면 좋다!
-3. 커스터마이징이 쉬울 것: 우리가 원하는 대로, UI를 쉽게 바꿀 수 있으면 좋다!
+GitHub pages란, GitHub Reposiroty의 내용들을 Web Page로 볼 수 있게 서비스해주는 기능입니다. GitHub Pages는 Static Contents만을 서비스할 수 있기 때문에, OpenSource Project들의 공식 Documents나 소개 서비스로 많이 사용됩니다. 사용법은 매우 간단합니다. `[REPOSITORY_NAME].github.io`으로 Repository를 Public으로 생성한 뒤 HTML을 해당 Reposiroty로 Push하면 완료입니다. Static Contents만 지정된 Repository에 Push 된다면, GitHub 서버에 무료로 호스팅할 수 있습니다(단, URL에 `github.io`가 붙습니다).
 
+### Static Generator
 
-결국, 도달한 결론은 ***Static Generator(정적 웹사이트 생성기)***로 블로그를 구성하는 방법이었습니다.
+그럼 블로그 글은 HTML로 작성을 해야할까요? 아닙니다. 바로 Static Contents를 생성해 주는 것이 Static Generator의 역할이며, GitHub Pages와 결합되어 사용했을 때, 빛을 발합니다!!! 우리는 그저 텍스트(마크다운) 형식으로 글을 작성하고, 디렉토리 별로 글들을 정리하면 됩니다. 그러면 Static Generator가 자동으로 정리된 글들과 HTML 템플릿을 함께 합쳐서, 완전한 정적 웹사이트로 만들어 줍니다.
 
- 지정된 Template을 바탕으로 HTML 만들어주는 것입니다.
+가장 대표적인 Static Generator는 [Jekyll](https://jekyllrb-ko.github.io/)이 있습니다. Jekyll은 Ruby로 Github의 창업자인 Tom Preston-Werner가 만들었으며, 현재 GitHub Pages의 내부 엔진으로 사용되고 있습니다. [Docker Documents](https://github.com/docker/docker.github.io)가 Jekyll로 되어 있습니다.
 
 ### Hugo
 
-Hugo는 Go언어로 이루어진 Static Generator입니다. 실제 휴고를 좀 살펴보면 이렇게 되어 있다.
+[Static Generator](https://stackshare.io/static-site-generators)는 Jekyll외에도 Hugo, Gatsby, Hexo 등등 많이 있습니다. 그 중에서도 저희 블로그는 Go언어로 만들어진 Hugo를 사용하였습니다. Jekyll을 사용할 경우, 별도의 Build 과정 없이 Repository에 Push만으로 작성한 글들이 알아서 Publishing됩니다. 하지만, 글이 많아질 수록 Jekyll의 빌드 성능은 현저하게 저하됩니다. 하지만, Hugo는 Build 과정이 있어도 성능저하 없이, 빠르게 글을 Publishing할 수 있습니다. Go나 기타 종속성 없이, Hugo CLI를 통해서 쉽게 블로그 및 글을 생성할 수 있습니다. 그래서, Hugo로 블로그를 만들게 되었습니다.
 
-## Blog 구축
+## 블로그 구축
 
-자, 지금부터는 Hugo를 사용하여 Blog를 구성해보겠습니다.
+자, 서론이 길었습니다. 지금부터는 Hugo를 사용하여 블로그를 구성해보겠습니다.
 
 {{% notice info %}}
-본 내용은 Mac을 기준으로 작성하였습니다.
+본 내용은 Mac을 기준으로 작성하였습니다. 타 OS는 [Install Hugo](https://gohugo.io/getting-started/installing/)를 참고하여 설치하시기 바랍니다.
 {{% /notice %}}
 
 ### Hugo 설치
 
-Homebrew로 hugo를 설치합니다. 타 OS는 [Install Hugo](https://gohugo.io/getting-started/installing/)를 참고하여 설치하시기 바랍니다.
+Homebrew로 hugo를 설치합니다.
 
 ```sh
 $ brew install hugo
@@ -96,9 +94,10 @@ $ hugo version
 Hugo Static Site Generator v0.34 darwin/amd64 BuildDate:
 ```
 
-### Static Blog 생성하기
+### Static Site 생성하기
 
 `hugo new site [PATH]`로 Static Site를 생성합니다.
+
 ```sh
 $ hugo new site tech-blog
 Congratulations! Your new Hugo site is created in /tech-blog.
@@ -228,4 +227,4 @@ http://localhost:1313에 접속하여, 정상적으로 Static Site가 구성되�
 ![tech-blog](../images/hugo-site.png)
 {{% /center %}}
 
-이번 글에서는 Static Generator인 Hugo로 간단하게 Blog를 구성해 봤습니다. 다음 글에서는 Travis-CI를 이용하여, Github에 Blog가 자동으로 Hosting될 수 있는 환경을 구축하고, 작성한 글이 제대로 Publishing되는지까지 확인해보겠습니다.
+이번 글에서는 Static Generator인 Hugo로 간단하게 블로그를 구성해 봤습니다. 다음 글에서는 Travis-CI를 이용하여, Github에 자동으로 배포되고, 작성한 글이 Publishing되는지 확인해보겠습니다.
