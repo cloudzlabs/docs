@@ -9,7 +9,6 @@ tags:
   - static generator
   - hugo
   - go
-  - blog
   - github pages
 cover:
   image: "../images/hugo.png"
