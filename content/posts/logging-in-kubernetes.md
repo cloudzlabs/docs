@@ -86,6 +86,7 @@ draft: false
 
   ```
   $ git clone https://github.com/cloudz-labs/spring-boot-logging-demo
+  $ cd spring-boot-logging-demo
   ```
 
 - Maven build
