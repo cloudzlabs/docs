@@ -21,9 +21,7 @@ description: "Fluentd의 꼭 필요한 기능만을 분리해서 나온 FluentBi
 draft: false
 ---
 
-  
-
->Fluent Bit v0.13을 기준으로 작성된 포스팅입니다.
+>**Fluent Bit v0.13을 기준으로 작성된 포스팅입니다. [https://fluentbit.io](https://fluentbit.io/)**
 
 ### Log Collector
 
@@ -41,19 +39,16 @@ draft: false
 
 ![](../logging-in-kubernetes/fluent-bit/docker-2018-6-final.png)
 
-### Fluentd vs Fluent Bit?
+### Fluentd & Fluent Bit?
 
-Fluent Bit는 Fluentd 프로젝트의 일부로서 성능에 중점을 둔 가벼운 Log 프로세서 및 전달자입니다. 
+Fluentd와 Fluent Bit 둘 모두 로그를 수집하고, 처리한 다음 전달해주는 역할을 수행합니다.
 
 ![](../logging-in-kubernetes/fluent-bit/logcollector.png)  
 
 Fluentd와 비교하는 자료는 위와 같은 한 장의 그림으로 정리할 수 있습니다.
-
-Fluent Bit는 Log를 단지 전달하기만 하는 전달자의 역할을 수행하는 것이고, Fluentd는 여기에 +로 Aggregating을 하는 역할까지 수행할 수 있습니다. 
-
-
-아래는 Fluentd와 Fluent Bit를 비교한 표입니다.
+Fluentd의 영역이 Collector, Processor, Aggregator의 역할을 수행한다고 하면, Fluent Bit는 그중에 collector와 processor에 중점을 두었습니다.
  
+아래는 Fluentd와 Fluent Bit를 비교한 표입니다.
 
 | | Fluentd | Fluent Bit |
 |:---------|:---------|:---------|
@@ -65,9 +60,12 @@ Fluent Bit는 Log를 단지 전달하기만 하는 전달자의 역할을 수행
 | Plugins | More than 650 plugins available | Around 35 plugins available | 
 | License | Apache License v2.0 | Apache License v2.0 | 
 
-Fluentd와 비교했을 때 차지하는 메모리가 1/100 정도로 경량화 되어 있는 것을 볼 수 있습니다.
+Fluentd와 비교했을 때 차지하는 메모리가 1/100 정도로 경량화 되어 있는 것을 볼 수 있고, 플러그인 갯수에도 차이가 있습니다.
 
-가볍고 제약사항이 없는 만큼 컨테이너 환경에서 효율적으로 활용할 수 있을 것 같습니다.
+이 둘을 병행하여 사용하는 경우도 많이 볼 수 있습니다.
+이럴 경우 주로 Fluent Bit는 Log를 전달자의 역할을 중점적으로 수행하도록 구성하고, Fluentd는 다양한 플러그인을 중심으로 aggregator의 역할을 수행하도록 구성합니다.
+이렇게 하면 더 신뢰성 있는 솔루션을 제공할 수 있습니다.
+
 
 ### Fluent Bit Work Flow
 
@@ -312,6 +310,8 @@ Fluent Bit에서 사용할 수 있는 Output Plugin은 다음과 같습니다.
 | [nats](https://fluentbit.io/documentation/0.13/output/nats.html) | NATS | NATS 서버로 전달합니다. |
 | [null](https://fluentbit.io/documentation/0.13/output/null.html) | NULL | 이벤트를 전달하지 않습니다. |
 
-> 현재 Fluent Bit는 Docker Image버전으로 0.13.4가 최신 버전입니다.
 
-**출처 : [https://fluentbit.io](https://fluentbit.io/)/**
+### Fluent Bit in Kubernetes
+
+Fluent Bit을 Kubernetes에서 활용하는 예제는 다음 포스팅 글을 참고하시길 바랍니다.
+**[Logging in Kubernetes](http://tech.cloudz-labs.io/posts/logging-in-kubernetes/)**
