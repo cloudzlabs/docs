@@ -1,6 +1,6 @@
 ---
 date: "2018-07-27T14:19:56+09:00"
-title: "경량화된 로그 Forwarder : Fluent Bit"
+title: "경량화 Log Processor & Forwarder : Fluent Bit"
 authors: ["hunkee1017"]
 series: []
 categories:
@@ -10,7 +10,6 @@ tags:
   - fluentbit
   - fluentd
   - fluent
-  - cncf
   - 로깅
   - kubernetes
   
@@ -29,15 +28,13 @@ draft: false
 
 이러한 요구를 만족시키기 위해 2011년 Fluentd라는 프로젝트가 탄생하게 됩니다. Ruby로 작성된 Fluentd는 여러 소스의 데이터를 집계하고 형식이 다른 데이터를 JSON 객체로 통합하여 다른 출력 대상으로 라우팅 할 수 있는 원 스톱 구성 요소인 통합 로깅 레이어로 작동하도록 개발되었습니다.
 
-약 40MB의 메모리에서 실행이 되며, 초당 10,000 이벤트 이상을 처리할 수 있습니다. 
-
-요즘은 기존의 **ELK(Elastic Search + Logstash + Kibana)**의 구조에서 **EFK(Elastic Search + Fluentd + Kibana)** 형태로도 널리 사용되는 추세입니다.
-
-  
+약 40MB의 메모리에서 실행이 되며, 초당 10,000 이벤트 이상을 처리할 수 있습니다.   
 
 이렇게 확산된 Fluentd가 현재는 Datadog에서 분석한 2018년 가장 많이 사용되는 Docker Image 순위에 4위로 랭크하게 됩니다. (2017년 8위 → 2018년 4위)
 
 ![](../logging-in-kubernetes/fluent-bit/docker-2018-6-final.png)
+
+> 요즘은 기존의 **ELK(Elastic Search + Logstash + Kibana)**의 구조에서 **EFK(Elastic Search + Fluentd + Kibana)** 형태로도 널리 사용되는 추세입니다.
 
 ### Fluentd & Fluent Bit?
 
@@ -46,7 +43,7 @@ Fluentd와 Fluent Bit 둘 모두 로그를 수집하고, 처리한 다음 전달
 ![](../logging-in-kubernetes/fluent-bit/logcollector.png)  
 
 Fluentd와 비교하는 자료는 위와 같은 한 장의 그림으로 정리할 수 있습니다.
-Fluentd의 영역이 Collector, Processor, Aggregator의 역할을 수행한다고 하면, Fluent Bit는 그중에 collector와 processor에 중점을 두었습니다.
+Fluentd의 영역이 collector, processor, aggregator의 역할을 수행한다고 하면, Fluent Bit는 그중에 collector와 processor에 중점을 두었습니다.
  
 아래는 Fluentd와 Fluent Bit를 비교한 표입니다.
 
@@ -63,7 +60,7 @@ Fluentd의 영역이 Collector, Processor, Aggregator의 역할을 수행한다�
 Fluentd와 비교했을 때 차지하는 메모리가 1/100 정도로 경량화 되어 있는 것을 볼 수 있고, 플러그인 갯수에도 차이가 있습니다.
 
 이 둘을 병행하여 사용하는 경우도 많이 볼 수 있습니다.
-이럴 경우 주로 Fluent Bit는 Log를 전달자의 역할을 중점적으로 수행하도록 구성하고, Fluentd는 다양한 플러그인을 중심으로 aggregator의 역할을 수행하도록 구성합니다.
+이럴 경우 주로 Fluent Bit는 로그를 전달자의 역할을 중점적으로 수행하도록 구성하고, Fluentd는 다양한 플러그인을 중심으로 aggregator의 역할을 수행하도록 구성합니다.
 이렇게 하면 더 신뢰성 있는 솔루션을 제공할 수 있습니다.
 
 
@@ -81,6 +78,7 @@ Fluentd와 비교했을 때 차지하는 메모리가 1/100 정도로 경량화 
 | Output | 데이터의 목적지를 지정합니다. 지정된 목적지는 라우팅을 통해 전달됩니다. | 
 
 #### Input Plugins
+입력 플러그인은 여러 소스에서 데이터를 받아오기 위해 제공되는 것으로 다양한 데이터에 따른 플러그인이 있습니다.
 
 | name | title | description |
 |---------|-------------------|-------------------------------------------------------------------------|
@@ -105,7 +103,9 @@ Fluentd와 비교했을 때 차지하는 메모리가 1/100 정도로 경량화 
 | [tcp](https://fluentbit.io/documentation/0.13/input/tcp.html) | TCP | TCP를 통해서 JSON 메시지를 읽습니다. |  
 
   
-Plugins
+**Plugins**
+
+몇 가지의 Input 플러그인을 살펴 보겠습니다.
 
 *   CPU  
     CPU 사용량을 측정하는 Input 플러그인입니다. 
@@ -168,7 +168,7 @@ Plugins
 
 구조화 되지 않은 데이터를 구조화된 데이터로 변환해주는 부분입니다. Input에서 들어온 데이터를 분석하여 구문에 맞게 구조화 해줍니다. 여러개의 파서를 정의하여 선택적으로 사용할 수 있습니다.
 
-공식홈페이지에서 제공하는 샘플 parser들은 다음과 같습니다.
+공식 홈페이지에서 제공하는 샘플 parser들은 다음과 같습니다.([fluent-bit-configmap.yaml](https://github.com/fluent/fluent-bit-kubernetes-logging/blob/master/output/elasticsearch/fluent-bit-configmap.yaml))
 ``` bash
 [PARSER]
     Name   apache
