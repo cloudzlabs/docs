@@ -18,7 +18,7 @@ cover:
   image: "../logging-in-kubernetes/fluent-bit/fluentbit2.png"
   caption: ""
 description: "Fluentd의 꼭 필요한 기능만을 분리해서 나온 FluentBit을 집중 분석"
-draft: true
+draft: false
 ---
 
   
