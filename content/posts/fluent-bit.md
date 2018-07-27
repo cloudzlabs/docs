@@ -1,6 +1,6 @@
 ---
 date: "2018-07-27T14:19:56+09:00"
-title: "경량화된 로그 Forwarder : FluentBit"
+title: "경량화된 로그 Forwarder : Fluent Bit"
 authors: ["hunkee1017"]
 series: []
 categories:
