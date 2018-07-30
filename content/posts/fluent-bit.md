@@ -152,7 +152,7 @@ Fluentd와 비교했을 때 차지하는 메모리가 1/100 정도로 경량화 
     conf 파일에 설정하는 방법은 다음과 같습니다.
     
     ``` bash
-    # RDark input-custom.conf
+    # input-custom.conf
     [INPUT]
         Name              tail
         Tag               logs-from-fluentbit.*
