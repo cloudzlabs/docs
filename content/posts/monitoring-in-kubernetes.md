@@ -137,7 +137,7 @@ Prometheus와 Grafana 설치에 대한 가이드는 추후 작성 예정입니�
 - Docker build
 
     ```
-    $ docker build -t spinrg-boot-monitoring-demo .
+    $ docker build -t spring-boot-monitoring-demo .
 
     $ docker images
     REPOSITORY                        TAG                 IMAGE ID          CREATED            SIZE
