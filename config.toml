@@ -107,7 +107,7 @@ url = "/posts/"
 name = "About Us"
 weight = -20
 identifier = "about"
-url = "http://cloudz-labs.sk.com"
+url = "http://digitallabs.skcc.com/"
 
 [languages]
 # edit this block for your own language
