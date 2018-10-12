@@ -2,14 +2,12 @@
 date: "2018-10-11T10:14:07+09:00"
 title: "Event Driven Microservice 란?"
 authors: [jisangyun]
-series: []
 categories:
   - posts
 tags:
   - event driven
   - microservices
   - spring cloud stream
-  - 비동기 통신
   - reative
   - serverless
   - rabbitmq
