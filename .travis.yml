@@ -4,7 +4,7 @@ go:
   - '1.9' # This uses automatically the latest version of go
 
 install:
-  - go get github.com/spf13/hugo # This provides the latest version of Hugo to Travis CI
+  - go get https://github.com/gohugoio/hugo # This provides the latest version of Hugo to Travis CI
 
 script:
   - hugo # This commands builds your website on travis
