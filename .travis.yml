@@ -4,12 +4,14 @@ go:
   - '1.9' # This uses automatically the latest version of go
 
 install:
-  - go get github.com/spf13/hugo # This provides the latest version of Hugo to Travis CI
+  - go get github.com/gohugoio/hugo # This provides the latest version of Hugo to Travis CI
 
 script:
   - hugo # This commands builds your website on travis
 
 deploy:
+  edge:
+    branch: v1.8.47
   local_dir: public # Default static site output dir for Hugo
   repo: cloudzlabs/docs # This is the slug of the repo you want to deploy your site to
   target_branch: gh-pages # GitHub pages branch to deploy to (in other cases it can be gh-pages)
