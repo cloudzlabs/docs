@@ -2,7 +2,6 @@
 date: "2018-10-11T10:14:07+09:00"
 title: "Event Driven Microservice 란?"
 authors: [jisangyun]
-series: []
 categories:
   - posts
 tags:
@@ -28,7 +27,6 @@ MicroService Architecture(MSA)는 loosely coupled를 기반으로 빠른 배포�
 하지만 MSA를 도입한 이후 새로운 문제점은 발생하지 않았나요 ? Database Per Service 라는 새로운 요구사항은 잘 지켜지나요 ? rest 통신(synchronized)으로 인한 제약사항은 없나요 ? 분산된 서비스 간 트랜잭션 처리 / 반정규화 된 데이터의 동기 처리는 잘 이루어지고 있나요 ?
 
 MSA가 적용된 시스템을 보완하는 Event Driven MircoService를 소개합니다.
-
 
 Event Driven 이란?
 ----------------
@@ -343,7 +341,7 @@ DBMS Log Mining 은 DBMS 내 트랜잭션 로그가 쌓이면 해당 로그를 �
 
 ### Architecture Example
 
-**![](arch.png)**
+![](arch.png)
 
 *   서비스 간 통신 방식
     *   조회 기능은 REST 통신을 수행합니다.
