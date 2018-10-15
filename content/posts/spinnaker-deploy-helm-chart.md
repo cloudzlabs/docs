@@ -65,7 +65,7 @@ Application top > PIPELINES > Configure a new pipeline을 선택합니다.
 
 Pipeline configuration > Automated Triggers > Add Trigger를 선택합니다.
 
-![](spinnaker-pipeline-main.png)
+![](spinnaker-pipeline-main-01.png)
 
 아래와 같이 내용을 입력하고 `Save Changes` 버튼을 선택해 변경사항을 저장합니다.
 
