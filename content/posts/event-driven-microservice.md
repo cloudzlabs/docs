@@ -262,7 +262,7 @@ RabbitMQ, Kafka 등 Backing Service를 사용해 queue를 통한 메세지 순�
 구현
 --
 
-Event Driven을 구현하는 방법으로 2-Phase Commit, Event Sourcing, CQRS, 이벤트 로그 Mining, Serverless 등 다양한 방법을 검색할 수 있습니다. 이 중 어느 하나의 방법을 특징짓지 않고 Event Driven을 구현하는데 필요한 Insight를 도출합니다.
+Event Driven MicroService의 요구사항 및 달성 효과는 전혀 새로운 것이 아닙니다. DBMS 내 트랜잭션 로그를 활용한 redo/undo 로직, 이기종 Database 간 분산 트랜잭션 처리, 외부 시스템과 I/F를 통해 업무를 처리할 때 상이한 시스템 간 정합성 처리 등 기존에 다루던 문제들과 요구사항 및 구현 방식이 비슷합니다. 따라서 비슷한 문제를 해결하는 방식들을 참고해 필요한 Insight를 도출할 수 있습니다. EDM을 구현하는 방법으로 2-Phase Commit, Event Sourcing, CQRS, 이벤트 로그 Mining, Serverless 등 다양한 방법을 검색할 수 있습니다.
 
 ###### 2-Phase Commit
 
