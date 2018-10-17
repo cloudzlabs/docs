@@ -339,6 +339,9 @@ DBMS Log Mining 은 DBMS 내 트랜잭션 로그가 쌓이면 해당 로그를 �
     *   보상 트랜잭션  
         *   오류 발생시 fail 이벤트 생성+발행 logic 설계/구현
         *   transactionId 생성,전달 방법 설계/구현
+    *   비동기 통신
+        *   비동기 통신을 통한 내부 통합에 따른 Application 기능 재설계 필요
+            *   ex) 하나의 기능을 수행하기 위해 필요한 데이터들을 젤 앞단에서 다 받아서 처리, 사용자와 interaction하면서 기능 수행 어려움
 *   기타 등등
 
 ### Architecture Example
@@ -360,6 +363,6 @@ Event Driven MicroService 는 MicroService Architecture 도입시 발생되는 �
 
 EDM에서 이벤트는 데이터의 생성,변경,삭제로 정의합니다. 이벤트가 발생하면 이벤트 스토어에 보관하고 메세지 큐를 통해 발행합니다. 해당 이벤트에 관심이 있는 서비스에서 구독 후 정해진 biz. logic 을 수행합니다. biz. logic을 수행한 결과 이벤트가 발생하면 이 또한 이벤트 스토어에 보관하고 메세지 큐를 통해 발행합니다. 이런 이벤트 흐름이 무한 루프를 형성하지 않게 설계에 신경쓰고 Validation Check를 수행해야 합니다. 보관된 이벤트 기록은 장애 또는 특정 요구사항에 따라 데이터를 복원하는데 사용됩니다. 이 때 복원 시점, 복원 키값을 지정할 수 있게 이벤트 객체 설계가 필요합니다.
 
-Event Driven의 구현은 2-Phase Commit, Event Sourcing, CQRS, 이벤트 로그 Mining, Reactive, Serverless 등 다양한 방법이 소개되고 있습니다. 이들 중 하나를 꼭 선택해야 하는 것은 아니고 핵심 factor를 도출해 시스템에 적합한 Architecture 수립 및 설계/개발 과정에 적용하는 것이 중요합니다. EDM의 Architecture는 RDB + RabbitMQ, Kafka, Kafka + KSQL, Reactive + NoSQL, Serverless 등 Application과 Backing Service의 조합으로 굉장히 다양하게 구성할 수 있습니다. 유용한 Backing Service를 통해 핵심 factor 를 우선 달성하고 미비한 기능은 Application으로 커버하면 변경사항을 줄일 수 있습니다. 이벤트 기반과 비동기 통신을 통한 시스템 내 통합(integration)이라는 핵심 개념을 바탕으로 실제 구현은 자유롭게 구성 가능합니다. 특정 방식을 따르기보다 조직/개인의 역량에 알맞는 방법을 선택하는 것이 가장 중요합니다.
+Event Driven의 구현은 2-Phase Commit, Event Sourcing, CQRS, 이벤트 로그 Mining, Reactive, Serverless 등 다양한 방법이 소개되고 있습니다. 이들 중 하나를 꼭 선택해야 하는 것은 아니고 핵심 factor를 도출해 시스템에 적합한 Architecture 수립 및 설계/개발 과정에 적용하는 것이 중요합니다. EDM의 Architecture는 RDB + RabbitMQ, Kafka, Kafka + KSQL, Reactive + NoSQL, Serverless 등 Application과 Backing Service의 조합으로 굉장히 다양하게 구성할 수 있습니다. 유용한 Backing Service를 통해 핵심 factor 를 우선 달성하고 미비한 기능은 Application으로 커버하면 변경사항을 줄일 수 있습니다. 비동기 통신을 통한 내부 통합이라는 특성으로 인해 하나의 기능을 수행할 때 세부 단계로 나눠 사용자와 인터렉션을 통해 상태를 변경하는 방식은 적합하지 않을 수 있습니다. 기능 수행의 젤 앞단에서 필요한 데이터 세팅을 마치고 백엔드 서비스로 전달을 하는 방식으로 Application flow의 재설계가 필요합니다. 이벤트 기반과 비동기 통신을 통한 시스템 내 통합(integration)이라는 핵심 개념을 바탕으로 실제 구현은 자유롭게 구성 가능합니다. 특정 방식을 따르기보다 조직/개인의 역량에 알맞는 방법을 선택하는 것이 가장 중요합니다.
 
 Monolitic Architecture의 단점에 질려서 혹은 시스템을 Cloud 환경에 구축할 때 얻을 수 있는 이점과 MicroService Architecture의 장점에 끌려서 MicroService Architecture의 도입을 결정했다면, 그 다음 닥칠 문제에 대비해 Event Driven을 고려해볼 필요가 있습니다.
