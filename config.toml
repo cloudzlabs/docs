@@ -107,7 +107,7 @@ url = "/posts/"
 name = "About Us"
 weight = -20
 identifier = "about"
-url = "http://digitallabs.skcc.com/"
+url = "http://dtlabs.skcc.com/?utm_source=tech_blog&utm_campaign=blog_about_us&utm_content=menulink"
 
 [languages]
 # edit this block for your own language
