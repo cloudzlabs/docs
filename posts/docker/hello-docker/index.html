@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Docker란 리눅스의 응용프로그램들을 소프트웨어 Container 안에 배치시키는 일을 자동화하는 오픈 소스 프로젝트로서, Docker 공식 문서에 따르면 Containers as a Service(CaaS) Platform으로 정의하고 있습니다.
+Docker는 홈페이지에 Docker의 기능을 아래와 같이 명시 하고 있습니다.
+ Docker Container는 일종의 소프트웨어 실행에 필요한 모든 것들을 포함하는 완전한 파일 시스템 안에 감싼다. 여기에는 코드, 런타임, 시스템 도구, 시스템 라이브러리 등 서버에 설치되는 무엇이든 전부 아우른다. 이는 실행 중인 환경에 관계 없이 언제나 동일하게 실행될 것을 보증한다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Docker 기본(1/8)] Hello Docker! | 정재훈'>
+<meta property='og:description' content='Docker란 리눅스의 응용프로그램들을 소프트웨어 Container 안에 배치시키는 일을 자동화하는 오픈 소스 프로젝트로서, Docker 공식 문서에 따르면 Containers as a Service(CaaS) Platform으로 정의하고 있습니다.
+Docker는 홈페이지에 Docker의 기능을 아래와 같이 명시 하고 있습니다.
+ Docker Container는 일종의 소프트웨어 실행에 필요한 모든 것들을 포함하는 완전한 파일 시스템 안에 감싼다. 여기에는 코드, 런타임, 시스템 도구, 시스템 라이브러리 등 서버에 설치되는 무엇이든 전부 아우른다. 이는 실행 중인 환경에 관계 없이 언제나 동일하게 실행될 것을 보증한다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/docker/hello-docker/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/docker/hello-docker/../images/docker-official.svg'><meta property='article:section' content='Posts'><meta property='article:tag' content='docker'><meta property='article:tag' content='caas'><meta property='article:tag' content='container'><meta property='article:published_time' content='2018-03-08T18:47:30&#43;09:00'/><meta property='article:modified_time' content='2018-03-08T18:47:30&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/docker/hello-docker/http://tech.cloudz-labs.io/images/docker-official.svg'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Docker 기본(1/8)] Hello Docker! | 정재훈</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/docker/hello-docker/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Mar 08, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 4분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Docker 기본(1/8)] Hello Docker!</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/1000jaeh">정재훈</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/docker/hello-docker/../images/docker-official.svg'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<p>Docker란 리눅스의 응용프로그램들을 소프트웨어 Container 안에 배치시키는 일을 자동화하는 오픈 소스 프로젝트로서, Docker 공식 문서에 따르면 <strong>Containers as a Service(CaaS) Platform</strong>으로 정의하고 있습니다.</p>
+
+<p>Docker는 홈페이지에 Docker의 기능을 아래와 같이 명시 하고 있습니다.</p>
+
+<blockquote>
+<p>Docker Container는 일종의 소프트웨어 실행에 필요한 모든 것들을 포함하는 완전한 파일 시스템 안에 감싼다. 여기에는 코드, 런타임, 시스템 도구, 시스템 라이브러리 등 서버에 설치되는 무엇이든 전부 아우른다. 이는 실행 중인 환경에 관계 없이 언제나 동일하게 실행될 것을 보증한다.</p>
+</blockquote>
+
+<p>Docker는 리눅스에서 운영체제 수준 가상화에 대한 추상화 및 자동화 계층을 추가적으로 제공합니다. 또한, 리눅스 커널, 통합 파일 시스템의 리소스 격리 기능을 사용하며, 이를 통해 독립적인 <strong>Container</strong>가 하나의 리눅스 인스턴스 안에서 실행할 수 있게 함으로써 가상 머신에 대한 유지보수 부담을 덜어줍니다.</p>
+
+<h2 id="monolithic에서-microservice로">Monolithic에서 Microservice로</h2>
+
+<p>지금까지는, 절대로 변하지 않을 듯한 Infrastructure를 기반으로 OS/Runtime/Middleware는 잘 정돈되어져 있었고, 그 위에 수 많은 기능들을 제공하는 대형 Application이 실행되고 있었습니다. 해당 Application에서 장애란 있을 수 없는 일로 간주되어 왔습니다. 하지만, Application의 이런 구조는 Mobile 기기를 필두로 한 전반적인 IT 산업의 변화에 있어서 독이 되었고, 이는 곧 Application의 유연성을 크게 해치게 되었습니다.</p>
+
+<p>이런 흐름에 맞춰 Application들의 전체적인 구조는 모두 바뀌게 되었습니다. 대형 Application들은 다양한 기기와 환경들에 맞춰 빠르게 지원하기 위해 잘게 쪼개졌으며, 개발자들은 최상의 성능을 위해서 사용 가능한 Service들을 개별적으로 조립하여 제공하였습니다. 또한, 조립된 Service들에 맞춰 Infrastructure도 Public / Private / Virtualized된 다양한 환경을 구성하여 사용하게 되었습니다.</p>
+
+<h2 id="그렇다면-왜-docker인가">그렇다면, 왜 Docker인가</h2>
+
+<p>이러한 변화 속에서, 다음과 같은 새로운 과제들이 나타나기 시작했습니다.</p>
+
+<ul>
+<li>다양한 방식으로 조립된 서비스가 일관되게 상호 작용할 수 있도록 보장하는 방법은 무엇인가?</li>
+<li>각 Service별 &ldquo;Dependency Hell&rdquo;을 피할 수 있는 방법은 무엇인가?</li>
+<li>수많은 Application을 다양한 환경으로 신속하게 Migration 및 확장할 수 있는가?</li>
+<li>각 환경에 배포된 Application들의 호환성이 보장 되는가?</li>
+<li>n개의 Service가 n개의 Infrastructure에서 잘 구동될 수 있도록 하는 수 많은 설정들을 어떻게 피할 수 있는가?</li>
+</ul>
+
+<p>과제들에 대한 해결책으로 나타난 것이 <strong>Container</strong>입니다. Container는 Library, 시스템 도구, Code, Runtime 등 Application에 필요한 모든 것이 포함되어 있는 표준화된 유닛으로, 환경에 구애받지 않고 Application을 신속하게 배포 및 확장 할 수 있는 환경을 제공해 줍니다.</p>
+
+<div class='align-center'>
+    <p><strong><em>따라서, Docker는 이런 Container들을 관리할 수 있는 Service를 제공함으로써,<br/> Application들이 다양한 환경 속에서 일관된 서비스를 제공할 수 있도록 보장합니다.</em></strong></p>
+
+</div>
+
+
+<h2 id="docker를-사용한다면">Docker를 사용한다면</h2>
+
+<h3 id="동일한-application을-다양한-환경으로-빠르게-배포할-수-있습니다">동일한 Application을 다양한 환경으로 빠르게 배포할 수 있습니다</h3>
+
+<p>Docker는 Application 및 Service를 Container를 사용하여 표준화된 환경에서 구동할 수 있도록 함으로써, 개발 주기를 단축시킵니다. 이러한 Container의 이점은 CI/CD Workflow에서 극대화됩니다.</p>
+
+<h3 id="환경에-따라-배포와-확장이-자유롭습니다">환경에 따라, 배포와 확장이 자유롭습니다</h3>
+
+<p>Docker는 개발자의 Laptop, Datacenter의 VM, Cloud 환경 또는, 여러 다양한 환경에 쉽게 이식하여 사용할 수 있습니다. Docker의 이런 특성으로 인해, 비즈니스 요구 사항에 맞춰 Application과 Service를 부하에 따라 동적으로 관리할 수 있으며, 거의 실시간으로 축소 또는 확장할 수 있습니다. 타 Platform에 비해 같은 Hardware에서 더 많은 작업을 수행할 수 있습니다. Docker는 가볍고 빠르게 동작하기 때문에, Hypervisor 기반의 Virtual Machine 보다 실용적이고 비용 효율적입니다. 따라서, 적은 Resources로 많은 작업을 수행해야하는 중소규모의 배포 환경 및 고밀도 밀집 환경에 이상적입니다.</p>
+
+<h2 id="hello-docker">Hello Docker</h2>
+
+<p>Docker는 로컬 개발 환경 구성을 위한 Community Edition(CE) 과 실 운영 환경을 위한 Enterprise Edition(EE)의 두 가지 버전으로 제공되고 있습니다.
+<strong>Docker Community Edition(CE)</strong>은 각 운영체제 환경에 맞는 설치파일이 제공되고 있습니다.</p>
+
+<ul>
+<li><a href="https://docs.docker.com/docker-for-mac/install/#download-docker-for-mac" target="_blank">Docker for Mac</a></li>
+<li><a href="https://docs.docker.com/docker-for-windows/" target="_blank">Docker for Windows</a></li>
+</ul>
+
+<div class="notices note" ><p>Docker의 Version 및 지원 Platform에 대한 자세한 정보는 <strong><a href="https://docs.docker.com/engine/installation/" target="_blank">Install Docker</a></strong>에서 확인하실 수 있습니다.</p>
+</div>
+
+
+<p>Docker 환경 구성 방법은 다음과 같습니다.</p>
+
+<ol>
+<li>로컬 환경의 운영체제에 맞는 Docker 설치파일을 다운받아 설치한 뒤, 실행합니다.</li>
+
+<li><p><code>docker version</code>으로 설치된 Docker의 Version을 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  $ docker version
+  Client:
+    Version:      <span style="color:#ae81ff">18</span>.03.0-ce-rc4
+    API version:  <span style="color:#ae81ff">1</span>.37
+    Go version:   go1.9.4
+    Git commit:   fbedb97
+    Built:        Thu Mar <span style="color:#ae81ff">15</span> <span style="color:#ae81ff">07</span>:33:28 <span style="color:#ae81ff">2018</span>
+    OS/Arch:      darwin/amd64
+    Experimental: false
+    Orchestrator: swarm
+
+  Server:
+    Engine:
+      Version:      <span style="color:#ae81ff">18</span>.03.0-ce-rc4
+      API version:  <span style="color:#ae81ff">1</span>.37 <span style="color:#f92672">(</span>minimum version <span style="color:#ae81ff">1</span>.12<span style="color:#f92672">)</span>
+      Go version:   go1.9.4
+      Git commit:   fbedb97
+      Built:        Thu Mar <span style="color:#ae81ff">15</span> <span style="color:#ae81ff">07</span>:42:29 <span style="color:#ae81ff">2018</span>
+      OS/Arch:      linux/amd64
+      Experimental: true
+
+  $ docker-compose version
+  docker-compose version <span style="color:#ae81ff">1</span>.20.0-rc2, build 8c4af54
+  docker-py version: <span style="color:#ae81ff">3</span>.1.1
+  CPython version: <span style="color:#ae81ff">3</span>.6.4
+  OpenSSL version: OpenSSL <span style="color:#ae81ff">1</span>.0.2n  <span style="color:#ae81ff">7</span> Dec <span style="color:#ae81ff">2017</span>
+
+  $ docker-machine version
+  docker-machine version <span style="color:#ae81ff">0</span>.14.0, build 89b8332</code></pre></div>
+<ol>
+<li>구성된 Docker 환경에 Server(Docker Daemon)과 Client외에도 docker-compose와 docker-machine Tool도 같이 설치된 것을 확인하실 수 있습니다.</li>
+
+<li><p><code>docker run</code> 명령어로 <code>hello-world</code> Image를 Pull 받아서 Conatiner 생성하여 실행시킵니다.
+```bash
+$ docker run hello-world
+Unable to find image &lsquo;hello-world:latest&rsquo; locally
+latest: Pulling from library/hello-world
+ca4f61b1923c: Pull complete
+Digest: sha256:97ce6fa4b6cdc0790cda65fe7290b74cfebd9fa0c9b8c38e979330d547d22ce1
+Status: Downloaded newer image for hello-world:latest</p>
+
+<p>Hello from Docker!
+This message shows that your installation appears to be working correctly.</p>
+
+<p>To generate this message, Docker took the following steps:</p>
+
+<ol>
+<li>The Docker client contacted the Docker daemon.</li>
+<li>The Docker daemon pulled the &ldquo;hello-world&rdquo; image from the Docker Hub.
+(amd64)</li>
+<li>The Docker daemon created a new container from that image which runs the
+executable that produces the output you are currently reading.</li>
+<li>The Docker daemon streamed that output to the Docker client, which sent it
+to your terminal.</li>
+</ol>
+
+<p>To try something more ambitious, you can run an Ubuntu container with:
+$ docker run -it ubuntu bash</p>
+
+<p>Share images, automate workflows, and more with a free Docker ID:
+<a href="https://cloud.docker.com/" target="_blank">https://cloud.docker.com/</a></p>
+
+<p>For more examples and ideas, visit:
+<a href="https://docs.docker.com/engine/userguide/" target="_blank">https://docs.docker.com/engine/userguide/</a>
+```</p></li>
+</ol></li>
+
+<li><p>위와 같이 정상적으로 메시지가 나타난다면, Docker 환경 구성이 완료된 것입니다.</p></li>
+</ol>
+
+<h2 id="한-번의-build로-어디서든-run">한 번의 Build로 어디서든 Run</h2>
+
+<p>지금까지 Docker환경을 구성하여, <code>hello-world</code>라는 Image로부터 Container를 구동시켰습니다. Docker가 설치되어 있다면, <code>hello-world</code>는 어디에서든지 100% 동일한 형태로 실행할 것입니다. 이는 Application들이 더 이상 환경에 제약받지 않고, 일관된 서비스를 제공할 수 있음을 의미합니다.</p>
+
+<p>한 번의 Build로 어디서든 Run할 수 있는 Docker. 이런 편리함을 제공하는 Docker가 어떻게 구성되어 있는지, 어떤 식으로 동작되는지가 더욱 궁금해집니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker/docker-start/">Docker 시작하기</a></li>
+        
+        <li><a href="/posts/docker/docker-build-push/">[Docker 기본(4/8)] docker build &amp; push</a></li>
+        
+        <li><a href="/posts/docker/what-is-container/">[Docker 기본(3/8)] Container는 뭘까?</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/kubernetes/secret/">[Kubernetes 활용(7/8)] Secret</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/caas" rel="tag">caas</a></li><li><a href="/tags/container" rel="tag">container</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fhello-docker%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fhello-docker%2f&amp;text=%5bDocker%20%ea%b8%b0%eb%b3%b8%281%2f8%29%5d%20Hello%20Docker%21" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fhello-docker%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fhello-docker%2f&amp;title=%5bDocker%20%ea%b8%b0%eb%b3%b8%281%2f8%29%5d%20Hello%20Docker%21" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fhello-docker%2f&amp;description=%5bDocker%20%ea%b8%b0%eb%b3%b8%281%2f8%29%5d%20Hello%20Docker%21" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fhello-docker%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/1000jaeh">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/1000jaeh.jpeg'/><div class="author-info">
+    <h3>정재훈</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/redis-overview/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">Redis Overview(with Spring Boot)</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 08
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/docker/docker-architecture/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(2/8)] Docker&#39;s Skeleton</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 08
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

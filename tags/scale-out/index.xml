@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>scale out on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/scale-out/</link>
+    <description>Recent content in scale out on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 22 Feb 2018 14:41:49 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/scale-out/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Kubernetes 활용(3/8)] HPA(오토스케일링)</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/hpa/</link>
+      <pubDate>Thu, 22 Feb 2018 14:41:49 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/hpa/</guid>
+      <description>지난 챕터에서는 이미 배포되어 있는 애플리케이션을 무중단으로 업데이트하는 방법에 대해 보았습니다. 이번에는 이어서 애플리케이션을 자동으로 Scale-out 할수 있는 Horizontal Pod Autoscaler 기능을 적용해보도록 하겠습니다.
+Horizontal Pod Autoscaler 란 Horizontal Pod Autoscaler는 지정된 CPU 사용률을 기반으로 Replication Controller, Deployment 또는 Replica Set의 Pod 수를 자동으로 조정합니다. Kubernetes에서는 CPU 자원에 대한 사용량을 다음과 같은 식으로 계산하여 Pod을 자동 Scale-out 할 수 있습니다.
+[CPU example] TargetNumOfPods = ceil(sum(CurrentPodsCPUUtilization) / Target) 주기적으로 Pod의 자원 사용을 체크하고, 특정 시간의 여유를 두고 downscale/upscale이 이루어지는데, 이는 kube-controller-manager가 담당합니다.</description>
+    </item>
+    
+  </channel>
+</rss>

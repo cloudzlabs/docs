@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>swarm on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/swarm/</link>
+    <description>Recent content in swarm on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 09 Mar 2018 08:27:58 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/swarm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/swarm-architecture/</link>
+      <pubDate>Fri, 09 Mar 2018 08:27:58 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/swarm-architecture/</guid>
+      <description>이제는 구성된 Docker Swarm에 Application을 배포해보겠습니다. Docker Swarm에 Application Image를 배포하기 위해선, Service를 생성해야 합니다. Service는 큰 Application Context 내의 Microservice들의 Image를 의미하며, 예로 HTTP Server, Database 또는 분산 환경에서 실행하고자 하는 다양한 유형의 Runtime Program들이 여기에 속한다고 할 수 있습니다. Service를 생성하고자 할 때, 사용할 Container Image와 Container 내에서 실행할 명령을 지정합니다. 또한, 다음과 같은 Option들을 정의하여 사용합니다.
+ Docker Swarm 외부에서 접속할 수 있는 Port Docker Swarm 내부의 다른 Service와 통신하기 위한 Overlay Network CPU 및 Memory 사용에 대한 정책 Rolling Update 정책 Image의 Replica 개수  Service Service가 독립형 Container들을 직접 실행하는 것에 비해 갖는 주요 장점 중 하나는, 수동으로 Service를 다시 시작할 필요없이 연결된 Network 및 Volume 등의 구성을 수정할 수 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/swarm/</link>
+      <pubDate>Fri, 09 Mar 2018 08:27:01 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/swarm/</guid>
+      <description>지금까지는 단일 Docker Machine에서 Container를 실행시켜 서비스를 제공했습니다. 그렇다면, 현 상태로 실제 서비스를 운영할 수 있을까요? 한참 부족합니다! 장애없이 원활한 서비스를 제공하기 위해서는, 내결함성, 고가용성 등등 많은 사항들을 고려하여야 합니다. 결국은 단일 Machine으로는 사용할 수 없고 Cluster 형태로 구성되어야하며, 그 위에서 서비스들은 여러개의 Instance로 부하가 분산되어야 하며, 장애가 발생하더라도 스스로 복구 할 수 있는 구조로 실행되어야 합니다. 마지막으로 이것들이 자동화되어 있어야합니다. 수 십개에서 수 백개로 나뉘어진 Service들을 사람이 직접 관리할 수 없기 때문입니다.</description>
+    </item>
+    
+  </channel>
+</rss>

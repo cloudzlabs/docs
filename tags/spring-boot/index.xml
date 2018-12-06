@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>spring boot on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/spring-boot/</link>
+    <description>Recent content in spring boot on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 20 May 2018 18:13:30 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/spring-boot/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/</link>
+      <pubDate>Sun, 20 May 2018 18:13:30 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/</guid>
+      <description>지난 포스팅에서 Docker의 네트워크 기능과 연관된 factors를 경우의 수에 따라 검증을 했습니다.
+Docker toolbox를 사용하는 환경(win7)에서 테스트 결과, 아래의 경우에 서비스 간 호출이 성공했습니다.
+ 컨테이너의 Port를 노출하고 {docker-machine ip}:{외부 노출 Port}으로 접속한 경우 컨테이너를 user defined network에 연결하고 {컨테이너 명}:{컨테이너 내부 port}로 접근한 경우 컨테이너를 user defined network에 연결하고 {user defined network ip}:{컨테이너 내부 port}로 접근한 경우  이 중 2번. 컨테이너를 user defined network에 연결하고 {컨테이너 명}:{컨테이너 내부 port}로 접근하는 방법으로 Docker에서 최소 단위의 MSA가 적용된 system을 구성해보겠습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/</link>
+      <pubDate>Wed, 21 Mar 2018 11:16:00 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/</guid>
+      <description>지난 포스팅에서 docker user defined network의 간단한 설명과 동작을 확인했습니다.
+이번에는 docker user defined network를 활용한 컨테이너 간 통신에 연관된 factors를 확인하고 경우의 수에 따라 테스트를 진행하겠습니다.
+Docker Network 기능 Service Discovery Docker는 각 Network 내 컨테이너의 ip주소, 컨테이너 명, Hostname 등을 관리합니다. 각 네트워크는 Subnet mask와 Gateway를 가집니다. 기본적으로 컨테이너의 ip주소는 Network에서 관리하는 Pool 중 할당이 됩니다. 할당하고 싶은 ip주소, Hostname이나 network 정보가 있으면 option을 적용해 지정 가능합니다. 각 Network 별 Host정보를 관리하는 기능을 사용해서 컨테이너 명으로 컨테이너 간 통신을 하는 Service Discovery 기능을 수행할 수 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/</link>
+      <pubDate>Tue, 20 Mar 2018 18:12:19 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/</guid>
+      <description>Docker는 몇가지 네트워크 드라이버를 기본 제공하여 강력한 네트워크 기능을 활용할 수 있게 합니다.
+ bridge: 기본 네트워크 드라이버. docker0이라는 이름의 bridge 네트워크를 생성됩니다. 설정없이 컨테이너를 생성하게되면 docker0 bridge에 컨테이너를 binding 해서 네트워크 기능을 수행합니다. host: 컨테이너 네트워크가 독립/격리되지 않고, Host의 네트워크를 직접적으로 사용합니다. overlay: 서로 다른 Docker Host에서 실행되는 컨테이너 간 통신이 필요하거나, Docker Swarm 상에서 여러 컨테이너를 동시에 운영할 때 유용합니다. Macvlan: Mac주소를 컨테이너에 할당합니다. Docker 데몬은 트래픽을 컨테이너의 MAC 주소로 라우팅합니다.</description>
+    </item>
+    
+    <item>
+      <title>Redis Overview(with Spring Boot)</title>
+      <link>http://tech.cloudz-labs.io/posts/redis-overview/</link>
+      <pubDate>Mon, 05 Mar 2018 13:10:36 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/redis-overview/</guid>
+      <description>Redis는 Key/Value형태의 In-Memory 데이터베이스로서 데이터 저장 및 캐싱, 그리고 메시지 브로커로 널리 사용 되고 있습니다.
+Redis의 가장 큰 특징으로는 In-Memory 데이터베이스가 가지는 장점인 처리속도가 굉장히 빠르다는 점이 있습니다. 물론 이것 자체는 휘발성 데이터이기 때문에 케이스에 따라서 데이터를 덤프하는 스케쥴링을 통해 정합성 및 영속성을 관리할 수 있습니다. 하지만 이것도 불안하다 싶어 조금 더 나아간다면 고가용성을 보장하기 위해 Master-Slave 구조의 아키텍쳐링까지 설계할 수 있습니다.
+또한, Redis의 내부를 열어보면 데이터 스트럭쳐로 String, Hash, List, Sets, Sorted Sets등 기본적인 쿼리 뿐만 아니라 Bitmaps, Hyperloglogs, Geospatial indexes와 같은 Radius 쿼리까지도 지원하는 등 강력한 기능이 있습니다.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='MSA(Micro Service Architecture) 활용하여 팀 홈페이지를 제작하는 과정에서 User BFF에서 백엔드 서비스를 호출하기 위해 Zuul을 사용하였습니다. 여러 가지 서비스가 Zuul을 통해 User BFF에 노출되고 있어, Zuul을 통해 서비스되는 모든 API를 하나의 Swagger page로 노출하고 싶었습니다. 다행히도 Swagger에서 Zuul 연계하는 기능이 있어 이를 소개합니다.
+MSA에 대한 자세한 설명은 차후에 포스팅하기로 하고, 이해를 돕기 위해 간단한 홈페이지 아키텍처 첨부합니다.
+graph LR; A[Client] --|Request| B(User BFF) B --|Request| C{Zuul} C --|Request| D[Mail service] C --|Request| E[User service]  사용법 1.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='Zuul Swagger 연동 | 김봉찬'>
+<meta property='og:description' content='MSA(Micro Service Architecture) 활용하여 팀 홈페이지를 제작하는 과정에서 User BFF에서 백엔드 서비스를 호출하기 위해 Zuul을 사용하였습니다. 여러 가지 서비스가 Zuul을 통해 User BFF에 노출되고 있어, Zuul을 통해 서비스되는 모든 API를 하나의 Swagger page로 노출하고 싶었습니다. 다행히도 Swagger에서 Zuul 연계하는 기능이 있어 이를 소개합니다.
+MSA에 대한 자세한 설명은 차후에 포스팅하기로 하고, 이해를 돕기 위해 간단한 홈페이지 아키텍처 첨부합니다.
+graph LR; A[Client] --|Request| B(User BFF) B --|Request| C{Zuul} C --|Request| D[Mail service] C --|Request| E[User service]  사용법 1.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/zuul-swagger-integration/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='swagger'><meta property='article:tag' content='zuul'><meta property='article:tag' content='srping cloud'><meta property='article:published_time' content='2018-02-27T17:21:07&#43;09:00'/><meta property='article:modified_time' content='2018-02-27T17:21:07&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>Zuul Swagger 연동 | 김봉찬</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/zuul-swagger-integration/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Feb 27, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 1분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>Zuul Swagger 연동</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/bckim0620">김봉찬</a></p>
+
+
+<p>MSA(Micro Service Architecture) 활용하여 팀 홈페이지를 제작하는 과정에서 User BFF에서 백엔드 서비스를 호출하기 위해 Zuul을 사용하였습니다.
+여러 가지 서비스가 Zuul을 통해 User BFF에 노출되고 있어, Zuul을 통해 서비스되는 모든 API를 하나의 Swagger page로 노출하고 싶었습니다.
+다행히도 Swagger에서 Zuul 연계하는 기능이 있어 이를 소개합니다.</p>
+
+<p>MSA에 대한 자세한 설명은 차후에 포스팅하기로 하고, 이해를 돕기 위해 간단한 홈페이지 아키텍처 첨부합니다.</p>
+
+<div class="mermaid" align="center">
+graph LR;
+    A[Client] -->|Request| B(User BFF)
+    B -->|Request| C{Zuul}
+    C -->|Request| D[Mail service]
+    C -->|Request| E[User service]
+</div>
+
+
+<h2 id="사용법">사용법</h2>
+
+<h3 id="1-swagger2-라이브러리-추가">1. Swagger2 라이브러리 추가</h3>
+
+<p>Zuul 프로젝트에 swagger2라이브러리를 추가합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pom.xml" data-lang="pom.xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>io.springfox<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>springfox-swagger2<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>2.6.1<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+ 
+<span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>io.springfox<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>springfox-swagger-ui<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>2.6.1<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span></code></pre></div>
+<h3 id="2-swagger2-설정">2. Swagger2 설정</h3>
+
+<p>아래 소스와 같이 <code>SwaggerResourcesProvider</code>를 상속받아 SwaagerConfiguration을 생성 후 Zuul에 등록된 서비스들의 <code>API DOC URL</code>을 입력합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> java.util.ArrayList<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+ 
+<span style="color:#f92672">import</span> org.springframework.boot.autoconfigure.EnableAutoConfiguration<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.context.annotation.Bean<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.context.annotation.Primary<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.stereotype.Component<span style="color:#f92672">;</span>
+ 
+<span style="color:#f92672">import</span> springfox.documentation.swagger.web.SwaggerResource<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> springfox.documentation.swagger.web.SwaggerResourcesProvider<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> springfox.documentation.swagger.web.UiConfiguration<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> springfox.documentation.swagger2.annotations.EnableSwagger2<span style="color:#f92672">;</span>
+ 
+<span style="color:#a6e22e">@Component</span>
+<span style="color:#a6e22e">@Primary</span>
+<span style="color:#a6e22e">@EnableAutoConfiguration</span>
+<span style="color:#a6e22e">@EnableSwagger2</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SwaggerConfiguration</span> <span style="color:#66d9ef">implements</span> SwaggerResourcesProvider <span style="color:#f92672">{</span>
+ 
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> UiConfiguration <span style="color:#a6e22e">uiConfig</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> UiConfiguration<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;validatorUrl&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;list&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;alpha&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;schema&#34;</span><span style="color:#f92672">,</span>
+                UiConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">Constants</span><span style="color:#f92672">.</span><span style="color:#a6e22e">DEFAULT_SUBMIT_METHODS</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> 60000L<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>SwaggerResource<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">get</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        List<span style="color:#f92672">&lt;</span>SwaggerResource<span style="color:#f92672">&gt;</span> resources <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
+        resources<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>swaggerResource<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dtlabs-registration-service&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;{SERVICE_API_DOC_URL}&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">));</span>
+        resources<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>swaggerResource<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dtlabs-data-mgmt-service&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;{SERVICE_API_DOC_URL}&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">));</span>
+        resources<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>swaggerResource<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dtlabs-user-oauth-service&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;{SERVICE_API_DOC_URL}&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">));</span>
+        <span style="color:#66d9ef">return</span> resources<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+     
+    <span style="color:#66d9ef">private</span> SwaggerResource <span style="color:#a6e22e">swaggerResource</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">,</span> String location<span style="color:#f92672">,</span> String version<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        SwaggerResource swaggerResource <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SwaggerResource<span style="color:#f92672">();</span>
+        swaggerResource<span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span>name<span style="color:#f92672">);</span>
+        swaggerResource<span style="color:#f92672">.</span><span style="color:#a6e22e">setLocation</span><span style="color:#f92672">(</span>location<span style="color:#f92672">);</span>
+        swaggerResource<span style="color:#f92672">.</span><span style="color:#a6e22e">setSwaggerVersion</span><span style="color:#f92672">(</span>version<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> swaggerResource<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+     
+<span style="color:#f92672">}</span></code></pre></div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/swagger" rel="tag">swagger</a></li><li><a href="/tags/zuul" rel="tag">zuul</a></li><li><a href="/tags/srping-cloud" rel="tag">srping cloud</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fzuul-swagger-integration%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fzuul-swagger-integration%2f&amp;text=Zuul%20Swagger%20%ec%97%b0%eb%8f%99" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fzuul-swagger-integration%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fzuul-swagger-integration%2f&amp;title=Zuul%20Swagger%20%ec%97%b0%eb%8f%99" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fzuul-swagger-integration%2f&amp;description=Zuul%20Swagger%20%ec%97%b0%eb%8f%99" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fzuul-swagger-integration%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/bckim0620">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/bckim0620.jpg'/><div class="author-info">
+    <h3>김봉찬</h3>
+    <p>Microservice Architecture Design&amp;Dev</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/ubiquitous-language-in-msa/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">MSA 에서 유비쿼터스 언어(보편 언어)의 중요성</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 27
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 1분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/docker-in-docker/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">Docker in docker</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 27
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 1분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

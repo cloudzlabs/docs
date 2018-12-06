@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Kubernetes 환경에서 MariaDB(Mysql)의 컨테이너를 구성할 때 한글이 깨지는 현상을 해결해봅시다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='Kubernetes에 구성한 MariaDB(Mysql)의 한글 깨짐 현상 해결방법 | 강훈기'>
+<meta property='og:description' content='Kubernetes 환경에서 MariaDB(Mysql)의 컨테이너를 구성할 때 한글이 깨지는 현상을 해결해봅시다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/../mariadb/mariadb-usa-inc.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='kubernetes'><meta property='article:tag' content='mariadb'><meta property='article:published_time' content='2018-04-10T15:53:58&#43;09:00'/><meta property='article:modified_time' content='2018-04-10T15:53:58&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/http://tech.cloudz-labs.io/mariadb/mariadb-usa-inc.png'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>Kubernetes에 구성한 MariaDB(Mysql)의 한글 깨짐 현상 해결방법 | 강훈기</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Apr 10, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 4분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>Kubernetes에 구성한 MariaDB(Mysql)의 한글 깨짐 현상 해결방법</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/hunkee1017">강훈기</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/../mariadb/mariadb-usa-inc.png'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<h3 id="why">Why?</h3>
+
+<p>Kubernetes(a.k.a. K8S)에서 Mysql 또는 Mariadb 이미지를 사용해서 컨테이너를 구성할 때 initialize된 Data에 한글이 깨지는 현상이 발생하는 경우가 있습니다.</p>
+
+<p>구글에서 &ldquo;mysql 한글 깨짐&rdquo;이라고 검색만 해도 같은 문제를 호소하는 분들이 많고, 이를 해결하기 위한 다양한 해결 방법을 가이드하고 있습니다.</p>
+
+<p>하지만 Docker 또는 Kubernetes 환경에서는 대부분이 이미 업로드된 official 이미지를 사용해서 컨테이너를 구성하기 때문에 이를 처리하는데 약간의 수고로움 존재합니다.</p>
+
+<p>이번 세션에서는 K8S 환경에서 mysql(mariadb) 을 구성할 때 한글 깨짐 증상을 해결하고 더 나아가 설정을 자유롭게 할 수 있는 내용을 적어보았습니다.</p>
+
+<h3 id="한글-깨짐-현상">한글 깨짐 현상</h3>
+
+<hr />
+
+<p>먼저 mariadb를 이용해서 DB를 배포해보도록 하겠습니다.</p>
+
+<p>아래 설정은 Kubernetes환경으로 배포하기 위한 yaml 파일입니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+spec:
+  selector:
+    app: mariadb
+  ports:
+    - name: mariadb
+      port: <span style="color:#ae81ff">3306</span>
+      targetPort: <span style="color:#ae81ff">3306</span>
+---
+apiVersion: apps/v1beta2
+kind: Deployment			        <span style="color:#75715e"># 1.9 version 이상에서는 stable된 StatefulSet사용을 권장</span>
+metadata:
+  name: mariadb-deployment
+  labels:
+    app: mariadb
+spec:
+  replicas: <span style="color:#ae81ff">1</span>
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        env:
+        - name: MYSQL_ROOT_PASSWORD     <span style="color:#75715e"># root계정의 패스워드</span>
+          value: root
+        - name: MYSQL_DATABASE          <span style="color:#75715e"># 구성할 database명</span>
+          value: database
+        - name: MYSQL_USER              <span style="color:#75715e"># database에 권한이 있는 user</span>
+          value: user
+        - name: MYSQL_PASSWORD          <span style="color:#75715e"># database에 권한이 있는 user의 패스워드</span>
+          value: password
+        image: mariadb
+        imagePullPolicy: IfNotPresent   <span style="color:#75715e"># 이미지를 pull받는 규칙을 지정(Always / IfNotPresent / Never)</span>
+        ports:
+        - containerPort: <span style="color:#ae81ff">3306</span>
+      restartPolicy: Always      
+status: {}</code></pre></div>
+<p>작성된 위 파일을 가지고 Kubernets 환경으로 배포해보겠습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl apply -f mariadb.yaml
+service <span style="color:#e6db74">&#34;mariadb&#34;</span> created
+deployment.apps <span style="color:#e6db74">&#34;mariadb-deployment&#34;</span> created</code></pre></div>
+<p>생성된 DB에 테이블을 생성하고 데이터를 집어넣습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>contents<span style="color:#f92672">`</span> (
+  <span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> int <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> AUTO_INCREMENT,
+  <span style="color:#f92672">`</span>category<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>grade<span style="color:#f92672">`</span> double <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>has_episodes<span style="color:#f92672">`</span> bit(<span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>poster<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>rate<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>reg_date<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>runtime<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>stillcut<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>summary<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>title<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>video<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span><span style="color:#66d9ef">view</span><span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span><span style="color:#66d9ef">year</span><span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>)
+);
+
+
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>contents<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>category<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>grade<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>has_episodes<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>poster<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>rate<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>reg_date<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>runtime<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>stillcut<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>summary<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>title<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>video<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span><span style="color:#66d9ef">view</span><span style="color:#f92672">`</span>, <span style="color:#f92672">`</span><span style="color:#66d9ef">year</span><span style="color:#f92672">`</span>)
+<span style="color:#66d9ef">VALUES</span>
+	(<span style="color:#e6db74">&#39;62&#39;</span>,<span style="color:#e6db74">&#39;action&#39;</span>,<span style="color:#ae81ff">2</span>,b<span style="color:#e6db74">&#39;0&#39;</span>,<span style="color:#e6db74">&#39;https://art-s.nflximg.net/09934/245a98e19d095c5b662e4ef469aec5d35db09934.webp&#39;</span>,<span style="color:#e6db74">&#39;12&#39;</span>,<span style="color:#e6db74">&#39;2015-11-11&#39;</span>,<span style="color:#ae81ff">131</span>,<span style="color:#e6db74">&#39;http://awesomewallpaper.files.wordpress.com/2013/08/pacific-rim-wallpapers-7.jpg&#39;</span>,<span style="color:#e6db74">&#39;바다 외계 생명체에 맞선 세계 동맹이 실패로 끝나면서 전직 파일럿과 새내기 파일럿이 힘을 합쳐 지구를 구하려 한다.&#39;</span>,<span style="color:#e6db74">&#39;퍼시픽 림&#39;</span>,<span style="color:#e6db74">&#39;i0ZJ7BUkUco&#39;</span>,<span style="color:#ae81ff">69</span>,<span style="color:#ae81ff">2013</span>);</code></pre></div>
+<p>위 데이터에는 한글이 포함되어 있습니다.</p>
+
+<p>하지만 위 같은 설정으로는 한글을 사용할 수 없습니다. (<del>한글을 세계 표준으로&hellip;</del>)</p>
+
+<p><strong>API호출 결과</strong></p>
+
+<p><img src="../mariadb/latin1.png" alt="latin1" /></p>
+
+<p>위는 사용될 title, summary 컬럼에서 한글이 깨져있는 현상입니다.</p>
+
+<p>해당 데이터베이스의 현재 character를 살펴 보겠습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">MariaDB [(<span style="color:#66d9ef">none</span>)]<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">show</span> variables <span style="color:#66d9ef">like</span> <span style="color:#e6db74">&#39;c%&#39;</span>;
+<span style="color:#f92672">+</span><span style="color:#75715e">--------------------------+----------------------------+
+</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> Variable_name            <span style="color:#f92672">|</span> Value                      <span style="color:#f92672">|</span>
+<span style="color:#f92672">+</span><span style="color:#75715e">--------------------------+----------------------------+
+</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> character_set_client     <span style="color:#f92672">|</span> latin1                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_connection <span style="color:#f92672">|</span> latin1                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_database   <span style="color:#f92672">|</span> latin1                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_filesystem <span style="color:#f92672">|</span> binary                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_results    <span style="color:#f92672">|</span> latin1                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_server     <span style="color:#f92672">|</span> latin1                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_system     <span style="color:#f92672">|</span> utf8                       <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_sets_dir       <span style="color:#f92672">|</span> <span style="color:#f92672">/</span>usr<span style="color:#f92672">/</span><span style="color:#66d9ef">share</span><span style="color:#f92672">/</span>mysql<span style="color:#f92672">/</span>charsets<span style="color:#f92672">/</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> check_constraint_checks  <span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>                         <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> collation_connection     <span style="color:#f92672">|</span> latin1_swedish_ci          <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> collation_database       <span style="color:#f92672">|</span> latin1_swedish_ci          <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> collation_server         <span style="color:#f92672">|</span> latin1_swedish_ci          <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> completion_type          <span style="color:#f92672">|</span> NO_CHAIN                   <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> concurrent_insert        <span style="color:#f92672">|</span> ALWAYS                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> connect_timeout          <span style="color:#f92672">|</span> <span style="color:#ae81ff">5</span>                          <span style="color:#f92672">|</span>
+<span style="color:#f92672">+</span><span style="color:#75715e">--------------------------+----------------------------+</span></code></pre></div>
+<p>한글 깨짐 현상은 mysql(mariadb)의 공식 이미지의 디폴트 언어 값이 latin1으로 되어있기 때문에 발생하는 증상입니다.</p>
+
+<p><strong>그. 래. 서!</strong></p>
+
+<p>Docker Hub에 존재하는 mariadb 이미지에 들어가봤습니다. (<a href="https://hub.docker.com/_/mariadb/" target="_blank">https://hub.docker.com/_/mariadb/</a>)</p>
+
+<p>어떤 설정을 해야된다라는 내용이 Docker 관점으로 <del>영어로</del> 써있습니다.</p>
+
+<p>그 중에서 아래와 같은 내용이 있습니다.</p>
+
+<p><strong>Configuration without a <code>cnf</code> file</strong></p>
+
+<blockquote>
+<p>Many configuration options can be passed as flags to <code>mysqld</code>. This will give you the flexibility to customize the container without needing a <code>cnf</code> file.</p>
+
+<p>For example, if you want to change the default encoding and collation for all tables to use UTF-8 (<code>utf8mb4</code>) just run the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    $ docker run --name some-mariadb -e MYSQL_ROOT_PASSWORD<span style="color:#f92672">=</span>my-secret-pw -d mariadb:tag --character-set-server<span style="color:#f92672">=</span>utf8mb4 --collation-server<span style="color:#f92672">=</span>utf8mb4_unicode_ci</code></pre></div>
+<p>If you would like to see a complete list of available options, just run:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    $ docker run -it --rm mariadb:tag --verbose --help</code></pre></div></blockquote>
+
+<p>docker run을 실행할 때 argument 값으로 UTF-8을 설정할 수 있다라는 내용입니다.
+이것을 Kubernetes에서 설정을 넣어야하는데 설정이 익숙하지 않으신 분들은 어디에 넣어야할 지 모르실 수 있습니다.</p>
+
+<p><strong>그 설정은 다음과 같습니다.</strong></p>
+
+<h4 id="kubernetes-환경에서-db구성에-대한-샘플-yaml파일">kubernetes 환경에서 DB구성에 대한 샘플 yaml파일</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+spec:
+  selector:
+    app: mariadb
+  ports:
+    - name: mariadb
+      port: <span style="color:#ae81ff">3306</span>
+      targetPort: <span style="color:#ae81ff">3306</span>
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: mariadb-deployment
+  labels:
+    app: mariadb
+spec:
+  replicas: <span style="color:#ae81ff">1</span>
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: database
+        - name: MYSQL_USER
+          value: user
+        - name: MYSQL_PASSWORD
+          value: password
+        image: mariadb
+        imagePullPolicy: IfNotPresent
+        args: 
+          - <span style="color:#e6db74">&#34;--character-set-server=utf8mb4&#34;</span>        <span style="color:#75715e"># default Character Set 을 지정하는 argument</span>
+          - <span style="color:#e6db74">&#34;--collation-server=utf8mb4_unicode_ci&#34;</span> <span style="color:#75715e"># 문자열 비교 규칙 _ci(case insensitive) / _cs(case sensitive) / _bin(binary)</span>
+        ports:
+        - containerPort: <span style="color:#ae81ff">3306</span>
+      restartPolicy: Always      
+status: {}</code></pre></div>
+<p>위와 같은 설정을 넣어주면 해당되는 mysqld 명령으로 argument를 설정하는 것에 포함되는 부분입니다.</p>
+
+<p>설정이 잘 되어있는지 확인해보겠습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">MariaDB [(<span style="color:#66d9ef">none</span>)]<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">show</span> variables <span style="color:#66d9ef">like</span> <span style="color:#e6db74">&#39;c%&#39;</span>;
+<span style="color:#f92672">+</span><span style="color:#75715e">--------------------------+----------------------------+
+</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> Variable_name            <span style="color:#f92672">|</span> Value                      <span style="color:#f92672">|</span>
+<span style="color:#f92672">+</span><span style="color:#75715e">--------------------------+----------------------------+
+</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> character_set_client     <span style="color:#f92672">|</span> latin1                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_connection <span style="color:#f92672">|</span> latin1                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_database   <span style="color:#f92672">|</span> utf8mb4                    <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_filesystem <span style="color:#f92672">|</span> binary                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_results    <span style="color:#f92672">|</span> latin1                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_server     <span style="color:#f92672">|</span> utf8mb4                    <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_set_system     <span style="color:#f92672">|</span> utf8                       <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> character_sets_dir       <span style="color:#f92672">|</span> <span style="color:#f92672">/</span>usr<span style="color:#f92672">/</span><span style="color:#66d9ef">share</span><span style="color:#f92672">/</span>mysql<span style="color:#f92672">/</span>charsets<span style="color:#f92672">/</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> check_constraint_checks  <span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>                         <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> collation_connection     <span style="color:#f92672">|</span> latin1_swedish_ci          <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> collation_database       <span style="color:#f92672">|</span> utf8mb4_unicode_ci         <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> collation_server         <span style="color:#f92672">|</span> utf8mb4_unicode_ci         <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> completion_type          <span style="color:#f92672">|</span> NO_CHAIN                   <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> concurrent_insert        <span style="color:#f92672">|</span> ALWAYS                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> connect_timeout          <span style="color:#f92672">|</span> <span style="color:#ae81ff">5</span>                          <span style="color:#f92672">|</span>
+<span style="color:#f92672">+</span><span style="color:#75715e">--------------------------+----------------------------+</span></code></pre></div>
+<p>잘 되었네요!!</p>
+
+<p>실제 데이터를 넣어서 확인해본 결과는 다음과 같습니다.</p>
+
+<p><img src="../mariadb/utf-8.png" alt="utf-8" /></p>
+
+<p>다음시간에는 mariadb 전체 설정을 바꿀 수 있는 my.cnf 파일을 작성해서 Kubernetes 환경으로 배포하는 세션을 다루어보도록 하겠습니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/spinnaker-deploy-helm-chart/">Spinnaker를 활용한 Helm chart 배포</a></li>
+        
+        <li><a href="/posts/fluent-bit/">경량화 Log Processor &amp; Forwarder : Fluent Bit</a></li>
+        
+        <li><a href="/posts/monitoring-in-kubernetes/">Monitoring in kubernetes</a></li>
+        
+        <li><a href="/posts/logging-in-kubernetes/">Logging in kubernetes</a></li>
+        
+        <li><a href="/posts/kubernetes/secret/">[Kubernetes 활용(7/8)] Secret</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/mariadb" rel="tag">mariadb</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fmariadb-utf8%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fmariadb-utf8%2f&amp;text=Kubernetes%ec%97%90%20%ea%b5%ac%ec%84%b1%ed%95%9c%20MariaDB%28Mysql%29%ec%9d%98%20%ed%95%9c%ea%b8%80%20%ea%b9%a8%ec%a7%90%20%ed%98%84%ec%83%81%20%ed%95%b4%ea%b2%b0%eb%b0%a9%eb%b2%95" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fmariadb-utf8%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fmariadb-utf8%2f&amp;title=Kubernetes%ec%97%90%20%ea%b5%ac%ec%84%b1%ed%95%9c%20MariaDB%28Mysql%29%ec%9d%98%20%ed%95%9c%ea%b8%80%20%ea%b9%a8%ec%a7%90%20%ed%98%84%ec%83%81%20%ed%95%b4%ea%b2%b0%eb%b0%a9%eb%b2%95" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fmariadb-utf8%2f&amp;description=Kubernetes%ec%97%90%20%ea%b5%ac%ec%84%b1%ed%95%9c%20MariaDB%28Mysql%29%ec%9d%98%20%ed%95%9c%ea%b8%80%20%ea%b9%a8%ec%a7%90%20%ed%98%84%ec%83%81%20%ed%95%b4%ea%b2%b0%eb%b0%a9%eb%b2%95" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fmariadb-utf8%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/hunkee1017">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/hunkeekang.jpg'/><div class="author-info">
+    <h3>강훈기</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/istio/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">Istio</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Apr 10
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/kubernetes/backingservice/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Kubernetes 활용(4/8)] Mysql DB 연동하기</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Apr 10
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

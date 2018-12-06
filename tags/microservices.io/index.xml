@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>microservices.io on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/microservices.io/</link>
+    <description>Recent content in microservices.io on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 02 Mar 2018 10:16:04 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/microservices.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Microservices io 페이지 훑어보기 </title>
+      <link>http://tech.cloudz-labs.io/posts/microservices-io/</link>
+      <pubDate>Fri, 02 Mar 2018 10:16:04 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/microservices-io/</guid>
+      <description>최근 마이크로 서비스 아키텍처를 적용하는 사이트가 점차 많아지면서 Cloudz Labs에도 마이크로 서비스 아키텍처에 대한 문의가 부쩍 많아지고 있습니다.
+CloudZ Labs에서는 작년부터 마이크로 서비스 아키텍처 적용을 위해 필요한 기술들을 리서치하고 적용하는 업무를 진행하고 있습니다.
+마이크로 서비스 아키텍처에 관련된 항목을 잘 정리해둔 Microservices.io 페이지 내용을 훑어보며 CloudZ Labs에서 이미 적용 중인 내용과 보충할 내용 추가 리서치가 필요한 내용들을 정리해 볼 생각입니다.
+Microservices.io 페이지를 정리한 내용입니다. http://microservices.io/
+마이크로 서비스 적용 방법 마이크로 서비스 아키텍처 적용 프로세스</description>
+    </item>
+    
+  </channel>
+</rss>

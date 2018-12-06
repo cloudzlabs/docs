@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>fluentd on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/fluentd/</link>
+    <description>Recent content in fluentd on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 27 Jul 2018 14:19:56 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/fluentd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>경량화 Log Processor &amp; Forwarder : Fluent Bit</title>
+      <link>http://tech.cloudz-labs.io/posts/fluent-bit/</link>
+      <pubDate>Fri, 27 Jul 2018 14:19:56 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/fluent-bit/</guid>
+      <description>Fluent Bit v0.13을 기준으로 작성된 포스팅입니다. https://fluentbit.io
+ Log Collector 요즘은 오픈소스화된 다양한 플랫폼이 나오게 되면서 데이터 정보를 수집하기 위해 어려움이 발생합니다. 서로간의 정보의 출처도 다를뿐더러 다양한 데이터 포맷으로 전달해 오는 데이터를 처리해야만 하고 마지막으로 최종 목적지 또한 다를 수 있습니다.
+이러한 요구를 만족시키기 위해 2011년 Fluentd라는 프로젝트가 탄생하게 됩니다. Ruby로 작성된 Fluentd는 여러 소스의 데이터를 집계하고 형식이 다른 데이터를 JSON 객체로 통합하여 다른 출력 대상으로 라우팅 할 수 있는 원 스톱 구성 요소인 통합 로깅 레이어로 작동하도록 개발되었습니다.</description>
+    </item>
+    
+  </channel>
+</rss>

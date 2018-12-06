@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>1000jaeh on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/authors/1000jaeh/</link>
+    <description>Recent content in 1000jaeh on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 21 Jun 2018 10:01:45 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/authors/1000jaeh/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hugo를 활용한 기술 블로그 구축기</title>
+      <link>http://tech.cloudz-labs.io/posts/hugo/hugo/</link>
+      <pubDate>Thu, 21 Jun 2018 10:01:45 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/hugo/hugo/</guid>
+      <description>현재 보고계신 블로그는 Hugo + Github Pages로 운영되고 있습니다. 이번 글에서는 Hugo를 활용한 Static Site 구축에 대해서 얘기해볼까 합니다.
+CMS에서 Static Generator까지 많은 사람들이 블로그를 구축한다고 했을 때, 가장 많이 떠올리는 것은 다음과 같이 2가지 형태일 것입니다.
+ Naver Blog, Tistroy, Blogger 등등 Wordpress, Drupal, Joomla  첫번째 형태인 Naver나 Tistroy의 포털 사이트에서 제공하는 가입형 블로그 서비스는, 단순하게 가입만 해도 사용할 수 있기 때문에, 도메인이나 호스팅 등등의 것들을 신경쓰지 않고 바로 글을 작성할 수 있죠.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(8/8)] Docker의 Network</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/docker-network/</link>
+      <pubDate>Fri, 09 Mar 2018 08:29:07 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/docker-network/</guid>
+      <description>Docker Swarm은 두 가지 종류의 Traffic을 생성합니다.
+ 제어 및 관리 영역 Traffic: Docker Swarm에 대한 참가 및 탈퇴 요청과 같은 Docker Swarm의 관리 Message가 포함됩니다. 해당 Traffic은 항상 암호화됩니다. Application Data 영역 Traffic: Container 및 외부 Client와의 Traffic이 포함됩니다.  이 중에서 해당 Post에서는, Application Data 영역의 Traffic에 대해서 확인해보고자 합니다.
+Docker의 Networking에 대한 자세한 내용은 Docker Networking Reference Architecture문서를 참고하시기 바랍니다.
+ Docker의 Network 먼저, Docker는 Overlay, Ingress, docker\_gwbridge의 세 가지 Network이 존재합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/swarm-architecture/</link>
+      <pubDate>Fri, 09 Mar 2018 08:27:58 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/swarm-architecture/</guid>
+      <description>이제는 구성된 Docker Swarm에 Application을 배포해보겠습니다. Docker Swarm에 Application Image를 배포하기 위해선, Service를 생성해야 합니다. Service는 큰 Application Context 내의 Microservice들의 Image를 의미하며, 예로 HTTP Server, Database 또는 분산 환경에서 실행하고자 하는 다양한 유형의 Runtime Program들이 여기에 속한다고 할 수 있습니다. Service를 생성하고자 할 때, 사용할 Container Image와 Container 내에서 실행할 명령을 지정합니다. 또한, 다음과 같은 Option들을 정의하여 사용합니다.
+ Docker Swarm 외부에서 접속할 수 있는 Port Docker Swarm 내부의 다른 Service와 통신하기 위한 Overlay Network CPU 및 Memory 사용에 대한 정책 Rolling Update 정책 Image의 Replica 개수  Service Service가 독립형 Container들을 직접 실행하는 것에 비해 갖는 주요 장점 중 하나는, 수동으로 Service를 다시 시작할 필요없이 연결된 Network 및 Volume 등의 구성을 수정할 수 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/swarm/</link>
+      <pubDate>Fri, 09 Mar 2018 08:27:01 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/swarm/</guid>
+      <description>지금까지는 단일 Docker Machine에서 Container를 실행시켜 서비스를 제공했습니다. 그렇다면, 현 상태로 실제 서비스를 운영할 수 있을까요? 한참 부족합니다! 장애없이 원활한 서비스를 제공하기 위해서는, 내결함성, 고가용성 등등 많은 사항들을 고려하여야 합니다. 결국은 단일 Machine으로는 사용할 수 없고 Cluster 형태로 구성되어야하며, 그 위에서 서비스들은 여러개의 Instance로 부하가 분산되어야 하며, 장애가 발생하더라도 스스로 복구 할 수 있는 구조로 실행되어야 합니다. 마지막으로 이것들이 자동화되어 있어야합니다. 수 십개에서 수 백개로 나뉘어진 Service들을 사람이 직접 관리할 수 없기 때문입니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(5/8)] Volume을 활용한 Data 관리</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/volume/</link>
+      <pubDate>Fri, 09 Mar 2018 08:25:25 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/volume/</guid>
+      <description>우리는 Container의 Writable Layer에 Data를 저장할 수 있다는 것을 알고 있습니다. 하지만, 여기에는 몇 가지 문제점이 존재합니다.
+ Container가 삭제되면 Data도 같이 삭제됩니다. 또한, 다른 프로세스에서 Container에 저장된 Data를 사용하기 어렵습니다. Container의 Writable Layer에는 Container가 실행 중인 Host Machine과 밀접하게 연결됩니다. 따라서, Data를 다른 곳으로 쉽게 옮길 수 없습니다. Container의 Writable Layer에 Data를 저장하기 위해서는 File System을 관리하는 Storage Driver가 필요합니다. Storage Driver는 Linux 커널을 사용하여 공용 File System을 제공합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(4/8)] docker build &amp; push</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/docker-build-push/</link>
+      <pubDate>Fri, 09 Mar 2018 08:23:38 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/docker-build-push/</guid>
+      <description>Docker 환경에 Service 및 Application을 구동시키 위한 전체적인 과정은 다음과 같습니다.
+graph BT; A[Dockerfile] --|build| B[Images] B --|push| C[Docker Registry] C --|pull| B subgraph Local Docker Instance B --|Run| D[Container] end  지금까지는, Docker Registry(Docker Hub)에 배포되어 있는 있는 Image를 이용해 Container를 구동시켰습니다. 이제부터는 위에서 정리한 과정대로, Dockerfile로 Image를 생성하고 다른 Machine에서 배포된 Image로 Container를 실행시켜 보겠습니다.
+본 예제는 About storage drivers에 있는 예제를 참고하여 진행했습니다.
+ 신규 Image 생성에서 배포까지 Dockerfile 작성 image-build-test 폴더를 생성한 뒤, 다음의 내용이 포함된 Dockerfile을 생성합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(3/8)] Container는 뭘까?</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/what-is-container/</link>
+      <pubDate>Fri, 09 Mar 2018 08:22:39 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/what-is-container/</guid>
+      <description>Docker는 Application의 배포와 운영을 쉽게 도와주는 &amp;lsquo;Containers as a Service(CaaS) Platform이며, Client-Server Model로 동작하고 있습니다. 여기서 Container란, 운영체제의 커널이 하나의 인스턴스가 아닌, 여러 개의 격리된 인스턴스들을 갖출 수 있도록 하는 서버 가상화 방식입니다. 이러한 인스턴스들은 이를 소유하고 있는 Host Machine과 사용자의 관점에서 바라보면, 실제 서버인 것처럼 보입니다.
+가상화(Virtualization) Container는 가상화 방식의 한 종류입니다. 하지만, 흔히 우리가 알고있는 가상화(Virtualization)는 VMWare Workstation과 같은 소프트웨어를 이용해, Linux나 MacOS위에 Windows를 올려서 사용하는 그런 것을 떠올릴 것입니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(2/8)] Docker&#39;s Skeleton</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/docker-architecture/</link>
+      <pubDate>Thu, 08 Mar 2018 23:23:28 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/docker-architecture/</guid>
+      <description>Docker는 Container를 구동시킬 수 있는 환경만 구성되어 있다면, Application들을 한 번의 Build로 어디서든 구동시킬 수 있습니다. 하지만 1차원적으로만 살펴보면, Java Application이 JVM 위에서 실행되는 모습과 크게 다르지 않아 보입니다. Java Application도 JVM만 설치되어 있다면, 어디에서든 실행되죠. 마찬가지로, Python Application도 동일합니다. 그렇다면, 이 모든 것들이 결국은 똑같이 생겼고, 단지 실행되는 주체(Container, JAR, py)만 다른 것일까요?
+Client-Server Model Docker는 서비스의 요청자(Docker Client)와 제공자(Docker Server)간의 작업이 분리되어 동작하는 Client-Server Model로 되어있으며, Docker Client는 REST API를 사용하여 Docker Server를 제어합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(1/8)] Hello Docker!</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/hello-docker/</link>
+      <pubDate>Thu, 08 Mar 2018 18:47:30 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/hello-docker/</guid>
+      <description>Docker란 리눅스의 응용프로그램들을 소프트웨어 Container 안에 배치시키는 일을 자동화하는 오픈 소스 프로젝트로서, Docker 공식 문서에 따르면 Containers as a Service(CaaS) Platform으로 정의하고 있습니다.
+Docker는 홈페이지에 Docker의 기능을 아래와 같이 명시 하고 있습니다.
+ Docker Container는 일종의 소프트웨어 실행에 필요한 모든 것들을 포함하는 완전한 파일 시스템 안에 감싼다. 여기에는 코드, 런타임, 시스템 도구, 시스템 라이브러리 등 서버에 설치되는 무엇이든 전부 아우른다. 이는 실행 중인 환경에 관계 없이 언제나 동일하게 실행될 것을 보증한다.</description>
+    </item>
+    
+  </channel>
+</rss>

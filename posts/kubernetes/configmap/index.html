@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='이번에는 Kubernetes에서 제공하는 ConfigMap이라는 Object를 보도록 하겠습니다.
+ConfigMap 이란? ConfigMap은 컨테이너 이미지에서 사용하는 환경변수와 같은 세부 정보를 분리하고, 그 환경변수에 대한 값을 외부로 노출 시키지 않고 내부에 존재하는 스토리지에 저장해서 사용하는 방법입니다. 혹시 마이크로서비스 아키텍처에서 사용하는 Spring Cloud Config(Config Server)를 사용한 적이 있다면 동일한 역할을 하는 것인지 하는 생각이 들 수 있는데요. Spring Cloud Config 같은 경우에는 설정 파일 자체를 분리하고 파일에 대한 내용이 변경된다면 자동으로 Refresh 해주는 기능을 가지고 있습니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Kubernetes 활용(6/8)] ConfigMap | 김빛나'>
+<meta property='og:description' content='이번에는 Kubernetes에서 제공하는 ConfigMap이라는 Object를 보도록 하겠습니다.
+ConfigMap 이란? ConfigMap은 컨테이너 이미지에서 사용하는 환경변수와 같은 세부 정보를 분리하고, 그 환경변수에 대한 값을 외부로 노출 시키지 않고 내부에 존재하는 스토리지에 저장해서 사용하는 방법입니다. 혹시 마이크로서비스 아키텍처에서 사용하는 Spring Cloud Config(Config Server)를 사용한 적이 있다면 동일한 역할을 하는 것인지 하는 생각이 들 수 있는데요. Spring Cloud Config 같은 경우에는 설정 파일 자체를 분리하고 파일에 대한 내용이 변경된다면 자동으로 Refresh 해주는 기능을 가지고 있습니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/kubernetes/configmap/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='kubernetes'><meta property='article:tag' content='container'><meta property='article:tag' content='container orchestration'><meta property='article:tag' content='k8s'><meta property='article:tag' content='configmap'><meta property='article:published_time' content='2018-05-11T13:55:48&#43;09:00'/><meta property='article:modified_time' content='2018-05-11T13:55:48&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Kubernetes 활용(6/8)] ConfigMap | 김빛나</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/kubernetes/configmap/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>May 11, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 6분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Kubernetes 활용(6/8)] ConfigMap</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/blingeeeee">김빛나</a></p>
+
+
+<p>이번에는 Kubernetes에서 제공하는 ConfigMap이라는 Object를 보도록 하겠습니다.</p>
+
+<h2 id="configmap-이란">ConfigMap 이란?</h2>
+
+<hr />
+
+<p>ConfigMap은 컨테이너 이미지에서 사용하는 환경변수와 같은 세부 정보를 분리하고, 그 환경변수에 대한 값을 외부로 노출 시키지 않고 내부에 존재하는 스토리지에 저장해서 사용하는 방법입니다. <br/><br/>혹시 마이크로서비스 아키텍처에서 사용하는 Spring Cloud Config(Config Server)를 사용한 적이 있다면 동일한 역할을 하는 것인지 하는 생각이 들 수 있는데요. Spring Cloud Config 같은 경우에는 설정 파일 자체를 분리하고 파일에 대한 내용이 변경된다면 자동으로 Refresh 해주는 기능을 가지고 있습니다.<br/> <br/>반면에 ConfigMap 은 자동 Refresh 기능이 없고 변경 시 다시 Pod를 띄워줘야 합니다. 또한 파일로 ConfigMap을 생성한다면 설정 파일 자체를 분리할 수는 있지만 실제로 설정 파일의 값을 애플리케이션에서 사용하기 위해서는 추가적인 파싱 작업이 필요합니다. <br/><br/>그래서 동일한 역할을 한다고 볼 수는 없으며 Spring Cloud Config 가 좀 더 강력한 기능을 제공한다고 볼 수 있을 것 같습니다. <br/>하지만.. Spring Cloud Config 라이브러리는 Spring Boot로 작성되기 때문에 확실히 언어적인 종속성이 있는 것은 사실입니다. 뭐 찾아보면 다른 언어로 작성된 오픈소스가 있기야 하겠지만 아무래도 실제 시스템에서 사용되기엔 많은 검증이 필요하겠지요.<br/><br/> 그럼 ConfigMap을 일반 문자열 또는 파일로 생성하는 두 가지 방식에 대해 알아봅시다.</p>
+
+<h2 id="configmap-활용하기">ConfigMap 활용하기</h2>
+
+<hr />
+
+<h3 id="configmap-생성-literal-values">ConfigMap 생성 (literal values)</h3>
+
+<h4 id="문자열-값으로-configmap-생성">문자열 값으로 ConfigMap 생성</h4>
+
+<p><code>kubectl create configmap</code> 명령어의 <strong>&ndash;from–literal</strong> 옵션으로
+ConfigMap에 리터럴 값을 제공합니다. </p>
+
+<p>아래와 같이 special-config 를 작성해 봅시다.</p>
+
+<p>Window OS의 경우 아래 yaml 파일로 ConfigMap을 직접 생성하는 방식으로
+사용하세요.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl create configmap special-config --from-literal<span style="color:#f92672">=</span>special.how<span style="color:#f92672">=</span>very --from-literal<span style="color:#f92672">=</span>special.type<span style="color:#f92672">=</span>charm</code></pre></div>
+<p>다른 방법으로는 yaml 파일로 ConfigMap을 생성할 수 있으며 파일에 데이터를
+key:value 형태로 등록합니다.</p>
+
+<p>아래와 같이  env-config 를 작성해 봅시다.</p>
+
+<p><strong>env-config.yaml</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-config
+data:
+  log_level: INFO</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl apply -f env-config.yaml</code></pre></div>
+<p><code>kubectl describe</code> 또는 <code>kubectl get</code> 명령어를 통해 생성된
+ConfigMap의 정보를 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl describe configmaps special-config 
+Name:         special-config
+Namespace:    default
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+
+Data
+<span style="color:#f92672">====</span>
+special.how:
+----
+very
+special.type:
+----
+charm
+Events:  &lt;none&gt;</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get configmaps env-config -o yaml
+apiVersion: v1
+data:
+  log_level: INFO
+kind: ConfigMap
+metadata:
+  creationTimestamp: <span style="color:#ae81ff">2017</span>-12-07T09:32:59Z
+  name: env-config
+  namespace: default
+  resourceVersion: <span style="color:#e6db74">&#34;10304&#34;</span>
+  selfLink: /api/v1/namespaces/default/configmaps/env-config
+  uid: 9cfd35ce-db31-11e7-a37c-08002780475f</code></pre></div>
+<h4 id="pod에서-configmap-데이터-사용">Pod에서 ConfigMap 데이터 사용</h4>
+
+<p>아래와 같이 배포할 Pod spec에 ConfigMap의 데이터를 환경변수(<strong><em>env</em></strong>)로
+개별적으로 정의하거나</p>
+
+<p><strong><em>envFrom</em></strong>을 사용하여 ConfigMap의 모든 데이터를 Pod 환경 변수로
+정의할 수 있습니다. 이렇게 설정한 경우 ConfigMap의 key가 Pod 환경 변수
+이름이 됩니다.</p>
+
+<p><strong>gs-spring-boot-docker-deployment.yaml</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: gs-spring-boot-docker-deployment
+  labels:
+    app: gs-spring-boot-docker
+spec:
+  replicas: <span style="color:#ae81ff">1</span>
+  selector:
+    matchLabels:
+      app: gs-spring-boot-docker
+  template:
+    metadata:
+      labels:
+        app: gs-spring-boot-docker
+    spec:
+      containers:
+      - name: gs-spring-boot-docker
+        image: dtlabs/gs-spring-boot-docker:<span style="color:#ae81ff">1.0</span>
+        ports:
+        - containerPort: <span style="color:#ae81ff">8080</span>
+        env:
+        - name : SPRING_PROFILES_ACTIVE
+          value : k8s
+        - name: SPECIAL_LEVEL_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: special-config
+              key: special.how
+        - name: SPECIAL_TYPE_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: special-config
+              key: special.type
+        envFrom:
+          - configMapRef:
+              name: env-config
+      restartPolicy: Always</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl apply -f gs-spring-boot-docker-deployment.yaml</code></pre></div>
+<p>배포된 Pod에 접속하여 환경변수가 잘 적용되었는지 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pod
+NAME                                                READY     STATUS        RESTARTS   AGE
+gs-spring-boot-docker-deployment-764579896b-zm69w   <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          3s
+$ kubectl exec -ti gs-spring-boot-docker-deployment-764579896b-zm69w sh
+/ <span style="color:#75715e"># env</span>
+KUBERNETES_PORT<span style="color:#f92672">=</span>tcp://10.96.0.1:443
+KUBERNETES_SERVICE_PORT<span style="color:#f92672">=</span><span style="color:#ae81ff">443</span>
+JAVA_ALPINE_VERSION<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>.131.11-r2
+HOSTNAME<span style="color:#f92672">=</span>gs-spring-boot-docker-deployment-764579896b-zm69w
+SHLVL<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+HOME<span style="color:#f92672">=</span>/root
+SPECIAL_TYPE_KEY<span style="color:#f92672">=</span>charm
+JAVA_VERSION<span style="color:#f92672">=</span>8u131
+TERM<span style="color:#f92672">=</span>xterm
+KUBERNETES_PORT_443_TCP_ADDR<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.96.0.1
+PATH<span style="color:#f92672">=</span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
+KUBERNETES_PORT_443_TCP_PORT<span style="color:#f92672">=</span><span style="color:#ae81ff">443</span>
+JAVA_OPTS<span style="color:#f92672">=</span>
+KUBERNETES_PORT_443_TCP_PROTO<span style="color:#f92672">=</span>tcp
+LANG<span style="color:#f92672">=</span>C.UTF-8
+SPECIAL_LEVEL_KEY<span style="color:#f92672">=</span>very
+log_level<span style="color:#f92672">=</span>INFO
+KUBERNETES_SERVICE_PORT_HTTPS<span style="color:#f92672">=</span><span style="color:#ae81ff">443</span>
+KUBERNETES_PORT_443_TCP<span style="color:#f92672">=</span>tcp://10.96.0.1:443
+PWD<span style="color:#f92672">=</span>/
+JAVA_HOME<span style="color:#f92672">=</span>/usr/lib/jvm/java-1.8-openjdk
+KUBERNETES_SERVICE_HOST<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.96.0.1
+SPRING_PROFILES_ACTIVE<span style="color:#f92672">=</span>k8s</code></pre></div>
+<div class="notices warning" ><p>ConfigMap이 수정되면 Pod도 다시 배포되어야 적용됩니다.</p>
+</div>
+
+
+<h3 id="configmap-생성-files">ConfigMap 생성 (files)</h3>
+
+<h4 id="파일로-configmap-생성하기">파일로 ConfigMap 생성하기</h4>
+
+<p>아래의 redis-config 파일로 ConfigMap을 생성합니다.</p>
+
+<p><code>kubectl create configmap</code> 명령어의 <strong><em>&ndash;from–file</em></strong> 옵션으로
+ConfigMap에 파일 데이터를 제공합니다. </p>
+
+<p><strong>redis-config</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">maxmemory 2mb
+maxmemory-policy allkeys-lru</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ls
+redis-config
+$ kubectl create configmap example-redis-config --from-file<span style="color:#f92672">=</span>redis-config
+configmap <span style="color:#e6db74">&#34;example-redis-config&#34;</span> created</code></pre></div>
+<p>ConfigMap이 제대로 생성되었는지 확인합니다.</p>
+
+<p>아래와 같이 ConfigMap의 data 섹션에 파일명은 key, 파일내용 전체가
+value값이 됩니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get configmap example-redis-config -o yaml
+apiVersion: v1
+data:
+  redis-config: |-
+    maxmemory 2mb
+    maxmemory-policy allkeys-lru
+kind: ConfigMap
+metadata:
+  creationTimestamp: <span style="color:#ae81ff">2017</span>-12-07T10:00:37Z
+  name: example-redis-config
+  namespace: default
+  resourceVersion: <span style="color:#e6db74">&#34;12206&#34;</span>
+  selfLink: /api/v1/namespaces/default/configmaps/example-redis-config
+  uid: 792b3fa8-db35-11e7-a37c-08002780475f</code></pre></div>
+<h4 id="pod에서-configmap-데이터-사용-볼륨에-마운트하여-사용하는-방법">Pod에서 ConfigMap 데이터 사용 (볼륨에 마운트하여 사용하는 방법)</h4>
+
+<p>배포할 Pod <strong>spec</strong> 섹션 에서 ConfigMap의 데이터를 볼륨의 특정경로에
+추가하여 사용 가능합니다.</p>
+
+<p><strong>volumes</strong> 섹션에 ConfigMap 이름을 추가하고 <strong>volumeMounts.mountPath</strong>
+에 지정한 디렉토리로 ConfigMap 데이터를 추가합니다.</p>
+
+<p>아래 예제의 경우 config 볼륨이 컨테이너의 <strong>/redis-master</strong> 경로에
+마운트되고 <strong>path</strong> 라는 필드를 사용하여 <strong>redis.conf</strong>라는 파일에
+<strong>redis-config</strong> key를 추가합니다.</p>
+
+<p>따라서 마운트된 redis config 파일의 경로는 최종적으로
+<strong>/redis-master/redis.conf</strong> 가 되고 이 파일은 example-redis-config 라는
+ConfigMap 데이터인 redis-config  key의 value로 채워집니다.</p>
+
+<p><strong>redis-pod.yaml</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+spec:
+  containers:
+  - name: redis
+    image: kubernetes/redis:v1
+    env:
+    - name: MASTER
+      value: <span style="color:#e6db74">&#34;true&#34;</span>
+    ports:
+    - containerPort: <span style="color:#ae81ff">6379</span>
+    resources:
+      limits:
+        cpu: <span style="color:#e6db74">&#34;0.1&#34;</span>
+    volumeMounts:
+    - mountPath: /redis-master-data
+      name: data
+    - mountPath: /redis-master
+      name: config
+  volumes:
+    - name: data
+      emptyDir: {}
+    - name: config
+      configMap:
+        name: example-redis-config
+        items:
+        - key: redis-config
+          path: redis.conf</code></pre></div>
+<p>   아래와 같이 Pod를  배포합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl apply -f redis-pod.yaml</code></pre></div>
+<p>  배포 후 redis Pod에 접속하여 해당 경로에 파일이 존재하는지 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl exec -it redis sh
+<span style="color:#75715e"># cat /redis-master/redis.conf</span>
+maxmemory 2mb
+maxmemory-policy allkeys-lru# </code></pre></div>
+<p>Pod에 접속하고 redis-cli를 실행하여 설정이 제대로 적용되었는지
+확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl exec -it redis redis-cli
+<span style="color:#ae81ff">127</span>.0.0.1:6379&gt; CONFIG GET maxmemory
+<span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;maxmemory&#34;</span>
+<span style="color:#ae81ff">2</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;2097152&#34;</span>
+<span style="color:#ae81ff">127</span>.0.0.1:6379&gt; CONFIG GET maxmemory-policy
+<span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;maxmemory-policy&#34;</span>
+<span style="color:#ae81ff">2</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;allkeys-lru&#34;</span></code></pre></div>
+<div class="notices tip" ><p>마운트된 ConfigMap은 자동으로 업데이트됩니다. Kubelet은 마운트된
+ConfigMap이 최신인지 주기적으로 확인합니다.<br/>
+그래서 ConfigMap이 업데이트되고 <em><strong>동기화 기간 + ConfigMap 캐시의 ttl</strong></em> 만큼의 지연이 있을 수 있습니다.</p>
+</div>
+
+
+<h3 id="configmap-관리">ConfigMap 관리</h3>
+
+<h4 id="configmap-생성">ConfigMap 생성</h4>
+
+<p><code>kubectl create configmap</code> 명령어 또는 yaml 파일을 통해
+생성합니다.</p>
+
+<p>자세한 내용은 위의 활용 부분을 참고하세요.</p>
+
+<h4 id="configmap-수정">ConfigMap 수정 </h4>
+
+<h5 id="configmap-수정-1">ConfigMap 수정</h5>
+
+<p><code>kubectl edit configmap</code> 명령어를 통해 configmap을 수정합니다.
+예제에서는 special-config에 special.test:test 를 추가하고 확인해봅니다.</p>
+
+<p>Window OS의 경우 해당 명령어로 수정이 불가합니다. 아래 파일을 직접
+수정하는 방식으로 사용하세요.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl edit configmap special-config
+configmap <span style="color:#e6db74">&#34;special-config&#34;</span> edited
+$ kubectl describe cm special-config
+Name:         special-config
+Namespace:    default
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+
+Data
+<span style="color:#f92672">====</span>
+special.how:
+----
+very
+special.test:
+----
+test
+special.type:
+----
+charm
+Events:  &lt;none&gt;</code></pre></div>
+<p>또는 ConfigMap yaml 파일을 직접 수정한 뒤 적용합니다. 예제에서는
+env-config의 log_level을 ERROR로 변경한 뒤 아래 명령어를 통해
+적용합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl apply -f env-config.yaml
+Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+configmap <span style="color:#e6db74">&#34;env-config&#34;</span> configured
+
+$ kubectl describe cm env-config
+Name:         env-config
+Namespace:    default
+Labels:       &lt;none&gt;
+Annotations:  kubectl.kubernetes.io/last-applied-configuration<span style="color:#f92672">={</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span>,<span style="color:#e6db74">&#34;data&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;log_level&#34;</span>:<span style="color:#e6db74">&#34;ERROR&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;ConfigMap&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;env-config&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}}</span>
+
+Data
+<span style="color:#f92672">====</span>
+log_level:
+----
+ERROR
+Events:  &lt;none&gt;</code></pre></div>
+<h5 id="수정된-configmap을-pod에-적용">수정된 ConfigMap을 Pod에 적용</h5>
+
+<p>ConfigMap을 수정한 뒤에 Pod에 적용하기 위해서 Pod를 재생성해야 합니다.</p>
+
+<p><code>kubectl replace --force -f</code> 명령어를 통해 Pod를 재생성합니다.
+<strong><em>-l</em></strong> 옵션은 스케일링된 Pod일 경우 동일한 라벨을 가지고 스케일링
+되므로 해당 라벨을 가진 모든 Pod에 적용하기 위한 설정입니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pod -l app<span style="color:#f92672">=</span>gs-spring-boot-docker -o yaml | kubectl replace --force -f -
+pod <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment-764579896b-zm69w&#34;</span> deleted
+pod <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment-764579896b-zm69w&#34;</span> replaced</code></pre></div>
+<p>새로 생성된 Pod에 변경된 ConfigMap이 제대로 적용되었는지 확인합니다. </p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pod
+NAME                                                READY     STATUS    RESTARTS   AGE
+gs-spring-boot-docker-deployment-764579896b-dfdnq   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          1m    
+redis                                               <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          2d                            </code></pre></div>
+<p>아래 log_level 값이 ERROR로 변경되었음을 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl exec -it gs-spring-boot-docker-deployment-764579896b-dfdnq sh
+/ <span style="color:#75715e"># env</span>
+KUBERNETES_PORT<span style="color:#f92672">=</span>tcp://10.96.0.1:443
+KUBERNETES_SERVICE_PORT<span style="color:#f92672">=</span><span style="color:#ae81ff">443</span>
+JAVA_ALPINE_VERSION<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>.131.11-r2
+HOSTNAME<span style="color:#f92672">=</span>gs-spring-boot-docker-deployment-764579896b-dfdnq
+SHLVL<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+HOME<span style="color:#f92672">=</span>/root
+SPECIAL_TYPE_KEY<span style="color:#f92672">=</span>charm
+JAVA_VERSION<span style="color:#f92672">=</span>8u131
+TERM<span style="color:#f92672">=</span>xterm
+KUBERNETES_PORT_443_TCP_ADDR<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.96.0.1
+PATH<span style="color:#f92672">=</span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
+KUBERNETES_PORT_443_TCP_PORT<span style="color:#f92672">=</span><span style="color:#ae81ff">443</span>
+JAVA_OPTS<span style="color:#f92672">=</span>
+KUBERNETES_PORT_443_TCP_PROTO<span style="color:#f92672">=</span>tcp
+LANG<span style="color:#f92672">=</span>C.UTF-8
+SPECIAL_LEVEL_KEY<span style="color:#f92672">=</span>very
+log_level<span style="color:#f92672">=</span>ERROR
+KUBERNETES_PORT_443_TCP<span style="color:#f92672">=</span>tcp://10.96.0.1:443
+KUBERNETES_SERVICE_PORT_HTTPS<span style="color:#f92672">=</span><span style="color:#ae81ff">443</span>
+PWD<span style="color:#f92672">=</span>/
+JAVA_HOME<span style="color:#f92672">=</span>/usr/lib/jvm/java-1.8-openjdk
+KUBERNETES_SERVICE_HOST<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.96.0.1
+SPRING_PROFILES_ACTIVE<span style="color:#f92672">=</span>k8s</code></pre></div>
+<h4 id="configmap-삭제">ConfigMap 삭제</h4>
+
+<p><code>kubectl delete</code> 명령어를 통해 ConfigMap 을 삭제합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl delete -f env-config.yaml
+configmap <span style="color:#e6db74">&#34;env-config&#34;</span> deleted</code></pre></div>
+<p><code>kubectl get configmap</code> 명령어를 통해 configmap 목록을
+확인합니다. 제대로 삭제되었는지 확인해봅니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get configmap
+NAME                   DATA      AGE
+special-config         <span style="color:#ae81ff">3</span>         3d</code></pre></div>
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/kubernetes/secret/">[Kubernetes 활용(7/8)] Secret</a></li>
+        
+        <li><a href="/posts/kubernetes/ingress/">[Kubernetes 활용(5/8)] Ingress</a></li>
+        
+        <li><a href="/posts/kubernetes/backingservice/">[Kubernetes 활용(4/8)] Mysql DB 연동하기</a></li>
+        
+        <li><a href="/posts/kubernetes/hpa/">[Kubernetes 활용(3/8)] HPA(오토스케일링)</a></li>
+        
+        <li><a href="/posts/kubernetes/rolling-update/">[Kubernetes 활용(2/8)] Rolling Update(무중단 배포)</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/container" rel="tag">container</a></li><li><a href="/tags/container-orchestration" rel="tag">container orchestration</a></li><li><a href="/tags/k8s" rel="tag">k8s</a></li><li><a href="/tags/configmap" rel="tag">configmap</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fconfigmap%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fconfigmap%2f&amp;text=%5bKubernetes%20%ed%99%9c%ec%9a%a9%286%2f8%29%5d%20ConfigMap" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fconfigmap%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fconfigmap%2f&amp;title=%5bKubernetes%20%ed%99%9c%ec%9a%a9%286%2f8%29%5d%20ConfigMap" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fconfigmap%2f&amp;description=%5bKubernetes%20%ed%99%9c%ec%9a%a9%286%2f8%29%5d%20ConfigMap" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fconfigmap%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/blingeeeee">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/blingeeeee.png'/><div class="author-info">
+    <h3>김빛나</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/kubernetes/ingress/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">[Kubernetes 활용(5/8)] Ingress</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, May 11
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 6분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/kubernetes/secret/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Kubernetes 활용(7/8)] Secret</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, May 11
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 6분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

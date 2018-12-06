@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content=''>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='Posts | DIGITAL LABS'>
+<meta property='og:description' content=''>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='website'><meta property='og:image' content='/images/default.png'><meta property='og:updated_time' content='2018-10-17T10:14:07&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>Posts | DIGITAL LABS</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/'>
+
+    <link rel="alternate" type="application/rss&#43;xml" href="http://tech.cloudz-labs.io/posts/index.xml" title="DIGITAL LABS">
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li class='has-megamenu active' >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class='offcanvas-wrapper'><section class='visual-title bg-posts'>
+    <div class="visual mask"><h3>Posts</h3></div>
+</section>
+<section class='container'>
+        <article class="post">
+
+            
+                <div class="fulid-set-12 card mb-30">
+    <div class="row card-style-2">
+    <div class="col-sm-12 col-xs-12 post-info"><h3 class="post-title">
+                <a href="/posts/kubernetes/configmap/">[Kubernetes 활용(6/8)] ConfigMap</a>
+            </h3>
+
+            <h4 class="post-authorName">
+                by&nbsp;<a href="/authors/blingeeeee">김빛나</a></h4>
+
+            <p class="post-excerpt">이번에는 Kubernetes에서 제공하는 ConfigMap이라는 Object를 보도록 하겠습니다. ConfigMap 이란? ConfigMap은 컨테이너 이미지에서 사용하는 환경변수와 같은 세부 정보를 분리하고, 그 환경변수에 대한 값을 외부로 노출 시키지 않고 내부에 존재하는 스토리지에 저장해서 사용하는 방법입니다. 혹시 마이크로서비스 아키텍처에서 사용하는 Spring Cloud Config(Config Server)를 사용한 적이 있다면 동일한 역할을 하는 것인지 하는 생각이 들 수 있는데요. Spring Cloud Config 같은 경우에는 설정 파일 자체를 분리하고 파일에 대한 내용이 변경된다면 자동으로 Refresh 해주는 기능을 가지고 있습니다.
+                    </p>
+
+            <p class="btn-link">
+                <a href="/posts/kubernetes/configmap/">Read more...</a>
+            </p>
+
+            
+                <ul class="tag"><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/container" rel="tag">container</a></li><li><a href="/tags/container-orchestration" rel="tag">container orchestration</a></li><li><a href="/tags/k8s" rel="tag">k8s</a></li><li><a href="/tags/configmap" rel="tag">configmap</a></li></ul>
+
+            
+
+        </div></div>
+</div>
+
+            
+                <div class="fulid-set-12 card mb-30"><div class="row card-style-1">
+    <div class="col-md-7 col-sm-12 col-xs-12 post-info"><h3 class="post-title">
+                <a href="/posts/kubernetes/ingress/">[Kubernetes 활용(5/8)] Ingress</a>
+            </h3>
+
+            <h4 class="post-authorName">
+                by&nbsp;<a href="/authors/blingeeeee">김빛나</a></h4>
+
+            <p class="post-excerpt">Kubernetes에서는 애플리케이션을 외부로 노출하기 위해 Service object를 NodePort로 생성합니다. 그러나 노출 형태가 노드의 IP에 특정 포트(30000-32767)로 제공되기 때문에 호출이 까다롭고 사용자가 서비스로 유입되는 경로도 다양해서 관리가 어려워질 수 있는데요. 이 때, 외부 액세스를 관리하고 서비스를 묶어주는 역할을 하는게 바로 Ingress 입니다. Ingress 란? 위 그림과 같이 Ingress는 외부 액세스를 관리하고 서비스를 묶어주는 역할을 합니다. Ingress를 만들 때 도메인을 지정할 수 있고 사용자는 그 도메인으로 접속을 하게 되며 도메인 하위의 path 설정을 통해 서비스들을 라우팅할 수 있게 됩니다.
+                    </p>
+
+            <p class="btn-link">
+                <a href="/posts/kubernetes/ingress/">Read more...</a>
+            </p>
+
+            
+                <ul class="tag"><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/container" rel="tag">container</a></li><li><a href="/tags/container-orchestration" rel="tag">container orchestration</a></li><li><a href="/tags/k8s" rel="tag">k8s</a></li><li><a href="/tags/service" rel="tag">service</a></li><li><a href="/tags/ingress" rel="tag">ingress</a></li><li><a href="/tags/nginx" rel="tag">nginx</a></li></ul>
+
+            
+
+        </div><a href="#" class="col-md-5 col-sm-12 col-xs-12"><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/kubernetes/ingress/../ingress/ingress.png'/>
+
+</a></div>
+</div>
+
+            
+                <div class="fulid-set-12 card mb-30">
+    <div class="row card-style-2">
+    <div class="col-sm-12 col-xs-12 post-info"><h3 class="post-title">
+                <a href="/posts/kubernetes/backingservice/">[Kubernetes 활용(4/8)] Mysql DB 연동하기</a>
+            </h3>
+
+            <h4 class="post-authorName">
+                by&nbsp;<a href="/authors/blingeeeee">김빛나</a></h4>
+
+            <p class="post-excerpt">지난 챕터에서는 사용한 리소스를 기반으로 애플리케이션의 수를 자동으로 조절할 수 있는 HPA 라는 기능을 적용해 보았습니다. 그렇다면 애플리케이션에 Mysql 또는 Redis 등과 같은 서비스를 연동하고 싶을 땐 어떻게 해야할까요? Kubernetes에서는 애플리케이션에서 필요한 서비스를 Docker Image를 사용하여 바로 구성할 수 있습니다. 물론 대부분이 오픈소스 솔루션에 대한 서비스겠지요. Legacy에 있는 서비스들 역시 연동이 가능하긴 하지만, 여기서는 Docker Image 를 통해 Mysql DB를 구성하고 애플리케이션에 연동해보도록 하겠습니다. 샘플 애플리케이션에 대한 자세한 설명은 Spring의 Accessing data with MySQL 문서를 참고하시기 바랍니다.
+                    </p>
+
+            <p class="btn-link">
+                <a href="/posts/kubernetes/backingservice/">Read more...</a>
+            </p>
+
+            
+                <ul class="tag"><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/container" rel="tag">container</a></li><li><a href="/tags/container-orchestration" rel="tag">container orchestration</a></li><li><a href="/tags/%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%97%B0%EB%8F%99" rel="tag">서비스 연동</a></li><li><a href="/tags/db-%EC%97%B0%EB%8F%99" rel="tag">db 연동</a></li><li><a href="/tags/service-discovery" rel="tag">service discovery</a></li><li><a href="/tags/k8s" rel="tag">k8s</a></li></ul>
+
+            
+
+        </div></div>
+</div>
+
+            
+                <div class="fulid-set-12 card mb-30"><div class="row card-style-1">
+    <div class="col-md-7 col-sm-12 col-xs-12 post-info"><h3 class="post-title">
+                <a href="/posts/kubernetes/mariadb-utf8/">Kubernetes에 구성한 MariaDB(Mysql)의 한글 깨짐 현상 해결방법</a>
+            </h3>
+
+            <h4 class="post-authorName">
+                by&nbsp;<a href="/authors/hunkee1017">강훈기</a></h4>
+
+            <p class="post-excerpt">Kubernetes 환경에서 MariaDB(Mysql)의 컨테이너를 구성할 때 한글이 깨지는 현상을 해결해봅시다.</p>
+
+            <p class="btn-link">
+                <a href="/posts/kubernetes/mariadb-utf8/">Read more...</a>
+            </p>
+
+            
+                <ul class="tag"><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/mariadb" rel="tag">mariadb</a></li></ul>
+
+            
+
+        </div><a href="#" class="col-md-5 col-sm-12 col-xs-12"><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/../mariadb/mariadb-usa-inc.png'/>
+
+</a></div>
+</div>
+
+            
+                <div class="fulid-set-12 card mb-30">
+    <div class="row card-style-2">
+    <div class="col-sm-12 col-xs-12 post-info"><h3 class="post-title">
+                <a href="/posts/istio/">Istio</a>
+            </h3>
+
+            <h4 class="post-authorName">
+                by&nbsp;<a href="/authors/bckim0620">김봉찬</a></h4>
+
+            <p class="post-excerpt">최근 MSA(Micro Service Architecture) 관련 세미나, 자료 등을 살펴보면 Istio라는 키워드가 급부상하고 있는 것을 알 수 있습니다. Istio가 무엇인지 조사한 결과를 공유합니다. Service Mesh Architecture Istio를 설명하기 전에 Service Mesh Architecture 가 무엇인지 알아보겠습니다. MSA(Micro Service Architecture)가 널리 보급되면서 service discovery, routing, failure handling 등 서비스 간 통신 문제가 발생하고 있습니다. 이러한 문제를 해결하기 위해 Spring Cloud Netflix 등 다양한 해결법이 등장하였고, Service Mesh Architecture 또한 이러한 해결 방법 중 하나입니다.
+                    </p>
+
+            <p class="btn-link">
+                <a href="/posts/istio/">Read more...</a>
+            </p>
+
+            
+                <ul class="tag"><li><a href="/tags/istio" rel="tag">istio</a></li><li><a href="/tags/msa" rel="tag">msa</a></li><li><a href="/tags/service-mesh" rel="tag">service mesh</a></li><li><a href="/tags/spring-cloud-netflix" rel="tag">spring cloud netflix</a></li></ul>
+
+            
+
+        </div></div>
+</div>
+
+            
+                <div class="fulid-set-12 card mb-30"><div class="row card-style-1">
+    <div class="col-md-7 col-sm-12 col-xs-12 post-info"><h3 class="post-title">
+                <a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a>
+            </h3>
+
+            <h4 class="post-authorName">
+                by&nbsp;<a href="/authors/junepark">박준</a></h4>
+
+            <p class="post-excerpt">Software is “still” eating the world “소프트웨어가 세상을 먹어치우고 있다…여전히!” “Software is eating the world” 는 Marc Andreessen이 아주 오래전에 Wall Street Journal에 올렸던 기고입니다. 그 이후 세상은 호텔을 하나도 소유하지 않은 에어비엔비가 숙박업을, 영화관을 하나도 소유하지 않은 넷플릭스가 미디어 산업을, 오프라인 상점을 하나도 소유하지 않았던(지금은 있지만) 아마존이 리테일 산업을 장악하는 세상으로 바뀌어 버렸습니다. 중요한 것은 “아직도” 먹어치우고 있다는 것입니다. 사실 몇 년 전만 해도 인터넷 서비스, 미디어, 통신, 리테일 외의 전통 산업에서 Digital Disruption은 올 듯 올 듯 하면서 동인이 잘 생기지 않았습니다.
+                    </p>
+
+            <p class="btn-link">
+                <a href="/posts/digital-transformation-journey/">Read more...</a>
+            </p>
+
+            
+                <ul class="tag"><li><a href="/tags/digital-transformation" rel="tag">digital transformation</a></li><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/istio" rel="tag">istio</a></li><li><a href="/tags/citizen-developer" rel="tag">citizen developer</a></li><li><a href="/tags/masa" rel="tag">masa</a></li><li><a href="/tags/event-driven" rel="tag">event driven</a></li><li><a href="/tags/microservices" rel="tag">microservices</a></li><li><a href="/tags/hybrid-application-platform" rel="tag">hybrid application platform</a></li></ul>
+
+            
+
+        </div><a href="#" class="col-md-5 col-sm-12 col-xs-12"><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/digital-transformation-journey/cargo.jpeg'/>
+
+</a></div>
+</div>
+
+            
+                <div class="fulid-set-12 card mb-30"><div class="row card-style-1">
+    <div class="col-md-7 col-sm-12 col-xs-12 post-info"><h3 class="post-title">
+                <a href="/posts/docker-user-defined-network/docker-user-defined-network-test/">[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</a>
+            </h3>
+
+            <h4 class="post-authorName">
+                by&nbsp;<a href="/authors/jisangyun">윤지상</a></h4>
+
+            <p class="post-excerpt">Docker User Defined Bridge Network를 Spring Boot Application으로 테스트합니다.</p>
+
+            <p class="btn-link">
+                <a href="/posts/docker-user-defined-network/docker-user-defined-network-test/">Read more...</a>
+            </p>
+
+            
+                <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/user-defined-network" rel="tag">user defined network</a></li><li><a href="/tags/spring-boot" rel="tag">spring boot</a></li></ul>
+
+            
+
+        </div><a href="#" class="col-md-5 col-sm-12 col-xs-12"><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/docker-logo.png'/>
+
+</a></div>
+</div>
+
+            
+                <div class="fulid-set-12 card mb-30"><div class="row card-style-1">
+    <div class="col-md-7 col-sm-12 col-xs-12 post-info"><h3 class="post-title">
+                <a href="/posts/docker-user-defined-network/what-is-docker-user-defined-network/">[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</a>
+            </h3>
+
+            <h4 class="post-authorName">
+                by&nbsp;<a href="/authors/jisangyun">윤지상</a></h4>
+
+            <p class="post-excerpt">Docker User Defined Bridge Network를 간단 동작을 확인합니다.</p>
+
+            <p class="btn-link">
+                <a href="/posts/docker-user-defined-network/what-is-docker-user-defined-network/">Read more...</a>
+            </p>
+
+            
+                <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/user-defined-network" rel="tag">user defined network</a></li><li><a href="/tags/spring-boot" rel="tag">spring boot</a></li></ul>
+
+            
+
+        </div><a href="#" class="col-md-5 col-sm-12 col-xs-12"><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/docker-logo.png'/>
+
+</a></div>
+</div>
+
+            
+                <div class="fulid-set-12 card mb-30">
+    <div class="row card-style-2">
+    <div class="col-sm-12 col-xs-12 post-info"><h3 class="post-title">
+                <a href="/posts/using_docker_in_cloudfoundry/">CF에 Docker Image 배포</a>
+            </h3>
+
+            <h4 class="post-authorName">
+                by&nbsp;<a href="/authors/bckim0620">김봉찬</a></h4>
+
+            <p class="post-excerpt">Cloud에서 애플리케이션은 Cloud Fondry(CF), Docker 등 다양한 환경에 배포할 수 있습니다. CF는 웹 애플리케이션 개발에 특화되어 있어 Docker에 비해 웹 애플리케이션 개발에 필요한 다양한 기능을 제공하고 있습니다. 반면에 Docker는 다양한 형태의 애플리케이션 개발이 가능하며 자유도가 높은 장점을 갖고 있습니다. 이 둘의 장점을 모두 사용하기 위해 Docker Image를 CF에 배포하는 리서치를 진행하여 이를 공유합니다. 사용법 CF 설정 CF에 Docker image를 배포하기 위해서는 diego_docker플래그가 설정되어야 합니다. 아래 코드로 설정할 수 있습니다.
+                    </p>
+
+            <p class="btn-link">
+                <a href="/posts/using_docker_in_cloudfoundry/">Read more...</a>
+            </p>
+
+            
+                <ul class="tag"><li><a href="/tags/cloud-founcry" rel="tag">cloud founcry</a></li><li><a href="/tags/docker" rel="tag">docker</a></li></ul>
+
+            
+
+        </div></div>
+</div>
+
+            
+                <div class="fulid-set-12 card mb-30">
+    <div class="row card-style-2">
+    <div class="col-sm-12 col-xs-12 post-info"><h3 class="post-title">
+                <a href="/posts/docker/docker-network/">[Docker 기본(8/8)] Docker의 Network</a>
+            </h3>
+
+            <h4 class="post-authorName">
+                by&nbsp;<a href="/authors/1000jaeh">정재훈</a></h4>
+
+            <p class="post-excerpt">Docker Swarm은 두 가지 종류의 Traffic을 생성합니다. 제어 및 관리 영역 Traffic: Docker Swarm에 대한 참가 및 탈퇴 요청과 같은 Docker Swarm의 관리 Message가 포함됩니다. 해당 Traffic은 항상 암호화됩니다. Application Data 영역 Traffic: Container 및 외부 Client와의 Traffic이 포함됩니다. 이 중에서 해당 Post에서는, Application Data 영역의 Traffic에 대해서 확인해보고자 합니다. Docker의 Networking에 대한 자세한 내용은 Docker Networking Reference Architecture문서를 참고하시기 바랍니다. Docker의 Network 먼저, Docker는 Overlay, Ingress, docker\_gwbridge의 세 가지 Network이 존재합니다.
+                    </p>
+
+            <p class="btn-link">
+                <a href="/posts/docker/docker-network/">Read more...</a>
+            </p>
+
+            
+                <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/service-discovery" rel="tag">service discovery</a></li><li><a href="/tags/docker-network" rel="tag">docker network</a></li><li><a href="/tags/overlay" rel="tag">overlay</a></li><li><a href="/tags/ingress" rel="tag">ingress</a></li></ul>
+
+            
+
+        </div></div>
+</div>
+
+            
+
+            
+<div class="col-lg-12 text-center">
+    <ul class="pagination">
+        
+        <li><a href='/posts/'><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+        
+            
+            <li><a href="/posts/">1</a></li>
+            
+        
+            
+            <li class="active"><a href="#">2</a></li>
+            
+        
+            
+            <li><a href="/posts/page/3/">3</a></li>
+            
+        
+            
+                <li><a href="#">&hellip;</a></li>
+                
+            
+        
+            
+            <li><a href="/posts/page/5/">5</a></li>
+            
+        
+
+        
+        <li><a href='/posts/page/3/'><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+        
+    </ul>
+</div>
+
+
+
+        </article>
+    </section>
+</div>
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

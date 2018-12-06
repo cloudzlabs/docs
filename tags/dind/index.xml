@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dind on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/dind/</link>
+    <description>Recent content in dind on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 28 Feb 2018 10:59:06 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/dind/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Docker in docker</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-in-docker/</link>
+      <pubDate>Wed, 28 Feb 2018 10:59:06 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-in-docker/</guid>
+      <description>지난 한주 동안 애플리케이션을 Kubernetes 배포하는 CI/CD 파이프라인 구성했습니다. K8S CI/CD 파이프라인 구성은 차후에 포스팅하기로 하고, K8S용 파이프라인 구성에 사용된 Docker in docker 기술을 소개하겠습니다.
+DinD(Docker In Docker)기술은 컨테이너 내부에 Docker를 사용하는 기술을 말하며 일반적으로 K8S CI/CD 구성, Docker 엔진 개발 등에 사용됩니다.
+DinD 원리 DinD 원리를 이해하기 위해서는 Docker의 명령어 실행 구조를 이해해야 합니다.
+Docker를 설치/실행하면 Docker daemon과 Docker CLI가 설치/실행됩니다. 콘솔 화면에서 Docker 명령어를 입력할 경우 Docker CLI가 명령어를 받아서 Socket을 통해 Docker daemon에 전달합니다.</description>
+    </item>
+    
+  </channel>
+</rss>

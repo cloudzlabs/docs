@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>spring cloud netflix on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/spring-cloud-netflix/</link>
+    <description>Recent content in spring cloud netflix on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 05 Apr 2018 14:50:51 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/spring-cloud-netflix/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Istio</title>
+      <link>http://tech.cloudz-labs.io/posts/istio/</link>
+      <pubDate>Thu, 05 Apr 2018 14:50:51 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/istio/</guid>
+      <description>최근 MSA(Micro Service Architecture) 관련 세미나, 자료 등을 살펴보면 Istio라는 키워드가 급부상하고 있는 것을 알 수 있습니다. Istio가 무엇인지 조사한 결과를 공유합니다.
+Service Mesh Architecture Istio를 설명하기 전에 Service Mesh Architecture 가 무엇인지 알아보겠습니다.
+MSA(Micro Service Architecture)가 널리 보급되면서 service discovery, routing, failure handling 등 서비스 간 통신 문제가 발생하고 있습니다. 이러한 문제를 해결하기 위해 Spring Cloud Netflix 등 다양한 해결법이 등장하였고, Service Mesh Architecture 또한 이러한 해결 방법 중 하나입니다.</description>
+    </item>
+    
+  </channel>
+</rss>

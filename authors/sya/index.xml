@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sya on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/authors/sya/</link>
+    <description>Recent content in sya on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 02 Mar 2018 11:07:05 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/authors/sya/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CF에 Cloud Native Application 배포하기 </title>
+      <link>http://tech.cloudz-labs.io/posts/cf-apprelease/</link>
+      <pubDate>Fri, 02 Mar 2018 11:07:05 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/cf-apprelease/</guid>
+      <description>PaaS에 Cloud Application을 배포하는 전 과정을 정리해보았습니다. Java로 만든 Cloud Native Application을 CF에 배포하는 간단한 실습인데요, 개발 환경 세팅부터 PaaS에 애플리케이션 배포하기까지의 흐름을 살펴볼 수 있어요. 코딩이 필요하지 않은 초보 개발자 위주의 간단한 실습이라 처음 접하는 사람도 쉽게 따라할 수 있으실꺼예요. 처음부터 끝까지 따라하면서 Cloud Native Application 개발을 시작해보세요!
+실습 과정 아래 과정의 순서대로 진행합니다.
+준비 사항 전제조건  CF 기반 PaaS  PaaS에 애플리케이션을 배포, 업데이트, 삭제, 스케일링 등의 작업을 할 수 있는 CF기반의 PaaS가 있어야 합니다.</description>
+    </item>
+    
+    <item>
+      <title>CF CLI 사용하기</title>
+      <link>http://tech.cloudz-labs.io/posts/command-tool/</link>
+      <pubDate>Tue, 20 Feb 2018 16:55:36 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/command-tool/</guid>
+      <description>오픈소스 CF CLI에서 자주 사용하는 CF CLI 명령어를 사용하는 방법을 정리해보았습니다.
+CF CLI에서 사용 가능한 모든 명령어의 사용법은 CF 공식 홈페이지 문서를 참고하길 바랍니다.
+ CF CF CLI 사용 방법을 알아보기에 앞서 CF가 무엇인지 간단히 살펴보겠습니다. CF는 Cloud Foundry의 약자로, 2011년 VMWare가 업계 최초로 만든 오픈소스 PaaS 플랫폼입니다. 지금은 Cloud Foundry 재단에서 관리하고 있습니다.
+오픈소스 CF 제품 Cloud Foundry의 오픈소스 Cloud Foundry 기술을 기반으로 만든 제품은 다음과 같습니다.
+ PCF (Pivotal Cloud Foundry)  Pivotal에서 오픈소스 Cloud Foundry로 만든 상용 PaaS  Bluemix  IBM에서 오픈 소스 Cloud Foundry로 만든 상용 PaaS   CF CLI GO 언어로 개발된 Cloud Foundry의 Command Line Interface입니다.</description>
+    </item>
+    
+  </channel>
+</rss>

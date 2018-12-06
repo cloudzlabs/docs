@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker object on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/docker-object/</link>
+    <description>Recent content in docker object on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 08 Mar 2018 23:23:28 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/docker-object/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Docker 기본(2/8)] Docker&#39;s Skeleton</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/docker-architecture/</link>
+      <pubDate>Thu, 08 Mar 2018 23:23:28 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/docker-architecture/</guid>
+      <description>Docker는 Container를 구동시킬 수 있는 환경만 구성되어 있다면, Application들을 한 번의 Build로 어디서든 구동시킬 수 있습니다. 하지만 1차원적으로만 살펴보면, Java Application이 JVM 위에서 실행되는 모습과 크게 다르지 않아 보입니다. Java Application도 JVM만 설치되어 있다면, 어디에서든 실행되죠. 마찬가지로, Python Application도 동일합니다. 그렇다면, 이 모든 것들이 결국은 똑같이 생겼고, 단지 실행되는 주체(Container, JAR, py)만 다른 것일까요?
+Client-Server Model Docker는 서비스의 요청자(Docker Client)와 제공자(Docker Server)간의 작업이 분리되어 동작하는 Client-Server Model로 되어있으며, Docker Client는 REST API를 사용하여 Docker Server를 제어합니다.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Docker 환경에 Service 및 Application을 구동시키 위한 전체적인 과정은 다음과 같습니다.
+graph BT; A[Dockerfile] --|build| B[Images] B --|push| C[Docker Registry] C --|pull| B subgraph Local Docker Instance B --|Run| D[Container] end  지금까지는, Docker Registry(Docker Hub)에 배포되어 있는 있는 Image를 이용해 Container를 구동시켰습니다. 이제부터는 위에서 정리한 과정대로, Dockerfile로 Image를 생성하고 다른 Machine에서 배포된 Image로 Container를 실행시켜 보겠습니다.
+본 예제는 About storage drivers에 있는 예제를 참고하여 진행했습니다.
+ 신규 Image 생성에서 배포까지 Dockerfile 작성 image-build-test 폴더를 생성한 뒤, 다음의 내용이 포함된 Dockerfile을 생성합니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Docker 기본(4/8)] docker build &amp; push | 정재훈'>
+<meta property='og:description' content='Docker 환경에 Service 및 Application을 구동시키 위한 전체적인 과정은 다음과 같습니다.
+graph BT; A[Dockerfile] --|build| B[Images] B --|push| C[Docker Registry] C --|pull| B subgraph Local Docker Instance B --|Run| D[Container] end  지금까지는, Docker Registry(Docker Hub)에 배포되어 있는 있는 Image를 이용해 Container를 구동시켰습니다. 이제부터는 위에서 정리한 과정대로, Dockerfile로 Image를 생성하고 다른 Machine에서 배포된 Image로 Container를 실행시켜 보겠습니다.
+본 예제는 About storage drivers에 있는 예제를 참고하여 진행했습니다.
+ 신규 Image 생성에서 배포까지 Dockerfile 작성 image-build-test 폴더를 생성한 뒤, 다음의 내용이 포함된 Dockerfile을 생성합니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/docker/docker-build-push/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='docker'><meta property='article:tag' content='image'><meta property='article:tag' content='container'><meta property='article:tag' content='dockerfile'><meta property='article:published_time' content='2018-03-09T08:23:38&#43;09:00'/><meta property='article:modified_time' content='2018-03-09T08:23:38&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Docker 기본(4/8)] docker build &amp; push | 정재훈</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/docker/docker-build-push/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Mar 09, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 7분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Docker 기본(4/8)] docker build &amp; push</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/1000jaeh">정재훈</a></p>
+
+
+<p>Docker 환경에 Service 및 Application을 구동시키 위한 전체적인 과정은 다음과 같습니다.</p>
+
+<div class="mermaid" align="center">
+graph BT;
+  A[Dockerfile] -->|build| B[Images]
+    B -->|push| C[Docker Registry]
+    C -->|pull| B
+    subgraph Local Docker Instance
+      B -->|Run| D[Container]
+    end
+</div>
+
+
+<p>지금까지는, Docker Registry(Docker Hub)에 배포되어 있는 있는 Image를 이용해 Container를 구동시켰습니다. 이제부터는 위에서 정리한 과정대로, Dockerfile로 Image를 생성하고 다른 Machine에서 배포된 Image로 Container를 실행시켜 보겠습니다.</p>
+
+<div class="notices note" ><p>본 예제는 <a href="https://docs.docker.com/storage/storagedriver/" target="_blank">About storage drivers</a>에 있는 예제를 참고하여 진행했습니다.</p>
+</div>
+
+
+<h2 id="신규-image-생성에서-배포까지">신규 Image 생성에서 배포까지</h2>
+
+<h3 id="dockerfile-작성">Dockerfile 작성</h3>
+
+<p><em><strong>image-build-test</strong></em> 폴더를 생성한 뒤, 다음의 내용이 포함된 <strong>Dockerfile</strong>을 생성합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ubuntu:16.10</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>COPY . /app</code></pre></div>
+<p><em><strong>image-build-test</strong></em> 폴더의 내부 구조는 다음과 같습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ tree
+.
+└── Dockerfile
+
+<span style="color:#ae81ff">0</span> directories, <span style="color:#ae81ff">1</span> file</code></pre></div>
+<h3 id="image-build">Image Build</h3>
+
+<p><em><strong>image-build-test</strong></em> 폴더 내에서 생성한 Dockerfile로 <code>${username}/my-base-image:1.0</code>이란 이름의 Image를 Build합니다.</p>
+
+<div class="notices info" ><p>여기서, <code>${username}</code>는 Docker에 로그인 가능한 계정입니다.</p>
+</div>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker build -t <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image:1.0 -f Dockerfile .
+Sending build context to Docker daemon  <span style="color:#ae81ff">11</span>.26kB
+Step <span style="color:#ae81ff">1</span>/2 : FROM ubuntu:16.10
+<span style="color:#ae81ff">16</span>.10: Pulling from library/ubuntu
+dca7be20e546: Pull complete
+40bca54f5968: Pull complete
+61464f23390e: Pull complete
+d99f0bcd5dc8: Pull complete
+120db6f90955: Pull complete
+Digest: sha256:8dc9652808dc091400d7d5983949043a9f9c7132b15c14814275d25f94bca18a
+Status: Downloaded newer image <span style="color:#66d9ef">for</span> ubuntu:16.10
+ ---&gt; 7d3f705d307c
+Step <span style="color:#ae81ff">2</span>/2 : COPY . /app
+ ---&gt; 6087ccdf7873
+Successfully built 6087ccdf7873
+Successfully tagged <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image:1.0</code></pre></div>
+<p>처음 Image를 Build하게 되면, Local Instance에 저장된 Base Image(여기서는 Ubuntu Image입니다)가 존재하지 않기 때문에, Docker Registry(Docker Hub)로부터 Pull을 받습니다. 그 후, Dockerfile의 <strong>COPY</strong>명령어가 새로운 Layer로 생성되고, <code>${username}/my-base-image:1.0</code> Image가 Build됩니다.</p>
+
+<p>생성된 Image를 확인해 보겠습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker images
+REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
+<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image   <span style="color:#ae81ff">1</span>.0                 6087ccdf7873        <span style="color:#ae81ff">22</span> seconds ago      107MB
+ubuntu                      <span style="color:#ae81ff">16</span>.10               7d3f705d307c        <span style="color:#ae81ff">8</span> months ago        107MB</code></pre></div>
+<h3 id="container를-run">Container를 Run</h3>
+
+<p>방금 생성한 Image를 Local에서 실행시켜 보겠습니다. 정상적으로 실행된다면, 아래와 같이 <strong>Container ID</strong>가 나타나고 <code>docker ps</code>로 실행중인 해당 Container를 목록에서 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker run -dit --name <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>_container <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image:1.0 bash
+8517d3ff5b8a4233ea716190beb73bfdbb4401afee656dff7d694307d304b2e4
+
+/image-build-test $ docker ps -s
+CONTAINER ID        IMAGE                           COMMAND             CREATED             STATUS              PORTS               NAMES                   SIZE
+8517d3ff5b8a        <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image:1.0   <span style="color:#e6db74">&#34;bash&#34;</span>              <span style="color:#ae81ff">3</span> seconds ago       Up <span style="color:#ae81ff">4</span> seconds                            <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>_container   0B <span style="color:#f92672">(</span>virtual 107MB<span style="color:#f92672">)</span></code></pre></div>
+<h3 id="image를-docker-hub에-배포">Image를 Docker Hub에 배포</h3>
+
+<p>이제는 생성한 Image를 Docker Registry에 배포해 보겠습니다. 따로, Docker Registry를 구성하지 않았기 때문에 배포되는 장소는 Docker Hub이며, 정상적으로 배포하기 위해서 먼저 Login을 하겠습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don<span style="color:#960050;background-color:#1e0010">&#39;</span>t have a Docker ID, head over to https://hub.docker.com to create one.
+Username <span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span>: <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>
+Password:
+Login Succeeded</code></pre></div>
+<p>로그인이 정상적으로 되었다면 <code>docker push</code>로 생성한 Image를 Docker Registry에 등록하겠습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker push <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image:1.0
+The push refers to repository <span style="color:#f92672">[</span>docker.io/<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image<span style="color:#f92672">]</span>
+1b9e33c4403d: Pushed
+fcc11235a441: Mounted from library/ubuntu
+0ba4c05a8843: Mounted from library/ubuntu
+47a3ebbaa644: Mounted from library/ubuntu
+31eed92f5a23: Mounted from library/ubuntu
+57145c01eb80: Mounted from library/ubuntu
+<span style="color:#ae81ff">1</span>.0: digest: sha256:baa607ec007033e47ad2d26c5f38da7d95023efad2a76da2aa857e1e4d5a756f size: <span style="color:#ae81ff">1564</span></code></pre></div>
+<p>Console에 찍힌 로그를 보면, Unbuntu Image는 이미 Docker Registry에 존재하기 때문에 Mount만 되고, 그 외에 생성한 Layer만 추가로 Push되는 것을 볼 수 있습니다.</p>
+
+<div class="notices info" ><p><a href="https://hub.docker.com/" target="_blank">Docker Hub</a>에서 Push된 Image를 확인할 수 있습니다.</p>
+</div>
+
+
+<h2 id="hello-world를-만들어-보자">Hello World를 만들어 보자</h2>
+
+<p>처음에 <code>hello-world</code>를 실행시켜 봤었습니다. 지금부터는 직접 구현해 보겠습니다.</p>
+
+<h3 id="dockerfile-변경">Dockerfile 변경</h3>
+
+<p>기 생성된 Dockerfile을  <strong>Dockerfile.base</strong>로 변경 한 후, <code>${username}/my-base-image:1.0</code> Image에 <code>CMD</code> Layer가 추가된 Image를 생성하는 <strong>Dockerfile</strong>을 새로 생성합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ${username}/my-base-image:1.0</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span><span style="color:#e6db74"> /app/hello.sh</span></code></pre></div>
+<p>다음과 같은 내용으로 <strong>hello.sh</strong>를 생성합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e">#!/bin/sh
+</span><span style="color:#75715e"></span>echo <span style="color:#e6db74">&#34;Hello world&#34;</span></code></pre></div>
+<p><strong>hello.sh</strong> 파일을 저장하고 실행가능한 상태로 변경합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ chmod +x hello.sh</code></pre></div>
+<p>변경된 폴더 구조는 다음과 같습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ tree
+.
+├── Dockerfile
+├── Dockerfile.base
+└── hello.sh
+
+<span style="color:#ae81ff">0</span> directories, <span style="color:#ae81ff">3</span> files</code></pre></div>
+<h3 id="hello-world-image-build">Hello World Image Build</h3>
+
+<p>변경된 Dockerfile로 <code>${username}/my-final-image:1.0</code>이란 이름의 Image를 Build합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker build -t <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-final-image:1.0 -f Dockerfile .
+Sending build context to Docker daemon  <span style="color:#ae81ff">11</span>.26kB
+Step <span style="color:#ae81ff">1</span>/2 : FROM <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image:1.0
+ ---&gt; 6087ccdf7873
+Step <span style="color:#ae81ff">2</span>/2 : CMD /app/hello.sh
+ ---&gt; Running in 8b7b0383d636
+Removing intermediate container 8b7b0383d636
+ ---&gt; c0d79183f707
+Successfully built c0d79183f707
+Successfully tagged <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-final-image:1.0</code></pre></div>
+<p>처음에 Build했을 때 보다는 월등히 빠르게 Build되는 것을 알 수 있습니다. <code>${username}/my-final-image:1.0</code>의 Base Image가 이미 Local에 존재하기 때문에 <code>CMD</code>에 해당하는 Layer만 생성하면 되기 때문입니다.</p>
+
+<p>생성된 Image를 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker images
+REPOSITORY                    TAG                 IMAGE ID            CREATED             SIZE
+<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-final-image    <span style="color:#ae81ff">1</span>.0                 c0d79183f707        <span style="color:#ae81ff">14</span> seconds ago      107MB
+<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image     <span style="color:#ae81ff">1</span>.0                 6087ccdf7873        <span style="color:#ae81ff">4</span> minutes ago       107MB
+ubuntu                        <span style="color:#ae81ff">16</span>.10               7d3f705d307c        <span style="color:#ae81ff">8</span> months ago        107MB</code></pre></div>
+<p><code>docker history [OPTIONS] IMAGE</code>로 각 Image를 구성하는 Layer를 한번 확인해 보겠습니다. 두 Image 사이에서 공유하는 Layer는 암호화된 ID가 동일하다는 것을 확인할 수 있습니다.</p>
+
+<div class='align-center'>
+    <p><strong>${username}/my-base-image:1.0</strong></p>
+
+</div>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker history <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image:1.0
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+6087ccdf7873        <span style="color:#ae81ff">4</span> minutes ago       /bin/sh -c <span style="color:#75715e">#(nop) COPY dir:d9ce0b6a08037dcd1…   6.26kB</span>
+7d3f705d307c        <span style="color:#ae81ff">8</span> months ago        /bin/sh -c <span style="color:#75715e">#(nop)  CMD [&#34;/bin/bash&#34;]            0B</span>
+&lt;missing&gt;           <span style="color:#ae81ff">8</span> months ago        /bin/sh -c mkdir -p /run/systemd <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;do…   7B
+</span><span style="color:#e6db74">&lt;missing&gt;           8 months ago        /bin/sh -c sed -i &#39;</span>s/^#<span style="color:#ae81ff">\s</span>*<span style="color:#ae81ff">\(</span>deb.*universe<span style="color:#ae81ff">\)</span>$…   <span style="color:#ae81ff">2</span>.78kB
+&lt;missing&gt;           <span style="color:#ae81ff">8</span> months ago        /bin/sh -c rm -rf /var/lib/apt/lists/*          0B
+&lt;missing&gt;           <span style="color:#ae81ff">8</span> months ago        /bin/sh -c set -xe   <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;#!/bin/sh&#39;</span> &gt; /…   745B
+&lt;missing&gt;           <span style="color:#ae81ff">8</span> months ago        /bin/sh -c <span style="color:#75715e">#(nop) ADD file:6cd9e0a52cd152000…   107MB</span></code></pre></div>
+<div class='align-center'>
+    <p><strong>${username}/my-final-image:1.0</strong></p>
+
+</div>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker history <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-final-image:1.0
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+c0d79183f707        <span style="color:#ae81ff">50</span> seconds ago      /bin/sh -c <span style="color:#75715e">#(nop)  CMD [&#34;/bin/sh&#34; &#34;-c&#34; &#34;/app…   0B</span>
+6087ccdf7873        <span style="color:#ae81ff">5</span> minutes ago       /bin/sh -c <span style="color:#75715e">#(nop) COPY dir:d9ce0b6a08037dcd1…   6.26kB</span>
+7d3f705d307c        <span style="color:#ae81ff">8</span> months ago        /bin/sh -c <span style="color:#75715e">#(nop)  CMD [&#34;/bin/bash&#34;]            0B</span>
+&lt;missing&gt;           <span style="color:#ae81ff">8</span> months ago        /bin/sh -c mkdir -p /run/systemd <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;do…   7B
+</span><span style="color:#e6db74">&lt;missing&gt;           8 months ago        /bin/sh -c sed -i &#39;</span>s/^#<span style="color:#ae81ff">\s</span>*<span style="color:#ae81ff">\(</span>deb.*universe<span style="color:#ae81ff">\)</span>$…   <span style="color:#ae81ff">2</span>.78kB
+&lt;missing&gt;           <span style="color:#ae81ff">8</span> months ago        /bin/sh -c rm -rf /var/lib/apt/lists/*          0B
+&lt;missing&gt;           <span style="color:#ae81ff">8</span> months ago        /bin/sh -c set -xe   <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;#!/bin/sh&#39;</span> &gt; /…   745B
+&lt;missing&gt;           <span style="color:#ae81ff">8</span> months ago        /bin/sh -c <span style="color:#75715e">#(nop) ADD file:6cd9e0a52cd152000…   107MB</span></code></pre></div>
+<h3 id="다시-push">다시 Push</h3>
+
+<p><code>${username}/my-final-image:1.0</code> Image를 Docker Registry에 Push합니다. Docker Registry에는 ${username}/my-base-image:1.0 Image의 Layer들이 이미 존재하고 있기 때문에, 추가된 Layer(Dockerfile에 추가된 <code>CMD</code>)만 Push됩니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker push <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-final-image:1.0
+The push refers to repository <span style="color:#f92672">[</span>docker.io/<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-final-image<span style="color:#f92672">]</span>
+1b9e33c4403d: Mounted from <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image
+fcc11235a441: Mounted from <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image
+0ba4c05a8843: Mounted from <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image
+47a3ebbaa644: Mounted from <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image
+31eed92f5a23: Mounted from <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image
+57145c01eb80: Mounted from <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-base-image
+<span style="color:#ae81ff">1</span>.0: digest: sha256:cd26aa2cb82dbecdb064b524e3f3796493b106fd2dae4a9a2320856c46288dad size: <span style="color:#ae81ff">1564</span></code></pre></div>
+<h2 id="다른-곳에서-hello-world를-실행해보자">다른 곳에서 Hello World를 실행해보자</h2>
+
+<p>새로운 환경에서 지금 만든 Image를 Container로 실행시켜 보겠습니다. 그 전에 <code>docker-machine create</code>로 새로운 Docker 환경을 구성하겠습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker-machine create <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>
+Running pre-create checks...
+<span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span> Default Boot2Docker ISO is out-of-date, downloading the latest release...
+<span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span> Latest release <span style="color:#66d9ef">for</span> github.com/boot2docker/boot2docker is v18.03.0-ce
+<span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span> Downloading /Users/<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/.docker/machine/cache/boot2docker.iso from https://github.com/boot2docker/boot2docker/releases/download/v18.03.0-ce/boot2docker.iso...
+<span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span> <span style="color:#ae81ff">0</span>%....10%....20%....30%....40%....50%....60%....70%....80%....90%....100%
+Creating machine...
+<span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span> Copying /Users/<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/.docker/machine/cache/boot2docker.iso to /Users/<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/.docker/machine/machines/<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/boot2docker.iso...
+<span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span> Creating VirtualBox VM...
+<span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span> Creating SSH key...
+<span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span> Starting the VM...
+<span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span> Check network to re-create <span style="color:#66d9ef">if</span> needed...
+<span style="color:#f92672">(</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#f92672">)</span> Waiting <span style="color:#66d9ef">for</span> an IP...
+Waiting <span style="color:#66d9ef">for</span> machine to be running, this may take a few minutes...
+Detecting operating system of created instance...
+Waiting <span style="color:#66d9ef">for</span> SSH to be available...
+Detecting the provisioner...
+Provisioning with boot2docker...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Checking connection to Docker...
+Docker is up and running!
+To see how to connect your Docker Client to the Docker Engine running on this virtual machine, run: docker-machine env <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span></code></pre></div>
+<p>새로 구성한 Docker 환경에 <code>docker-machine ssh</code>로 접속하겠습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/image-build-test $ docker-machine ssh <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>
+                        <span style="color:#75715e">##         .</span>
+                  <span style="color:#75715e">## ## ##        ==</span>
+               <span style="color:#75715e">## ## ## ## ##    ===</span>
+           /<span style="color:#e6db74">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;\___/ ===
+</span><span style="color:#e6db74">      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+</span><span style="color:#e6db74">           \______ o           __/
+</span><span style="color:#e6db74">             \    \         __/
+</span><span style="color:#e6db74">              \____\_______/
+</span><span style="color:#e6db74"> _                 _   ____     _            _
+</span><span style="color:#e6db74">| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+</span><span style="color:#e6db74">| &#39;_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ &#39;__|
+</span><span style="color:#e6db74">| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   &lt;  __/ |
+</span><span style="color:#e6db74">|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+</span><span style="color:#e6db74">Boot2Docker version 18.03.0-ce, build HEAD : 404ee40 - Thu Mar 22 17:12:23 UTC 2018
+</span><span style="color:#e6db74">Docker version 18.03.0-ce, build 0520e24
+</span><span style="color:#e6db74">docker@</span><span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span><span style="color:#e6db74">:~</span>$</code></pre></div>
+<p>지금 만든 Image를 Pull받고,..</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>:~$ docker pull <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-final-image:1.0
+<span style="color:#ae81ff">1</span>.0: Pulling from <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-final-image
+dca7be20e546: Pull complete
+40bca54f5968: Pull complete
+61464f23390e: Pull complete
+d99f0bcd5dc8: Pull complete
+120db6f90955: Pull complete
+cb2cf9c669f2: Pull complete
+Digest: sha256:cd26aa2cb82dbecdb064b524e3f3796493b106fd2dae4a9a2320856c46288dad
+Status: Downloaded newer image <span style="color:#66d9ef">for</span> <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-final-image:1.0</code></pre></div>
+<p>새로 구성된 환경이라 Image의 모든 Layer들을 내려받습니다. 그리고, <code>docker run</code>을 실행하면 !!!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@<span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>:~$ docker run <span style="color:#e6db74">${</span>username<span style="color:#e6db74">}</span>/my-final-image:1.0
+Hello world</code></pre></div>
+<p>처음에 정리했던 Build - Push - Pull - Run의 과정으로 Container가 실행되는 것을 확인할 수 있었습니다. Docker Engine이 설치된 어떤 환경에서도 지금 만든 <strong>Hello world</strong>는 실행될 것입니다. 여기서 더 나아가 Hello world는 <strong>다양한 메시지를 입력받거나 혹은, 저장되어 있는 메시지들을 출력하는 Application</strong>으로 발전할 수도 있습니다. 그렇다면, 이 Application의 기능이 Upgrade되어, 새로운 버전의 Image를 만들고 새로운 Container를 기동시켜야 한다면, 변경된 내용(입력받거나 혹은 저장된 메시지들)들은 어떻게 될까요?</p>
+
+<p>우리는 이전에 Image와 Container의 Layer 구조를 살펴보면서, 해당 Container에 읽기/쓰기가 가능한 Layer내에 변경된 내용들이 저장된다는 것을 알고 있습니다. 그리고, 이 데이터들은 해당 Container와 같이 소멸된다는 것도 알고 있습니다. 그럼, Container가 소멸되었다가 새로 생성되어도, 이전의 데이터들을 유지하여 사용할 방법은 없을까요? 이 다음에는 Docker의 Volume을 이용하여, 데이터를 보존하는 방법에 대해서 확인해볼 필요가 있겠네요.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker/docker-start/">Docker 시작하기</a></li>
+        
+        <li><a href="/posts/docker/what-is-container/">[Docker 기본(3/8)] Container는 뭘까?</a></li>
+        
+        <li><a href="/posts/docker/hello-docker/">[Docker 기본(1/8)] Hello Docker!</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/kubernetes/secret/">[Kubernetes 활용(7/8)] Secret</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/image" rel="tag">image</a></li><li><a href="/tags/container" rel="tag">container</a></li><li><a href="/tags/dockerfile" rel="tag">dockerfile</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-build-push%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-build-push%2f&amp;text=%5bDocker%20%ea%b8%b0%eb%b3%b8%284%2f8%29%5d%20docker%20build%20%26%20push" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-build-push%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-build-push%2f&amp;title=%5bDocker%20%ea%b8%b0%eb%b3%b8%284%2f8%29%5d%20docker%20build%20%26%20push" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-build-push%2f&amp;description=%5bDocker%20%ea%b8%b0%eb%b3%b8%284%2f8%29%5d%20docker%20build%20%26%20push" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-build-push%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/1000jaeh">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/1000jaeh.jpeg'/><div class="author-info">
+    <h3>정재훈</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/docker/what-is-container/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(3/8)] Container는 뭘까?</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 09
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 7분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/docker/volume/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(5/8)] Volume을 활용한 Data 관리</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 09
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 7분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

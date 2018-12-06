@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Redis는 Key/Value형태의 In-Memory 데이터베이스로서 데이터 저장 및 캐싱, 그리고 메시지 브로커로 널리 사용 되고 있습니다.
+Redis의 가장 큰 특징으로는 In-Memory 데이터베이스가 가지는 장점인 처리속도가 굉장히 빠르다는 점이 있습니다. 물론 이것 자체는 휘발성 데이터이기 때문에 케이스에 따라서 데이터를 덤프하는 스케쥴링을 통해 정합성 및 영속성을 관리할 수 있습니다. 하지만 이것도 불안하다 싶어 조금 더 나아간다면 고가용성을 보장하기 위해 Master-Slave 구조의 아키텍쳐링까지 설계할 수 있습니다.
+또한, Redis의 내부를 열어보면 데이터 스트럭쳐로 String, Hash, List, Sets, Sorted Sets등 기본적인 쿼리 뿐만 아니라 Bitmaps, Hyperloglogs, Geospatial indexes와 같은 Radius 쿼리까지도 지원하는 등 강력한 기능이 있습니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='Redis Overview(with Spring Boot) | 강훈기'>
+<meta property='og:description' content='Redis는 Key/Value형태의 In-Memory 데이터베이스로서 데이터 저장 및 캐싱, 그리고 메시지 브로커로 널리 사용 되고 있습니다.
+Redis의 가장 큰 특징으로는 In-Memory 데이터베이스가 가지는 장점인 처리속도가 굉장히 빠르다는 점이 있습니다. 물론 이것 자체는 휘발성 데이터이기 때문에 케이스에 따라서 데이터를 덤프하는 스케쥴링을 통해 정합성 및 영속성을 관리할 수 있습니다. 하지만 이것도 불안하다 싶어 조금 더 나아간다면 고가용성을 보장하기 위해 Master-Slave 구조의 아키텍쳐링까지 설계할 수 있습니다.
+또한, Redis의 내부를 열어보면 데이터 스트럭쳐로 String, Hash, List, Sets, Sorted Sets등 기본적인 쿼리 뿐만 아니라 Bitmaps, Hyperloglogs, Geospatial indexes와 같은 Radius 쿼리까지도 지원하는 등 강력한 기능이 있습니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/redis-overview/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='spring boot'><meta property='article:tag' content='redis'><meta property='article:published_time' content='2018-03-05T13:10:36&#43;09:00'/><meta property='article:modified_time' content='2018-03-05T13:10:36&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>Redis Overview(with Spring Boot) | 강훈기</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/redis-overview/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Mar 05, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 5분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>Redis Overview(with Spring Boot)</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/hunkee1017">강훈기</a></p>
+
+
+<p><strong>Redis</strong>는 Key/Value형태의 In-Memory 데이터베이스로서 데이터 저장 및 캐싱, 그리고 메시지 브로커로 널리 사용 되고 있습니다.</p>
+
+<p><strong>Redis</strong>의 가장 큰 특징으로는 In-Memory 데이터베이스가 가지는 장점인 처리속도가 굉장히 빠르다는 점이 있습니다. 물론 이것 자체는 휘발성 데이터이기 때문에 케이스에 따라서 데이터를 덤프하는 스케쥴링을 통해 정합성 및 영속성을 관리할 수 있습니다. 하지만 이것도 불안하다 싶어 조금 더 나아간다면 고가용성을 보장하기 위해 Master-Slave 구조의 아키텍쳐링까지 설계할 수 있습니다.</p>
+
+<p>또한, <strong>Redis</strong>의 내부를 열어보면 데이터 스트럭쳐로 String, Hash, List, Sets, Sorted Sets등 기본적인 쿼리 뿐만 아니라 Bitmaps, Hyperloglogs, Geospatial indexes와 같은 Radius 쿼리까지도 지원하는 등 강력한 기능이 있습니다.</p>
+
+<p>Pivotal에서도 강력한 <strong>Redis</strong>의 기능을 사용하기 위해 Spring Boot를 통해 손쉽게 여러 프로젝트와 연결할 수 있는 방법을 가이드 하고 있습니다.</p>
+
+<p><strong>지금부터는 이런 Redis를 Spring Boot에서 사용하는 방법을 알아보겠습니다.</strong></p>
+
+<blockquote>
+<p>Spring Boot, Maven를 사용해서 작성했습니다.</p>
+</blockquote>
+
+<h3 id="redis-dependency-추가">Redis Dependency 추가</h3>
+
+<hr />
+
+<p>Redis를 Spring-boot에서 사용하기 위해서는 가장 먼저 Redis의 Dependency를 추가해야합니다.</p>
+
+<blockquote>
+<p>pom.xml에 다음과 같은 설정을 추가함</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-data-redis<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span></code></pre></div>
+<blockquote>
+<p>Redis 접속 정보를 property에 등록합니다.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">spring:
+  redis:
+    host: <span style="color:#ae81ff">127.0</span>.<span style="color:#ae81ff">0.1</span>
+    port: <span style="color:#ae81ff">6379</span>
+    password: password</code></pre></div>
+<h3 id="redis-session">Redis Session</h3>
+
+<hr />
+
+<p>Redis는 Spring session과 연동하여 Session에 대한 저장소를 Redis로 관리할 수 있습니다.</p>
+
+<p><em>Dependency</em></p>
+
+<blockquote>
+<p>pom.xml에 Spring Session을 사용하기 위한 정보를 넣습니다.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.session<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-session<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span></code></pre></div>
+<p><em>Annotation</em></p>
+
+<blockquote>
+<p>해당 Spring Session을 Redis로 사용하겠다는 annotation을 넣습니다.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.springframework.boot.SpringApplication<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.boot.autoconfigure.SpringBootApplication<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@SpringBootApplication</span>
+<span style="color:#a6e22e">@EnableRedisHttpSession</span> <span style="color:#75715e">// Redis를 세션형태로 사용하겠다는 설정
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisApplication</span> <span style="color:#f92672">{</span>
+
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>RedisApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<p><em>Property</em></p>
+
+<blockquote>
+<p>프로퍼티에서 session의 Store-type을 redis로 설정해줍니다.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">spring:
+  session:
+    store-type: redis</code></pre></div>
+<p><em>결과</em></p>
+
+<blockquote>
+<p>$redis-cli&gt; keys spring:session*</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&#34;spring:session:sessions:expires:e7e5a693-54b9-489f-b8c2-25c993de7ec9&#34;
+&#34;spring:session:expirations:1520229840000&#34;
+&#34;spring:session:sessions:e7e5a693-54b9-489f-b8c2-25c993de7ec9&#34;</pre></div>
+<h3 id="redis-cache">Redis Cache</h3>
+
+<hr />
+
+<p>Redis Cache는 Spring Cache를 Redis에서 처리 할 수 있도록 지원합니다.</p>
+
+<p><em>Dependency</em></p>
+
+<blockquote>
+<p>pom.xml에 캐시를 사용하기 위한 Dependency를 추가합니다.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-cache<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span></code></pre></div>
+<p><em>Annotation</em></p>
+
+<blockquote>
+<p>해당 Spring Cache을 Redis로 사용하겠다는 annotation을 넣습니다.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.springframework.boot.SpringApplication<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.boot.autoconfigure.SpringBootApplication<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.cache.annotation.EnableCaching<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@SpringBootApplication</span>
+<span style="color:#a6e22e">@EnableCaching</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisApplication</span> <span style="color:#f92672">{</span>
+
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>RedisApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<p><em>Property</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">spring:
+  cache:
+    type: redis</code></pre></div>
+<p><em>사용하기</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 사용할 Cache에 대한 configuration
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@CacheConfig</span><span style="color:#f92672">(</span>cacheNames<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cacheName&#34;</span><span style="color:#f92672">)</span>
+
+<span style="color:#75715e">// 캐싱을 할 대상 Method에 붙여주는 Annotation
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Cacheable</span>
+
+<span style="color:#75715e">// 캐시된 대상을 비워줄 Method 위에 붙여주는 Annotation
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@CacheEvict</span><span style="color:#f92672">(</span>cacheNames<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cacheName&#34;</span><span style="color:#f92672">)</span></code></pre></div>
+<h3 id="redis-transaction">Redis Transaction</h3>
+
+<hr />
+
+<p>레디스에서 데이터를 저장할때 트랜잭션을 통해 처리할 수 있도록 설정합니다.</p>
+
+<p>주요 명령어는 <a href="https://redis.io/commands/multi" target="_blank">MULTI</a> , <a href="https://redis.io/commands/exec" target="_blank">EXEC</a> , <a href="https://redis.io/commands/discard" target="_blank">DISCARD</a>, <a href="https://redis.io/commands/watch" target="_blank">WATCH</a></p>
+
+<ul>
+<li>MULTI : 트랜잭션 블록의 시작을 표시. 이 구문 안에 포함된 구문들은 전부 Queue로 넣어진 후 EXEC를 만날 때까지 대기.</li>
+<li>EXEC : 이전에 대기중인 모든 명령을 트랜잭션에서 실행 하고 연결 상태를 정상으로 복원.</li>
+<li>DISCARD : 이전에 대기중인 모든 명령을 트랜잭션에서 플러시 해버리고 연결 상태를 정상으로 복원.</li>
+<li>WATCH : 트랜잭션의 조건부 실행을 감시하는 지정된 키를 마크. 이 watch가 걸려있는 key를 외부에서 접근하려고 시도하면 Discard를 발생시킴.
+
+<br /></li>
+</ul>
+
+<p>1) Redis Transaction</p>
+
+<blockquote>
+<p>명시적으로 사용하기 위해서 커스터마이징을 수행</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// execute a transaction
+</span><span style="color:#75715e"></span>List<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> txResults <span style="color:#f92672">=</span> redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SessionCallback<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;&gt;()</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>RedisOperations operations<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> DataAccessException <span style="color:#f92672">{</span>
+    operations<span style="color:#f92672">.</span><span style="color:#a6e22e">multi</span><span style="color:#f92672">();</span>
+    operations<span style="color:#f92672">.</span><span style="color:#a6e22e">opsForSet</span><span style="color:#f92672">().</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;key&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;value1&#34;</span><span style="color:#f92672">);</span>
+
+    <span style="color:#75715e">// This will contain the results of all ops in the transaction
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> operations<span style="color:#f92672">.</span><span style="color:#a6e22e">exec</span><span style="color:#f92672">();</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">});</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Number of items added to set: &#34;</span> <span style="color:#f92672">+</span> txResults<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">));</span></code></pre></div>
+<p>2) @Transactional Support</p>
+
+<blockquote>
+<p>Framework의 Transaction을 사용해서 처리</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/* Sample Configuration */</span>
+<span style="color:#a6e22e">@Configuration</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisTxContextConfiguration</span> <span style="color:#f92672">{</span>
+  <span style="color:#a6e22e">@Bean</span>
+  <span style="color:#66d9ef">public</span> StringRedisTemplate <span style="color:#a6e22e">redisTemplate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    StringRedisTemplate template <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringRedisTemplate<span style="color:#f92672">(</span>redisConnectionFactory<span style="color:#f92672">());</span>
+    <span style="color:#75715e">// explicitly enable transaction support
+</span><span style="color:#75715e"></span>    template<span style="color:#f92672">.</span><span style="color:#a6e22e">setEnableTransactionSupport</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> template<span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+
+  <span style="color:#a6e22e">@Bean</span>
+  <span style="color:#66d9ef">public</span> PlatformTransactionManager <span style="color:#a6e22e">transactionManager</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> SQLException <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DataSourceTransactionManager<span style="color:#f92672">(</span>dataSource<span style="color:#f92672">());</span>
+  <span style="color:#f92672">}</span>
+
+  <span style="color:#a6e22e">@Bean</span>
+  <span style="color:#66d9ef">public</span> RedisConnectionFactory <span style="color:#a6e22e">redisConnectionFactory</span><span style="color:#f92672">(</span> <span style="color:#75715e">// jedis, lettuce, srp,... );
+</span><span style="color:#75715e"></span>
+  <span style="color:#a6e22e">@Bean</span>
+  <span style="color:#66d9ef">public</span> DataSource <span style="color:#a6e22e">dataSource</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> SQLException <span style="color:#f92672">{</span> <span style="color:#75715e">// ... }
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span></code></pre></div>
+<ol>
+<li><a href="https://redis.io/topics/transactions" target="_blank">https://redis.io/topics/transactions</a></li>
+<li><a href="https://docs.spring.io/spring-data/redis/docs/1.8.6.RELEASE/reference/html/#redis:pubsub:subscribe" target="_blank">https://docs.spring.io/spring-data/redis/docs/1.8.6.RELEASE/reference/html/#redis:pubsub:subscribe</a>
+
+<br />
+
+<br /></li>
+</ol>
+
+<h3 id="redis-persistence">Redis Persistence</h3>
+
+<hr />
+
+<p>레디스 데이터의 영속성을 보장하기 위해 Data를 백업하고 관리하는 방법입니다.
+Redis홈페이지에서 권장하는 방법은 <strong>RDB와 AOF를 모두 사용</strong>하여 데이터 정합성을 보장하는 것입니다.</p>
+
+<p>1) RDB 방식</p>
+
+<ul>
+<li><strong>dump.rdb</strong> 이름으로 저장</li>
+
+<li><p><strong>장점</strong></p>
+
+<ul>
+<li>원하는 시점에서 복구데이터를 남길 수 있습니다.</li>
+<li>재해 복구에 매우 유용.</li>
+<li>RDB는 AOF에 비해 큰 데이터 세트를 사용하여 재시작을 빠르게 수행.
+<br /></li>
+</ul></li>
+
+<li><p><strong>단점</strong></p>
+
+<ul>
+<li>Redis가 작동을 멈춘 경우(예 : 정전 후)에 데이터 손실 가능성을 최소화해야하는 경우 RDB가 좋지 않습니다. (예를 들어 데이터 세트에 대해 최소 5 분 및 100 회 기록 후, 여러 저장 지점을 가질 수 있음).</li>
+<li>RDB는 자식 프로세스를 사용하여 디스크에 저장하기 위해 fork ()를 자주 수행 해야 합니다. 데이터 세트가 크면 Fork ()에 시간이 많이 걸릴 수 있으며 CPU 성능이 좋지 않은 경우 Redis는 클라이언트에 수 밀리 초 또는 1 초간 서비스를 제공하지 않을 수 있습니다.</li>
+</ul></li>
+
+<li><p><em>Synchronously 백업</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ src/redis-cli
+  <span style="color:#ae81ff">127</span>.0.0.1:6379&gt; help save
+    SAVE -
+    summary: Synchronously save the dataset to disk
+    since: <span style="color:#ae81ff">1</span>.0.0
+    group: server
+
+  <span style="color:#ae81ff">127</span>.0.0.1:6379&gt; save</code></pre></div>
+<ul>
+<li><em>Background 백업</em></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ src/redis-cli
+  <span style="color:#ae81ff">127</span>.0.0.1:6379&gt; help bgsave
+    BGSAVE -
+    summary: Asynchronously save the dataset to disk
+    since: <span style="color:#ae81ff">1</span>.0.0
+    group: server
+
+  <span style="color:#ae81ff">127</span>.0.0.1:6379&gt; bgsave</code></pre></div></li>
+</ul>
+
+<p>2) AOF 방식</p>
+
+<ul>
+<li><strong>appendonly.aof</strong> 이름으로 저장됩니다.</li>
+
+<li><p><strong>장점</strong></p>
+
+<ul>
+<li>AOF Redis는 매 초 fsync를 수행하여 데이터 정합성에서 유리하다(1 초의 쓰기 정도만 손실 할 수 있습니다)</li>
+<li>AOF 로그는 추가 전용 로그이므로 전원이 중단 될 경우 손상 문제가 없습니다. 어떤 이유로 (디스크가 가득 차거나 다른 이유로) 로그가 절반으로 작성된 명령으로 끝나더라도 redis-check-aof 도구로 쉽게 수정할 수 있습니다.</li>
+<li>Redis는 너무 커지면 백그라운드에서 AOF를 자동으로 다시 쓸 수 있어 데이터의 유실이 최소화 됩니다.</li>
+<li>AOF에는 이해하기 쉽고 구문 분석 할 수있는 형식으로 차례로 모든 작업의 로그가 포함되어 있습니다. (예를 들어, FLUSHALL 명령을 사용하여 모든 오류를 플러시 했더라도 로그를 다시 작성하지 않으면 서버를 중지하고 최신 명령을 제거한 다음 Redis를 다시 시작하여 데이터 세트를 저장할 수 있습니다.)</li>
+</ul></li>
+
+<li><p><strong>단점</strong></p>
+
+<ul>
+<li>AOF 파일은 대개 동일한 데이터에 해당하는 RDB 파일보다 용량이 큽니다.</li>
+<li>AFS는 정확한 fsync 정책에 따라 RDB보다 느릴 수 있습니다.</li>
+<li>AOF로 인해 다시로드 할 때 정확히 동일한 데이터 세트가 재현되지 않을 가능성이 있습니다.
+<br /></li>
+</ul></li>
+
+<li><p><em>서버 실행할 때 AOF 활성</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ src/redis-server --appendonly yes</code></pre></div>
+<ul>
+<li><em>Redis-cli에서 AOF 활성</em>
+```shell
+$ src/redis-cli
+127.0.0.1:6379&gt; help BGREWRITEAOF
+BGREWRITEAOF -
+summary: Asynchronously rewrite the append-only file
+since: 1.0.0
+group: server</li>
+</ul>
+
+<p>127.0.0.1:6379&gt; BGREWRITEAOF
+```</p></li>
+</ul>
+
+<p>참조 :</p>
+
+<p><a href="https://redis.io/topics/persistence" target="_blank">https://redis.io/topics/persistence</a></p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-test/">[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/what-is-docker-user-defined-network/">[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/spring-boot" rel="tag">spring boot</a></li><li><a href="/tags/redis" rel="tag">redis</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fredis-overview%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fredis-overview%2f&amp;text=Redis%20Overview%28with%20Spring%20Boot%29" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fredis-overview%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fredis-overview%2f&amp;title=Redis%20Overview%28with%20Spring%20Boot%29" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fredis-overview%2f&amp;description=Redis%20Overview%28with%20Spring%20Boot%29" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fredis-overview%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/hunkee1017">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/hunkeekang.jpg'/><div class="author-info">
+    <h3>강훈기</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/cf-apprelease/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">CF에 Cloud Native Application 배포하기 </h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 05
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 5분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/docker/hello-docker/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(1/8)] Hello Docker!</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 05
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 5분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

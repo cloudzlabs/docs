@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>domain driven design on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/domain-driven-design/</link>
+    <description>Recent content in domain driven design on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 26 Feb 2018 17:52:54 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/domain-driven-design/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MSA 에서 유비쿼터스 언어(보편 언어)의 중요성</title>
+      <link>http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/</link>
+      <pubDate>Mon, 26 Feb 2018 17:52:54 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/</guid>
+      <description>Health-Care Application의 MS 분리 워크샵을 진행한 후 자문해봤다.
+ 보상/혜택  Reward가 사용자에게 주어지면 그게 사용자 입장에서는? Item인가 Reward인가? 운동을 안해서 주는 경고도 Reward인가? 내가 운동을 많이 했다고 선물이 아니라 칭찬메시지가 오는 것도 Reward인가? 친구가 나를 역전했다고 알려주는 것이 Reward인가?  챌린지/목표/이벤트  챌린지와 목표의 차이는? 챌린지가 이벤트와 다른 것인가? 마케팅 기획이 이벤트인가? 챌린지를 집단으로 한다면 챌린지인가 이벤트인가?  포인트  포인트가 챌린지의 보상인가? 포인트가 사용자의 경험치인가? 운동량과 포인트는 누구에게나 동일한 비율로 적재되는가?</description>
+    </item>
+    
+  </channel>
+</rss>

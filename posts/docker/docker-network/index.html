@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Docker Swarm은 두 가지 종류의 Traffic을 생성합니다.
+ 제어 및 관리 영역 Traffic: Docker Swarm에 대한 참가 및 탈퇴 요청과 같은 Docker Swarm의 관리 Message가 포함됩니다. 해당 Traffic은 항상 암호화됩니다. Application Data 영역 Traffic: Container 및 외부 Client와의 Traffic이 포함됩니다.  이 중에서 해당 Post에서는, Application Data 영역의 Traffic에 대해서 확인해보고자 합니다.
+Docker의 Networking에 대한 자세한 내용은 Docker Networking Reference Architecture문서를 참고하시기 바랍니다.
+ Docker의 Network 먼저, Docker는 Overlay, Ingress, docker\_gwbridge의 세 가지 Network이 존재합니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Docker 기본(8/8)] Docker의 Network | 정재훈'>
+<meta property='og:description' content='Docker Swarm은 두 가지 종류의 Traffic을 생성합니다.
+ 제어 및 관리 영역 Traffic: Docker Swarm에 대한 참가 및 탈퇴 요청과 같은 Docker Swarm의 관리 Message가 포함됩니다. 해당 Traffic은 항상 암호화됩니다. Application Data 영역 Traffic: Container 및 외부 Client와의 Traffic이 포함됩니다.  이 중에서 해당 Post에서는, Application Data 영역의 Traffic에 대해서 확인해보고자 합니다.
+Docker의 Networking에 대한 자세한 내용은 Docker Networking Reference Architecture문서를 참고하시기 바랍니다.
+ Docker의 Network 먼저, Docker는 Overlay, Ingress, docker\_gwbridge의 세 가지 Network이 존재합니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/docker/docker-network/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='docker'><meta property='article:tag' content='service discovery'><meta property='article:tag' content='docker network'><meta property='article:tag' content='overlay'><meta property='article:tag' content='ingress'><meta property='article:published_time' content='2018-03-09T08:29:07&#43;09:00'/><meta property='article:modified_time' content='2018-03-09T08:29:07&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Docker 기본(8/8)] Docker의 Network | 정재훈</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/docker/docker-network/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Mar 09, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 9분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Docker 기본(8/8)] Docker의 Network</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/1000jaeh">정재훈</a></p>
+
+
+<p>Docker Swarm은 두 가지 종류의 Traffic을 생성합니다.</p>
+
+<ol>
+<li>제어 및 관리 영역 Traffic: Docker Swarm에 대한 참가 및 탈퇴 요청과 같은 Docker Swarm의 관리 Message가 포함됩니다. 해당 Traffic은 항상 암호화됩니다.</li>
+<li>Application Data 영역 Traffic: Container 및 외부 Client와의 Traffic이 포함됩니다.</li>
+</ol>
+
+<p>이 중에서 해당 Post에서는, Application Data 영역의 Traffic에 대해서 확인해보고자 합니다.</p>
+
+<div class="notices info" ><p>Docker의 Networking에 대한 자세한 내용은 <a href="https://success.docker.com/article/Docker_Reference_Architecture-_Designing_Scalable,_Portable_Docker_Container_Networks" target="_blank">Docker Networking Reference Architecture</a>문서를 참고하시기 바랍니다.</p>
+</div>
+
+
+<h2 id="docker의-network">Docker의 Network</h2>
+
+<p>먼저, Docker는 <strong>Overlay, Ingress, docker\_gwbridge</strong>의 세 가지 Network이 존재합니다. 각각에 대한 개념과 역할에 대해서 알아보겠습니다.</p>
+
+<h3 id="overlay-network">Overlay Network</h3>
+
+<ul>
+<li>Overlay Network는 Docker Swarm에 참여하는 Docker Daemon간의 통신을 관리합니다.</li>
+<li>독립실행형 Container의 Network를 생성하는 방법과 동일한 방식으로 Overlay Network를 생성할 수 있습니다.</li>
+<li>기존에 생성된 Overlay Network에 Service를 연결시켜 Service간 통신을 활성화할 수 있습니다.</li>
+<li>Overlay Network는 Overlay Network Driver를 사용합니다.</li>
+</ul>
+
+<h3 id="ingress-network">Ingress Network</h3>
+
+<ul>
+<li>Ingress Network는 Service의 Node들간에 Load Balancing을 하는 Overlay Network입니다.</li>
+<li>Docker Swarm의 모든 Node가 노출된 Port로 요청을 받게되면, 해당 요청을 IPVS라는 모듈로 전달합니다.</li>
+<li>IPVS는 해당 Service에 참여하는 모든 IP 주소를 추적하고 그 중 하나를 선택한 뒤, 요청을 해당 경로로 Routing합니다.</li>
+<li>Ingress Network는 Docker Swarm을 Init하거나 Join할 때 자동으로 생성됩니다.</li>
+</ul>
+
+<h3 id="docker-gwbridge">docker_gwbridge</h3>
+
+<ul>
+<li>docker_gwbridge는 Overlay Network(Ingress Network 포함)를 개별 Docker Daemon의 물리적 Network에 연결하는 Bridge Network입니다.</li>
+<li>기본적으로, Service가 실행 중인 각각의 Container는 로컬 Docker Daemon Host의 docker_gwbridge Network에 연결됩니다.</li>
+<li>docker_gwbridge Network는 Docker Swarm을 Init하거나 Join할 때 자동으로 생성됩니다.</li>
+</ul>
+
+<p>Docker는 사용자가 정의한 Bridge, Overlay 및 MACVLAN Network들에게 Host 내의 모든 Container의 위치를 제공하는 내부 DNS Server를 갖고 있습니다. 각 Docker Container(또는 Docker Swarm의 Task)에 존재하는 DNS Resolver가, DNS 쿼리를 DNS Server 역할을 하는 Docker Engine으로 전달합니다. 그런 다음 Docker Engine은 DNS 쿼리가 요청한 Container가 Network 내에 포함되어있는지 확인합니다. Docker Engine은 key-value 저장소에서 Container, Task 또는 Service 이름과 일치하는 IP주소를 조회하고, 해당 IP 또는 Service Virtual IP(VIP)를 요청자에게 반환합니다. 이렇게 Docker는 내장 DNS를 사용하여, Single Docker Engine에서 실행되는 Container 및 Docker Swarm에서 실행되는 Task에 대한 Service Discovery기능을 제공합니다.</p>
+
+<h2 id="service-discovery">Service Discovery</h2>
+
+<p>Service Discovery는 Network 범위 내에서 동작합니다. 동일한 Network에 있는 Contrainer나 Task만 내장 DNS 기능을 사용할 수 있음을 의미합니다. 따라서, 동일한 Network에 있지 않은 Container는 서로의 주소를 확인할 수 없습니다. 또한, 특정 Network에 Container 또는 Task가 있는 Node만 해당 Network의 DNS 항목들을 저장합니다. 이러한 특징들이 Docker의 보안 및 성능을 향상시켜 줍니다. 만약 대상 Container 또는 Service가 원본 Container와 동일한 Network에 속하지 않는다면, Doker Engine은 구성된 기본 DNS Server로 DNS 쿼리를 전달합니다.</p>
+
+<div class="notices info" ><p>Docker Swarm에 내장된 Service Discovery의 경우, Token 기반으로 동작하며, 추가 설정없이 즉시 사용가능합니다. 하지만, 모든 Host들이 Docker Hub에 접근 가능해야 하기 때문에, 전체 Service가 한 곳의 이슈로 중지되는 상황(<strong>a single point of failure</strong>)이 발생할 수 있습니다. 따라서, 해당 Service Discovery는 개발 및 Test 환경에서만 사용하고, Production환경에서는 Consul, etcd, ZooKeeper 등의 Key-Value Store를 구성하여 사용하는 것을 권장합니다. Service Discovery에 대한 자세한 사항은 <a href="https://docs.docker.com/swarm/discovery/" target="_blank">Docker Swarm Discovery</a>문서를 참고하시기 바랍니다.</p>
+</div>
+
+
+<h2 id="service를-위한-network-구성하기">Service를 위한 Network 구성하기</h2>
+
+<h3 id="overlay-network-생성">Overlay Network 생성</h3>
+
+<p>Docker Swarm의 Manager Node에 접속합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker-machine ssh default
+                        <span style="color:#75715e">##         .</span>
+                  <span style="color:#75715e">## ## ##        ==</span>
+               <span style="color:#75715e">## ## ## ## ##    ===</span>
+           /<span style="color:#e6db74">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;\___/ ===
+</span><span style="color:#e6db74">      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+</span><span style="color:#e6db74">           \______ o           __/
+</span><span style="color:#e6db74">             \    \         __/
+</span><span style="color:#e6db74">              \____\_______/
+</span><span style="color:#e6db74"> _                 _   ____     _            _
+</span><span style="color:#e6db74">| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+</span><span style="color:#e6db74">| &#39;_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ &#39;__|
+</span><span style="color:#e6db74">| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   &lt;  __/ |
+</span><span style="color:#e6db74">|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+</span><span style="color:#e6db74">Boot2Docker version 17.10.0-ce, build HEAD : 34fe485 - Wed Oct 18 17:16:34 UTC 2017
+</span><span style="color:#e6db74">Docker version 17.10.0-ce, build f4ffd25
+</span><span style="color:#e6db74">docker@default:~</span>$</code></pre></div>
+<p><code>docker network create [OPTIONS] NETWORK</code>로 새로운 Overlay Network를 생성합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker network create -d overlay overnet
+fvyh0us5pkb50dd0qbk4z8537</code></pre></div>
+<p>생성된 Overlay Network를 <code>docker network ls [OPTIONS]</code>로 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+af3308efb8e3        bridge              bridge              local
+01a00e855484        docker_gwbridge     bridge              local
+b40e73017c03        host                host                local
+3fbffkmpwe24        ingress             overlay             swarm
+4a7e4e260bd5        none                null                local
+fvyh0us5pkb5        overnet             overlay             swarm</code></pre></div>
+<p><code>docker network inspect [OPTIONS] NETWORK [NETWORK...]</code>로 생성된 Overlay Network의 상세정보를 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker network inspect overnet
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;overnet&#34;</span>,
+        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;fvyh0us5pkb50dd0qbk4z8537&#34;</span>,
+        <span style="color:#e6db74">&#34;Created&#34;</span>: <span style="color:#e6db74">&#34;0001-01-01T00:00:00Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Scope&#34;</span>: <span style="color:#e6db74">&#34;swarm&#34;</span>,
+        <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;overlay&#34;</span>,
+        <span style="color:#e6db74">&#34;EnableIPv6&#34;</span>: false,
+        <span style="color:#e6db74">&#34;IPAM&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+            <span style="color:#e6db74">&#34;Options&#34;</span>: null,
+            <span style="color:#e6db74">&#34;Config&#34;</span>: <span style="color:#f92672">[]</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Internal&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Attachable&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Ingress&#34;</span>: false,
+        <span style="color:#e6db74">&#34;ConfigFrom&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Network&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;ConfigOnly&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Containers&#34;</span>: null,
+        <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;com.docker.network.driver.overlay.vxlanid_list&#34;</span>: <span style="color:#e6db74">&#34;4098&#34;</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Labels&#34;</span>: null
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div>
+<p>Worker Node에 접속합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker-machine ssh default-2
+                        <span style="color:#75715e">##         .</span>
+                  <span style="color:#75715e">## ## ##        ==</span>
+               <span style="color:#75715e">## ## ## ## ##    ===</span>
+           /<span style="color:#e6db74">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;\___/ ===
+</span><span style="color:#e6db74">      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+</span><span style="color:#e6db74">           \______ o           __/
+</span><span style="color:#e6db74">             \    \         __/
+</span><span style="color:#e6db74">              \____\_______/
+</span><span style="color:#e6db74"> _                 _   ____     _            _
+</span><span style="color:#e6db74">| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+</span><span style="color:#e6db74">| &#39;_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ &#39;__|
+</span><span style="color:#e6db74">| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   &lt;  __/ |
+</span><span style="color:#e6db74">|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+</span><span style="color:#e6db74">Boot2Docker version 17.10.0-ce, build HEAD : 34fe485 - Wed Oct 18 17:16:34 UTC 2017
+</span><span style="color:#e6db74">Docker version 17.10.0-ce, build f4ffd25
+</span><span style="color:#e6db74">docker@default-2:~</span>$</code></pre></div>
+<p>Worker Node에도 <code>docker network ls [OPTIONS]</code>로 Swarm Manager에서 생성한 Overlay Network가 존재하는지 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default-2:~$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+ec983de00160        bridge              bridge              local
+33c85f089e4a        docker_gwbridge     bridge              local
+48f1f71c59f0        host                host                local
+3fbffkmpwe24        ingress             overlay             swarm
+b66bb1d6602e        none                null                local</code></pre></div>
+<p>Worker Node에서는 아직 생성된 Overlay Network를 확인할 수 없습니다. 이는 Docker가 해당 Overlay Network를 필요할 때만, Host에 확장시키기 때문입니다. 따라서, 해당 Network에서 생성된 Service에서 Task될 때, Network 목록에 나타나게 됩니다.</p>
+
+<h3 id="service-network-연결">Service Network 연결</h3>
+
+<p>Overlay Network에 연결할 Service를 <code>docker service create [OPTIONS] IMAGE [COMMAND] [ARG...]</code>으로 생성합니다. <code>--network</code> Option을 설정하여, 생성된 Overlay Network에 해당 Service를 추가할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service create --name myservice <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --network overnet <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --replicas <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; ubuntu sleep infinity
+0pqg1f550559cuoxcjvhenb30
+overall progress: <span style="color:#ae81ff">3</span> out of <span style="color:#ae81ff">3</span> tasks
+<span style="color:#ae81ff">1</span>/3: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2</span>/3: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">3</span>/3: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+verify: Service converged</code></pre></div>
+<p>생성된 Service와 Container의 정보를 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+0pqg1f550559        myservice           replicated          <span style="color:#ae81ff">3</span>/3                 ubuntu:latest
+
+docker@default:~$ docker service ps myservice
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+7u0odxhvmqam        myservice.1         ubuntu:latest       default-2           Running             Running <span style="color:#ae81ff">25</span> seconds ago
+0ylu27keha3b        myservice.2         ubuntu:latest       default             Running             Running <span style="color:#ae81ff">25</span> seconds ago
+pfeozzgdnu97        myservice.3         ubuntu:latest       default-3           Running             Running <span style="color:#ae81ff">25</span> seconds ago
+
+docker@default:~$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+fb057acbf8fa        ubuntu:latest       <span style="color:#e6db74">&#34;sleep infinity&#34;</span>    <span style="color:#ae81ff">29</span> seconds ago      Up <span style="color:#ae81ff">29</span> seconds                           myservice.2.0ylu27keha3b3cieivu4vh4bd
+docker@default:~$</code></pre></div>
+<p>Worker Node에서 Overlay Network가 생성되었는지 <code>docker network ls [OPTIONS]</code>와 <code>docker network inspect [OPTIONS] NETWORK [NETWORK...]</code>로 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default-2:~$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+ec983de00160        bridge              bridge              local
+33c85f089e4a        docker_gwbridge     bridge              local
+48f1f71c59f0        host                host                local
+3fbffkmpwe24        ingress             overlay             swarm
+b66bb1d6602e        none                null                local
+fvyh0us5pkb5        overnet             overlay             swarm
+
+docker@default-2:~$ docker network inspect overnet
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;overnet&#34;</span>,
+        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;fvyh0us5pkb50dd0qbk4z8537&#34;</span>,
+        <span style="color:#e6db74">&#34;Created&#34;</span>: <span style="color:#e6db74">&#34;2017-11-09T08:14:08.731645101Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Scope&#34;</span>: <span style="color:#e6db74">&#34;swarm&#34;</span>,
+        <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;overlay&#34;</span>,
+        <span style="color:#e6db74">&#34;EnableIPv6&#34;</span>: false,
+        <span style="color:#e6db74">&#34;IPAM&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+            <span style="color:#e6db74">&#34;Options&#34;</span>: null,
+            <span style="color:#e6db74">&#34;Config&#34;</span>: <span style="color:#f92672">[</span>
+                <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Subnet&#34;</span>: <span style="color:#e6db74">&#34;10.0.0.0/24&#34;</span>,
+                    <span style="color:#e6db74">&#34;Gateway&#34;</span>: <span style="color:#e6db74">&#34;10.0.0.1&#34;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Internal&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Attachable&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Ingress&#34;</span>: false,
+        <span style="color:#e6db74">&#34;ConfigFrom&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Network&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;ConfigOnly&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Containers&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;40c48c6eb4e56fab5f6f222c31bfe55915126033dcb416267d78ff197c712583&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;myservice.1.7u0odxhvmqam2s6zcx722bfvx&#34;</span>,
+                <span style="color:#e6db74">&#34;EndpointID&#34;</span>: <span style="color:#e6db74">&#34;a5d198bb2f1f31cb01e0368e8095d222288d0844ef56bcc5789e6f081425093d&#34;</span>,
+                <span style="color:#e6db74">&#34;MacAddress&#34;</span>: <span style="color:#e6db74">&#34;02:42:0a:00:00:06&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv4Address&#34;</span>: <span style="color:#e6db74">&#34;10.0.0.6/24&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv6Address&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            <span style="color:#f92672">}</span>,
+            <span style="color:#e6db74">&#34;overnet-sbox&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;overnet-endpoint&#34;</span>,
+                <span style="color:#e6db74">&#34;EndpointID&#34;</span>: <span style="color:#e6db74">&#34;aeea6fa5e54ec37d640ffcbe81d3206550dc972382265de9b5592e9b2bd1a3f2&#34;</span>,
+                <span style="color:#e6db74">&#34;MacAddress&#34;</span>: <span style="color:#e6db74">&#34;02:42:0a:00:00:03&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv4Address&#34;</span>: <span style="color:#e6db74">&#34;10.0.0.3/24&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv6Address&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;com.docker.network.driver.overlay.vxlanid_list&#34;</span>: <span style="color:#e6db74">&#34;4098&#34;</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Labels&#34;</span>: <span style="color:#f92672">{}</span>,
+        <span style="color:#e6db74">&#34;Peers&#34;</span>: <span style="color:#f92672">[</span>
+            <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;99176f06426d&#34;</span>,
+                <span style="color:#e6db74">&#34;IP&#34;</span>: <span style="color:#e6db74">&#34;192.168.99.101&#34;</span>
+            <span style="color:#f92672">}</span>,
+            <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;ac69cf321f95&#34;</span>,
+                <span style="color:#e6db74">&#34;IP&#34;</span>: <span style="color:#e6db74">&#34;192.168.99.102&#34;</span>
+            <span style="color:#f92672">}</span>,
+            <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;8c65bb22c846&#34;</span>,
+                <span style="color:#e6db74">&#34;IP&#34;</span>: <span style="color:#e6db74">&#34;192.168.99.100&#34;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">]</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div>
+<h3 id="overlay-network로-통신-확인하기">Overlay Network로 통신 확인하기</h3>
+
+<p>Worker Node에서 <code>docker network inspect [OPTIONS] NETWORK [NETWORK...]</code>로 Overlay Network의 상세정보를 확인하여 실행 중인 Container의 IP정보를 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default-2:~$ docker network inspect overnet
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;overnet&#34;</span>,
+        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;fvyh0us5pkb50dd0qbk4z8537&#34;</span>,
+        <span style="color:#e6db74">&#34;Created&#34;</span>: <span style="color:#e6db74">&#34;2017-11-09T08:14:08.731645101Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Scope&#34;</span>: <span style="color:#e6db74">&#34;swarm&#34;</span>,
+        <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;overlay&#34;</span>,
+
+        ... 생략 ...
+
+        <span style="color:#e6db74">&#34;Containers&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;40c48c6eb4e56fab5f6f222c31bfe55915126033dcb416267d78ff197c712583&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;myservice.1.7u0odxhvmqam2s6zcx722bfvx&#34;</span>,
+                <span style="color:#e6db74">&#34;EndpointID&#34;</span>: <span style="color:#e6db74">&#34;a5d198bb2f1f31cb01e0368e8095d222288d0844ef56bcc5789e6f081425093d&#34;</span>,
+                <span style="color:#e6db74">&#34;MacAddress&#34;</span>: <span style="color:#e6db74">&#34;02:42:0a:00:00:06&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv4Address&#34;</span>: <span style="color:#e6db74">&#34;10.0.0.6/24&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv6Address&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            <span style="color:#f92672">}</span>,
+            <span style="color:#e6db74">&#34;overnet-sbox&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;overnet-endpoint&#34;</span>,
+                <span style="color:#e6db74">&#34;EndpointID&#34;</span>: <span style="color:#e6db74">&#34;aeea6fa5e54ec37d640ffcbe81d3206550dc972382265de9b5592e9b2bd1a3f2&#34;</span>,
+                <span style="color:#e6db74">&#34;MacAddress&#34;</span>: <span style="color:#e6db74">&#34;02:42:0a:00:00:03&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv4Address&#34;</span>: <span style="color:#e6db74">&#34;10.0.0.3/24&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv6Address&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>,
+
+        ... 생략 ...
+
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div>
+<p>다시 Docker Swarm의 Manager Node에 접속하고 실행 중인 Container ID를 확인한 뒤, Container에 접속합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+fb057acbf8fa        ubuntu:latest       <span style="color:#e6db74">&#34;sleep infinity&#34;</span>    <span style="color:#ae81ff">29</span> seconds ago      Up <span style="color:#ae81ff">29</span> seconds                           myservice.2.0ylu27keha3b3cieivu4vh4bd
+
+docker@default:~$ docker exec -it fb057acbf8fa /bin/bash
+root@fb057acbf8fa:/#</code></pre></div>
+<p>Networking Test를 위해, iptuils-ping을 다음의 명령어를 실행하여 설치합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@fb057acbf8fa:/# apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install iputils-ping
+
+... 생략 ...
+
+Processing triggers <span style="color:#66d9ef">for</span> libc-bin <span style="color:#f92672">(</span><span style="color:#ae81ff">2</span>.23-0ubuntu9<span style="color:#f92672">)</span> ...</code></pre></div>
+<p>앞에서 확인한 Worker Node에서 실행 중인 Container의 IP로 Networking Test를 진행합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@fb057acbf8fa:/# ping <span style="color:#ae81ff">10</span>.0.0.6
+PING <span style="color:#ae81ff">10</span>.0.0.6 <span style="color:#f92672">(</span><span style="color:#ae81ff">10</span>.0.0.6<span style="color:#f92672">)</span> <span style="color:#ae81ff">56</span><span style="color:#f92672">(</span><span style="color:#ae81ff">84</span><span style="color:#f92672">)</span> bytes of data.
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.6: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.785 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.6: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.811 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.6: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.688 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.6: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.558 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.6: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.519 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.6: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">6</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.510 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.6: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">7</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.535 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.6: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.534 ms
+^C
+--- <span style="color:#ae81ff">10</span>.0.0.6 ping statistics ---
+<span style="color:#ae81ff">8</span> packets transmitted, <span style="color:#ae81ff">8</span> received, <span style="color:#ae81ff">0</span>% packet loss, time 6999ms
+rtt min/avg/max/mdev <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>.510/0.617/0.811/0.119 ms</code></pre></div>
+<h3 id="overlay-network로-service-discovery-확인하기">Overlay Network로 Service Discovery 확인하기</h3>
+
+<p>다시 Manager Node의 Container로 돌아와, 아래의 명령어를 실행합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@fb057acbf8fa:/# cat /etc/resolv.conf
+nameserver <span style="color:#ae81ff">127</span>.0.0.11
+options ndots:0</code></pre></div>
+<p>여기서 관심을 가져야할 값은 nameserver 127.0.0.11입니다. 이 값은 Container 내부에서 실행되고 있는 DNS Resolver들에게 보내지고, 모든 Docker Container는 이 주소가 포함되어있는 내장 DNS Server를 실행합니다. Service이름으로 <code>ping</code>명령을 실행하여 Networking Test를 진행합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@fb057acbf8fa:/# ping myservice
+PING myservice <span style="color:#f92672">(</span><span style="color:#ae81ff">10</span>.0.0.5<span style="color:#f92672">)</span> <span style="color:#ae81ff">56</span><span style="color:#f92672">(</span><span style="color:#ae81ff">84</span><span style="color:#f92672">)</span> bytes of data.
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.026 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.058 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.050 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.047 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.047 ms
+
+^C
+--- myservice ping statistics ---
+<span style="color:#ae81ff">5</span> packets transmitted, <span style="color:#ae81ff">5</span> received, <span style="color:#ae81ff">0</span>% packet loss, time 3997ms
+rtt min/avg/max/mdev <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>.026/0.045/0.058/0.012 ms</code></pre></div>
+<p>Container내에서 <code>exit</code>명령으로 빠져나와 <code>docker service inspect [OPTIONS] SERVICE [SERVICE...]</code>로 Service의 상세정보를 확인합니다. ping을 통해 나온 결과에 출력된 10.0.0.5의 주소가 현재 Service의 Virtual
+IP인 것을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@fb057acbf8fa:/# exit
+exit
+
+docker@default:~$ docker service inspect myservice
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;ID&#34;</span>: <span style="color:#e6db74">&#34;0pqg1f550559cuoxcjvhenb30&#34;</span>,
+        <span style="color:#e6db74">&#34;Version&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Index&#34;</span>: <span style="color:#ae81ff">289</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;CreatedAt&#34;</span>: <span style="color:#e6db74">&#34;2017-11-09T08:14:08.625888401Z&#34;</span>,
+        <span style="color:#e6db74">&#34;UpdatedAt&#34;</span>: <span style="color:#e6db74">&#34;2017-11-09T08:14:08.627636861Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Spec&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;myservice&#34;</span>,
+            <span style="color:#e6db74">&#34;Labels&#34;</span>: <span style="color:#f92672">{}</span>,
+            <span style="color:#e6db74">&#34;TaskTemplate&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;ContainerSpec&#34;</span>: <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Image&#34;</span>: <span style="color:#e6db74">&#34;ubuntu:latest@sha256:6eb24585b1b2e7402600450d289ea0fd195cfb76893032bbbb3943e041ec8a65&#34;</span>,
+                    <span style="color:#e6db74">&#34;Args&#34;</span>: <span style="color:#f92672">[</span>
+                        <span style="color:#e6db74">&#34;sleep&#34;</span>,
+                        <span style="color:#e6db74">&#34;infinity&#34;</span>
+                    <span style="color:#f92672">]</span>,
+                    <span style="color:#e6db74">&#34;StopGracePeriod&#34;</span>: <span style="color:#ae81ff">10000000000</span>,
+                    <span style="color:#e6db74">&#34;DNSConfig&#34;</span>: <span style="color:#f92672">{}</span>
+                <span style="color:#f92672">}</span>,
+
+            ... 생략 ...
+
+            <span style="color:#f92672">}</span>,
+            <span style="color:#e6db74">&#34;EndpointSpec&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Mode&#34;</span>: <span style="color:#e6db74">&#34;vip&#34;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Endpoint&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Spec&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Mode&#34;</span>: <span style="color:#e6db74">&#34;vip&#34;</span>
+            <span style="color:#f92672">}</span>,
+            <span style="color:#e6db74">&#34;VirtualIPs&#34;</span>: <span style="color:#f92672">[</span>
+                <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;NetworkID&#34;</span>: <span style="color:#e6db74">&#34;fvyh0us5pkb50dd0qbk4z8537&#34;</span>,
+                    <span style="color:#e6db74">&#34;Addr&#34;</span>: <span style="color:#e6db74">&#34;10.0.0.5/24&#34;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div>
+<p>Worker Node에서도 Service이름으로 ping명령을 실행하게 되면, Service Virtual IP로 실행되어 출력되는 것을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@40c48c6eb4e5:/# ping myservice
+PING myservice <span style="color:#f92672">(</span><span style="color:#ae81ff">10</span>.0.0.5<span style="color:#f92672">)</span> <span style="color:#ae81ff">56</span><span style="color:#f92672">(</span><span style="color:#ae81ff">84</span><span style="color:#f92672">)</span> bytes of data.
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.030 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.054 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.046 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.048 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.084 ms
+<span style="color:#ae81ff">64</span> bytes from <span style="color:#ae81ff">10</span>.0.0.5: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">6</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.053 ms
+
+--- myservice ping statistics ---
+<span style="color:#ae81ff">6</span> packets transmitted, <span style="color:#ae81ff">6</span> received, <span style="color:#ae81ff">0</span>% packet loss, time 4998ms
+rtt min/avg/max/mdev <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>.030/0.052/0.084/0.017 ms</code></pre></div>
+<p>왜 Docker라는 것이 나타났는가란 주제에서 시작하여, Docker Cluster구성과 내부 Network까지, 총 8가지의 주제로 Docker System에 대해서 생각해봤습니다. Image Registry, Container 보안 등 더 살펴봐야할 내용은 많지만, Docker에 대한 주제는 이쯤에서 일단 마무리 짓고, 이제부터는 Container 환경에서 실질적으로 Application들이 어떤 식으로 구축되고 운영되어야 하는지에 대해서 먼저 고민해 봐야겠습니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/docker/docker-start/">Docker 시작하기</a></li>
+        
+        <li><a href="/posts/kubernetes/ingress/">[Kubernetes 활용(5/8)] Ingress</a></li>
+        
+        <li><a href="/posts/kubernetes/backingservice/">[Kubernetes 활용(4/8)] Mysql DB 연동하기</a></li>
+        
+        <li><a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/service-discovery" rel="tag">service discovery</a></li><li><a href="/tags/docker-network" rel="tag">docker network</a></li><li><a href="/tags/overlay" rel="tag">overlay</a></li><li><a href="/tags/ingress" rel="tag">ingress</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-network%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-network%2f&amp;text=%5bDocker%20%ea%b8%b0%eb%b3%b8%288%2f8%29%5d%20Docker%ec%9d%98%20Network" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-network%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-network%2f&amp;title=%5bDocker%20%ea%b8%b0%eb%b3%b8%288%2f8%29%5d%20Docker%ec%9d%98%20Network" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-network%2f&amp;description=%5bDocker%20%ea%b8%b0%eb%b3%b8%288%2f8%29%5d%20Docker%ec%9d%98%20Network" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-network%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/1000jaeh">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/1000jaeh.jpeg'/><div class="author-info">
+    <h3>정재훈</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/docker/swarm-architecture/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 09
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 9분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/using_docker_in_cloudfoundry/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">CF에 Docker Image 배포</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 09
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 9분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

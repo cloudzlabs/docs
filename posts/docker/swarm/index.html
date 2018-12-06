@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='지금까지는 단일 Docker Machine에서 Container를 실행시켜 서비스를 제공했습니다. 그렇다면, 현 상태로 실제 서비스를 운영할 수 있을까요? 한참 부족합니다! 장애없이 원활한 서비스를 제공하기 위해서는, 내결함성, 고가용성 등등 많은 사항들을 고려하여야 합니다. 결국은 단일 Machine으로는 사용할 수 없고 Cluster 형태로 구성되어야하며, 그 위에서 서비스들은 여러개의 Instance로 부하가 분산되어야 하며, 장애가 발생하더라도 스스로 복구 할 수 있는 구조로 실행되어야 합니다. 마지막으로 이것들이 자동화되어 있어야합니다. 수 십개에서 수 백개로 나뉘어진 Service들을 사람이 직접 관리할 수 없기 때문입니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm | 정재훈'>
+<meta property='og:description' content='지금까지는 단일 Docker Machine에서 Container를 실행시켜 서비스를 제공했습니다. 그렇다면, 현 상태로 실제 서비스를 운영할 수 있을까요? 한참 부족합니다! 장애없이 원활한 서비스를 제공하기 위해서는, 내결함성, 고가용성 등등 많은 사항들을 고려하여야 합니다. 결국은 단일 Machine으로는 사용할 수 없고 Cluster 형태로 구성되어야하며, 그 위에서 서비스들은 여러개의 Instance로 부하가 분산되어야 하며, 장애가 발생하더라도 스스로 복구 할 수 있는 구조로 실행되어야 합니다. 마지막으로 이것들이 자동화되어 있어야합니다. 수 십개에서 수 백개로 나뉘어진 Service들을 사람이 직접 관리할 수 없기 때문입니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/docker/swarm/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/docker/swarm/../images/swarm.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='docker'><meta property='article:tag' content='swarm'><meta property='article:tag' content='cluster'><meta property='article:tag' content='container ochestration'><meta property='article:published_time' content='2018-03-09T08:27:01&#43;09:00'/><meta property='article:modified_time' content='2018-03-09T08:27:01&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/docker/swarm/http://tech.cloudz-labs.io/images/swarm.png'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm | 정재훈</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/docker/swarm/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Mar 09, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 8분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/1000jaeh">정재훈</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/docker/swarm/../images/swarm.png'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<p>지금까지는 단일 Docker Machine에서 Container를 실행시켜 서비스를 제공했습니다. 그렇다면, 현 상태로 실제 서비스를 운영할 수 있을까요? 한참 부족합니다! 장애없이 원활한 서비스를 제공하기 위해서는, 내결함성, 고가용성 등등 많은 사항들을 고려하여야 합니다. 결국은 단일 Machine으로는 사용할 수 없고 Cluster 형태로 구성되어야하며, 그 위에서 서비스들은 여러개의 Instance로 부하가 분산되어야 하며, 장애가 발생하더라도 스스로 복구 할 수 있는 구조로 실행되어야 합니다. 마지막으로 이것들이 자동화되어 있어야합니다. 수 십개에서 수 백개로 나뉘어진 Service들을 사람이 직접 관리할 수 없기 때문입니다.</p>
+
+<h2 id="container-ochestration-docker-swarm-mode">Container Ochestration: Docker Swarm mode</h2>
+
+<p>이 때, 필요한 것이 <strong>Container Ochestration</strong>이며, Docker에서 제공하고 있는 Tool이 바로 Swarm이라 할 수 있습니다. Docker Swarm은 Docker Engine에 Ochestration Layer를 구현하여, Cluster 관리 및 Cluster에 배포되는 Container들에 대한 Resource, Network, Security, Fault Torelance등 Ochestartion 기능을 사용할 수 있게 해줍니다(영어 뜻 그대로, Container들을 지휘하는 지휘자 또는 조율자로 기억하면 쉽게 이해가 될 것 같습니다).</p>
+
+<p>Container Ochestration Tool은 Swarm만 있는 것은 아닙니다. Google에서 Kubernetes, Aphace Mesos등이 있으며, 더 확장해서 Ochestation Tool들을 관리해주는 Rancher라는 것도 있습니다. 현재는 Kubernetes가 가장 많이 사용되고 있으며, 가장 탁월한 성능을 자랑한다고 볼 수 있습니다. 반면 Docker Swarm은 제 개인적인 의견으로는 Kubernetes 보다 가볍고, 사용하기 쉽지만&hellip; Kubernetes의 성능과 기능에 비해서 대규모 서비스 운영에 대해서는 부족하다고 생각됩니다. 저도 현재는 Kubernetes를 사용하고 있지만, Container Ochestration에 대한 이해와 Local 환경에서의 직접 조작해볼 수 있는 것(Kubernetes보다는 쉽게 Cluster를 구성하여 Container Ochestration을 접해볼 수 있다)은 Swarm이 간편하게 할 수 있기 때문에 정리해보고자 합니다.</p>
+
+<div class="notices info" ><p>Kubernetes에 대한 내용은 <a href="http://tech.cloudz-labs.io/tags/kubernetes/" target="_blank">Tag: Kubernetes</a>에서 확인할 수 있습니다.</p>
+</div>
+
+
+<h2 id="architecture">Architecture</h2>
+
+<p>먼저, Swarm은 다음과 같은 구조로 설계되어 있습니다.</p>
+
+<div class='align-center'>
+    <p><img src="../images/swarm-architecture.png" alt="swarm-architecture" /><a href="https://medium.com/@ITsolutions/containers-102-continuing-the-journey-from-os-virtualization-to-workload-virtualization-54fe5576969d" target="_blank">출처: Docker Swarm Architecture</a></p>
+
+</div>
+
+
+<p>Docker Swarm은 Swarm Mode에서 실행되고 있는 Manager Node 및 Worker Node로 동작하는 여러 Docker Host들로 구성됩니다. 여기서, Docker Host는 Manager, Worker 또는 두 역할 모두 수행 할 수 있습니다.</p>
+
+<h3 id="nodes">Nodes</h3>
+
+<p>Node는 Swarm에 참여하는 Docker Engine의 Instance들 입니다. 하나의 물리적인 Server 또는 Cloud Server에서 하나 이상의 Node를 실행할 수 있지만, 일반적으로 Production 환경에서의 Swarm은 여러 물리적인 Server와 Cloud System에 걸쳐 분산된 Docker Node들이 배포되는 형태로 사용됩니다.</p>
+
+<h4 id="manager-node">Manager Node</h4>
+
+<p>Application을 Swarm에 배포하기 위해서는, 먼저 Manager Node에 Service라는 이름의 정의서를 전달해야 합니다. 그 후, Manager Node는 Worker Node들에 Task라고 불리는 작업 단위를 전달하여, Service를 정상적으로 생성합니다. 기본적으로, Manager Node는 Service를 Worker Node로 실행하지만, Manager만을 위한 Task를 Manager Node에서만 실행하도록 구성할 수도 있습니다. 또한, Manager Node는 안정적인 Swarm 상태를 유지하는데 필요한 Ochestration 및 Cluster 관리 기능들을 수행합니다. 많은 Manager Node들 중에서 Ochestration 작업을 수행할 단일 리더를 선출하기도 합니다.</p>
+
+<ul>
+<li>Cluster 상태 유지</li>
+<li>Scheduling Service</li>
+<li>Swarm Mode의 HTTP API Endpoints 제공</li>
+</ul>
+
+<h4 id="worker-node">Worker Node</h4>
+
+<p>Worker Node는 Manager Node로부터 Task를 수신받고 Container를 실행합니다. 즉 Schedule에 대한 결정을 내리거나 Swarm Mode의 HTTP API를 제공하지 않고, 오로지 Container를 실행시키는 것이 유일한 목적인 Docker Instance입니다. Worker Node에서는 각각의 Agent들이 존재하며, Worker Node에서 실행되고 할당된 Task의 상태에 대해서 Manager Node에 알립니다. 이를 통해, Manager Node가 Worker Node들이 안정적인 상태를 유지할 수 있도록 합니다.</p>
+
+<h4 id="manager와-worker-node-구성">Manager와 Worker Node 구성</h4>
+
+<p>Docker Cluster 즉, Swarm Mode를 사용하는 가장 큰 이유 중 하나는 바로 Fault-Tolerance 이점을 활용하기 위해서라고 할 수 있을 것입니다. 이를 위해서, Docker의 고가용성 요구사항에 따라 홀수개의 Node로 구성하는 것을 권장하고 있습니다. Swarm을 Multi Manager로 구성할 경우, Manager Node의 중단 시간 없이 Manager Node에서 발생한 오류를 복구할 수 있습니다. 다음을 참고하여 Swarm의 Manager Node를 구성할 수 있습니다.</p>
+
+<ul>
+<li>3-Manager Swarm은 최대 1개 Manager Node의 손실에 대해서 허용 가능</li>
+<li>5-Manager Swarm은 최대 2개 Manager Node의 동신 손실에 대해서 허용 가능</li>
+<li>n 개의 Manager Cluster는 최대 <code>(n-1)/2</code>개의 Manager Node의 손실에 대해서 허용 가능</li>
+<li>Docker는 최대 7개의 Manager Node를 구성할 것을 권장합니다.</li>
+</ul>
+
+<div class="notices info" ><p>더 많은 Manager Node를 추가한다고 해서, Swarm의 확장성 또는 성능이 향상된다는 의미는 아닙니다.</p>
+</div>
+
+
+<p>Manager Node 하나로만 구성된 Swarm을 구성할 수 있지만, 반대로 Manager Node 없이 Worker Node로만 구성할 수는 없습니다. 기본적으로, 모든 Manager Node들은 Worker의 역할도 같이 수행합니다. Single Manager Node로 구성된 Cluster에서, <code>docker service create</code>와 같은 명령을 실행하면, 스케쥴러는 모든 Task를 Local Engine에 배치시킵니다.</p>
+
+<h4 id="node간-역할-변경">Node간 역할 변경</h4>
+
+<p><code>docker node promete</code>를 사용하여, Worker Node를 Manager Node로 변경할 수 있습니다. 예를들어, Manager Node를 오프라인 상태로 유지해야 할 필요가 있을 때, 임시로 Worker Node를 Manager Node로 변경하여 사용할 수 있을 것입니다. 반대로, <code>docker node demote</code>를 사용하여, Manager Node를 Worker Node로 강등시킬 수도 있습니다.</p>
+
+<h2 id="docker-swarm-구성">Docker Swarm 구성</h2>
+
+<p>이제부터는 Container Ochestration을 위한 Docker Swarm 환경을 구성해보겠습니다. 구성하고자할 Docker는 Manager Node 1대, Worker Node 2대 입니다.</p>
+
+<div class="notices info" ><p>Swarm Mode를 사용하기 위해서는 Docker 1.12.0 이상의 Version을 설치하시기 바랍니다.</p>
+</div>
+
+
+<h3 id="docker-server-구성">Docker Server 구성</h3>
+
+<p>Swarm을 구성하기 위해, <code>docker-machine</code>으로 Docker Server를 3대 구성합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker-machine create --driver virtualbox default
+Running pre-create checks...
+<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span> Default Boot2Docker ISO is out-of-date, downloading the latest release...
+<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span> Latest release <span style="color:#66d9ef">for</span> github.com/boot2docker/boot2docker is v17.10.0-ce
+<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span> Downloading /Users/1000jaeh/.docker/machine/cache/boot2docker.iso from https://github.com/boot2docker/boot2docker/releases/download/v17.10.0-ce/boot2docker.iso...
+<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span> <span style="color:#ae81ff">0</span>%....10%....20%....30%....40%....50%....60%....70%....80%....90%....100%
+Creating machine...
+<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span> Copying /Users/1000jaeh/.docker/machine/cache/boot2docker.iso to /Users/1000jaeh/.docker/machine/machines/default/boot2docker.iso...
+<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span> Creating VirtualBox VM...
+<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span> Creating SSH key...
+<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span> Starting the VM...
+<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span> Check network to re-create <span style="color:#66d9ef">if</span> needed...
+<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span> Waiting <span style="color:#66d9ef">for</span> an IP...
+Waiting <span style="color:#66d9ef">for</span> machine to be running, this may take a few minutes...
+Detecting operating system of created instance...
+Waiting <span style="color:#66d9ef">for</span> SSH to be available...
+Detecting the provisioner...
+Provisioning with boot2docker...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Checking connection to Docker...
+Docker is up and running!
+To see how to connect your Docker Client to the Docker Engine running on this virtual machine, run: docker-machine env default
+
+$ docker-machine create --driver virtualbox default-2
+Running pre-create checks...
+Creating machine...
+<span style="color:#f92672">(</span>default-2<span style="color:#f92672">)</span> Copying /Users/1000jaeh/.docker/machine/cache/boot2docker.iso to /Users/1000jaeh/.docker/machine/machines/default-2/boot2docker.iso...
+<span style="color:#f92672">(</span>default-2<span style="color:#f92672">)</span> Creating VirtualBox VM...
+<span style="color:#f92672">(</span>default-2<span style="color:#f92672">)</span> Creating SSH key...
+<span style="color:#f92672">(</span>default-2<span style="color:#f92672">)</span> Starting the VM...
+<span style="color:#f92672">(</span>default-2<span style="color:#f92672">)</span> Check network to re-create <span style="color:#66d9ef">if</span> needed...
+<span style="color:#f92672">(</span>default-2<span style="color:#f92672">)</span> Waiting <span style="color:#66d9ef">for</span> an IP...
+Waiting <span style="color:#66d9ef">for</span> machine to be running, this may take a few minutes...
+Detecting operating system of created instance...
+Waiting <span style="color:#66d9ef">for</span> SSH to be available...
+Detecting the provisioner...
+Provisioning with boot2docker...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Checking connection to Docker...
+Docker is up and running!
+To see how to connect your Docker Client to the Docker Engine running on this virtual machine, run: docker-machine env default-2
+
+$ docker-machine create --driver virtualbox default-3
+Running pre-create checks...
+Creating machine...
+<span style="color:#f92672">(</span>default-3<span style="color:#f92672">)</span> Copying /Users/1000jaeh/.docker/machine/cache/boot2docker.iso to /Users/1000jaeh/.docker/machine/machines/default-3/boot2docker.iso...
+<span style="color:#f92672">(</span>default-3<span style="color:#f92672">)</span> Creating VirtualBox VM...
+<span style="color:#f92672">(</span>default-3<span style="color:#f92672">)</span> Creating SSH key...
+<span style="color:#f92672">(</span>default-3<span style="color:#f92672">)</span> Starting the VM...
+<span style="color:#f92672">(</span>default-3<span style="color:#f92672">)</span> Check network to re-create <span style="color:#66d9ef">if</span> needed...
+<span style="color:#f92672">(</span>default-3<span style="color:#f92672">)</span> Waiting <span style="color:#66d9ef">for</span> an IP...
+Waiting <span style="color:#66d9ef">for</span> machine to be running, this may take a few minutes...
+Detecting operating system of created instance...
+Waiting <span style="color:#66d9ef">for</span> SSH to be available...
+Detecting the provisioner...
+Provisioning with boot2docker...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Checking connection to Docker...
+Docker is up and running!
+To see how to connect your Docker Client to the Docker Engine running on this virtual machine, run: docker-machine env default-3</code></pre></div>
+<p>생성된 Docker Machine의 목록을 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker-machine ls
+NAME        ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
+default     -        virtualbox   Running   tcp://192.168.99.100:2376           v17.10.0-ce   
+default-2   -        virtualbox   Running   tcp://192.168.99.101:2376           v17.10.0-ce   
+default-3   -        virtualbox   Running   tcp://192.168.99.102:2376           v17.10.0-ce  </code></pre></div>
+<h3 id="manager-node-선정">Manager Node 선정</h3>
+
+<p>구성된 docker-machine 중 하나에 ssh로 접속하여, <code>docker swarm init [OPTIONS]</code> 명령어를 통해서 <strong>Manager Node</strong>로 설정합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker-machine ssh default
+                        <span style="color:#75715e">##         .</span>
+                  <span style="color:#75715e">## ## ##        ==</span>
+                <span style="color:#75715e">## ## ## ## ##    ===</span>
+            /<span style="color:#e6db74">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;\___/ ===
+</span><span style="color:#e6db74">      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+</span><span style="color:#e6db74">            \______ o           __/
+</span><span style="color:#e6db74">              \    \         __/
+</span><span style="color:#e6db74">              \____\_______/
+</span><span style="color:#e6db74">  _                 _   ____     _            _
+</span><span style="color:#e6db74">| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+</span><span style="color:#e6db74">| &#39;_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ &#39;__|
+</span><span style="color:#e6db74">| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   &lt;  __/ |
+</span><span style="color:#e6db74">|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+</span><span style="color:#e6db74">Boot2Docker version 17.10.0-ce, build HEAD : 34fe485 - Wed Oct 18 17:16:34 UTC 2017
+</span><span style="color:#e6db74">Docker version 17.10.0-ce, build f4ffd25
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">docker@default:~</span>$<span style="color:#e6db74"> docker swarm init --advertise-addr 192.168.99.100
+</span><span style="color:#e6db74">Swarm initialized: current node (xhegxfmzkjrqgrv9594zhvhsd) is now a manager.
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">To add a worker to this swarm, run the following command:
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    docker swarm join --token SWMTKN-1-36uho8g8hn0dunpx85sx700ahvx27gd18b5x4gfqlf0fcz7fmk-569z62jorhk2d12lhdwjkt6t3 192.168.99.100:2377
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">To add a manager to this swarm, run &#39;docker swarm join-token manager&#39; and follow the instructions.</span></code></pre></div>
+<h3 id="work-node-구성">Work Node 구성</h3>
+
+<p>Manager Node로 선정한 docker-machine 이외의 docker-machine들을 ssh로 접속하여 <code>docker swarm join [OPTIONS] HOST:PORT</code> 명령어를 통해 <strong>Worker Node</strong>로 지정합니다. <code>docker swarm join</code>은 <code>docker swarm init</code> 실행 후, Manager Node에 접속할 수 있는 Token과 Host, Port정보가 담겨서 자동으로 생성됩니다.</p>
+
+<ul>
+<li><p>docker-default-2</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker-machine ssh default-2
+                        <span style="color:#75715e">##         .</span>
+                  <span style="color:#75715e">## ## ##        ==</span>
+               <span style="color:#75715e">## ## ## ## ##    ===</span>
+           /<span style="color:#e6db74">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;\___/ ===
+</span><span style="color:#e6db74">      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+</span><span style="color:#e6db74">           \______ o           __/
+</span><span style="color:#e6db74">             \    \         __/
+</span><span style="color:#e6db74">              \____\_______/
+</span><span style="color:#e6db74"> _                 _   ____     _            _
+</span><span style="color:#e6db74">| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+</span><span style="color:#e6db74">| &#39;_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ &#39;__|
+</span><span style="color:#e6db74">| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   &lt;  __/ |
+</span><span style="color:#e6db74">|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+</span><span style="color:#e6db74">Boot2Docker version 17.10.0-ce, build HEAD : 34fe485 - Wed Oct 18 17:16:34 UTC 2017
+</span><span style="color:#e6db74">Docker version 17.10.0-ce, build f4ffd25
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">docker@default-2:~</span>$<span style="color:#e6db74"> docker swarm join --token SWMTKN-1-36uho8g8hn0dunpx85sx700ahvx27gd18b5x4gfqlf0fcz7fmk-569z62jorhk2d12lhdwjkt6t3 192.168.99.100:2377
+</span><span style="color:#e6db74">This node joined a swarm as a worker.</span></code></pre></div>
+<ul>
+<li>docker-defulat-3</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker-machine ssh default-3
+                        <span style="color:#75715e">##         .</span>
+                  <span style="color:#75715e">## ## ##        ==</span>
+               <span style="color:#75715e">## ## ## ## ##    ===</span>
+           /<span style="color:#e6db74">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;\___/ ===
+</span><span style="color:#e6db74">      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+</span><span style="color:#e6db74">           \______ o           __/
+</span><span style="color:#e6db74">             \    \         __/
+</span><span style="color:#e6db74">              \____\_______/
+</span><span style="color:#e6db74"> _                 _   ____     _            _
+</span><span style="color:#e6db74">| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+</span><span style="color:#e6db74">| &#39;_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ &#39;__|
+</span><span style="color:#e6db74">| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   &lt;  __/ |
+</span><span style="color:#e6db74">|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+</span><span style="color:#e6db74">Boot2Docker version 17.10.0-ce, build HEAD : 34fe485 - Wed Oct 18 17:16:34 UTC 2017
+</span><span style="color:#e6db74">Docker version 17.10.0-ce, build f4ffd25
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">docker@default-3:~</span>$<span style="color:#e6db74"> docker swarm join --token SWMTKN-1-36uho8g8hn0dunpx85sx700ahvx27gd18b5x4gfqlf0fcz7fmk-569z62jorhk2d12lhdwjkt6t3 192.168.99.100:2377
+</span><span style="color:#e6db74">This node joined a swarm as a worker.</span></code></pre></div></li>
+</ul>
+
+<h3 id="docker-swarm-구성-확인">Docker Swarm 구성 확인</h3>
+
+<p>Manager Node에 접속하여 <code>docker node ls [OPTIONS]</code>로 Docker의 Node 구성 목록을 확인합니다. Manager Node는 별도로 표시되어 있는 것을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS
+xhegxfmzkjrqgrv9594zhvhsd *   default             Ready               Active              Leader
+s06l9jsl6ejucnpvkwh9pyr2d     default-2           Ready               Active
+9v5f2zdbof0hdbb82kvaeizyo     default-3           Ready               Active</code></pre></div>
+<p>지금까지 진행하면, Docker Swarm을 관리하는 Manager Node 1개, 실질적으로 Container들이 배포되어 실행되는 Worker Node 2개가 묶여 Cluster 환경을 구성한 것입니다. 이런 Swarm 환경에서는 처음에 언급했다시피 Container를 직접 실행시키는 것이 아니라, Service라는 단위로 배포를 합니다. 다음에는 Service를 배포하여, Container들이 Docker Cluster 환경에서 어떻게 동작하는지 확인해보겠습니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker/swarm-architecture/">[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/docker/docker-start/">Docker 시작하기</a></li>
+        
+        <li><a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-test/">[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/swarm" rel="tag">swarm</a></li><li><a href="/tags/cluster" rel="tag">cluster</a></li><li><a href="/tags/container-ochestration" rel="tag">container ochestration</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm%2f&amp;text=%5bDocker%20%ea%b8%b0%eb%b3%b8%286%2f8%29%5d%20Docker%ec%9d%98%20Container%20Ochestartion%3a%20Swarm" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm%2f&amp;title=%5bDocker%20%ea%b8%b0%eb%b3%b8%286%2f8%29%5d%20Docker%ec%9d%98%20Container%20Ochestartion%3a%20Swarm" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm%2f&amp;description=%5bDocker%20%ea%b8%b0%eb%b3%b8%286%2f8%29%5d%20Docker%ec%9d%98%20Container%20Ochestartion%3a%20Swarm" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/1000jaeh">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/1000jaeh.jpeg'/><div class="author-info">
+    <h3>정재훈</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/docker/volume/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(5/8)] Volume을 활용한 Data 관리</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 09
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 8분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/docker/swarm-architecture/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 09
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 8분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

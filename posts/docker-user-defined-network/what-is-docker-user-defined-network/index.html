@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Docker User Defined Bridge Network를 간단 동작을 확인합니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란? | 윤지상'>
+<meta property='og:description' content='Docker User Defined Bridge Network를 간단 동작을 확인합니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/docker-logo.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='docker'><meta property='article:tag' content='user defined network'><meta property='article:tag' content='spring boot'><meta property='article:published_time' content='2018-03-20T18:12:19&#43;09:00'/><meta property='article:modified_time' content='2018-03-20T18:12:19&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/http://tech.cloudz-labs.io/docker-logo.png'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란? | 윤지상</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Mar 20, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 4분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/jisangyun">윤지상</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/docker-logo.png'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<p>Docker는 몇가지 네트워크 드라이버를 기본 제공하여 강력한 네트워크 기능을 활용할 수 있게 합니다.</p>
+
+<ul>
+<li>bridge: 기본 네트워크 드라이버. docker0이라는 이름의 bridge 네트워크를 생성됩니다. 설정없이 컨테이너를 생성하게되면 docker0 bridge에 컨테이너를 binding 해서 네트워크 기능을 수행합니다.</li>
+<li>host: 컨테이너 네트워크가 독립/격리되지 않고, Host의 네트워크를 직접적으로 사용합니다.</li>
+<li>overlay: 서로 다른 Docker Host에서 실행되는 컨테이너 간 통신이 필요하거나, Docker Swarm 상에서 여러 컨테이너를 동시에 운영할 때 유용합니다.</li>
+<li>Macvlan: Mac주소를 컨테이너에 할당합니다. Docker 데몬은 트래픽을 컨테이너의 MAC 주소로 라우팅합니다.</li>
+</ul>
+
+<p>상세 내용은 Docker Docs를 참고하시기 바랍니다. ( <a href="https://docs.docker.com/network/" target="_blank">Docker Docs - Network</a> )</p>
+
+<h2 id="what">What</h2>
+
+<ol>
+<li>Docker Network의 사용법을 익힙니다.</li>
+<li>User Defined Bridge Network를 활용한 다양한 컨테이너 간 통신을 테스트합니다.</li>
+<li>User Defined Bridge Network로 private network상의 API 서버를 구현합니다.</li>
+</ol>
+
+<h2 id="why">Why</h2>
+
+<h6 id="link-option의-legacy화">link option의 legacy화</h6>
+
+<p>기존에 컨테이너 간 통신에 사용하던 docker run &ndash;link 옵션은 legacy 기능이 되었습니다. 새로운 컨테이너 간 통신 방법을 확인할 필요가 있습니다.
+( <a href="https://docs.docker.com/network/links/" target="_blank">Docker Docs - link</a> )</p>
+
+<h6 id="쉽고-가벼운-네트워크-사용">쉽고 가벼운 네트워크 사용</h6>
+
+<p>기본적으로 컨테이너는 IP주소로만 접근할 수 있습니다. 반면에, user defined bridge network 적용시 컨테이너의 명으로 접근해 편리하게 네트워크 기능을 수행할 수 있습니다.</p>
+
+<p>또한, docker network 명령어로 네트워크에 컨테이너 추가/해제가 컨테이너의 생성/삭제 없이 쉽고 가볍게 이루어집니다. 이를 활용해 시스템 요구사항에 맞는 다양한 활용법을 적용할 수 있습니다. (배포전략 등)</p>
+
+<h6 id="private-network-구성">Private Network 구성</h6>
+
+<p>동일한 user defined bridge network 에 연결된 컨테이너는 모든 Port를 서로에게 노출시키고 외부에는 Port를 노출하지 않습니다.
+이를 통해 private 네트워크를 구성해 시스템의 보안 level을 높일 수 있습니다.</p>
+
+<h2 id="how">How</h2>
+
+<p>Docker Network의 기본동작을 확인하고, 다양한 경우의 수를 대비한 컨테이너 간 통신을 테스트합니다. 마지막으로 private network 상의 API 서버를 구현해 실제 적용할 수 있는 최소단위의 구성을 해보겠습니다.</p>
+
+<h6 id="docker-network-기본-동작">Docker Network 기본 동작</h6>
+
+<p>docker network 명령어의 기본 동작을 확인해보겠습니다. 상세한 옵션 등은 Docker Docs나 Docker cli 상의 help option을 확인하시면 됩니다.</p>
+
+<ul>
+<li><p>ls</p>
+
+<ul>
+<li>docker network 의 목록을 조회합니다.</li>
+<li><code>docker network ls</code></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+251862fde7a0        bridge              bridge              local
+aa6913be5189        host                host                local
+c455da940d9b        none                null                local</code></pre></div>
+<ul>
+<li>create</li>
+<li>user defined network를 생성합니다. 기본 driver는 bridge로 생성됩니다.</li>
+<li><code>docker network create {network 명}</code>
+<br /></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">$ docker network create js-network
+b89583ee19716b63c30d59a5d2d21a39f3cd30ecbcced537793e9fe6a4407195
+
+$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+251862fde7a0        bridge              bridge              local
+aa6913be5189        host                host                local
+b89583ee1971        js-network          bridge              local
+c455da940d9b        none                null                local</code></pre></div></li>
+
+<li><p>inspect</p>
+
+<ul>
+<li>docker network의 상세정보를 조회합니다.</li>
+<li><code>docker network inspect {network 명}</code>
+<br /></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">$ docker network inspect js-network
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;js-network&#34;</span>,
+        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;b89583ee19716b63c30d59a5d2d21a39f3cd30ecbcced537793e9fe6a4407195&#34;</span>,
+        <span style="color:#e6db74">&#34;Created&#34;</span>: <span style="color:#e6db74">&#34;2018-03-21T07:14:28.207599689Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Scope&#34;</span>: <span style="color:#e6db74">&#34;local&#34;</span>,
+        <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;bridge&#34;</span>,
+        <span style="color:#e6db74">&#34;EnableIPv6&#34;</span>: false,
+        <span style="color:#e6db74">&#34;IPAM&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+            <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{}</span>,
+            <span style="color:#e6db74">&#34;Config&#34;</span>: <span style="color:#f92672">[</span>
+                <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Subnet&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.0/16&#34;</span>,
+                    <span style="color:#e6db74">&#34;Gateway&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.1&#34;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Internal&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Attachable&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Ingress&#34;</span>: false,
+        <span style="color:#e6db74">&#34;ConfigFrom&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Network&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;ConfigOnly&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Containers&#34;</span>: <span style="color:#f92672">{}</span>,
+        <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{}</span>,
+        <span style="color:#e6db74">&#34;Labels&#34;</span>: <span style="color:#f92672">{}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div>
+<ul>
+<li>connect</li>
+<li>docker network에 컨테이너를 연결합니다.</li>
+<li><code>docker network connect {network 명} {container 명}</code>
+<br /></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">$ docker network connect js-network jisang-ms1
+
+$ docker network inspect js-network
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;js-network&#34;</span>,
+        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;b89583ee19716b63c30d59a5d2d21a39f3cd30ecbcced537793e9fe6a4407195&#34;</span>,
+        <span style="color:#e6db74">&#34;Created&#34;</span>: <span style="color:#e6db74">&#34;2018-03-21T07:14:28.207599689Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Scope&#34;</span>: <span style="color:#e6db74">&#34;local&#34;</span>,
+        <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;bridge&#34;</span>,
+        <span style="color:#e6db74">&#34;EnableIPv6&#34;</span>: false,
+        <span style="color:#e6db74">&#34;IPAM&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+            <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{}</span>,
+            <span style="color:#e6db74">&#34;Config&#34;</span>: <span style="color:#f92672">[</span>
+                <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Subnet&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.0/16&#34;</span>,
+                    <span style="color:#e6db74">&#34;Gateway&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.1&#34;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Internal&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Attachable&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Ingress&#34;</span>: false,
+        <span style="color:#e6db74">&#34;ConfigFrom&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Network&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;ConfigOnly&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Containers&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;fe50dfe7788f46b4df3e25a128bec292f4263167dafa116ef4e68a47aeaccdcb&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;jisang-ms1&#34;</span>,
+                <span style="color:#e6db74">&#34;EndpointID&#34;</span>: <span style="color:#e6db74">&#34;c7c9a46ad6715cc65250a502bbd28c1bc389514d1f1db6136b90f12e483681e0&#34;</span>,
+                <span style="color:#e6db74">&#34;MacAddress&#34;</span>: <span style="color:#e6db74">&#34;02:42:ac:12:00:02&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv4Address&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.2/16&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv6Address&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{}</span>,
+        <span style="color:#e6db74">&#34;Labels&#34;</span>: <span style="color:#f92672">{}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div></li>
+
+<li><p>disconnect</p>
+
+<ul>
+<li>docker network에서 컨테이너 연결을 해제합니다.</li>
+<li><code>docker network disconnect {network 명} {container 명}</code></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">$ docker network disconnect js-network jisang-ms1
+
+$ docker network inspect js-network
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;js-network&#34;</span>,
+        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;b89583ee19716b63c30d59a5d2d21a39f3cd30ecbcced537793e9fe6a4407195&#34;</span>,
+        <span style="color:#e6db74">&#34;Created&#34;</span>: <span style="color:#e6db74">&#34;2018-03-21T07:14:28.207599689Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Scope&#34;</span>: <span style="color:#e6db74">&#34;local&#34;</span>,
+        <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;bridge&#34;</span>,
+        <span style="color:#e6db74">&#34;EnableIPv6&#34;</span>: false,
+        <span style="color:#e6db74">&#34;IPAM&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+            <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{}</span>,
+            <span style="color:#e6db74">&#34;Config&#34;</span>: <span style="color:#f92672">[</span>
+                <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Subnet&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.0/16&#34;</span>,
+                    <span style="color:#e6db74">&#34;Gateway&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.1&#34;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Internal&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Attachable&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Ingress&#34;</span>: false,
+        <span style="color:#e6db74">&#34;ConfigFrom&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Network&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;ConfigOnly&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Containers&#34;</span>: <span style="color:#f92672">{}</span>,
+        <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{}</span>,
+        <span style="color:#e6db74">&#34;Labels&#34;</span>: <span style="color:#f92672">{}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div>
+<ul>
+<li>rm</li>
+<li>user defined network를 삭제합니다.</li>
+<li><code>docker network rm {network 명}</code>
+<br /></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">$ docker network rm js-network
+js-network
+
+$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+251862fde7a0        bridge              bridge              local
+aa6913be5189        host                host                local
+c455da940d9b        none                null                local</code></pre></div></li>
+
+<li><p>docker run</p>
+
+<ul>
+<li>컨테이너 수행시 user defined netowrk에 연결합니다.</li>
+<li><code>docker run --network={network 명} {컨테이너 image}</code>
+<br /></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">$ docker run -d --network<span style="color:#f92672">=</span>js-network -e SPRING_PROFILES_ACTIVE<span style="color:#f92672">=</span>docker --name jisang-ms1 jisang-ms1:latest
+4e1c75a6f44763a4ac0266271698448491905388dd69397aaf84eda641464058
+
+$ docker network inspect js-network
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;js-network&#34;</span>,
+        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;3e7b219d5c06c4a817ebf499316a4758f016d747b6be8a0d5b83ba108620e42c&#34;</span>,
+        <span style="color:#e6db74">&#34;Created&#34;</span>: <span style="color:#e6db74">&#34;2018-03-21T07:38:35.244071424Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Scope&#34;</span>: <span style="color:#e6db74">&#34;local&#34;</span>,
+        <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;bridge&#34;</span>,
+        <span style="color:#e6db74">&#34;EnableIPv6&#34;</span>: false,
+        <span style="color:#e6db74">&#34;IPAM&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+            <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{}</span>,
+            <span style="color:#e6db74">&#34;Config&#34;</span>: <span style="color:#f92672">[</span>
+                <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Subnet&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.0/16&#34;</span>,
+                    <span style="color:#e6db74">&#34;Gateway&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.1&#34;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Internal&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Attachable&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Ingress&#34;</span>: false,
+        <span style="color:#e6db74">&#34;ConfigFrom&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Network&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;ConfigOnly&#34;</span>: false,
+        <span style="color:#e6db74">&#34;Containers&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;4e1c75a6f44763a4ac0266271698448491905388dd69397aaf84eda641464058&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;jisang-ms1&#34;</span>,
+                <span style="color:#e6db74">&#34;EndpointID&#34;</span>: <span style="color:#e6db74">&#34;4c3b9ea660520f6ed6463575e6ec44f7a2652a43c075ee5f640367f00ec6a2ec&#34;</span>,
+                <span style="color:#e6db74">&#34;MacAddress&#34;</span>: <span style="color:#e6db74">&#34;02:42:ac:12:00:02&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv4Address&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.2/16&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv6Address&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{}</span>,
+        <span style="color:#e6db74">&#34;Labels&#34;</span>: <span style="color:#f92672">{}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+
+<p>지금까지 Docker의 user defined network에 대해 알아보고 docker network 명령어의 간단 동작을 수행해보았습니다.</p>
+
+<p>다음 포스팅에서는 컨테이너 간 통신에 연관된 factors를 확인하고 경우의 수를 찾아 테스트를 진행해보겠습니다.</p></li>
+</ul>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-test/">[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</a></li>
+        
+        <li><a href="/posts/docker/docker-start/">Docker 시작하기</a></li>
+        
+        <li><a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a></li>
+        
+        <li><a href="/posts/using_docker_in_cloudfoundry/">CF에 Docker Image 배포</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/user-defined-network" rel="tag">user defined network</a></li><li><a href="/tags/spring-boot" rel="tag">spring boot</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fwhat-is-docker-user-defined-network%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fwhat-is-docker-user-defined-network%2f&amp;text=%5bDocker-User%20Defined%20Network%20%ed%99%9c%ec%9a%a9%281%2f3%29%5d%20Docker%20User%20Defined%20Network%20%eb%9e%80%3f" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fwhat-is-docker-user-defined-network%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fwhat-is-docker-user-defined-network%2f&amp;title=%5bDocker-User%20Defined%20Network%20%ed%99%9c%ec%9a%a9%281%2f3%29%5d%20Docker%20User%20Defined%20Network%20%eb%9e%80%3f" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fwhat-is-docker-user-defined-network%2f&amp;description=%5bDocker-User%20Defined%20Network%20%ed%99%9c%ec%9a%a9%281%2f3%29%5d%20Docker%20User%20Defined%20Network%20%eb%9e%80%3f" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fwhat-is-docker-user-defined-network%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/jisangyun">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/jisangyun.jpg'/><div class="author-info">
+    <h3>윤지상</h3>
+    <p>Microservice Architecture Design&amp;Dev</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/using_docker_in_cloudfoundry/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">CF에 Docker Image 배포</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 20
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/docker-user-defined-network/docker-user-defined-network-test/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 20
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

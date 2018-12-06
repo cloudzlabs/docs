@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Docker는 Container를 구동시킬 수 있는 환경만 구성되어 있다면, Application들을 한 번의 Build로 어디서든 구동시킬 수 있습니다. 하지만 1차원적으로만 살펴보면, Java Application이 JVM 위에서 실행되는 모습과 크게 다르지 않아 보입니다. Java Application도 JVM만 설치되어 있다면, 어디에서든 실행되죠. 마찬가지로, Python Application도 동일합니다. 그렇다면, 이 모든 것들이 결국은 똑같이 생겼고, 단지 실행되는 주체(Container, JAR, py)만 다른 것일까요?
+Client-Server Model Docker는 서비스의 요청자(Docker Client)와 제공자(Docker Server)간의 작업이 분리되어 동작하는 Client-Server Model로 되어있으며, Docker Client는 REST API를 사용하여 Docker Server를 제어합니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Docker 기본(2/8)] Docker&#39;s Skeleton | 정재훈'>
+<meta property='og:description' content='Docker는 Container를 구동시킬 수 있는 환경만 구성되어 있다면, Application들을 한 번의 Build로 어디서든 구동시킬 수 있습니다. 하지만 1차원적으로만 살펴보면, Java Application이 JVM 위에서 실행되는 모습과 크게 다르지 않아 보입니다. Java Application도 JVM만 설치되어 있다면, 어디에서든 실행되죠. 마찬가지로, Python Application도 동일합니다. 그렇다면, 이 모든 것들이 결국은 똑같이 생겼고, 단지 실행되는 주체(Container, JAR, py)만 다른 것일까요?
+Client-Server Model Docker는 서비스의 요청자(Docker Client)와 제공자(Docker Server)간의 작업이 분리되어 동작하는 Client-Server Model로 되어있으며, Docker Client는 REST API를 사용하여 Docker Server를 제어합니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/docker/docker-architecture/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/docker/docker-architecture/../images/blue-whale-hintze-hall-news.jpg'><meta property='article:section' content='Posts'><meta property='article:tag' content='docker'><meta property='article:tag' content='docker daemon'><meta property='article:tag' content='docker registry'><meta property='article:tag' content='docker object'><meta property='article:published_time' content='2018-03-08T23:23:28&#43;09:00'/><meta property='article:modified_time' content='2018-03-08T23:23:28&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/docker/docker-architecture/http://tech.cloudz-labs.io/images/blue-whale-hintze-hall-news.jpg'><meta property='twitter:image:alt' content='Natural History Museum: The blue whale skeleton in its new Hintze Hall home'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Docker 기본(2/8)] Docker&#39;s Skeleton | 정재훈</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/docker/docker-architecture/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Mar 08, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 6분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Docker 기본(2/8)] Docker&#39;s Skeleton</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/1000jaeh">정재훈</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/docker/docker-architecture/../images/blue-whale-hintze-hall-news.jpg' alt='Natural History Museum: The blue whale skeleton in its new Hintze Hall home'/>
+
+
+
+<figcaption>
+    <span>Natural History Museum: The blue whale skeleton in its new Hintze Hall home</span>
+</figcaption>
+
+
+
+</figure>
+</div>
+
+
+<p>Docker는 Container를 구동시킬 수 있는 환경만 구성되어 있다면, Application들을 한 번의 Build로 어디서든 구동시킬 수 있습니다. 하지만 1차원적으로만 살펴보면, Java Application이 JVM 위에서 실행되는 모습과 크게 다르지 않아 보입니다. Java Application도 JVM만 설치되어 있다면, 어디에서든 실행되죠. 마찬가지로, Python Application도 동일합니다. 그렇다면, 이 모든 것들이 결국은 똑같이 생겼고, 단지 실행되는 주체(Container, JAR, py)만 다른 것일까요?</p>
+
+<h2 id="client-server-model">Client-Server Model</h2>
+
+<p>Docker는 <strong>서비스의 요청자(Docker Client)</strong>와 <strong>제공자(Docker Server)</strong>간의 작업이 분리되어 동작하는 Client-Server Model로 되어있으며, Docker Client는 <strong>REST API</strong>를 사용하여 Docker Server를 제어합니다.</p>
+
+<ul>
+<li>Docker Client: <code>docker CLI</code></li>
+<li>Docker Server: <code>docker daemon</code></li>
+<li>Docker REST API</li>
+</ul>
+
+<p>그리고, Docker Server(<code>docker daemon</code>)는 Docker Client로부터 받은 요청에 따라, 다음의 Docker Object들을 생성하고 관리합니다.</p>
+
+<ul>
+<li>Image</li>
+<li>Container</li>
+<li>Network</li>
+<li>Data Volumes</li>
+</ul>
+
+<div class='align-center'>
+    <p><img src="../images/engine-components-flow.png" alt="component" /><a href="https://docs.docker.com/engine/docker-overview/#docker-engine" target="_blank">출처: Docker Docs - Docker Engine</a></p>
+
+</div>
+
+
+<h2 id="좀-더-자세히-보면">좀 더 자세히 보면</h2>
+
+<p>Docker Client는 Docker Daemon과 UNIX Socket 또는 REST API를 사용하여 통신을 하며, Docker Daemon이 Container를 구축, 실행 및 배포할 수 있도록 합니다. Docker Client와 Daemon은 동일한 시스템에서 실행될 수도 있고, Docker Client를 원격으로 Docker Daemon에 연결하여 사용할 수도 있습니다.</p>
+
+<div class='align-center'>
+    <p><img src="../images/architecture.svg" alt="architecture" /><a href="https://docs.docker.com/engine/docker-overview/#docker-architecture" target="_blank">출처: Docker Docs - Docker architecture</a></p>
+
+</div>
+
+
+<h3 id="docker-daemon">Docker Daemon</h3>
+
+<p>Docker Daemon(<code>dockerd</code>)은 Client로부터 API 요청을 수신하고 Image, Container, Network 및 Volume과 같은 Docker Object를 관리합니다. Daemon은 Docker 서비스를 관리하기 위해 다른 Daemon과 통신할 수 있습니다.</p>
+
+<h3 id="docker-client">Docker Client</h3>
+
+<p>Docker Client(<code>docker</code>)는 사용자가 Docker Daemon과 통신하는 주요 방법입니다. <code>docker run</code>과 같은 명령을 사용하면 Docker Client는 해당 명령을 Docker Daemon으로 전송하여 명령을 수행하게 합니다. <code>docker</code> 명령은 Docker API를 사용하며, Docker Client는 둘 이상의 Docker Daemon과 통신 할 수 있습니다.</p>
+
+<h3 id="docker-registry">Docker Registry</h3>
+
+<p>Docker Registry는 Docker Image를 저장합니다. Docker Hub는 누구나 사용할 수있는 Public Registry이며, Docker는 기본적으로 Docker Hub에서 Image를 찾아 Container를 구성하도록 되어 있습니다. 예를들어, <code>docker pull</code>을 사용하여 Image를 Registry에서 Local로 내려받을 수 있으며, <code>docker push</code>를 통해 Local의 Image를 Registry에 저장할 수도 있습니다. Docker Registry는 개개인이 구성할 수도 있으며, Docker의 Enterprise Edition에서 제공되는 Docker Trusted Registry이 포함된 Docker Datacenter를 사용할 수도 있습니다.</p>
+
+<h3 id="docker-object">Docker Object</h3>
+
+<p>Docker Object는 Docker Daemon에 의해, 생성 및 관리되는 Image / Container / Network / Volume 등의 개체를 말합니다.</p>
+
+<h4 id="image">Image</h4>
+
+<p>Image는 Docker Container를 생성하기 위한 읽기 전용 Template입니다. Image들은 다른 Image 기반 위에 Customizing이 추가되어 만들어질 수 있으며, 이렇게 만들어진 Image는 Docker Registry에 Push한 뒤 사용할 수 있습니다. Image는 Dockerfile에 Image를 만들고 실행하는 데 필요한 단계를 명령어로 정의하여 생성합니다. Dockerfile에 정의된 각각의 명령어들은 Image의 Layer를 생성하며, 이러한 Layer들이 모여 Image를 구성합니다. Dockerfile을 변경하고 Image를 다시 구성하면 변경된 부분만 새로운 Layer로 생성됩니다. 이러한 Image의 Layer구조는 Docker가 타 가상화 방식과 비교할 때, 매우 가볍고 빠르게 기동할 수 있는 요인이 됩니다.</p>
+
+<h4 id="container">Container</h4>
+
+<p>Container는 Docker API 사용하여 생성, 시작, 중지, 이동 또는 삭제 할 수 있는 Image의 실행가능한 Instance를 나타냅니다. Container를 하나 이상의 Network에 연결하거나, 저장 장치로 묶을 수 있으며, 현재 상태를 바탕으로 새로운 Image를 생성할 수도 있습니다. 기본적으로 Container는 Host 또는 다른 Container로부터 격리되어 있으며, Network / Storage와 다른 하위 시스템에 대한 접근을 직접 제어 할 수 있습니다. Container는 생성되거나 시작될 때, 구성 옵션 및 Image로부터 정의됩니다. Container가 제거될 때는 영구 저장소에 저장되지 않은 변경 사항은 모두 해당 Container와 같이 사라집니다.</p>
+
+<h4 id="service">Service</h4>
+
+<p>Service를 사용하면, 여러 개의 Docker Daemon들로 이루어진 영역 내에서 Container들을 확장(Scaling)시킬 수 있습니다. Service는 &lsquo;특정 시간동안 사용 가능한 Service의 Replica 개수&rsquo;와 같은 상태 정보들을 직접 정의하여 사용할 수 있습니다. 기본적으로 Service는 Docker Daemon들 간의 Load Balancing을 제공하고 있기 때문에, 사용자 관점에서는 단일 Application으로 보입니다.</p>
+
+<div class="notices info" ><p>여러 개의 Docker Daemon들이 모여 Cluster 형태를 이루고 있는 것을 <strong>Docker Swarm</strong>이라고 합니다. Docker Swarm은 Manager와 Worker Node로 구성되어 있으며, Docker Engine은 Docker Version 1.12 이상에서 Swarm Mode를 지원합니다.</p>
+</div>
+
+
+<h2 id="container를-기동시켜-보자">Container를 기동시켜 보자</h2>
+
+<p>지금까지, Docker가 어떻게 생겼는지 그 구성요소들을 하나씩 확인해 봤습니다. 그렇다면, 간단하게 Public Image로붙터 Container를 기동시키면서, 각각의 요소들을 다시 한번 확인해 보겠습니다.</p>
+
+<ol>
+<li><p>먼저, <code>docker search [OPTIONS] TERM</code>로 Docker Store와 Hub로부터 Image를 찾습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker search ubuntu
+NAME                                                   DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+ubuntu                                                 Ubuntu is a Debian-based Linux operating s...   <span style="color:#ae81ff">6710</span>                <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>                
+dorowu/ubuntu-desktop-lxde-vnc                         Ubuntu with openssh-server and NoVNC            <span style="color:#ae81ff">139</span>                                     <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+rastasheep/ubuntu-sshd                                 Dockerized SSH service, built on top of of...   <span style="color:#ae81ff">112</span>                                     <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+ansible/ubuntu14.04-ansible                            Ubuntu <span style="color:#ae81ff">14</span>.04 LTS with ansible                   <span style="color:#ae81ff">87</span>                                      <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+ubuntu-upstart                                         Upstart is an event-based replacement <span style="color:#66d9ef">for</span> ...   <span style="color:#ae81ff">80</span>                  <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>                
+neurodebian                                            NeuroDebian provides neuroscience research...   <span style="color:#ae81ff">40</span>                  <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>                
+ubuntu-debootstrap                                     debootstrap --variant<span style="color:#f92672">=</span>minbase --components...   <span style="color:#ae81ff">31</span>                  <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>                
+nuagebec/ubuntu                                        Simple always updated Ubuntu docker images...   <span style="color:#ae81ff">22</span>                                      <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+tutum/ubuntu                                           Simple Ubuntu docker images with SSH access     <span style="color:#ae81ff">19</span>                                      
+1and1internet/ubuntu-16-nginx-php-phpmyadmin-mysql-5   ubuntu-16-nginx-php-phpmyadmin-mysql-5          <span style="color:#ae81ff">16</span>                                      <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+ppc64le/ubuntu                                         Ubuntu is a Debian-based Linux operating s...   <span style="color:#ae81ff">11</span>                                      
+aarch64/ubuntu                                         Ubuntu is a Debian-based Linux operating s...   <span style="color:#ae81ff">9</span>                                       
+i386/ubuntu                                            Ubuntu is a Debian-based Linux operating s...   <span style="color:#ae81ff">8</span>                                       
+darksheer/ubuntu                                       Base Ubuntu Image -- Updated hourly             <span style="color:#ae81ff">3</span>                                       <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+codenvy/ubuntu_jdk8                                    Ubuntu, JDK8, Maven <span style="color:#ae81ff">3</span>, git, curl, nmap, mc...   <span style="color:#ae81ff">3</span>                                       <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+1and1internet/ubuntu-16-nginx-php-5.6-wordpress-4      ubuntu-16-nginx-php-5.6-wordpress-4             <span style="color:#ae81ff">2</span>                                       <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+1and1internet/ubuntu-16-apache-php-7.0                 ubuntu-16-apache-php-7.0                        <span style="color:#ae81ff">1</span>                                       <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+pivotaldata/ubuntu-gpdb-dev                            Ubuntu images <span style="color:#66d9ef">for</span> GPDB development              <span style="color:#ae81ff">0</span>                                       
+pivotaldata/ubuntu                                     A quick freshening-up of the base Ubuntu d...   <span style="color:#ae81ff">0</span>                                       
+1and1internet/ubuntu-16-healthcheck                    ubuntu-16-healthcheck                           <span style="color:#ae81ff">0</span>                                       <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+thatsamguy/ubuntu-build-image                          Docker webapp build images based on Ubuntu      <span style="color:#ae81ff">0</span>                                       
+1and1internet/ubuntu-16-sshd                           ubuntu-16-sshd                                  <span style="color:#ae81ff">0</span>                                       <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+ossobv/ubuntu                                          Custom ubuntu image from scratch <span style="color:#f92672">(</span>based on...   <span style="color:#ae81ff">0</span>                                       
+defensative/socat-ubuntu                                                                               <span style="color:#ae81ff">0</span>                                       <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span>
+smartentry/ubuntu                                      ubuntu with smartentry                          <span style="color:#ae81ff">0</span>                                       <span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span></code></pre></div>
+<p><strong>Docker Hub</strong>에는 Community Version의 Image들이 포함되어 있습니다. 누구나 새로운 Image를 Docker Hub에 Push할 수 있지만, 해당 Image들의 품질이나 호환성을 Docker가 보장하지 않습니다. 대신, <strong>Docker Store</strong>에는 공인된 업체를 통해 승인된 Image들이 포함되어 있습니다. 이러한 Image들은 Vendor들에 의해, 직접 게시되고 유지/관리됩니다. 또한 Docker Certified 로고는 Image에 대한 품질, 출처 및 지원에 대한 보증을 제공합니다. 공식 Image는 <code>OFFCIAL</code>로, 그 외의 Community Image는 <code>AUTOMATED</code>에 분류됩니다.</p>
+
+<ol>
+<li>Container로 구성할 Image를 Docker Store 및 Hub로부터 <code>docker pull [OPTIONS] NAME[:TAG|@DIGEST]</code>를 이용하여 Pull 받습니다.</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker pull ubuntu
+Using default tag: latest
+latest: Pulling from library/ubuntu
+ae79f2514705: Pull complete
+5ad56d5fc149: Pull complete
+170e558760e8: Pull complete
+395460e233f5: Pull complete
+6f01dc62e444: Pull complete
+Digest: sha256:506e2d5852de1d7c90d538c5332bd3cc33b9cbd26f6ca653875899c505c82687
+Status: Downloaded newer image <span style="color:#66d9ef">for</span> ubuntu:latest</code></pre></div>
+<p>Image를 Pull 받을 때, Image에 대한 Version을 Tag로 지정하여 받을 수 있으며, 지정되지 않을 경우 <code>latest</code> Version으로 Pull이 진행됩니다. 각 Image별 상세 정보는 <a href="https://store.docker.com/" target="_blank">Docker Store</a>에서 Image를 검색하여 나오는 상세 페이지에서 확인할 수 있습니다.</p></li>
+
+<li><p><code>docker images</code>로 Local Repository에 Pull된 Image 목록을 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu              latest              747cb2d60bbe        <span style="color:#ae81ff">13</span> days ago         122MB
+hello-world         latest              05a3bd381fc2        <span style="color:#ae81ff">5</span> weeks ago         <span style="color:#ae81ff">1</span>.84kB</code></pre></div>
+<ol>
+<li>Local Repository에 Pull된 Image를 <code>docker run [OPTIONS] IMAGE[COMMAND] [ARG...]</code>로 Container를 생성하여 실행시킵니다. 개별 <code>docker command</code>의 옵션 및 상세 사용법은 <code>docker run --help</code>와 같이 사용하여 확인하실 수 있습니다.</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker run -i -t --name ubuntu-local ubuntu /bin/bash
+root@ebb7937d0325:/#</code></pre></div></li>
+
+<li><p><code>docker ps</code>로 실행되고 있는 Ubuntu Container를 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+ebb7937d0325        ubuntu              <span style="color:#e6db74">&#34;/bin/bash&#34;</span>         <span style="color:#ae81ff">3</span> minutes ago       Up <span style="color:#ae81ff">3</span> minutes                            ubuntu-local</code></pre></div>
+<h2 id="pull-run-끝">Pull &amp; Run. 끝?</h2>
+
+<p>Docker에서 인증받은 공식 Ubuntu Image로 Container를 기동시켜 봤습니다. 진행했던 과정을 요약해보자면, Docker Client는 Docker Daemon에게 Ubuntu Image를 검색시킨 후, Docker Hub로부터 Image를 Local Registry에 내려 받았습니다. 그리고 <code>docker run</code>을 Docker Daemon에게 다시 요청하여, 내려받은 Image로부터 Container를 생성 및 기동 시켰습니다.</p>
+
+<p>그렇다면, Pull과 Run이 끝일까요? 이전에 우리는 Docker Hub에 배포된 Image로 <strong>&ldquo;어디서든 Run&rdquo;</strong>할 수 있다는 것을 확인했습니다. 이제는 다음 단계로 넘어가, 직접 Image를 Build하고, 해당 Image로부터 Container를 Run해보도록 하겠습니다.</p>
+
+<p>하지만, 그 전에! Build된 Image와 Container가 어떻게 생겼는지 궁금해지네요.</p></li>
+</ol>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/docker/docker-start/">Docker 시작하기</a></li>
+        
+        <li><a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-test/">[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/what-is-docker-user-defined-network/">[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/docker-daemon" rel="tag">docker daemon</a></li><li><a href="/tags/docker-registry" rel="tag">docker registry</a></li><li><a href="/tags/docker-object" rel="tag">docker object</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-architecture%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-architecture%2f&amp;text=%5bDocker%20%ea%b8%b0%eb%b3%b8%282%2f8%29%5d%20Docker%27s%20Skeleton" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-architecture%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-architecture%2f&amp;title=%5bDocker%20%ea%b8%b0%eb%b3%b8%282%2f8%29%5d%20Docker%27s%20Skeleton" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-architecture%2f&amp;description=%5bDocker%20%ea%b8%b0%eb%b3%b8%282%2f8%29%5d%20Docker%27s%20Skeleton" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fdocker-architecture%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/1000jaeh">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/1000jaeh.jpeg'/><div class="author-info">
+    <h3>정재훈</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/docker/hello-docker/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(1/8)] Hello Docker!</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 08
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 6분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/docker/what-is-container/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(3/8)] Container는 뭘까?</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 08
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 6분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

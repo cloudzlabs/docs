@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Docker User Defined Bridge Network와 Spring Cloud를 활용해 최소 단위의 MSA가 적용된 system을 구성합니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud | 윤지상'>
+<meta property='og:description' content='Docker User Defined Bridge Network와 Spring Cloud를 활용해 최소 단위의 MSA가 적용된 system을 구성합니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/docker-logo.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='docker'><meta property='article:tag' content='user defined network'><meta property='article:tag' content='spring boot'><meta property='article:tag' content='spring cloud'><meta property='article:published_time' content='2018-05-20T18:13:30&#43;09:00'/><meta property='article:modified_time' content='2018-05-20T18:13:30&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/http://tech.cloudz-labs.io/docker-logo.png'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud | 윤지상</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>May 20, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 4분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/jisangyun">윤지상</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/docker-logo.png'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<p>지난 포스팅에서 Docker의 네트워크 기능과 연관된 factors를 경우의 수에 따라 검증을 했습니다.</p>
+
+<p>Docker toolbox를 사용하는 환경(win7)에서 테스트 결과, 아래의 경우에 서비스 간 호출이 성공했습니다.</p>
+
+<ol>
+<li>컨테이너의 Port를 노출하고 {docker-machine ip}:{외부 노출 Port}으로 접속한 경우</li>
+<li>컨테이너를 user defined network에 연결하고 {컨테이너 명}:{컨테이너 내부 port}로 접근한 경우</li>
+<li>컨테이너를 user defined network에 연결하고 {user defined network ip}:{컨테이너 내부 port}로 접근한 경우</li>
+</ol>
+
+<p>이 중 2번. 컨테이너를 user defined network에 연결하고 {컨테이너 명}:{컨테이너 내부 port}로 접근하는 방법으로 Docker에서  최소 단위의 MSA가 적용된 system을 구성해보겠습니다.</p>
+
+<p>구성할 시스템의 명칭은 <strong>cloud-movie</strong> 입니다.</p>
+
+<h2 id="about-cloud-movie-system">About cloud-movie system</h2>
+
+<hr />
+
+<h3 id="cloud-movie-system-diagram">cloud-movie system Diagram</h3>
+
+<p><img src="cloud_movie_diagram.png" alt="cloud-movie-diagram" /></p>
+
+<p><br></p>
+
+<ul>
+<li>해당 Diagram에서 User Defined Network는 frontend와 backend로 구분지어 구성했습니다.</li>
+<li>API G/W는 frontend와 backend에 동시에 network binding을 해서 frontend로 부터 API 호출을 가능하게 설정했습니다. 또한, port 노출없이 private network에서 frontend와 backend 사이 proxy, routing을 수행하도록 구성했습니다.</li>
+<li>cloud-movie-front와 cloud-movie-hystrix-dashboard는 브라우저를 통해 접속이 필요한 경우입니다. frontend용 User Defined Network와 연결된 API G/W를 통해 API 서버에 접근할 수 있도록 구성했고 외부로 port를 노출했습니다.</li>
+<li>API 서버는 API G/W를 통한 접속만을 허용하고 외부로 port 노출을 시키지 않는 private network 구성했습니다.
+이러한 구성으로 User가 frontend 네트워크 영역의 Application을 통하지 않고 API 서버에 직접 접근하는 것을 차단하고 허용된 기능만 수행하는 방식으로 설계할 수 있습니다.</li>
+<li>config server는 모든 Application과 연계를 위해 stand alone의 형태로 구현했습니다. config server 또한 User Defined Network를 설정하고, 관련있는 Application을 동일한 network에 binding해서 통신을 수행하도록 구성할 수 있습니다.</li>
+</ul>
+
+<h2 id="cloud-movie-system-details">cloud-movie system Details</h2>
+
+<hr />
+
+<p>구현한 Application은 모두 Spring Boot 1.5.x 기반입니다. 테스트 목적으로 필요한 기능을 구현했습니다.</p>
+
+<p>Application 구동시 config server와 연계하기 위한 설정이 각 Application의 bootstrap.yml에 공통 적용되어 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Yaml" data-lang="Yaml">spring:
+  profiles: default
+  cloud:
+    config:
+      uri: http://localhost:<span style="color:#ae81ff">8888</span>
+      name: cloud-movie-apigateway
+---
+spring:
+  profiles: docker
+  cloud:
+    config:
+      uri: http://<span style="color:#ae81ff">192.168</span>.<span style="color:#ae81ff">99.100</span>:<span style="color:#ae81ff">8888</span>
+      name: cloud-movie-apigateway</code></pre></div>
+<p><br>
+아래는 개별 Application에 대한 간략한 설명과 network 관련 설정입니다.</p>
+
+<h4 id="cloud-movie">cloud-movie</h4>
+
+<ul>
+<li>Spring Boot로 구현한 backend 서비스입니다.</li>
+<li>cloud-movie-db와 연계해 CRUD 기능을 수행합니다.</li>
+<li>테스트를 위해 application 구동시 샘플 데이터 초기화를 수행합니다.</li>
+<li>cloud-movie-db와 연계 설정
+
+<ul>
+<li>cloud-movie-db의 컨테이너 명을 사용해 Host 정보를 사용했습니다.</li>
+</ul></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Yaml" data-lang="Yaml">  spring:
+    datasource:
+      initialize: <span style="color:#66d9ef">true</span>
+      platform: mariadb
+      url: jdbc:mariadb://cloud-movie-db:<span style="color:#ae81ff">3306</span>/db_example
+      username: root
+      password: ThePassword</code></pre></div>
+<blockquote>
+<p>해당 설정에 포함된 민감정보는 실제 사용시 security 적용이 필요한 항목입니다.</p>
+</blockquote>
+
+<h4 id="cloud-movie-db">cloud-movie-db</h4>
+
+<ul>
+<li>Docker Hub에 배포된 <a href="https://hub.docker.com/_/mariadb/" target="_blank">mariadb 공식 이미지</a>의 10.2.13 버전을 사용했습니다.</li>
+<li>docker run 수행시 기본 설정 및 인코딩 방식을 설정합니다.</li>
+<li>해당 테스트에서 샘플 데이터는 cloud-movie 구동시 초기화하도록 설정했습니다.</li>
+</ul>
+
+<blockquote>
+<p>실제 Docker 에서 DB 구동시 volume을 설정해 데이터의 연속성을 보장합니다.</p>
+</blockquote>
+
+<h4 id="cloud-movie-front">cloud-movie-front</h4>
+
+<ul>
+<li>Spring Boot로 구현한 frontend 서비스입니다.</li>
+<li>thymeleaf 템플릿 엔진 사용해 UI를 구성했습니다.</li>
+<li>외부에서 접근이 필요하므로 port를 노출합니다.</li>
+<li>cloud-movie-apigateway와 연계 설정
+
+<ul>
+<li>cloud-movie-apigateway의 컨테이너 명을 사용해 Host 정보를 사용했습니다.</li>
+</ul></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Yaml" data-lang="Yaml">  rest:
+    address: http://cloud-movie-apigateway:<span style="color:#ae81ff">9999</span>/movie-service</code></pre></div>
+<h4 id="cloud-movie-apigateway">cloud-movie-apigateway</h4>
+
+<ul>
+<li>Netflix OSS의 Zuul을 사용해 apigateway 기능을 구현합니다.</li>
+<li>/movie-service/** 패턴으로 접근시 cloud-movie로 라우팅을 합니다.</li>
+<li>zuul routing 설정
+
+<ul>
+<li>cloud-movie의 컨테이너 명을 사용해 Host 정보를 사용했습니다.</li>
+</ul></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Yaml" data-lang="Yaml">  zuul:
+    ignoredService: <span style="color:#e6db74">&#34;*&#34;</span>
+    routes:
+      movies:
+        path: /movie-service/<span style="color:#75715e">**</span>
+        url: http://cloud-movie:<span style="color:#ae81ff">8080</span>
+        serviceId: cloud-movie</code></pre></div>
+<h4 id="cloud-movie-config-server">cloud-movie-config-server</h4>
+
+<ul>
+<li>Spring Cloud Config를 사용해 config server 기능을 구현했습니다.</li>
+<li><a href="https://github.com/yjs0997/cloud-movie-config" target="_blank">Github의 Repository에 업로드 한 Application들의 설정</a>을 일원화해 관리합니다.</li>
+<li>해당 테스트에서 config server는 stand alone으로 동작하는 상황을 가정하여 {ip:port}로 접근하도록 구현했습니다.</li>
+<li>외부에서 접근이 필요하므로 port를 노출합니다.</li>
+</ul>
+
+<h4 id="cloud-movie-hystrix-dashboard">cloud-movie-hystrix-dashboard</h4>
+
+<ul>
+<li>Netflix OSS의 Hystrix 사용해 Circuit Breaker 기능을 구현했습니다.</li>
+<li>hystrix command의 적용은 cloud-movie-front, cloud-movie 두가지 Application에 적용되어 있습니다.</li>
+<li>해당 Application은 hystrix dashboard 기능을 별도 Application으로 구현한 것입니다.</li>
+<li>외부에서 접근이 필요하므로 port를 노출합니다.</li>
+<li>frontend 영역의 Application 모니터링시 {컨테이너 명}:{컨테이너 port}/hystrix.stream으로 접근합니다.</li>
+</ul>
+
+<p><img src="hystrix-front.PNG" alt="hystrix-dashboard-front" /></p>
+
+<ul>
+<li>backend 영역의 Application 모니터링시 cloud-movie-apigateway:9999/{backend 라우팅 패턴}/hystrix.stream으로 접근합니다.</li>
+</ul>
+
+<p><img src="hystrix-back.PNG" alt="hystrix-dashboard-back" /></p>
+
+<h2 id="cloud-movie-system-deploy">cloud-movie system Deploy</h2>
+
+<hr />
+
+<p>각 어플리케이션을 Dockerfile을 통해 이미지화 합니다.</p>
+
+<p>해당 테스트에서는 docker toolbox로 설치된 docker-machine상의 local 환경에 이미지를 저장해두고 컨테이너 구동시 추가적인 <code>image pull</code> 없이 바로 사용합니다.</p>
+
+<p>별도의 이미지 저장소를 사용하는 경우 <code>docker build</code>, <code>docker tag</code>, <code>docker push</code>의 순서로 수행하시면 됩니다.</p>
+
+<p>자세한 내용은 <a href="http://tech.cloudz-labs.io/posts/docker/docker-start/" target="_blank">Docker 시작하기</a>를 참조바랍니다.</p>
+
+<h4 id="cloud-movie-system-deploy-spec">cloud-movie system Deploy Spec</h4>
+
+<table>
+<thead>
+<tr>
+<th>container명</th>
+<th>images</th>
+<th>UDN</th>
+<th>port</th>
+<th>노출</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>cloud-movie</td>
+<td>cloud-movie:latest</td>
+<td>cm-back</td>
+<td>8080</td>
+<td>x</td>
+</tr>
+
+<tr>
+<td>cloud-movie-db</td>
+<td>mariadb:10.2.13</td>
+<td>cm-back</td>
+<td>3306</td>
+<td>x</td>
+</tr>
+
+<tr>
+<td>cloud-movie-front</td>
+<td>cloud-movie-front:latest</td>
+<td>cm-front</td>
+<td>8081</td>
+<td>o</td>
+</tr>
+
+<tr>
+<td>cloud-movie-apigateway</td>
+<td>cloud-movie-apigateway:latest</td>
+<td>cm-front <br> cm-back</td>
+<td>9999</td>
+<td>x</td>
+</tr>
+
+<tr>
+<td>cloud-movie-config-server</td>
+<td>cloud-movie-config-server:latest</td>
+<td>cm-back</td>
+<td>8888</td>
+<td>o</td>
+</tr>
+
+<tr>
+<td>cloud-movie-hystrix-dashboard</td>
+<td>cloud-movie-hystrix-dashboard:latest</td>
+<td>cm-front</td>
+<td>7979</td>
+<td>o</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>외부에서 접근을 하는 기능이 필요한 경우만 port를 노출합니다.</p>
+</blockquote>
+
+<h4 id="컨테이너-구동">컨테이너 구동</h4>
+
+<ol>
+<li>docker network 명령어로 User Defined Network를 생성합니다. cm-front, cm-back로 명명합니다.
+
+<ul>
+<li><code>docker network create cm-front</code></li>
+<li><code>docker network create cm-back</code> <br><br></li>
+</ul></li>
+<li>docker run 명령어로 컨테이너를 구동합니다. 필요한 환경변수나 port 노출 등의 옵션을 동시에 수행합니다. 구동시 참조하는 우선순위에 따라 수행합니다.
+
+<ul>
+<li>cloud-movie-config-server <br>
+<code>docker run --name cloud-movie-config-server -p 8888:8888 -d cloud-movie-config-server:latest</code></li>
+<li>cloud-movie-db <br>
+<code>docker run --name cloud-movie-db --network cm-back -e MYSQL_DATABASE=db_example -e MYSQL_ROOT_PASSWORD=ThePassword -d mariadb:10.2.13 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci</code></li>
+<li>cloud-movie <br>
+<code>docker run --name cloud-movie --network cm-back -e SPRING_PROFILES_ACTIVE=docker -d cloud-movie:latest</code></li>
+<li>cloud-movie-apigateway <br>
+<code>docker run --name cloud-movie-apigateway --network cm-back -e SPRING_PROFILES_ACTIVE=docker -d cloud-movie-apigateway:latest</code> <br>
+<code>docker network connect cm-front cloud-movie-apigateway</code></li>
+<li>cloud-movie-front <br>
+<code>docker run --name cloud-movie-front -p 8081:8081 --network cm-front -e SPRING_PROFILES_ACTIVE=docker -d cloud-movie-front:latest</code></li>
+<li>cloud-movie-hystrix-dashboard <br>
+<code>docker run --name cloud-movie-hystrix-dashboard -p 7979:7979 --network cm-front -e SPRING_PROFILES_ACTIVE=docker -d cloud-movie-hystrix-dashboard:latest</code></li>
+</ul></li>
+</ol>
+
+<h2 id="cloud-movie-system-test">cloud-movie system Test</h2>
+
+<hr />
+
+<p>MSA를 적용한 최소 사양의 system이 Docker에서 동작하는 것을 확인합니다.</p>
+
+<p>cloud-movie의 기본 동작들을 확인해 Docker User Defined Network 상에서 컨테이너 명을 이용해 Host 정보를 찾아 동작하는지 확인합니다.</p>
+
+<h4 id="cloud-movie-crud-test">cloud-movie CRUD Test</h4>
+
+<ul>
+<li><p><strong>전체 목록 조회</strong>
+<img src="search-all.PNG" alt="search-all" /></p></li>
+
+<li><p><strong>Movie List 추가</strong>
+<img src="add-list.png" alt="add-list" /></p></li>
+
+<li><p><strong>Movie List 건별 조회</strong>
+<img src="search-list.PNG" alt="search-list" /></p></li>
+
+<li><p><strong>Movie List 건별 수정</strong>
+<img src="edit-list.PNG" alt="edit-list" /></p></li>
+
+<li><p><strong>Movie List 건별 삭제</strong>
+<img src="delete-list.PNG" alt="delete-list" /></p></li>
+
+<li><p><strong>cloud-movie-hystrix-dashboard 모니터링</strong>
+<img src="dashboard-test.PNG" alt="dashboard-test" /></p></li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Spring cloud와 Docker를 사용해 최소 단위의 MSA가 적용된 system을 구동했습니다. 테스트를 진행한 cloud-movie system의 Backend를 확장해 API 기능을 추가한다면, 용도에 맞게 MicroService를 개발해서 cm-back에 binding 하는 것으로 쉽게 확장이 가능합니다.</p>
+
+<p>컨테이너의 외부 노출 여부 및 컨테이너 간 연계를 고려해 User Defined Network를 적절히 사용하면 API 서버를 private network 상에서 구동시킬 수 있습니다. UI를 통해 의도된 동작 이외에 직접적으로 API 서버나 DB에 접근하는 것을 방지할 수 있습니다.</p>
+
+<p>추가적으로 docker-compose를 사용해서 이미지화 및 컨테이너 구동 관리를 용이하게 할 수 있습니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-test/">[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/what-is-docker-user-defined-network/">[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</a></li>
+        
+        <li><a href="/posts/service-mesh/">Service Mesh 란?</a></li>
+        
+        <li><a href="/posts/docker/docker-start/">Docker 시작하기</a></li>
+        
+        <li><a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/user-defined-network" rel="tag">user defined network</a></li><li><a href="/tags/spring-boot" rel="tag">spring boot</a></li><li><a href="/tags/spring-cloud" rel="tag">spring cloud</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-with-spring-cloud%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-with-spring-cloud%2f&amp;text=%5bDocker-User%20Defined%20Network%20%ed%99%9c%ec%9a%a9%283%2f3%29%5d%20Docker%20User%20Defined%20Bridge%20Network%20with%20Spring%20Cloud" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-with-spring-cloud%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-with-spring-cloud%2f&amp;title=%5bDocker-User%20Defined%20Network%20%ed%99%9c%ec%9a%a9%283%2f3%29%5d%20Docker%20User%20Defined%20Bridge%20Network%20with%20Spring%20Cloud" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-with-spring-cloud%2f&amp;description=%5bDocker-User%20Defined%20Network%20%ed%99%9c%ec%9a%a9%283%2f3%29%5d%20Docker%20User%20Defined%20Bridge%20Network%20with%20Spring%20Cloud" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-with-spring-cloud%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/jisangyun">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/jisangyun.jpg'/><div class="author-info">
+    <h3>윤지상</h3>
+    <p>Microservice Architecture Design&amp;Dev</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/docker/docker-start/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">Docker 시작하기</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, May 20
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/service-mesh/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">Service Mesh 란?</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, May 20
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

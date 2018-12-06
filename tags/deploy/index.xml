@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>deploy on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/deploy/</link>
+    <description>Recent content in deploy on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 23 Feb 2018 16:42:27 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/deploy/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>K8S App deploy script</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes_deploy_script/</link>
+      <pubDate>Fri, 23 Feb 2018 16:42:27 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes_deploy_script/</guid>
+      <description>최근 Container 기술이 각광을 받고 있습니다. 그래서 저도 Kubernets 교육을 수강하고 있는데, Kubernets에 배포 한번 하기 참 힘드네요. Project build, Docker image build, Docker push, K8s deploy 총 4개의 과정을 거쳐야 애플리케이션 배포가 끝이 납니다. 도저히 이 과정을 참을 수 없어서 배포 스크립트를 만들었습니다. 사용방법은 아래 설명하였으니, 잘 활용하시기 바랍니다.
+사용법 1. deploy.sh 저장 페이지 하단 deploy.sh 파일을 개발중인 프로젝트 루트에 저장합니다.
+2. 설정 deploy.sh 파일의 상단 설정을 입력합니다.</description>
+    </item>
+    
+  </channel>
+</rss>

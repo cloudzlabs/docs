@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hunkee1017 on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/authors/hunkee1017/</link>
+    <description>Recent content in hunkee1017 on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 27 Jul 2018 14:19:56 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/authors/hunkee1017/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>경량화 Log Processor &amp; Forwarder : Fluent Bit</title>
+      <link>http://tech.cloudz-labs.io/posts/fluent-bit/</link>
+      <pubDate>Fri, 27 Jul 2018 14:19:56 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/fluent-bit/</guid>
+      <description>Fluent Bit v0.13을 기준으로 작성된 포스팅입니다. https://fluentbit.io
+ Log Collector 요즘은 오픈소스화된 다양한 플랫폼이 나오게 되면서 데이터 정보를 수집하기 위해 어려움이 발생합니다. 서로간의 정보의 출처도 다를뿐더러 다양한 데이터 포맷으로 전달해 오는 데이터를 처리해야만 하고 마지막으로 최종 목적지 또한 다를 수 있습니다.
+이러한 요구를 만족시키기 위해 2011년 Fluentd라는 프로젝트가 탄생하게 됩니다. Ruby로 작성된 Fluentd는 여러 소스의 데이터를 집계하고 형식이 다른 데이터를 JSON 객체로 통합하여 다른 출력 대상으로 라우팅 할 수 있는 원 스톱 구성 요소인 통합 로깅 레이어로 작동하도록 개발되었습니다.</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes에 구성한 MariaDB(Mysql)의 한글 깨짐 현상 해결방법</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/</link>
+      <pubDate>Tue, 10 Apr 2018 15:53:58 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/</guid>
+      <description>Why? Kubernetes(a.k.a. K8S)에서 Mysql 또는 Mariadb 이미지를 사용해서 컨테이너를 구성할 때 initialize된 Data에 한글이 깨지는 현상이 발생하는 경우가 있습니다.
+구글에서 &amp;ldquo;mysql 한글 깨짐&amp;rdquo;이라고 검색만 해도 같은 문제를 호소하는 분들이 많고, 이를 해결하기 위한 다양한 해결 방법을 가이드하고 있습니다.
+하지만 Docker 또는 Kubernetes 환경에서는 대부분이 이미 업로드된 official 이미지를 사용해서 컨테이너를 구성하기 때문에 이를 처리하는데 약간의 수고로움 존재합니다.
+이번 세션에서는 K8S 환경에서 mysql(mariadb) 을 구성할 때 한글 깨짐 증상을 해결하고 더 나아가 설정을 자유롭게 할 수 있는 내용을 적어보았습니다.</description>
+    </item>
+    
+    <item>
+      <title>Redis Overview(with Spring Boot)</title>
+      <link>http://tech.cloudz-labs.io/posts/redis-overview/</link>
+      <pubDate>Mon, 05 Mar 2018 13:10:36 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/redis-overview/</guid>
+      <description>Redis는 Key/Value형태의 In-Memory 데이터베이스로서 데이터 저장 및 캐싱, 그리고 메시지 브로커로 널리 사용 되고 있습니다.
+Redis의 가장 큰 특징으로는 In-Memory 데이터베이스가 가지는 장점인 처리속도가 굉장히 빠르다는 점이 있습니다. 물론 이것 자체는 휘발성 데이터이기 때문에 케이스에 따라서 데이터를 덤프하는 스케쥴링을 통해 정합성 및 영속성을 관리할 수 있습니다. 하지만 이것도 불안하다 싶어 조금 더 나아간다면 고가용성을 보장하기 위해 Master-Slave 구조의 아키텍쳐링까지 설계할 수 있습니다.
+또한, Redis의 내부를 열어보면 데이터 스트럭쳐로 String, Hash, List, Sets, Sorted Sets등 기본적인 쿼리 뿐만 아니라 Bitmaps, Hyperloglogs, Geospatial indexes와 같은 Radius 쿼리까지도 지원하는 등 강력한 기능이 있습니다.</description>
+    </item>
+    
+  </channel>
+</rss>

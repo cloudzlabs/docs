@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='지난 챕터에서는 Kubernetes 환경에서 애플리케이션을 배포하고 접속하는 방법을 알아보았습니다. 그렇다면 이미 배포되어 있는 애플리케이션을 업데이트할 때 중단 없이 처리할 수 있을까요?? 네. 가능합니다! Kubernetes에서는 중단 없이 애플리케이션을 배포할 수 있도록 Rolling Update라는 기능을 지원하고 있습니다. 지난 챕터에서 간단히 나오긴 했지만 다시 한번 자세히 알아봅시다.
+Rolling Update 란? 서비스 중단 없이 애플리케이션을 업데이트 하기 위해서, Kubernetes에서는 rolling update라는 기능을 지원합니다. 이 기능을 통해서 전체 Pod을 일시에 중단/업데이트 하는 것이 아니라, 한번에 n개씩 Pod을 순차적으로 업데이트할 수 있습니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Kubernetes 활용(2/8)] Rolling Update(무중단 배포) | 김빛나'>
+<meta property='og:description' content='지난 챕터에서는 Kubernetes 환경에서 애플리케이션을 배포하고 접속하는 방법을 알아보았습니다. 그렇다면 이미 배포되어 있는 애플리케이션을 업데이트할 때 중단 없이 처리할 수 있을까요?? 네. 가능합니다! Kubernetes에서는 중단 없이 애플리케이션을 배포할 수 있도록 Rolling Update라는 기능을 지원하고 있습니다. 지난 챕터에서 간단히 나오긴 했지만 다시 한번 자세히 알아봅시다.
+Rolling Update 란? 서비스 중단 없이 애플리케이션을 업데이트 하기 위해서, Kubernetes에서는 rolling update라는 기능을 지원합니다. 이 기능을 통해서 전체 Pod을 일시에 중단/업데이트 하는 것이 아니라, 한번에 n개씩 Pod을 순차적으로 업데이트할 수 있습니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/kubernetes/rolling-update/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='kubernetes'><meta property='article:tag' content='container'><meta property='article:tag' content='container orchestration'><meta property='article:tag' content='rolling update'><meta property='article:published_time' content='2018-02-22T14:41:42&#43;09:00'/><meta property='article:modified_time' content='2018-02-22T14:41:42&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Kubernetes 활용(2/8)] Rolling Update(무중단 배포) | 김빛나</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/kubernetes/rolling-update/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Feb 22, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 4분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Kubernetes 활용(2/8)] Rolling Update(무중단 배포)</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/blingeeeee">김빛나</a></p>
+
+
+<p>지난 챕터에서는 Kubernetes 환경에서 애플리케이션을 배포하고 접속하는 방법을 알아보았습니다. <br/>그렇다면 이미 배포되어 있는 애플리케이션을 업데이트할 때 중단 없이 처리할 수 있을까요??<br/><br/>
+네. 가능합니다!<br/>
+Kubernetes에서는 중단 없이 애플리케이션을 배포할 수 있도록 Rolling Update라는 기능을 지원하고 있습니다.<br/>
+지난 챕터에서 간단히 나오긴 했지만 다시 한번 자세히 알아봅시다.</p>
+
+<h2 id="rolling-update-란">Rolling Update 란?</h2>
+
+<hr />
+
+<p>서비스 중단 없이 애플리케이션을 업데이트 하기 위해서, Kubernetes에서는
+rolling update라는 기능을 지원합니다. 이 기능을 통해서 전체 Pod을 일시에
+중단/업데이트 하는 것이 아니라, 한번에 n개씩 Pod을 순차적으로 업데이트할
+수 있습니다. 이를 통해 서비스 중단 현상 없이 애플리케이션 버전 업데이트
+및 롤백을 할 수 있습니다.</p>
+
+<p><code>kubectl rolling-update</code> 커맨드의 사용은 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/" target="_blank">Replication
+Controllers</a>를
+이용해 애플리케이션을 배포한 경우에만 사용 합니다. 최신 버전의
+Kubernetes에서는
+<a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank">Deployment</a>를
+이용한 애플리케이션 배포를 권장 합니다.</p>
+
+<h2 id="rolling-update-하기">Rolling Update 하기</h2>
+
+<hr />
+
+<h3 id="애플리케이션-배포">애플리케이션 배포</h3>
+
+<p>우선 Rolling Update 테스트를 위한 애플리케이션 버전 1.0을 아래와 같이
+배포 합니다. (Deployment, Service 생성 필요)</p>
+
+<p>아래의 설정 내용 중, Image 설정이 &lsquo;dtlabs/gs-spring-boot-docker:1.0&rsquo; 임을 통해 Image 버전(1.0)을 확인 합니다.</p>
+
+<ol>
+<li><p>Deployment 생성</p>
+
+<p><strong>gs-spring-boot-docker-deployment.yaml</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: apps/v1beta1 <span style="color:#75715e"># for versions before 1.8.0 use apps/v1beta1</span>
+kind: Deployment
+metadata:
+  name: gs-spring-boot-docker-deployment
+  labels:
+    app: gs-spring-boot-docker
+spec:
+  replicas: <span style="color:#ae81ff">3</span>
+  minReadySeconds: <span style="color:#ae81ff">10</span>
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: <span style="color:#ae81ff">1</span>
+      maxUnavailable: <span style="color:#ae81ff">0</span>
+  selector:
+    matchLabels:
+      app: gs-spring-boot-docker
+  template:
+    metadata:
+      labels:
+        app: gs-spring-boot-docker
+    spec:
+      containers:
+      - name: gs-spring-boot-docker
+        image: dtlabs/gs-spring-boot-docker:<span style="color:#ae81ff">1.0</span>
+        imagePullPolicy: Always
+        ports:
+        - containerPort: <span style="color:#ae81ff">8080</span></code></pre></div>
+<h6 id="line8-spec-replicas">line8 spec.replicas</h6>
+
+<p>Pod의 복제 수를 나타냅니다. rolling update 테스트를 위해 초기 설정을
+Pod 3개 복제로 설정하였습니다.</p>
+
+<h6 id="line9-spec-minreadyseconds">line9 spec.minReadySeconds</h6>
+
+<p>Pod이 Ready 단계가 된 후, Available 단계가 될 때 까지의 시간 차이를
+의미합니다. 테스트 결과, minReadySeconds를 설정하지 않으면,
+Ready에서 곧 바로 Available이 되고, 몇 초간 순단 현상이 있음이
+확인되었습니다. 반면, minReadySeconds를 통해 10초 정도 여유 시간을
+주었을 때, 순단이 최소화 되는 것을 확인 하였습니다. Pod의 컨테이너가
+초기화 되는 시간을 고려하여 적절한 시간 minReadySeconds를 설정하는
+것을 권장합니다.</p>
+
+<h6 id="line10-spec-strategy">line10 spec.strategy</h6>
+
+<p>RollingUpdate에 대한 상세 설정을 합니다.</p>
+
+<h6 id="line11-spec-strategy-type">line11 spec.strategy.type</h6>
+
+<p>&ldquo;Recreate&rdquo; or &ldquo;RollingUpdate&rdquo;를 설정 가능 합니다. 기본값은
+&ldquo;RollingUpdate&rdquo; 입니다. Recreate의 경우 Pod가 삭제된 후 재생성 됩니다.</p>
+
+<h6 id="line12-spec-strategy-rollingupdate">line12 spec.strategy.rollingUpdate</h6>
+
+<p>spec.strategy.type에서 &ldquo;RollingUpdate&rdquo;를 설정한 경우,
+RollingUpdate에 대한 상세 설정을 합니다.</p>
+
+<h6 id="line13-spec-strategy-rollingupdate-maxsurge">line13 spec.strategy.rollingUpdate.maxSurge</h6>
+
+<p>rolling update 중 정해진 Pod 수 이상으로 만들 수 있는 Pod의 최대 개수입니다.
+기본값은 25% 입니다.</p>
+
+<h6 id="line14-spec-strategy-rollingupdate-maxunavailable">line14 spec.strategy.rollingUpdate.maxUnavailable</h6>
+
+<p>rolling update 중 unavailable 상태인 Pod의 최대 개수를 설정 합니다.
+rollgin update 중 사용할 수 없는 Pod의 최대 개수입니다.
+값은 0보다 큰 정수를 통해 Pod의 절대 개수 설정이 가능하고, &ldquo;25%&ldquo;와
+같이 percentage 표현 또한 가능 합니다. maxUnavailable에서 percentage
+계산은 rounding down(내림) 방식이며 기본값은 25% 입니다.
+maxSurge와 maxUnavailable 값이 동시에 0이 될 수는 없습니다.</p>
+
+<ul>
+<li><p>replica: 3인 경우, 25%는 0.75개 이지만, 최소값이 1이기 때문에
+maxUnavailable은 1개로 계산 됩니다.</p></li>
+
+<li><p>replica: 9인 경우, 25%는 2.25개 이지만, rounding down(내림) 하여
+maxUnavailable은 2개로 계산 됩니다.</p></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Deployment 생성을 통해 애플리케이션을 배포 합니다.</span>
+<span style="color:#75715e"># kubectl create 명령어에서 -f 옵션을 통해 파일명이 gs-spring-boot-docker-deployment.yaml 임을 인자로 전달합니다.</span>
+$ kubectl create --save-config -f ./gs-spring-boot-docker-deployment.yaml
+deployment <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment&#34;</span> created</code></pre></div></li>
+
+<li><p>Service 생성</p>
+
+<p><strong>gs-spring-boot-docker-service.yaml</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: gs-spring-boot-docker-service
+spec:
+  ports:
+    - name: http
+      port: <span style="color:#ae81ff">8081</span>
+      targetPort: <span style="color:#ae81ff">8080</span>
+  selector:
+    app: gs-spring-boot-docker
+  type: NodePort</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Service 생성</span>
+<span style="color:#75715e"># kubectl create 명령어에서 -f 옵션을 통해 파일명이 gs-spring-boot-docker-service.yaml 임을 인자로 전달합니다.</span>
+$ kubectl create --save-config -f ./gs-spring-boot-docker-service.yaml
+service <span style="color:#e6db74">&#34;gs-spring-boot-docker-service&#34;</span> created</code></pre></div></li>
+</ol>
+
+<p>Deployment 및 Service 생성 관련 상세 방법은 바로 이전 챕터를 확인하시기 바랍니다.</p>
+
+<h3 id="rolling-update-및-확인">Rolling Update 및 확인</h3>
+
+<p>Deployment를 이용한 애플리케이션 배포 방식에서는 rolling update를 위해
+<code>kubectl set image</code> 명령어를 사용합니다.</p>
+
+<ol>
+<li><p>Rolling Update 진행 모니터링</p>
+
+<p><code>kubectl get pod</code> 명령어에서 옵션으로 &lsquo;-w &lsquo;을 사용하게 되면, 실시간으로 갱신되는 정보를 지속 조회할 수 있습니다.<br/>
+별개의 커맨드창을 사용하여 버전 업데이트 수행 전부터 실시간 갱신 정보의 모니터링을 시작합니다.<br/>
+Deployment를 통해 &lsquo;replica: 3&rsquo; 을 설정 하였기 때문에 3개의 Pod이 Running 되는 것을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pod -w
+NAME                                                READY     STATUS    RESTARTS   AGE
+gs-spring-boot-docker-deployment-2374595156-47dz4   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          1m
+gs-spring-boot-docker-deployment-2374595156-5fvft   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          59s
+gs-spring-boot-docker-deployment-2374595156-zb0nt   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          1m</code></pre></div>
+<ol>
+<li><code>kubectl set image</code> 명령어를 통한 Image 2.0 버전 업데이트 수행</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl set image deployment/gs-spring-boot-docker-deployment gs-spring-boot-docker<span style="color:#f92672">=</span>dtlabs/gs-spring-boot-docker:2.0
+deployment <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment&#34;</span> image updated</code></pre></div></li>
+
+<li><p>Rolling Update 확인</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pod -w
+NAME                                                READY     STATUS    RESTARTS   AGE
+gs-spring-boot-docker-deployment-2374595156-5fvft   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          59s          &lt;- Old Pod <span style="color:#75715e">#1</span>
+gs-spring-boot-docker-deployment-2374595156-47dz4   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          1m           &lt;- Old Pod <span style="color:#75715e">#2</span>
+gs-spring-boot-docker-deployment-2374595156-zb0nt   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          1m           &lt;- Old Pod <span style="color:#75715e">#3</span>
+
+gs-spring-boot-docker-deployment-313620219-m0hgq   <span style="color:#ae81ff">0</span>/1       Pending   <span style="color:#ae81ff">0</span>         0s             &lt;- New Pod <span style="color:#75715e">#1 생성 시작</span>
+gs-spring-boot-docker-deployment-313620219-m0hgq   <span style="color:#ae81ff">0</span>/1       Pending   <span style="color:#ae81ff">0</span>         0s
+gs-spring-boot-docker-deployment-313620219-m0hgq   <span style="color:#ae81ff">0</span>/1       ContainerCreating   <span style="color:#ae81ff">0</span>         0s
+gs-spring-boot-docker-deployment-313620219-m0hgq   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>         1s             &lt;- New Pod <span style="color:#75715e">#1 생성 완료</span>
+
+gs-spring-boot-docker-deployment-2374595156-5fvft   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>         1m        &lt;- Old Pod <span style="color:#75715e">#1 Terminating 시작</span>
+
+gs-spring-boot-docker-deployment-313620219-78q8s   <span style="color:#ae81ff">0</span>/1       Pending   <span style="color:#ae81ff">0</span>         0s             &lt;- New Pod <span style="color:#75715e">#2 생성 시작</span>
+gs-spring-boot-docker-deployment-313620219-78q8s   <span style="color:#ae81ff">0</span>/1       Pending   <span style="color:#ae81ff">0</span>         0s
+gs-spring-boot-docker-deployment-313620219-78q8s   <span style="color:#ae81ff">0</span>/1       ContainerCreating   <span style="color:#ae81ff">0</span>         0s
+gs-spring-boot-docker-deployment-313620219-78q8s   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>         0s             &lt;- New Pod <span style="color:#75715e">#2 생성 완료</span>
+
+gs-spring-boot-docker-deployment-2374595156-5fvft   <span style="color:#ae81ff">0</span>/1       Terminating   <span style="color:#ae81ff">0</span>         1m        &lt;- Old Pod <span style="color:#75715e">#1 Terminating 완료</span>
+gs-spring-boot-docker-deployment-2374595156-47dz4   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>         1m        &lt;- Old Pod <span style="color:#75715e">#2 Terminating 시작</span>
+
+gs-spring-boot-docker-deployment-313620219-q3js4   <span style="color:#ae81ff">0</span>/1       Pending   <span style="color:#ae81ff">0</span>         0s             &lt;- New Pod <span style="color:#75715e">#3 생성 시작</span>
+gs-spring-boot-docker-deployment-313620219-q3js4   <span style="color:#ae81ff">0</span>/1       Pending   <span style="color:#ae81ff">0</span>         0s
+gs-spring-boot-docker-deployment-313620219-q3js4   <span style="color:#ae81ff">0</span>/1       ContainerCreating   <span style="color:#ae81ff">0</span>         0s
+gs-spring-boot-docker-deployment-313620219-q3js4   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>         0s             &lt;- New Pod <span style="color:#75715e">#3 생성 완료</span>
+
+gs-spring-boot-docker-deployment-2374595156-5fvft   <span style="color:#ae81ff">0</span>/1       Terminating   <span style="color:#ae81ff">0</span>         1m        &lt;- Old Pod <span style="color:#75715e">#1 Terminating 완료</span>
+gs-spring-boot-docker-deployment-2374595156-47dz4   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>         1m        &lt;- Old Pod <span style="color:#75715e">#2Terminating 완료</span>
+gs-spring-boot-docker-deployment-2374595156-zb0nt   <span style="color:#ae81ff">0</span>/1       Terminating   <span style="color:#ae81ff">0</span>         1m        &lt;- Old Pod <span style="color:#75715e">#3 Terminating 시작</span>
+gs-spring-boot-docker-deployment-2374595156-zb0nt   <span style="color:#ae81ff">0</span>/1       Terminating   <span style="color:#ae81ff">0</span>         1m        &lt;- Old Pod <span style="color:#75715e">#3 Terminating 완료</span></code></pre></div></li>
+</ol>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/kubernetes/secret/">[Kubernetes 활용(7/8)] Secret</a></li>
+        
+        <li><a href="/posts/kubernetes/configmap/">[Kubernetes 활용(6/8)] ConfigMap</a></li>
+        
+        <li><a href="/posts/kubernetes/ingress/">[Kubernetes 활용(5/8)] Ingress</a></li>
+        
+        <li><a href="/posts/kubernetes/backingservice/">[Kubernetes 활용(4/8)] Mysql DB 연동하기</a></li>
+        
+        <li><a href="/posts/kubernetes/hpa/">[Kubernetes 활용(3/8)] HPA(오토스케일링)</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/container" rel="tag">container</a></li><li><a href="/tags/container-orchestration" rel="tag">container orchestration</a></li><li><a href="/tags/rolling-update" rel="tag">rolling update</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2frolling-update%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2frolling-update%2f&amp;text=%5bKubernetes%20%ed%99%9c%ec%9a%a9%282%2f8%29%5d%20Rolling%20Update%28%eb%ac%b4%ec%a4%91%eb%8b%a8%20%eb%b0%b0%ed%8f%ac%29" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2frolling-update%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2frolling-update%2f&amp;title=%5bKubernetes%20%ed%99%9c%ec%9a%a9%282%2f8%29%5d%20Rolling%20Update%28%eb%ac%b4%ec%a4%91%eb%8b%a8%20%eb%b0%b0%ed%8f%ac%29" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2frolling-update%2f&amp;description=%5bKubernetes%20%ed%99%9c%ec%9a%a9%282%2f8%29%5d%20Rolling%20Update%28%eb%ac%b4%ec%a4%91%eb%8b%a8%20%eb%b0%b0%ed%8f%ac%29" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2frolling-update%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/blingeeeee">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/blingeeeee.png'/><div class="author-info">
+    <h3>김빛나</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/12-factor/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">12-Factor</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 22
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/kubernetes/hpa/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Kubernetes 활용(3/8)] HPA(오토스케일링)</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 22
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

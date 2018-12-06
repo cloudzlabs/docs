@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rolling update on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/rolling-update/</link>
+    <description>Recent content in rolling update on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 09 Mar 2018 08:27:58 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/rolling-update/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/swarm-architecture/</link>
+      <pubDate>Fri, 09 Mar 2018 08:27:58 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/swarm-architecture/</guid>
+      <description>이제는 구성된 Docker Swarm에 Application을 배포해보겠습니다. Docker Swarm에 Application Image를 배포하기 위해선, Service를 생성해야 합니다. Service는 큰 Application Context 내의 Microservice들의 Image를 의미하며, 예로 HTTP Server, Database 또는 분산 환경에서 실행하고자 하는 다양한 유형의 Runtime Program들이 여기에 속한다고 할 수 있습니다. Service를 생성하고자 할 때, 사용할 Container Image와 Container 내에서 실행할 명령을 지정합니다. 또한, 다음과 같은 Option들을 정의하여 사용합니다.
+ Docker Swarm 외부에서 접속할 수 있는 Port Docker Swarm 내부의 다른 Service와 통신하기 위한 Overlay Network CPU 및 Memory 사용에 대한 정책 Rolling Update 정책 Image의 Replica 개수  Service Service가 독립형 Container들을 직접 실행하는 것에 비해 갖는 주요 장점 중 하나는, 수동으로 Service를 다시 시작할 필요없이 연결된 Network 및 Volume 등의 구성을 수정할 수 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Kubernetes 활용(2/8)] Rolling Update(무중단 배포)</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/rolling-update/</link>
+      <pubDate>Thu, 22 Feb 2018 14:41:42 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/rolling-update/</guid>
+      <description>지난 챕터에서는 Kubernetes 환경에서 애플리케이션을 배포하고 접속하는 방법을 알아보았습니다. 그렇다면 이미 배포되어 있는 애플리케이션을 업데이트할 때 중단 없이 처리할 수 있을까요?? 네. 가능합니다! Kubernetes에서는 중단 없이 애플리케이션을 배포할 수 있도록 Rolling Update라는 기능을 지원하고 있습니다. 지난 챕터에서 간단히 나오긴 했지만 다시 한번 자세히 알아봅시다.
+Rolling Update 란? 서비스 중단 없이 애플리케이션을 업데이트 하기 위해서, Kubernetes에서는 rolling update라는 기능을 지원합니다. 이 기능을 통해서 전체 Pod을 일시에 중단/업데이트 하는 것이 아니라, 한번에 n개씩 Pod을 순차적으로 업데이트할 수 있습니다.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Software is &ldquo;still&rdquo; eating the world  &ldquo;소프트웨어가 세상을 먹어치우고 있다&hellip;여전히!&rdquo;
+ &ldquo;Software is eating the world&rdquo; 는 Marc Andreessen이 아주 오래전에 Wall Street Journal에 올렸던 기고입니다. 그 이후 세상은 호텔을 하나도 소유하지 않은 에어비엔비가 숙박업을, 영화관을 하나도 소유하지 않은 넷플릭스가 미디어 산업을, 오프라인 상점을 하나도 소유하지 않았던(지금은 있지만) 아마존이 리테일 산업을 장악하는 세상으로 바뀌어 버렸습니다.
+중요한 것은 &ldquo;아직도&rdquo; 먹어치우고 있다는 것입니다.
+사실 몇 년 전만 해도 인터넷 서비스, 미디어, 통신, 리테일 외의 전통 산업에서 Digital Disruption은 올 듯 올 듯 하면서 동인이 잘 생기지 않았습니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='Digital Transformation Journey | 박준'>
+<meta property='og:description' content='Software is &ldquo;still&rdquo; eating the world  &ldquo;소프트웨어가 세상을 먹어치우고 있다&hellip;여전히!&rdquo;
+ &ldquo;Software is eating the world&rdquo; 는 Marc Andreessen이 아주 오래전에 Wall Street Journal에 올렸던 기고입니다. 그 이후 세상은 호텔을 하나도 소유하지 않은 에어비엔비가 숙박업을, 영화관을 하나도 소유하지 않은 넷플릭스가 미디어 산업을, 오프라인 상점을 하나도 소유하지 않았던(지금은 있지만) 아마존이 리테일 산업을 장악하는 세상으로 바뀌어 버렸습니다.
+중요한 것은 &ldquo;아직도&rdquo; 먹어치우고 있다는 것입니다.
+사실 몇 년 전만 해도 인터넷 서비스, 미디어, 통신, 리테일 외의 전통 산업에서 Digital Disruption은 올 듯 올 듯 하면서 동인이 잘 생기지 않았습니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/digital-transformation-journey/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/digital-transformation-journey/cargo.jpeg'><meta property='article:section' content='Posts'><meta property='article:tag' content='digital transformation'><meta property='article:tag' content='docker'><meta property='article:tag' content='kubernetes'><meta property='article:tag' content='istio'><meta property='article:tag' content='citizen developer'><meta property='article:tag' content='masa'><meta property='article:tag' content='event driven'><meta property='article:tag' content='microservices'><meta property='article:tag' content='hybrid application platform'><meta property='article:published_time' content='2018-04-03T20:59:36&#43;09:00'/><meta property='article:modified_time' content='2018-04-03T20:59:36&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/digital-transformation-journey/http://tech.cloudz-labs.io/cargo.jpeg'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>Digital Transformation Journey | 박준</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/digital-transformation-journey/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Apr 03, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 7분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>Digital Transformation Journey</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/junepark">박준</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/digital-transformation-journey/cargo.jpeg'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<h3 id="software-is-still-eating-the-world">Software is &ldquo;still&rdquo; eating the world</h3>
+
+<p><img src="pacman.jpg" alt="software-is-eating-the-world" /></p>
+
+<blockquote>
+<p><em>&ldquo;소프트웨어가 세상을 먹어치우고 있다&hellip;여전히!&rdquo;</em></p>
+</blockquote>
+
+<p><em>&ldquo;Software is eating the world&rdquo;</em> 는 Marc Andreessen이 아주 오래전에 <a href="https://www.wsj.com/articles/SB10001424053111903480904576512250915629460" target="_blank">Wall Street Journal</a>에 올렸던 기고입니다. 그 이후 세상은 호텔을 하나도 소유하지 않은 에어비엔비가 숙박업을, 영화관을 하나도 소유하지 않은 넷플릭스가 미디어 산업을, 오프라인 상점을 하나도 소유하지 않았던(지금은 있지만) 아마존이 리테일 산업을 장악하는 세상으로 바뀌어 버렸습니다.</p>
+
+<p>중요한 것은 &ldquo;아직도&rdquo; 먹어치우고 있다는 것입니다.</p>
+
+<p>사실 몇 년 전만 해도 인터넷 서비스, 미디어, 통신, 리테일 외의 전통 산업에서 Digital Disruption은 올 듯 올 듯 하면서 동인이 잘 생기지 않았습니다. 잘 되는 기존 산업을 카니발라이즈하면서 Disruptive한 비즈니스를 굳이 만들 필요가 없을 테니까요.
+즉, 모든 산업 도메인이 크리스텐슨 교수의 <a href="https://hbr.org/2015/12/what-is-disruptive-innovation" target="_blank">&ldquo;파괴적 혁신&rdquo;</a> 범주에 들어갈 동인이 없었습니다.</p>
+
+<p>그러나 우리는 <a href="https://www.mckinsey.com/industries/semiconductors/our-insights/from-hardware-to-software-how-semiconductor-companies-can-lead-a-successful-transformation" target="_blank">Nvidia의 사례</a>에서 무엇인가 힌트를 얻을 수 있습니다. GPU를 만드는 하드웨어 제조업체가 <a href="https://developer.nvidia.com/deep-learning-software" target="_blank">딥러닝 SDK</a>와 같은 소프트웨어를 만들기 시작한 것입니다. 이는 기존 산업을 Disruption하는 것이 아니라 오히려 기존 산업을 더 활성화할 수 있는 것이지요. 반면에 Nvidia의 <a href="http://www.nvidia.com/object/cloud-gaming.html" target="_blank">GPU Cloud 서비스</a>는 기존 비즈니스의 파괴가 될 수 있습니다. 이는 그래픽 카드를 판매하는 Division에서 그리 달갑지는 않을 것입니다.</p>
+
+<h4 id="경쟁의-압박과-commodity화">경쟁의 압박과 Commodity화</h4>
+
+<p>기술의 발전 속도가 빨라짐에 따라 경쟁의 압박은 더욱 심해집니다. 줄다리기 중 한 쪽이 사람이고 한 쪽이 소프트웨어/AI라면 어느 한 쪽은 더 이상 경쟁력을 잃게 됩니다. 이제는 사람의 힘을 넘어서 소프트웨어 기반, AI 기반으로 경쟁하는 구조로 이미 많이 변화하고 있습니다.</p>
+
+<p><img src="tri.png" alt="tri" /></p>
+
+<blockquote>
+<p>누구는 맥주를 나만의 차별화된 것이 필요하다고 생각하고 누구는 그저 생필품이라고 생각한다.(BUD 비하는 아님)</p>
+</blockquote>
+
+<p><small>
+Source: <a href="https://cloudrumblings.io/a-pioneer-a-settler-and-a-town-planner-walk-into-a-bar-9889d7c8a19e#.jrt2rzvsk" target="_blank">https://cloudrumblings.io/a-pioneer-a-settler-and-a-town-planner-walk-into-a-bar-9889d7c8a19e#.jrt2rzvsk</a> [DREW FIRMENT]
+ </small></p>
+
+<p>이는 소프트웨어 중심으로 기술 Disruption이 일어나고 있고 이 영역에 핵심 역량이 집중되며, 기존의 인프라 자산은 급격히 Commodity화되고 있다는 것을 의미합니다. 아래 쪽 인프라가 생필품화되지 않으면 그 위에 영역에서 혁신을 가져가기 힘든 이유이기 때문이지요. 마치 매슬로우의 <a href="https://ko.wikipedia.org/wiki/%EB%A7%A4%EC%8A%AC%EB%A1%9C%EC%9D%98_%EC%9A%95%EA%B5%AC%EB%8B%A8%EA%B3%84%EC%84%A4" target="_blank">욕구단계설</a>이 생각나기도 합니다. 기본의 위생/안전 욕구가 충족되지 않으면 궁극적인 자아실현 욕구에 도달할 수 없는 것이 그것입니다. Wardly의 <a href="https://www.cio.co.uk/it-strategy/introduction-wardley-value-chain-mapping-3604565/" target="_blank">Value Chain Mapping</a>에서도 알 수 있듯이 무엇을 Commodity(Utility)로 보고, 무엇을 빌리며 어디에 집중할까라는 전략맵은 점점 더 중요해지고 있습니다.</p>
+
+<h4 id="비즈니스의-변화">비즈니스의 변화</h4>
+
+<p>한 때 <a href="https://en.wikipedia.org/wiki/The_Singularity_Is_Near" target="_blank">AI Singularity</a>에 관한 미래학자 커즈와일의 관련 글을 보고 공포심이 생겼을 때가 있었습니다. 물론 수십년 후에는 AI가 인간의 두뇌 능력을 상상할 수도 없이 초월해 세상을 지배하게 될 지도 모르지만, 여기서는 현재와 3~5년 정도의 Tipping Point를 생각해서 이미 발생하고 있는 산업 내의 현상에 집중하고자 합니다.</p>
+
+<p>Netflix에서 판매되는 VoD의 80% 이상이 Recommendation 엔진이 추천해준 컨텐츠라고 합니다. Netflix의 개발자들은 개인 성향을 분석할 수 있는 정보를 수집하는 프로그램과 이를 중앙의 인텔리전스에 전송하는 프로그램, 그리고 그 결과를 다시 사용자에게 전송하는 프로그램에 집중하고 있을 것입니다. 상상이지만 이전에는 VoD 판매 현황 통계를 보여주는 프로그램, 그것을 사람이 관리할 수 있도록 도와주는 프로그램을 만들고 있었을 것입니다.</p>
+
+<p><img src="machine.jpg" alt="machine" /></p>
+
+<blockquote>
+<p>주사위는 (기계에 의해) 던져졌다.</p>
+</blockquote>
+
+<p>제조나 기타 산업도 마찬가지입니다. 제조의 불량률 관리나, 물류의 최적화 등에서도 기존의 IT시스템의 라이프사이클은 변화될 것입니다. 기존의 IT는 Control로서의 IT, 즉 &ldquo;정보수집-사람이 판단할 수 있는 정보제공-사람이 판단-시스템에 적용&rdquo;하는 라이프사이클입니다.그러나 Enabler로서의 IT는 라이프사이클은 아래와 같을 것입니다.</p>
+
+<p><em>&ldquo;정보를 한 곳에 모음 - 인텔리전스가 학습 - 추론을 서비스 형태로 사용&rdquo;</em></p>
+
+<h4 id="아키텍처의-변화">아키텍처의 변화</h4>
+
+<h6 id="애플리케이션-아키텍처의-변화">애플리케이션 아키텍처의 변화</h6>
+
+<p>관련하여 EDA(Event Driven Architecture)가 각광받고 있습니다. 성공적인 비즈니스 성과가 나오게 하기 위해 각 이벤트(System, Customer, IoT, AI)를 모두 비즈니스 기회라고 생각하고 이것을 실시간으로 의사결정 내릴 수 있는 이벤트 기반 아키텍처입니다. 다만 이벤트 기반이라 해서 모두 동일한 패턴은 아닐 수 있고 좀 더 엄밀히 구분하여 목적에 맞는 아키텍처를 선택해야 할 것입니다. 마틴 파울러 - <a href="https://martinfowler.com/articles/201701-event-driven.html" target="_blank">What do you mean by “Event-Driven”?</a></p>
+
+<p><img src="air.jpg" alt="air" /></p>
+
+<blockquote>
+<p>&ldquo;난 그저 매달려 기다리고 있을테니, 내가 넓게 펴질 수록 바람이 세게 분다고 생각해.&rdquo;</p>
+</blockquote>
+
+<p>그것과 다른 아키텍처는 요청(Request) 기반 아키텍처입니다. 요청 기반 아키텍처에서는 데이터가 중심에 있고 데이터에 대한 접근을 REST등의 접근 경로를 통해 접근하는 것이 기본 골격입니다.</p>
+
+<p>AI 스피커로부터 받는 음성, IoT 장비의 실시간 이벤트, 보안 이벤트, 공장의 실시간 운영 데이터, 항공 트래픽 제어 이벤트 등 이벤트 기반 비즈니스들은 요청 기반 아키텍처보다는 메시지 큐 기반의 Pub/Sub 아키텍처가 적합합니다.</p>
+
+<p>이벤트를 처리하는 방법은 전형적인 Pub/sub 미들웨어(Kafka, RabbitMQ등의 큐)로 처리하거나 <a href="https://martinfowler.com/articles/serverless.html" target="_blank">서버리스</a>의 FaaS(Function as a Service), Bus 등 다양한 방법이 있을 수 있고, 데이터의 스트리밍 분석 처리를 위한 Spark와 같은 형태도 이벤트의 처리 방식 중 하나가 될 수 있습니다.</p>
+
+<p>하지만 모든 애플리케이션이 EDA가 되어야 하는 것은 아닙니다. 이벤트의 끝자락에는 결국 요청 기반 애플리케이션이 존재할 수 있고, 또한 이벤트와 무관한 presisitent한 시스템은 요청 기반 아키텍처로 존재하는 것이 합리적일 것입니다.</p>
+
+<p>MASA(Mesh App and Service Architecture)이라고 하는 용어는, 수 많은 앱과 서비스가 상호 간에 연결된 환경을 표현하기 적절한 용어입니다. 마이크로서비스(microservice) 아키텍처로 구성된 작은 단위의 앱들이 구동되는 시스템을 서비스 매쉬 레이어에서 오케스트레이션 하는 구조입니다.</p>
+
+<p>다만 모든 것이 마이크로서비스화되는 것은 아니고, 서비스 목적에 맞는 granularity에 따라,</p>
+
+<ul>
+<li>Macroservice</li>
+<li>Miniservice</li>
+<li>Microservice</li>
+<li>Nanoservice</li>
+</ul>
+
+<p>등으로 분화될 것입니다.</p>
+
+<p><img src="pebble.jpg" alt="pebble" /></p>
+
+<blockquote>
+<p>피라미드를 모래로 짓는 것은 어리석을 수 있고, 해변가를 큰 돌로 채울 수는 없다.</p>
+</blockquote>
+
+<p>각 앱들은 PolyGlot(다양한 프로그래밍 언어와 기술 스택)으로 구현될 수 있습니다. Java/Spring Boot, Python/Tensorflow, nodejs, C# 등 비즈니스 애플리케이션, 데이터 분석, 웹 애플리케이션, 게임 등 각 워크로드 성격에 맞는 기술 스택 구조를 선택하고 이를 외적인 아키텍처(outer architecture)가 오케스트레이션하는 방식이 적절합니다. <a href="https://istio.io/docs/concepts/what-is-istio/overview.html" target="_blank">Istio</a>와 같이 애플리케이션 내에 영향을 주지 않고 Sidecar 방식으로 작동하는 기제가 적합한 구조가 될 것입니다.</p>
+
+<h6 id="인프라스트럭처의-변화">인프라스트럭처의 변화</h6>
+
+<p>이제 애플리케이션은 준비 되었습니다. 남는 것은 배포에 대한 의사결정입니다. 서비스를 즉시 개선하면 얻을 수 있는 효과는 인텔리전스가 판단할 수 있고, 이를 1000대의 서버에 즉시 배포했을 때 장애에 대한 Risk와 비교하여 이를 실행할 지 의사결정이 남게 됩니다.</p>
+
+<p>인텔리전스에서의 학습과 성장의 속도는 빠를 것입니다. 기존의 IT 교체 사이클 주기로는 이것을 따라가기 어려울 수 있습니다. 최적화에 필요한 소프트웨어를 적시적소에 제공하기 위해서는 유연한 인프라와 언제든 버릴 수 있고(disposable) 변경 가능한 애플리케이션 형태로 진화되어야 합니다. 또한 인프라도 수동으로 구성하는 대신 스크립트 등을 사용하여 마치 소프트웨어를 프로그래밍하는 것처럼 처리해야 합니다.(<a href="https://en.wikipedia.org/wiki/Infrastructure_as_Code" target="_blank">Infrastructure as Code</a>). Infrastructure as Code는 DevOps의 Key가 되는 속성 중 하나입니다.</p>
+
+<p>이렇게 되면 애플리케이션의 수정과 인프라스트럭쳐의 작업 사이의 경계가 모호해지고, 애플리케이션 개선 주기는 빨라지게 됩니다. 조작 가능한(Composable) Infrastructure가 필요한 것이고, 이에 가장 보편적인 기술은 Docker입니다. 애플리케이션과 인프라를 컨테이너화해서 마치 인프라를 Software처럼 다루게 됩니다.</p>
+
+<p><img src="dockerkubernetes.png" alt="dockerkubernetes" /></p>
+
+<blockquote>
+<p>컨테이너 오케스트레이터계를 평정한 Kubernetes</p>
+</blockquote>
+
+<p>Docker의 Orchestrator로서 Docker Swarm, Rancher, Kubernetes 등 여러 오픈소스들이 각축적을 벌이다가 작년 하반기부로 Kubernetes로 Consolidation된 것은 자명한 사실입니다. 2017년 말에 CNCF는 Certified Kuberenetes Product들을 발표하였고 여기에는 Cloud Foundry와 같이 마치 Kuberenetes의 경쟁으로 보였던 플랫폼들도 놀랍게도 그곳에 라인업되어 있었습니다. Cloud Foundry는 원래 있던 PaaS 기능을 CFAR(CF Application Runtime)으로 재그룹핑하였고 Kuberenetes를 포함시키는 별도 라인업을 <a href="https://docs-cfcr.cfapps.io/" target="_blank">CFCR(Cloud Foundry Container Runtime)</a>으로 명명하였습니다.</p>
+
+<h4 id="people의-변화-시민개발자의-부상">People의 변화: 시민개발자의 부상</h4>
+
+<p>인프라스트럭처가 Code화 되고, 주요 비즈니스 판단은 인텔리전스가 처리하게 된다면 많은 LoB(Line of Business) 인원들은 기존의 수작업 대신 자신이 할 일을 개발(develop)하게 될 것입니다. 물론 Control Plane에 가까워질 수록 기존의 전문 개발자들이 필요하겠지만, Business Plain에 가까워질 수록 Low-code 개발자(Function, 스크립트 개발자)와 No-Code 개발자(매크로, BPM, RPA, DL모델러 등)가 많아질 것입니다.</p>
+
+<p>시민 개발자(<a href="https://www.gartner.com/it-glossary/citizen-developer/" target="_blank">Citizen Developer</a>)가 많아질 수록, 기존에 고개를 숙였던 4GL이나 GUI 개발도구, 모델러 등이 다시 필요하게 됩니다. High-Control 플랫폼은 Control Plain에서, High-Productivity 플랫폼은 Business Plain에서 요구될 것입니다.</p>
+
+<p>기존의 Analyst들은 Data Scientist로, 기존의 Process Manager는 BPM/RPA(Robotics Process Automation) Developer로 바뀌어야 할 수 있습니다. 기존의 정보시스템과 IT전담조직을 매개체로 시스템과 의사소통하던 LoB들이 Business Enabler로서 역할을 가져가야 할 경우에는, 이제는 더 이상 정보시스템이 아닌 직접 시스템과 소통을 해야 할 필요가 있기 때문입니다.</p>
+
+<p><img src="tool.jpg" alt="tool" /></p>
+
+<blockquote>
+<p>누구에게는 전문가용 펜이 필요하고 누구에게는 연필이, 누구에게는 크레파스가 필요하다.</p>
+</blockquote>
+
+<h4 id="시스템의-변화-다양성">시스템의 변화: 다양성</h4>
+
+<p>개발자의 유형도 다양하듯이 시스템 측면에서도 모든 워크로드들과 비즈니스들이 동일한 패턴으로, 동일한 공간에서 동작하지는 않을 것입니다. 보안, 성능, 비즈니스 제약사항, 지역성, 서비스 레벨, 비용과 같은 Constraint와 이벤트 기반, 대용량 배치 처리, 스트리밍 등 워크로드의 성격에 따라 각 시스템들은 그 시스템이 있어야 할 최적의 위치와 형태에서 동작해야만 합니다. 예를 들면 배포 모델(Private/Public), 호스트 방식(Host, VM, Container, Function), 구현 스택, 아키텍처(EDA vs MSA) 등에 따라 많은 종류의 워크로드들이 많은 공간에 존재할 것입니다.</p>
+
+<p>물론 논리적으로는 가상화와 API통합을 통해 추상화하는 것이 필요합니다. 단, 각 개별 시스템의 구조는 시스템에 맞게 최적화하는 것이 바람직합니다. 이를 HAP(Hybrid Application Platform)이라고 부를 수 있는데(특정 제품은 아닙니다),</p>
+
+<ul>
+<li>구성원: 전문개발자, 시민개발자, UX, 4GL 개발자, 데이터 사이언티스트 등</li>
+<li>레이어: System of Record, System of Differenciation, System of Innovation</li>
+<li>애플리케이션 유형: 모바일, 데이터 중심, IoT, 트랜잭션 기반, AI 기반</li>
+<li>배포 모델: 온프리미스, 클라우드, 하이브리드, 임베디드 등</li>
+</ul>
+
+<p>을 고려한 엔터프라이즈 아키텍처를 고려해야 할 것입니다.</p>
+
+<h4 id="여정의-수립과-small-start">여정의 수립과 Small start</h4>
+
+<p>모든 것이 첫 술에 배부를 수는 없듯이 전체 시스템을 Transformation하는 데는 장기적인 로드맵이 필요합니다. 또한 Journey Map을 세워 각 시스템에 특성에 맞게 여정표를 준비해야 할 것입니다. 시스템별로 아래 예시의 질문들을 거쳐 자신이 도달할 곳으로 가게 되는데 언제 도달할지는 비즈니스 상황을 고려하여 얻을 것(Gain)과 소요되는 비용(Pain)을 따져 보아야 할 것입니다.</p>
+
+<ul>
+<li>애플리케이션이 Stateful한가, Stateless한가?</li>
+<li>애플리케이션을 완전히 리아키텍처링할 의지가 있는가?</li>
+<li>이벤트 드리븐인가?</li>
+<li>퍼블릭 클라우드를 사용하기에 문제가 없는가?</li>
+<li>컨테이너의 제어권을 어느 정도 가져오고 싶은가?</li>
+</ul>
+
+<p>등 핵심 질문(Key Question)과 여정의 순서도(Flow Chart)에 따라 장기적인 로드맵이 수립될 것입니다.</p>
+
+<p><img src="flow.jpg" alt="flow" /></p>
+
+<p>하지만, 모든 것을 빅뱅 방식으로 완벽한 계획을 세워 실행에 옮기기보다는 작은 단위로 <a href="https://www.forbes.com/sites/chunkamui/2016/01/03/6-words/#48a5e0a61a3b" target="_blank">Small Start</a>로 실행에 옮기는 것을 권장합니다. 빨리 착수하여 만들어진 Demonstration system은 가설 검증 뿐 아니라 학습과 성장, 그리고 장기적인 로드맵에 이정표가 되어 줄 것입니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/event-driven-microservice/">Event Driven Microservice 란?</a></li>
+        
+        <li><a href="/posts/kubernetes_deploy_script/">K8S App deploy script</a></li>
+        
+        <li><a href="/posts/spinnaker-deploy-helm-chart/">Spinnaker를 활용한 Helm chart 배포</a></li>
+        
+        <li><a href="/posts/fluent-bit/">경량화 Log Processor &amp; Forwarder : Fluent Bit</a></li>
+        
+        <li><a href="/posts/monitoring-in-kubernetes/">Monitoring in kubernetes</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/digital-transformation" rel="tag">digital transformation</a></li><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/istio" rel="tag">istio</a></li><li><a href="/tags/citizen-developer" rel="tag">citizen developer</a></li><li><a href="/tags/masa" rel="tag">masa</a></li><li><a href="/tags/event-driven" rel="tag">event driven</a></li><li><a href="/tags/microservices" rel="tag">microservices</a></li><li><a href="/tags/hybrid-application-platform" rel="tag">hybrid application platform</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdigital-transformation-journey%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdigital-transformation-journey%2f&amp;text=Digital%20Transformation%20Journey" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdigital-transformation-journey%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdigital-transformation-journey%2f&amp;title=Digital%20Transformation%20Journey" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdigital-transformation-journey%2f&amp;description=Digital%20Transformation%20Journey" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdigital-transformation-journey%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/junepark">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/junepark.jpg'/><div class="author-info">
+    <h3>박준</h3>
+    <p>Cloud Service Development Team</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/docker-user-defined-network/docker-user-defined-network-test/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Apr 03
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 7분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/istio/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">Istio</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Apr 03
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 7분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

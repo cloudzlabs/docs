@@ -1,0 +1,959 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/event-driven-microservice/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/spinnaker-deploy-helm-chart/</loc>
+    <lastmod>2018-10-15T12:30:40+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/fluent-bit/</loc>
+    <lastmod>2018-07-27T14:19:56+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/monitoring-in-kubernetes/</loc>
+    <lastmod>2018-07-23T08:06:40+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/logging-in-kubernetes/</loc>
+    <lastmod>2018-07-18T08:06:40+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/hugo/hugo/</loc>
+    <lastmod>2018-06-21T10:01:45+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/service-mesh/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/</loc>
+    <lastmod>2018-05-20T18:13:30+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker/docker-start/</loc>
+    <lastmod>2018-05-11T17:43:17+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/kubernetes/secret/</loc>
+    <lastmod>2018-05-11T13:55:54+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/kubernetes/configmap/</loc>
+    <lastmod>2018-05-11T13:55:48+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/kubernetes/ingress/</loc>
+    <lastmod>2018-05-10T18:24:03+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/kubernetes/backingservice/</loc>
+    <lastmod>2018-05-08T15:23:03+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/</loc>
+    <lastmod>2018-04-10T15:53:58+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/istio/</loc>
+    <lastmod>2018-04-05T14:50:51+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/digital-transformation-journey/</loc>
+    <lastmod>2018-04-03T20:59:36+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/</loc>
+    <lastmod>2018-03-21T11:16:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/</loc>
+    <lastmod>2018-03-20T18:12:19+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/using_docker_in_cloudfoundry/</loc>
+    <lastmod>2018-03-12T13:23:13+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker/docker-network/</loc>
+    <lastmod>2018-03-09T08:29:07+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker/swarm-architecture/</loc>
+    <lastmod>2018-03-09T08:27:58+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker/swarm/</loc>
+    <lastmod>2018-03-09T08:27:01+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker/volume/</loc>
+    <lastmod>2018-03-09T08:25:25+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker/docker-build-push/</loc>
+    <lastmod>2018-03-09T08:23:38+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker/what-is-container/</loc>
+    <lastmod>2018-03-09T08:22:39+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker/docker-architecture/</loc>
+    <lastmod>2018-03-08T23:23:28+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker/hello-docker/</loc>
+    <lastmod>2018-03-08T18:47:30+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/redis-overview/</loc>
+    <lastmod>2018-03-05T13:10:36+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/cf-apprelease/</loc>
+    <lastmod>2018-03-02T11:07:05+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/microservices-io/</loc>
+    <lastmod>2018-03-02T10:16:04+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/docker-in-docker/</loc>
+    <lastmod>2018-02-28T10:59:06+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/zuul-swagger-integration/</loc>
+    <lastmod>2018-02-27T17:21:07+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/</loc>
+    <lastmod>2018-02-26T17:52:54+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/kubernetes_deploy_script/</loc>
+    <lastmod>2018-02-23T16:42:27+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/kubernetes/hpa/</loc>
+    <lastmod>2018-02-22T14:41:49+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/kubernetes/rolling-update/</loc>
+    <lastmod>2018-02-22T14:41:42+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/12-factor/</loc>
+    <lastmod>2018-02-22T11:07:05+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/kubernetes/getting-start/</loc>
+    <lastmod>2018-02-21T11:33:28+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/command-tool/</loc>
+    <lastmod>2018-02-20T16:55:36+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/discovery-duration-error-in-bluemix/</loc>
+    <lastmod>2018-02-19T10:39:44+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/how-to-use-cf-binding-service-in-local-env/</loc>
+    <lastmod>2018-02-13T08:34:45+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/authors/1000jaeh/</loc>
+    <lastmod>2018-06-21T10:01:45+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/12-factors/</loc>
+    <lastmod>2018-02-22T11:07:05+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/authors/</loc>
+    <lastmod>2018-06-21T10:01:45+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/db-%EC%97%B0%EB%8F%99/</loc>
+    <lastmod>2018-05-08T15:23:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/ms-%EB%B6%84%EB%A6%AC-%EC%9B%8C%ED%81%AC%EC%83%B5/</loc>
+    <lastmod>2018-02-26T17:52:54+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/posts/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/</loc>
+    <lastmod>2018-02-22T11:07:05+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/architecture/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/autoscale/</loc>
+    <lastmod>2018-02-22T14:41:49+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/authors/bckim0620/</loc>
+    <lastmod>2018-04-05T14:50:51+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/authors/blingeeeee/</loc>
+    <lastmod>2018-05-11T17:43:17+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/bluemix/</loc>
+    <lastmod>2018-02-19T10:39:44+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/bounded-context/</loc>
+    <lastmod>2018-02-26T17:52:54+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/buildpack/</loc>
+    <lastmod>2018-02-19T10:39:44+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/caas/</loc>
+    <lastmod>2018-05-11T17:43:17+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/cf/</loc>
+    <lastmod>2018-03-02T11:07:05+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/cf-cli/</loc>
+    <lastmod>2018-02-20T16:55:36+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/citizen-developer/</loc>
+    <lastmod>2018-04-03T20:59:36+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/cloud/</loc>
+    <lastmod>2018-02-22T11:07:05+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/cloud-application/</loc>
+    <lastmod>2018-03-02T10:16:04+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/cloud-founcry/</loc>
+    <lastmod>2018-03-12T13:23:13+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/cloud-foundry/</loc>
+    <lastmod>2018-03-02T11:07:05+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/cloud-native-application/</loc>
+    <lastmod>2018-03-02T11:07:05+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/cluster/</loc>
+    <lastmod>2018-03-09T08:27:01+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/cncf/</loc>
+    <lastmod>2018-07-23T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/configmap/</loc>
+    <lastmod>2018-05-11T13:55:48+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/container/</loc>
+    <lastmod>2018-05-11T17:43:17+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/container-orchestration/</loc>
+    <lastmod>2018-02-21T11:33:28+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/container-ochestration/</loc>
+    <lastmod>2018-03-09T08:27:58+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/container-orchestration/</loc>
+    <lastmod>2018-05-11T13:55:54+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/deploy/</loc>
+    <lastmod>2018-02-23T16:42:27+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/devops/</loc>
+    <lastmod>2018-10-15T12:30:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/digital-transformation/</loc>
+    <lastmod>2018-04-03T20:59:36+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/dind/</loc>
+    <lastmod>2018-02-28T10:59:06+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/docker/</loc>
+    <lastmod>2018-05-20T18:13:30+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/docker-daemon/</loc>
+    <lastmod>2018-03-08T23:23:28+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/docker-in-docker/</loc>
+    <lastmod>2018-02-28T10:59:06+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/docker-network/</loc>
+    <lastmod>2018-03-09T08:29:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/docker-object/</loc>
+    <lastmod>2018-03-08T23:23:28+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/docker-registry/</loc>
+    <lastmod>2018-03-08T23:23:28+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/dockerfile/</loc>
+    <lastmod>2018-03-09T08:23:38+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/domain-driven-design/</loc>
+    <lastmod>2018-02-26T17:52:54+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/elasticsearch/</loc>
+    <lastmod>2018-07-18T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/envoy/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/event-driven/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/event-store/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/fluent/</loc>
+    <lastmod>2018-07-27T14:19:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/fluentbit/</loc>
+    <lastmod>2018-07-27T14:19:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/fluentd/</loc>
+    <lastmod>2018-07-27T14:19:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/github-pages/</loc>
+    <lastmod>2018-06-21T10:01:45+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/go/</loc>
+    <lastmod>2018-06-21T10:01:45+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/grafana/</loc>
+    <lastmod>2018-07-23T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/h2/</loc>
+    <lastmod>2018-02-13T08:34:45+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/helm/</loc>
+    <lastmod>2018-10-15T12:30:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/horizontal-pod-autoscaler/</loc>
+    <lastmod>2018-02-22T14:41:49+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/hpa/</loc>
+    <lastmod>2018-02-22T14:41:49+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/hugo/</loc>
+    <lastmod>2018-06-21T10:01:45+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/authors/hunkee1017/</loc>
+    <lastmod>2018-07-27T14:19:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/hybrid-application-platform/</loc>
+    <lastmod>2018-04-03T20:59:36+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/image/</loc>
+    <lastmod>2018-03-09T08:23:38+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/ingress/</loc>
+    <lastmod>2018-05-10T18:24:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/istio/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/java-buildpack/</loc>
+    <lastmod>2018-02-19T10:39:44+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/authors/jihyun/</loc>
+    <lastmod>2018-03-02T10:16:04+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/authors/jisangyun/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/authors/junepark/</loc>
+    <lastmod>2018-04-03T20:59:36+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/k8s/</loc>
+    <lastmod>2018-05-11T13:55:54+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/kafka/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/kibana/</loc>
+    <lastmod>2018-07-18T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/kubernetes/</loc>
+    <lastmod>2018-10-15T12:30:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/layer/</loc>
+    <lastmod>2018-03-09T08:22:39+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/liberty-buildpack/</loc>
+    <lastmod>2018-02-19T10:39:44+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/linkerd/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/logging/</loc>
+    <lastmod>2018-07-27T14:19:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/mariadb/</loc>
+    <lastmod>2018-04-10T15:53:58+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/masa/</loc>
+    <lastmod>2018-04-03T20:59:36+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/message-queue/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/microservice-architecture/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/microservice/</loc>
+    <lastmod>2018-03-02T10:16:04+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/microservices/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/microservices.io/</loc>
+    <lastmod>2018-03-02T10:16:04+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/monitoring/</loc>
+    <lastmod>2018-07-23T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/msa/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/nginx/</loc>
+    <lastmod>2018-05-10T18:24:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/overlay/</loc>
+    <lastmod>2018-03-09T08:29:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/paas/</loc>
+    <lastmod>2018-02-13T08:34:45+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/paas/</loc>
+    <lastmod>2018-02-13T08:34:45+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/categories/posts/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/prometheus/</loc>
+    <lastmod>2018-07-23T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/rabbitmq/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/reative/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/redis/</loc>
+    <lastmod>2018-03-05T13:10:36+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/rolling-update/</loc>
+    <lastmod>2018-03-09T08:27:58+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/runtime-complexity/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/scale-out/</loc>
+    <lastmod>2018-02-22T14:41:49+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/secret/</loc>
+    <lastmod>2018-05-11T13:55:54+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/serverless/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/service/</loc>
+    <lastmod>2018-05-10T18:24:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/service-discovery/</loc>
+    <lastmod>2018-05-08T15:23:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/service-mesh/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/spinnaker/</loc>
+    <lastmod>2018-10-15T12:30:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/spring-boot/</loc>
+    <lastmod>2018-05-20T18:13:30+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/spring-cloud/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/spring-cloud-connector/</loc>
+    <lastmod>2018-02-13T08:34:45+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/spring-cloud-eureka/</loc>
+    <lastmod>2018-02-19T10:39:44+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/spring-cloud-netflix/</loc>
+    <lastmod>2018-04-05T14:50:51+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/spring-cloud-stream/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/srping-cloud/</loc>
+    <lastmod>2018-02-27T17:21:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/static-generator/</loc>
+    <lastmod>2018-06-21T10:01:45+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/swagger/</loc>
+    <lastmod>2018-02-27T17:21:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/swarm/</loc>
+    <lastmod>2018-03-09T08:27:58+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/authors/sya/</loc>
+    <lastmod>2018-03-02T11:07:05+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/ubiquitous-language/</loc>
+    <lastmod>2018-02-26T17:52:54+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/user-defined-network/</loc>
+    <lastmod>2018-05-20T18:13:30+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/virtualization/</loc>
+    <lastmod>2018-03-09T08:22:39+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/volume/</loc>
+    <lastmod>2018-03-09T08:25:25+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/authors/yunsangjun/</loc>
+    <lastmod>2018-10-15T12:30:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/zuul/</loc>
+    <lastmod>2018-02-27T17:21:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/%EB%A1%9C%EA%B9%85/</loc>
+    <lastmod>2018-07-27T14:19:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81/</loc>
+    <lastmod>2018-07-23T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%86%B5%EC%8B%A0/</loc>
+    <lastmod>2018-10-17T10:14:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%A9%94%EC%8B%9C/</loc>
+    <lastmod>2018-06-01T08:06:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.cloudz-labs.io/tags/%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%97%B0%EB%8F%99/</loc>
+    <lastmod>2018-05-08T15:23:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

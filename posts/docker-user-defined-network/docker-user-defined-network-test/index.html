@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Docker User Defined Bridge Network를 Spring Boot Application으로 테스트합니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트 | 윤지상'>
+<meta property='og:description' content='Docker User Defined Bridge Network를 Spring Boot Application으로 테스트합니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/docker-logo.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='docker'><meta property='article:tag' content='user defined network'><meta property='article:tag' content='spring boot'><meta property='article:published_time' content='2018-03-21T11:16:00&#43;09:00'/><meta property='article:modified_time' content='2018-03-21T11:16:00&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/http://tech.cloudz-labs.io/docker-logo.png'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트 | 윤지상</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Mar 21, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 6분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/jisangyun">윤지상</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/docker-logo.png'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<p>지난 포스팅에서 docker user defined network의 간단한 설명과 동작을 확인했습니다.</p>
+
+<p>이번에는 docker user defined network를 활용한 컨테이너 간 통신에 연관된 factors를 확인하고 경우의 수에 따라 테스트를 진행하겠습니다.</p>
+
+<h2 id="docker-network-기능">Docker Network 기능</h2>
+
+<h6 id="service-discovery">Service Discovery</h6>
+
+<p>Docker는 각 Network 내 컨테이너의 ip주소, 컨테이너 명, Hostname 등을 관리합니다. 각 네트워크는 Subnet mask와 Gateway를 가집니다. 기본적으로 컨테이너의 ip주소는 Network에서 관리하는 Pool 중 할당이 됩니다. 할당하고 싶은 ip주소, Hostname이나 network 정보가 있으면 option을 적용해 지정 가능합니다. 각 Network 별 Host정보를 관리하는 기능을 사용해서 컨테이너 명으로 컨테이너 간 통신을 하는 Service Discovery 기능을 수행할 수 있습니다.</p>
+
+<h6 id="port-expose">Port Expose</h6>
+
+<p><img src="dockerportexpose.png" alt="docker-port-expose" /></p>
+
+<p>대부분의 경우 Docker는 subnet을 사용해서 컨테이너가 외부에 노출되지 않게 생성합니다. 외부에서 컨테이너에 접근하기 위해서 컨테이너 내부 Port를 컨테이너 Host의 Port에 매핑하는 것이 필요합니다. 이는 Docker 컨테이너를 실행시 &ndash;publish 옵션으로 간단히 수행할 수 있습니다. 외부에서 노출된 Port로 접근시 컨테이너 내부 Port로 request가 forwarding 됩니다.</p>
+
+<p><code>docker run -d -p {외부 노출 Port}:{컨테이너 내부 Port} {image 명:tag}</code></p>
+
+<h6 id="user-defined-network을-사용한-private-network-구성">user defined network을 사용한 Private Network 구성</h6>
+
+<p><img src="dockernetwork.png" alt="docker-network" /></p>
+
+<p>컨테이너의 Port를 노출하지 않은 상태에서 user defined network에 연결하여 외부에서 컨테이너에 접근하지 못하지만 컨테이너 간 내부 통신은 가능한 private network를 구성할 수 있습니다. docker run시 &ndash;network option을 지정하면 기본 bridge network인 docker0에 binding되지 않고, 지정한 user defined network에 연결됩니다. 이 상태에서 별도의 Port 노출을 하지 않게 설정하여 private network를 구성할 수 있습니다.</p>
+
+<h2 id="테스트">테스트</h2>
+
+<p>Docker의 네트워크 기능과 연관된 3가지 factors를 검증하는 방식으로 테스트를 진행합니다. Application 2개를 준비하고 Application1에서 Application2의 &lsquo;/jisang&rsquo; endpoint를 호출해 결과를 얻어올 수 있는지 확인합니다.</p>
+
+<h6 id="factors">factors</h6>
+
+<ul>
+<li><p>호출 Host 정보</p>
+
+<ul>
+<li>컨테이너 명</li>
+<li>IP주소(docker-machine ip주소)
+<br /></li>
+</ul>
+
+<blockquote>
+<p>테스트 환경은 Docker for Windows입니다.</p>
+
+<p>Virtual Box에 Docker Machine을 구성해서 사용하는 경우, 기본 IP주소는 localhost가 아닌 <strong>Docker Machine의 IP주소입니다.</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">$ docker-machine url
+tcp://192.168.99.100:2376</code></pre></div></blockquote>
+
+<ul>
+<li>IP주소(user defined network ip주소)</li>
+</ul>
+
+<blockquote>
+<p>user defined network의 ip주소는 <code>docker network inspect {network 명}</code> 으로 확인 가능합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">$ docker network inspect js-network
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;js-network&#34;</span>,
+            <span style="color:#75715e">#중략...</span>
+        <span style="color:#e6db74">&#34;Containers&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;0a6cca528e793a8be14b68c3b104de74473482f94ffacc9fd573a65453b81cdb&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;jisang-ms2&#34;</span>,
+                <span style="color:#e6db74">&#34;IPv4Address&#34;</span>: <span style="color:#e6db74">&#34;172.18.0.2/16&#34;</span>,
+            <span style="color:#75715e">#중략...</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{}</span>,
+        <span style="color:#e6db74">&#34;Labels&#34;</span>: <span style="color:#f92672">{}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div></blockquote></li>
+
+<li><p>호출 Port expose</p>
+
+<ul>
+<li>노출 (컨테이너 외부 Port)</li>
+<li>격리 (컨테이너 내부 Port)</li>
+</ul></li>
+
+<li><p>user defined network</p>
+
+<ul>
+<li>연결</li>
+<li>해제</li>
+</ul></li>
+</ul>
+
+<h6 id="준비물">준비물</h6>
+
+<ul>
+<li>Application1
+
+<ul>
+<li>명 : jisang-ms1</li>
+<li>컨테이너 port: 80</li>
+<li>외부 노출 port: 8080</li>
+<li>RestController로 Endpoint 호출시 jisang-ms2로 통신해 String을 반환합니다.</li>
+</ul></li>
+<li>Application2
+
+<ul>
+<li>명 : jisang-ms2</li>
+<li>컨테이너 port: 80</li>
+<li>외부 노출 port: 8081</li>
+<li>RestController로 Endpoint 호출시 &ldquo;This is jisang&rdquo;을 반환합니다.</li>
+</ul></li>
+<li>user defined network<br />
+
+<ul>
+<li><code>docker network create js-network</code></li>
+</ul></li>
+</ul>
+
+<h3 id="test-case-1">Test Case 1</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>user defined network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>IP주소(docker-machine ip)</td>
+<td>컨테이너 외부 Port</td>
+<td>disconnect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d -e des=http://192.168.99.100:8081 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d -e SPRING_PROFILES_ACTIVE=docker -p 8081:80 --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과">수행결과</h6>
+
+<p>호출 성공! jisang-ms1 컨테이너에서 docker-machine의 Host와 Port 정보로 jisang-ms2 호출에 성공했습니다.</p>
+
+<p><img src="test1.PNG" alt="test1" /></p>
+
+<h3 id="test-case-2">Test Case 2</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>IP주소(docker-machine ip)</td>
+<td>컨테이너 내부 Port</td>
+<td>disconnect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-1">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d -e des=http://192.168.99.100:80 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d -e SPRING_PROFILES_ACTIVE=docker --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-1">수행결과</h6>
+
+<p>호출 실패! Connection refused가 발생했습니다. jisang-ms2의 외부 port 노출이 없으니 docker-machine의 Host와 Port 정보로 호출이 안되는 것이 당연하게 보입니다.</p>
+
+<p><img src="test2.PNG" alt="test2" /></p>
+
+<h3 id="test-case-3">Test Case 3</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>컨테이너 명</td>
+<td>컨테이너 외부 Port</td>
+<td>disconnect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-2">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d -e des=http://jisang-ms2:8081 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d -e SPRING_PROFILES_ACTIVE=docker -p 8081:80 --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-2">수행결과</h6>
+
+<p>호출 실패! UnknownHosException이 발생했습니다. 기본적인 Port 노출만으로는 컨테이너 명으로 Host 정보를 얻어오는 것이 불가능으로 보입니다.</p>
+
+<p><img src="test3.PNG" alt="test3" /></p>
+
+<h3 id="test-case-4">Test Case 4</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>컨테이너 명</td>
+<td>컨테이너 내부 Port</td>
+<td>disconnect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-3">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d -e des=http://jisang-ms2:80 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d -e SPRING_PROFILES_ACTIVE=docker --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-3">수행결과</h6>
+
+<p>호출 실패! UnknownHosException이 발생했습니다. Test Case 3과 동일한 결과입니다. 컨테이너명으로 Host정보에 접근을 못하는 것은 Port 노출과는 연관이 없는 것 같습니다.</p>
+
+<p><img src="test4.PNG" alt="test4" /></p>
+
+<h3 id="test-case-5">Test Case 5</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>IP주소(docker-machine ip)</td>
+<td>컨테이너 외부 Port</td>
+<td>connect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-4">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d --network=js-network -e des=http://192.168.99.100:8081 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d --network=js-network -e SPRING_PROFILES_ACTIVE=docker -p 8081:80 --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-4">수행결과</h6>
+
+<p>호출 성공! Test Case 1과 동일하게 jisang-ms2의 Port를 노출한 경우 docker-machine의 Host와 Port 정보로 접근이 가능합니다.</p>
+
+<p><img src="test5.PNG" alt="test5" /></p>
+
+<h3 id="test-case-6">Test Case 6</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>IP주소(docker-machine ip)</td>
+<td>컨테이너 내부 Port</td>
+<td>connect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-5">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d --network=js-network -e des=http://192.168.99.100:80 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d --network=js-network -e SPRING_PROFILES_ACTIVE=docker --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-5">수행결과</h6>
+
+<p>호출 실패! Connection refused가 발생했습니다. docker-machine의 80 Port에 접근한다는 의미니까 접근이 안되는게 당연한 것 같습니다.</p>
+
+<p><img src="test6.PNG" alt="test6" /></p>
+
+<h3 id="test-case-7">Test Case 7</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>컨테이너 명</td>
+<td>컨테이너 외부 Port</td>
+<td>connect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-6">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d --network=js-network -e des=http://jisang-ms2:8081 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d --network=js-network -e SPRING_PROFILES_ACTIVE=docker -p 8081:80 --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-6">수행결과</h6>
+
+<p>호출 실패! jisang-ms1의 destination을 jisang-ms2의 컨테이너명으로 지정했습니다. UnknownHosException이 아닌 Connection refused가 발생한 것으로 보아 jisang-ms2의 Host 정보에 접근했지만 8081 Port에 띄워진 서버가 없는 것으로 보입니다.</p>
+
+<p><img src="test7.PNG" alt="test7" /></p>
+
+<h3 id="test-case-8">Test Case 8</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>컨테이너 명</td>
+<td>컨테이너 내부 Port</td>
+<td>connect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-7">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d --network=js-network -e des=http://jisang-ms2:80 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d --network=js-network -e SPRING_PROFILES_ACTIVE=docker --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-7">수행결과</h6>
+
+<p>호출 성공! user defined network의 서비스 명과 컨테이너 내부 Port로 jisang-ms1에서 &ldquo;this is jisang&rdquo;을 반환받았습니다.</p>
+
+<p><img src="test8.PNG" alt="test8" /></p>
+
+<h3 id="test-case-9">Test Case 9</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>IP주소(user defined network ip)</td>
+<td>컨테이너 외부 Port</td>
+<td>connect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-8">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d --network=js-network -e des=http://172.18.0.2:8081 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d --network=js-network -e SPRING_PROFILES_ACTIVE=docker -p 8081:80 --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-8">수행결과</h6>
+
+<p>호출 실패! 이제는 익숙한 Connection refused 입니다. user defined network 의 ip주소와 외부 노출 Port가 매칭이 되지 않는다는 의미 같습니다.</p>
+
+<p><img src="test9.PNG" alt="test9" /></p>
+
+<h3 id="test-case-10">Test Case 10</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>IP주소(user defined network ip)</td>
+<td>컨테이너 외부 Port</td>
+<td>disconnect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-9">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d -e des=http://172.18.0.2:8081 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d -e SPRING_PROFILES_ACTIVE=docker -p 8081:80 --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-9">수행결과</h6>
+
+<p>호출 실패! user defined network에 연결하지 않은 상태로 user defined network의 ip주소를 사용했으니 호출 실패가 당연합니다.</p>
+
+<p><img src="test10.PNG" alt="test10" /></p>
+
+<h3 id="test-case-11">Test Case 11</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>IP주소(user defined network ip)</td>
+<td>컨테이너 내부 Port</td>
+<td>connect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-10">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d --network=js-network -e des=http://172.18.0.2:80 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d --network=js-network -e SPRING_PROFILES_ACTIVE=docker --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-10">수행결과</h6>
+
+<p>호출 성공! user defined network의 ip주소와 컨테이너 내부 Port를 사용해서 접근에 성공했습니다.</p>
+
+<p><img src="test11.PNG" alt="test11" /></p>
+
+<h3 id="test-case-12">Test Case 12</h3>
+
+<table>
+<thead>
+<tr>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>IP주소(user defined network ip)</td>
+<td>컨테이너 내부 Port</td>
+<td>disconnect</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="docker-run-11">docker run</h6>
+
+<ul>
+<li>jisang-ms1
+
+<ul>
+<li><code>docker run -d -e des=http://172.18.0.2:80 -e SPRING_PROFILES_ACTIVE=docker -p 8080:80 --name jisang-ms1 jisang-ms1:latest</code></li>
+</ul></li>
+<li>jisang-ms2
+
+<ul>
+<li><code>docker run -d -e SPRING_PROFILES_ACTIVE=docker --name jisang-ms2 jisang-ms2:latest</code></li>
+</ul></li>
+</ul>
+
+<h6 id="수행결과-11">수행결과</h6>
+
+<p>호출 실패! Time Out이 발생했습니다.</p>
+
+<p><img src="test12.PNG" alt="test12" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Docker의 네트워크 기능과 연관된 3가지 factors(Host, Port, user defined network 연결/해제)를 경우의 수에 따라 검증하는 방식으로 테스트를 진행했습니다. (12 Test Case)</p>
+
+<p>호출에 성공한 경우를 보면 아래와 같습니다.</p>
+
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>jisang-ms2 Host</th>
+<th>jisang-ms2 Port</th>
+<th>Network Status</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Test Case 1</td>
+<td>IP주소(docker-machine ip)</td>
+<td>컨테이너 외부 Port</td>
+<td>disconnect</td>
+</tr>
+
+<tr>
+<td>Test Case 5</td>
+<td>IP주소(docker-machine ip)</td>
+<td>컨테이너 외부 Port</td>
+<td>connect</td>
+</tr>
+
+<tr>
+<td>Test Case 8</td>
+<td>컨테이너 명</td>
+<td>컨테이너 내부 Port</td>
+<td>connect</td>
+</tr>
+
+<tr>
+<td>Test Case 11</td>
+<td>IP주소(user defined network ip)</td>
+<td>컨테이너 내부 Port</td>
+<td>connect</td>
+</tr>
+</tbody>
+</table>
+
+<ol>
+<li>컨테이너의 Port를 노출하고 {docker-machine ip}:{외부 노출 Port}으로 접속한 경우</li>
+<li>컨테이너를 user defined network에 연결하고 {컨테이너 명}:{컨테이너 내부 port}로 접근한 경우</li>
+<li>컨테이너를 user defined network에 연결하고 {user defined network ip}:{컨테이너 내부 port}로 접근한 경우</li>
+</ol>
+
+<p>Docker에서 컨테이너의 접근은 컨테이너의 Port를 노출하고 해당 컨테이너 Host의 ip 정보로 접근이 가능합니다.</p>
+
+<p>user defined network에 컨테이너를 연결한 경우 서비스명으로 ip주소를 찾을 수 있는 Service Discovery 기능을 제공합니다. 또한, 컨테이너의 Port는 내부 Port를 사용해서 접근이 가능합니다.</p>
+
+<p>user defined network에 두 Application을 연결하고 jisang-ms1의 Port를 노출하지 않은 경우, 두 Application 간 내부 통신만 가능한 Private Network를 구성할 수 있습니다. 아래와 같이 구성하면 jisang-ms2를 외부에 노출하지 않고 시스템 구성이 가능합니다.</p>
+
+<p><img src="dockerprivatenetwork.png" alt="docker-private-network" /></p>
+
+<p>다음 포스팅에서는 Docker user defined network와 Spring Cloud를 사용해서 API 서버 구성을 해보겠습니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/what-is-docker-user-defined-network/">[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</a></li>
+        
+        <li><a href="/posts/docker/docker-start/">Docker 시작하기</a></li>
+        
+        <li><a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a></li>
+        
+        <li><a href="/posts/using_docker_in_cloudfoundry/">CF에 Docker Image 배포</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/user-defined-network" rel="tag">user defined network</a></li><li><a href="/tags/spring-boot" rel="tag">spring boot</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-test%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-test%2f&amp;text=%5bDocker-User%20Defined%20Network%20%ed%99%9c%ec%9a%a9%282%2f3%29%5d%20Docker%20User%20Defined%20Bridge%20Network%20%ed%85%8c%ec%8a%a4%ed%8a%b8" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-test%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-test%2f&amp;title=%5bDocker-User%20Defined%20Network%20%ed%99%9c%ec%9a%a9%282%2f3%29%5d%20Docker%20User%20Defined%20Bridge%20Network%20%ed%85%8c%ec%8a%a4%ed%8a%b8" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-test%2f&amp;description=%5bDocker-User%20Defined%20Network%20%ed%99%9c%ec%9a%a9%282%2f3%29%5d%20Docker%20User%20Defined%20Bridge%20Network%20%ed%85%8c%ec%8a%a4%ed%8a%b8" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker-user-defined-network%2fdocker-user-defined-network-test%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/jisangyun">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/jisangyun.jpg'/><div class="author-info">
+    <h3>윤지상</h3>
+    <p>Microservice Architecture Design&amp;Dev</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/docker-user-defined-network/what-is-docker-user-defined-network/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 21
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 6분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/digital-transformation-journey/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">Digital Transformation Journey</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 21
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 6분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

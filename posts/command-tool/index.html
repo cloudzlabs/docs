@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='오픈소스 CF CLI에서 자주 사용하는 CF CLI 명령어를 사용하는 방법을 정리해보았습니다.
+CF CLI에서 사용 가능한 모든 명령어의 사용법은 CF 공식 홈페이지 문서를 참고하길 바랍니다.
+ CF CF CLI 사용 방법을 알아보기에 앞서 CF가 무엇인지 간단히 살펴보겠습니다. CF는 Cloud Foundry의 약자로, 2011년 VMWare가 업계 최초로 만든 오픈소스 PaaS 플랫폼입니다. 지금은 Cloud Foundry 재단에서 관리하고 있습니다.
+오픈소스 CF 제품 Cloud Foundry의 오픈소스 Cloud Foundry 기술을 기반으로 만든 제품은 다음과 같습니다.
+ PCF (Pivotal Cloud Foundry)  Pivotal에서 오픈소스 Cloud Foundry로 만든 상용 PaaS  Bluemix  IBM에서 오픈 소스 Cloud Foundry로 만든 상용 PaaS   CF CLI GO 언어로 개발된 Cloud Foundry의 Command Line Interface입니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='CF CLI 사용하기 | 안서영'>
+<meta property='og:description' content='오픈소스 CF CLI에서 자주 사용하는 CF CLI 명령어를 사용하는 방법을 정리해보았습니다.
+CF CLI에서 사용 가능한 모든 명령어의 사용법은 CF 공식 홈페이지 문서를 참고하길 바랍니다.
+ CF CF CLI 사용 방법을 알아보기에 앞서 CF가 무엇인지 간단히 살펴보겠습니다. CF는 Cloud Foundry의 약자로, 2011년 VMWare가 업계 최초로 만든 오픈소스 PaaS 플랫폼입니다. 지금은 Cloud Foundry 재단에서 관리하고 있습니다.
+오픈소스 CF 제품 Cloud Foundry의 오픈소스 Cloud Foundry 기술을 기반으로 만든 제품은 다음과 같습니다.
+ PCF (Pivotal Cloud Foundry)  Pivotal에서 오픈소스 Cloud Foundry로 만든 상용 PaaS  Bluemix  IBM에서 오픈 소스 Cloud Foundry로 만든 상용 PaaS   CF CLI GO 언어로 개발된 Cloud Foundry의 Command Line Interface입니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/command-tool/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='cloud foundry'><meta property='article:tag' content='cf'><meta property='article:tag' content='cf cli'><meta property='article:tag' content='paas'><meta property='article:published_time' content='2018-02-20T16:55:36&#43;09:00'/><meta property='article:modified_time' content='2018-02-20T16:55:36&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>CF CLI 사용하기 | 안서영</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/command-tool/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Feb 20, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 9분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>CF CLI 사용하기</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/sya">안서영</a></p>
+
+
+<div class="notices note" ><p>오픈소스 CF CLI에서 <strong>자주 사용하는 CF CLI 명령어</strong>를 사용하는 방법을 정리해보았습니다.<br />
+CF CLI에서 사용 가능한 모든 명령어의 사용법은 <a href="https://docs.cloudfoundry.org/cf-cli/" target="_blank">CF 공식 홈페이지 문서</a>를 참고하길 바랍니다.</p>
+</div>
+
+
+<h2 id="cf">CF</h2>
+
+<p>CF CLI 사용 방법을 알아보기에 앞서 CF가 무엇인지 간단히 살펴보겠습니다. CF는 Cloud Foundry의 약자로, 2011년 VMWare가 업계 최초로 만든 오픈소스 PaaS 플랫폼입니다. 지금은 Cloud Foundry 재단에서 관리하고 있습니다.</p>
+
+<h3 id="오픈소스-cf-제품">오픈소스 CF 제품</h3>
+
+<p>Cloud Foundry의 오픈소스 Cloud Foundry 기술을 기반으로 만든 제품은 다음과 같습니다.</p>
+
+<ul>
+<li>PCF (Pivotal Cloud Foundry)
+
+<ul>
+<li><a href="https://pivotal.io/" target="_blank">Pivotal</a>에서 오픈소스 Cloud Foundry로 만든 상용 PaaS</li>
+</ul></li>
+<li><a href="https://www.ibm.com/cloud-computing/bluemix" target="_blank">Bluemix</a>
+
+<ul>
+<li>IBM에서 오픈 소스 Cloud Foundry로 만든 상용 PaaS</li>
+</ul></li>
+</ul>
+
+<h2 id="cf-cli">CF CLI</h2>
+
+<p>GO 언어로 개발된 Cloud Foundry의 Command Line Interface입니다. 사용자가 CF CLI를 설치하면 명령 프롬프트를 통해서 CF기반의 PaaS 환경에 자신이 만든 애플리케이션을 배포하거나 서비스 생성하여 바인등하는 등의 다양한 기능을 사용할 수 있습니다.</p>
+
+<h3 id="cf-cli-설치-방법">CF CLI 설치 방법</h3>
+
+<p>CLI Installer를 다운로드하여 간단히 설치할 수 있습니다.</p>
+
+<ol>
+<li><a href="https://github.com/cloudfoundry/cli/releases" target="_blank">CF CLI 설치 가이드 페이지</a> 에 접속합니다.</li>
+<li>Installer 문단에서 컴퓨터 OS 정보에 맞는 파일을 다운로드합니다.<br /></li>
+<li>다운로드한 파일을 실행하여 CF CLI를 설치합니다.</li>
+<li>명령어 프롬프트에 <code>cf</code>를 실행하여 정상 설치 여부를 확인합니다. 다음과 같은 정보가 표시되면 정상적으로 설치된 것을 확인할 수 있습니다.</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf
+
+cf 버전 <span style="color:#ae81ff">6</span>.32.0+0191c33d9.2017-09-26, Cloud Foundry command line tool
+Usage: cf <span style="color:#f92672">[</span>global options<span style="color:#f92672">]</span> command <span style="color:#f92672">[</span>arguments...<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>command options<span style="color:#f92672">]</span>
+
+Before getting started:
+  config    login,l      target,t
+  help,h    logout,lo
+
+Application lifecycle:
+  apps,a        run-task,rt    events
+  push,p        logs           set-env,se
+  start,st      ssh            create-app-manifest
+  stop,sp       app
+  restart,rs    env,e
+  restage,rg    scale
+
+Services integration:
+  marketplace,m        create-user-provided-service,cups
+  services,s           update-user-provided-service,uups
+  create-service,cs    create-service-key,csk
+  update-service       delete-service-key,dsk
+  delete-service,ds    service-keys,sk
+  service              service-key
+  bind-service,bs      bind-route-service,brs
+  unbind-service,us    unbind-route-service,urs
+
+Route and domain management:
+  routes,r        delete-route    create-domain
+  domains         map-route
+  create-route    unmap-route
+
+...</code></pre></div>
+<blockquote>
+<p><strong>Tip. 컴퓨터가 32bit인지 64bit인지 확인 방법</strong><br />
+1. 명령 프롬프트에서 <code>systeminfo</code>명령어를 입력합니다.<br />
+2. 다음과 같이 시스템 종류 정보가 표시됩니다.<br />
+- x86-based PC -&gt; 32bit<br />
+- x64-based PC -&gt; 64bit</p>
+</blockquote>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<h3 id="cf-help">cf help</h3>
+
+<p>CF CLI 명령어 도움말입니다. CF CLI에서 사용 가능한 모든 명령어에 대한 도움말을 표시합니다.</p>
+
+<h4 id="사용법">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf help
+
+cf help <span style="color:#f92672">[</span>명령어<span style="color:#f92672">]</span></code></pre></div>
+<h4 id="옵션">옵션</h4>
+
+<ul>
+<li>옵션 없이 사용할 시, 사용 가능한 모든 명령어를 표시합니다.</li>
+<li><code>[명령어]</code> 정보를 알고 싶은 특정 명령어</li>
+</ul>
+
+<h4 id="예시">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf help
+
+cf 버전 <span style="color:#ae81ff">6</span>.32.0+0191c33d9.2017-09-26, Cloud Foundry command line tool
+Usage: cf <span style="color:#f92672">[</span>global options<span style="color:#f92672">]</span> command <span style="color:#f92672">[</span>arguments...<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>command options<span style="color:#f92672">]</span>
+
+Before getting started:
+  config    login,l      target,t
+  help,h    logout,lo
+
+Application lifecycle:
+  apps,a        run-task,rt    events
+  push,p        logs           set-env,se
+  start,st      ssh            create-app-manifest
+  stop,sp       app
+  restart,rs    env,e
+  restage,rg    scale
+
+Services integration:
+  marketplace,m        create-user-provided-service,cups
+  services,s           update-user-provided-service,uups
+  create-service,cs    create-service-key,csk
+  update-service       delete-service-key,dsk
+  delete-service,ds    service-keys,sk
+  service              service-key
+  bind-service,bs      bind-route-service,brs
+  unbind-service,us    unbind-route-service,urs
+
+Route and domain management:
+  routes,r        delete-route    create-domain
+  domains         map-route
+  create-route    unmap-route
+...</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf help apps
+
+이름:
+apps - 대상 영역에 모든 앱 나열
+사용법:
+cf apps
+별명:
+a
+SEE ALSO:
+events, logs, map-route, push, restart, scale, start, stop</code></pre></div>
+<h3 id="cf-api">cf api</h3>
+
+<p>CF CLI의 대상(API End Point)을 설정합니다. 설정된 API Endpoint를 대상으로 이후 모든 작업이 진행됩니다.</p>
+
+<h4 id="사용법-1">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf api <span style="color:#f92672">[</span>URL<span style="color:#f92672">]</span></code></pre></div>
+<p><code>[URL]</code> 접속하려는 PaaS의 API End Point</p>
+
+<h4 id="옵션-1">옵션</h4>
+
+<ul>
+<li><code>--skip-ssl-validation</code> 비보안 Endpoint를 사용합니다.</li>
+<li><code>--unset</code> 설정되어 있는 EndPoint를 삭제합니다.</li>
+</ul>
+
+<h4 id="예시-1">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf api http://api.paas.sk.com
+
+API 엔드포인트를 http://api.paas.sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 설정 중...
+Warning: Insecure http API endpoint detected: secure https API endpoints are recommended
+확인
+
+api endpoint:   http://api.paas.sk.com
+api version:    <span style="color:#ae81ff">2</span>.69.0</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf api cf api http://api.paas.sk.com --skip-ssl-validation</code></pre></div>
+<h3 id="cf-login">cf login</h3>
+
+<p>PaaS에 로그인합니다.</p>
+
+<h4 id="사용법-2">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf login</code></pre></div>
+<h4 id="옵션-2">옵션</h4>
+
+<ul>
+<li>옵션 없이 사용하면 로그인에 필요한 정보를 입력할 수 있는 필드가 생성됩니다.</li>
+<li><code>-a [api end point]</code> 접속하려는 PaaS API End point 정보</li>
+<li><code>-u [username]</code> 접속하려는 PaaS 아이디</li>
+<li><code>-p [password]</code> 접속하려는 PaaS 비밀번호</li>
+<li><code>-o [org]</code> 접속하려는 Org 정보</li>
+<li><code>-s [space]</code> 접속하려는 Space 정보</li>
+<li><code>--skip-ssl-validation</code> 비보안 End point 사용하기 위한 옵션</li>
+</ul>
+
+<h4 id="예시-2">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf login
+
+API 엔드포인트: http://api.paas.sk.com
+경고: 비보안 http API 엔드포인트 발견: 보안 https API 엔드포인트를 사용하는 것이 좋습니다.
+
+
+Email&gt; sya@sk.com
+
+Password&gt;
+인증 중...
+확인
+
+조직 선택<span style="color:#f92672">(</span>또는 Enter를 눌러 건너뜀<span style="color:#f92672">)</span>:
+<span style="color:#ae81ff">1</span>. cloudlab
+<span style="color:#ae81ff">2</span>. dtlab
+
+Org&gt;
+...</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf login -a https://api.dev.ghama.io</code></pre></div>
+<h3 id="cf-logout">cf logout</h3>
+
+<p>PaaS를 로그아웃합니다.</p>
+
+<h4 id="사용법-3">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf logout</code></pre></div>
+<h4 id="예시-3">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf logout
+
+로그아웃 중...
+확인</code></pre></div>
+<h3 id="cf-target">cf target</h3>
+
+<p>현재 접속되어 있는 API End Point , Org, Space 정보 표시 및 Org, Space를 변경합니다.</p>
+
+<h4 id="사용법-4">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf target</code></pre></div>
+<h4 id="옵션-3">옵션</h4>
+
+<ul>
+<li>옵션 없이 실행하면 현재 접속되어 있는 API EndPoint , Org, Space 정보가 표시됩니다.</li>
+<li><code>-o [org]</code> 변경 접속하려는 Org 정보</li>
+<li><code>-s [space]</code> 변경 접속하려는 Space 정보</li>
+</ul>
+
+<h4 id="예시-4">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf target
+api endpoint:   http://api...
+api version:    <span style="color:#ae81ff">2</span>.69.0
+user:           sya@sk.com
+org:            dtlab
+space:          prod</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf target -o cloudlab -s dev
+
+api endpoint:   http://api...
+api version:    <span style="color:#ae81ff">2</span>.69.0
+user:           sya@sk.com
+org:            cloudlab
+space:          dev</code></pre></div>
+<h2 id="apps">Apps</h2>
+
+<h3 id="cf-apps">cf apps</h3>
+
+<p>현재 접속되어 있는 Org와 Space의 모든 Application 목록을 보여줍니다.</p>
+
+<h4 id="사용법-5">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf apps</code></pre></div>
+<h4 id="예시-5">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf apps
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/prod 영역의 앱 가져오는 중...
+확인
+
+이름                               요청된 상태   인스턴스   메모리   디스크   URL
+dtlabs-admin-bff-service           started       <span style="color:#ae81ff">1</span>/1        256M     256M     dtlabs-admin-bff-service.paas.sk.com
+dtlabs-apigateway-service          started       <span style="color:#ae81ff">1</span>/1        1G       1G       dtlabs-apigateway-service.paas.sk.com</code></pre></div>
+<h3 id="cf-push">cf push</h3>
+
+<p>PaaS에 애플리케이션을 배포합니다.</p>
+
+<h4 id="사용법-6">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf push
+
+cf push -f <span style="color:#f92672">[</span>manifest.yml file path<span style="color:#f92672">]</span></code></pre></div>
+<h4 id="옵션-4">옵션</h4>
+
+<ul>
+<li><code>[manifest.yml file path]</code> manifest yml 경로</li>
+<li>manifest.yml을 이용하지 않고 옵션을 통해서 애플리케이션을 배포하시려면 옵션의 자세한 내용은 <a href="http://cli.cloudfoundry.org/en-US/cf/push.html" target="_blank">CF Push 가이드</a>를 참고하세요.</li>
+<li>옵션을 이용하지 않고 <strong>manifest.yml을 통한 배포를 추천</strong>합니다. 명령 프롬프트에서 프로젝트 경로로 이동 후, <code>cf push</code> 명령어를 실행하거나,옵션으로 manifest.yml 경로를 지정해서 애플리케이션을 배포합니다.</li>
+<li>manifest.yml 파일이 개발과 운영환경에서 다른 정보를 가진다면 manifest-dev.yml, manifest-prod.yml 등으로 <strong>설정 분리</strong> 후, manifest 파일을 명시해서 배포합니다.</li>
+<li>manifest.yml 설정 정보는 <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html" target="_blank">CF 공식가이드 문서의 manifest.yml 가이드 문서</a>를 참고하세요.</li>
+</ul>
+
+<h4 id="예시-6">예시</h4>
+
+<ul>
+<li>옵션 없이 사용하는 경우</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ ls
+log		mvnw		pom.xml		target
+manifest.yml	mvnw.cmd	src
+$ cf push
+
+Manifest 파일 /Users/seoyoungahn/git/spring-boot-tutorial/cloud-movie/manifest.yml 사용
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역에서 cloud-movie 앱 업데이트 중...
+확인
+
+cloud-movie 업로드 중...
+업로드 중인 앱 파일 원본 위치: /var/folders/mc/0_v3hb1j2j71t_g53qg8qjg40000gn/T/unzipped-app239365053
+<span style="color:#ae81ff">443</span>.5K, <span style="color:#ae81ff">105</span> 파일 업로드
+Done uploading
+확인
+
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역에서 cloud-movie 앱 시작 중...
+Downloading java_buildpack...
+Downloaded java_buildpack
+Creating container
+Successfully created container
+Downloading app package...
+Downloaded app package <span style="color:#f92672">(</span><span style="color:#ae81ff">16</span>.6M<span style="color:#f92672">)</span>
+Staging...
+-----&gt; Java Buildpack Version: v3.11 | https://github.com/cloudfoundry/java-buildpack.git#eba4df6
+-----&gt; Downloading Open Jdk JRE <span style="color:#ae81ff">1</span>.8.0_111 from https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_111.tar.gz <span style="color:#f92672">(</span><span style="color:#ae81ff">10</span>.6s<span style="color:#f92672">)</span>
+       Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.3s<span style="color:#f92672">)</span>
+-----&gt; Downloading Open JDK Like Memory Calculator <span style="color:#ae81ff">2</span>.0.2_RELEASE from https://java-buildpack.cloudfoundry.org/memory-calculator/trusty/x86_64/memory-calculator-2.0.2_RELEASE.tar.gz <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0s<span style="color:#f92672">)</span>
+       Memory Settings: -Xmx681574K -XX:MaxMetaspaceSize<span style="color:#f92672">=</span>104857K -XX:MetaspaceSize<span style="color:#f92672">=</span>104857K -Xms681574K -Xss349K
+-----&gt; Downloading Spring Auto Reconfiguration <span style="color:#ae81ff">1</span>.12.0_RELEASE from https://java-buildpack.cloudfoundry.org/auto-reconfiguration/auto-reconfiguration-1.12.0_RELEASE.jar <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0s<span style="color:#f92672">)</span>
+Exit status <span style="color:#ae81ff">0</span>
+Staging complete
+Uploading droplet, build artifacts cache...
+Uploading droplet...
+Uploading build artifacts cache...
+Uploaded build artifacts cache <span style="color:#f92672">(</span><span style="color:#ae81ff">44</span>.9M<span style="color:#f92672">)</span>
+Uploaded droplet <span style="color:#f92672">(</span><span style="color:#ae81ff">61</span>.8M<span style="color:#f92672">)</span>
+Uploading complete
+Destroying container
+Successfully destroyed container
+
+<span style="color:#ae81ff">0</span> / <span style="color:#ae81ff">1</span> 인스턴스 실행 중, <span style="color:#ae81ff">1</span> 시작 중
+<span style="color:#ae81ff">1</span> / <span style="color:#ae81ff">1</span> 인스턴스 실행 중
+
+앱 시작됨
+
+
+확인
+
+<span style="color:#e6db74">`</span>CALCULATED_MEMORY<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>$PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-2.0.2_RELEASE -memorySizes<span style="color:#f92672">=</span>metaspace:64m..,stack:228k.. -memoryWeights<span style="color:#f92672">=</span>heap:65,metaspace:10,native:15,stack:10 -memoryInitials<span style="color:#f92672">=</span>heap:100%,metaspace:100% -stackThreads<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span> -totMemory<span style="color:#f92672">=</span>$MEMORY_LIMIT<span style="color:#66d9ef">)</span> <span style="color:#f92672">&amp;&amp;</span> JAVA_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-Djava.io.tmpdir=</span>$TMPDIR<span style="color:#e6db74"> -XX:OnOutOfMemoryError=</span>$PWD<span style="color:#e6db74">/.java-buildpack/open_jdk_jre/bin/killjava.sh </span>$CALCULATED_MEMORY<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&amp;&amp;</span> SERVER_PORT<span style="color:#f92672">=</span>$PORT eval exec $PWD/.java-buildpack/open_jdk_jre/bin/java $JAVA_OPTS -cp $PWD/. org.springframework.boot.loader.JarLauncher<span style="color:#e6db74">`</span> 명령을 사용하여 cloud-movie 앱이 시작되었습니다.
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역에서 cloud-movie 앱의 상태 표시 중...
+확인
+
+요청된 상태: started
+인스턴스: <span style="color:#ae81ff">1</span>/1
+사용법: 1G x <span style="color:#ae81ff">1</span> 인스턴스
+URL: cloud-movie-leathern-estrin.paas.sk.com
+마지막으로 업로드함: Fri Feb <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">01</span>:02:09 UTC <span style="color:#ae81ff">2018</span>
+스택: cflinuxfs2
+빌드팩: java_buildpack
+
+     상태      이후                     CPU    메모리   디스크   세부사항
+<span style="color:#75715e">#0   실행 중   2018-02-23 10:07:53 AM   0.0%   0 / 1G   0 / 1G</span></code></pre></div>
+<ul>
+<li>옵션 사용 시</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf push -f C:/Users/cf-sample-app-nodejs-master/manifest-dev.yml</code></pre></div>
+<h3 id="cf-delete">cf delete</h3>
+
+<p>애플리케이션을 삭제합니다.</p>
+
+<h4 id="사용법-7">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf delete <span style="color:#f92672">[</span>app name<span style="color:#f92672">]</span></code></pre></div>
+<p><code>[app name]</code> 삭제할 애플리케이션명</p>
+
+<h4 id="옵션-5">옵션</h4>
+
+<ul>
+<li><code>-f</code> 재확인 없이 애플리케이션 삭제합니다.</li>
+<li><code>-r</code> 관련된 모든 라우트 정보에 해당하는 애플리케이션 삭제합니다.</li>
+</ul>
+
+<h4 id="예시-7">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf delete cna-sample</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf delete cna-sample -r</code></pre></div>
+<h3 id="cf-logs">cf logs</h3>
+
+<p>애플리케이션 로그를 출력합니다.</p>
+
+<h4 id="사용법-8">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf logs <span style="color:#f92672">[</span>app name<span style="color:#f92672">]</span></code></pre></div>
+<p><code>[app name]</code> 로그를 출력할 애플리케이션명</p>
+
+<h4 id="예시-8">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf logs cna-sample
+
+Retrieving logs <span style="color:#66d9ef">for</span> app cna-sample in org dtlab / space prod as sya@sk.com...</code></pre></div>
+<h3 id="cf-start">cf start</h3>
+
+<p>애플리케이션 실행을 시작합니다.</p>
+
+<h4 id="사용법-9">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf start <span style="color:#f92672">[</span>app name<span style="color:#f92672">]</span></code></pre></div>
+<p><code>[app name]</code> 시작시킬 애플리케이션명</p>
+
+<h4 id="예시-9">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf start cna-sample
+
+aiting <span style="color:#66d9ef">for</span> app to start...
+
+이름:                cna-sample
+요청된 상태:           started
+인스턴스:              <span style="color:#ae81ff">1</span>/1
+사용법:               512M x <span style="color:#ae81ff">1</span> instances
+routes:             cna-sample.paas.sk.com
+마지막으로 업로드함:   Mon <span style="color:#ae81ff">12</span> Feb <span style="color:#ae81ff">18</span>:56:13 KST <span style="color:#ae81ff">2018</span>
+스택:                  cflinuxfs2
+빌드팩:                java_buildpack
+start command:         CALCULATED_MEMORY<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>$PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-2.0.2_RELEASE
+                       -memorySizes<span style="color:#f92672">=</span>metaspace:64m..,stack:228k..
+                       -memoryWeights<span style="color:#f92672">=</span>heap:65,metaspace:10,native:15,stack:10
+                       -memoryInitials<span style="color:#f92672">=</span>heap:100%,metaspace:100%
+                       -stackThreads<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span> -totMemory<span style="color:#f92672">=</span>$MEMORY_LIMIT<span style="color:#66d9ef">)</span> <span style="color:#f92672">&amp;&amp;</span>
+                       JAVA_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-Djava.io.tmpdir=</span>$TMPDIR<span style="color:#e6db74">
+</span><span style="color:#e6db74">                       -XX:OnOutOfMemoryError=</span>$PWD<span style="color:#e6db74">/.java-buildpack/open_jdk_jre/bin/killjava.sh
+</span><span style="color:#e6db74">                       </span>$CALCULATED_MEMORY<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&amp;&amp;</span> SERVER_PORT<span style="color:#f92672">=</span>$PORT eval exec
+                       $PWD/.java-buildpack/open_jdk_jre/bin/java $JAVA_OPTS -cp
+                       $PWD/. org.springframework.boot.loader.JarLauncher
+
+     상태      이후                   CPU    메모리           디스크         세부사항
+<span style="color:#75715e">#0   실행 중   2018-02-22T09:50:13Z   0.0%   318.1M of 512M   143.8M of 1G</span> </code></pre></div>
+<h3 id="cf-stop">cf stop</h3>
+
+<p>애플리케이션을 중지시킵니다.</p>
+
+<h4 id="사용법-10">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf stop <span style="color:#f92672">[</span>app name<span style="color:#f92672">]</span></code></pre></div>
+<p><code>[app name]</code> 중지할 애플리케이션명</p>
+
+<h4 id="예시-10">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf stop cna-sample
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역에서 cna-sample앱 중지 중...
+확인</code></pre></div>
+<h3 id="cf-restart">cf restart</h3>
+
+<p>애플리케이션을 재실행합니다.</p>
+
+<h4 id="사용법-11">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf restart <span style="color:#f92672">[</span>app name<span style="color:#f92672">]</span></code></pre></div>
+<p><code>[app name]</code> 재시작할 애플리케이션명</p>
+
+<h4 id="예시-11">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf restart cna-sample
+
+Restarting app cna-sample in org dtlab / space dev as sya@sk.com...
+
+Stopping app...
+
+Waiting <span style="color:#66d9ef">for</span> app to start...
+
+이름:                  cna-sample
+요청된 상태:           started
+인스턴스:              <span style="color:#ae81ff">1</span>/1
+사용법:                512M x <span style="color:#ae81ff">1</span> instances
+routes:               cna-sample.paas.sk.com
+마지막으로 업로드함:   Mon <span style="color:#ae81ff">12</span> Feb <span style="color:#ae81ff">18</span>:56:13 KST <span style="color:#ae81ff">2018</span>
+스택:                  cflinuxfs2
+빌드팩:                java_buildpack
+start command:         CALCULATED_MEMORY<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>$PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-2.0.2_RELEASE
+                       -memorySizes<span style="color:#f92672">=</span>metaspace:64m..,stack:228k..
+                       -memoryWeights<span style="color:#f92672">=</span>heap:65,metaspace:10,native:15,stack:10
+                       -memoryInitials<span style="color:#f92672">=</span>heap:100%,metaspace:100%
+                       -stackThreads<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span> -totMemory<span style="color:#f92672">=</span>$MEMORY_LIMIT<span style="color:#66d9ef">)</span> <span style="color:#f92672">&amp;&amp;</span>
+                       JAVA_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-Djava.io.tmpdir=</span>$TMPDIR<span style="color:#e6db74">
+</span><span style="color:#e6db74">                       -XX:OnOutOfMemoryError=</span>$PWD<span style="color:#e6db74">/.java-buildpack/open_jdk_jre/bin/killjava.sh
+</span><span style="color:#e6db74">                       </span>$CALCULATED_MEMORY<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&amp;&amp;</span> SERVER_PORT<span style="color:#f92672">=</span>$PORT eval exec
+                       $PWD/.java-buildpack/open_jdk_jre/bin/java $JAVA_OPTS -cp
+                       $PWD/. org.springframework.boot.loader.JarLauncher
+
+     상태      이후                   CPU    메모리           디스크         세부사항
+<span style="color:#75715e">#0   실행 중   2018-02-22T09:53:32Z   0.0%   163.1M of 512M   143.8M of 1G</span> </code></pre></div>
+<h2 id="services">Services</h2>
+
+<h3 id="cf-services">cf services</h3>
+
+<p>현재 접속되어 있는 Org과 Space에서 사용 가능한 모든 Service의 정보를 표시합니다.</p>
+
+<h4 id="사용법-12">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf services</code></pre></div>
+<h4 id="예시-12">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf services
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역의 서비스를 가져오는 중...
+확인
+
+이름                        서비스           플랜                   바인딩된 앱                                                                                                                                                마지막 조작
+amqp-service                RabbitMQ         standard                                                                                                                                                                          create 성공
+cloud-movie-apigateway      사용자 제공
+cloud-movie-config-server   사용자 제공
+cloud-movie-discovery       사용자 제공
+cloud-movie-redis           Redis            shared-vm</code></pre></div>
+<h3 id="cf-marketplace">cf marketplace</h3>
+
+<p>마켓플레이스에 등록되어 애플리케이션에서 사용 가능한 서비스의 정보를 보여줍니다.</p>
+
+<h4 id="사용법-13">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf marketplace</code></pre></div>
+<h4 id="옵션-6">옵션</h4>
+
+<p><code>-s [service name]</code> [service name]에 해당하는 서비스의 자세한 정책을 보여줍니다.</p>
+
+<h4 id="예시-13">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf marketplace
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역에서 서비스를 가져오는 중...
+확인
+
+서비스                플랜                                        설명
+App-Autoscaler-beta   autoscaler-free-plan                        <span style="color:#f92672">(</span>Beta Version<span style="color:#f92672">)</span> Automatically increase or decrease the number of application instances based on a policy you define.
+CF-AutoScaler         free                                        Automatically increase or decrease the number of application instances based on a policy you define.
+MariaDB               Mysql-Plan1-5con, Mysql-Plan2-100con*       A simple mysql implementation
+Mongo-DB              default-plan                                A simple mongo implementation
+Mongo-DB-Dev          default*                                    A simple MongoDB service broker implementation-Test
+Object-Storage        object-storage-1GB, object-storage-100GB*   A simple object-storage implementation
+RabbitMQ              standard                                    RabbitMQ is a robust and scalable high-performance multi-protocol messaging broker.
+Redis                 shared-vm                                   Redis service to provide a key-value store
+Redis-dev             Free Plen*                                  Shared Redis server
+
+* 해당 서비스 플랜에 연관된 비용이 있습니다. 서비스 인스턴스를 작성하면 이 비용이 발생합니다.
+
+팁: 주어진 서비스의 개별 플랜에 대한 설명을 보려면 <span style="color:#e6db74">&#39;cf marketplace -s SERVICE&#39;</span>를 사용하십시오. </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf marketplace -s Redis
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 Redis 서비스의 서비스 플랜 정보를 가져오는 중...
+확인
+
+서비스 플랜   설명                                                                                                                무료 또는 유료
+shared-vm     This plan provides a single Redis process on a shared VM, which is suitable <span style="color:#66d9ef">for</span> development and testing workloads   free</code></pre></div>
+<h3 id="cf-create-service">cf create-service</h3>
+
+<p>서비스를 생성합니다.</p>
+
+<h4 id="사용법-14">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf create-service <span style="color:#f92672">[</span>service name<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>service plan<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>service instance<span style="color:#f92672">]</span></code></pre></div>
+<ul>
+<li>애플리케이션에서 marketplace에 등록되어 있는 서비스를 사용하기 위해 생성합니다. 생성하려는 서비스의 정보는 <code>cf marketplace</code> 명령어를 통해 알 수있습니다.</li>
+<li><code>[service name]</code> 생성하려는 service name</li>
+<li><code>[service plan]</code> 생성하려는 service plan</li>
+<li><code>[service instance]</code> 임의 지정</li>
+</ul>
+
+<h4 id="옵션-7">옵션</h4>
+
+<ul>
+<li><code>-c [parameters as json]</code> 해당 서비스에 전달할 parameter 를 JSON 으로 작성합니다.</li>
+<li>OS 별로 파라미터 전달하는 방식은 <a href="http://cli.cloudfoundry.org/en-US/cf/create-service.html" target="_blank">CF 공식문서</a>를 참고하세요.</li>
+</ul>
+
+<h4 id="예시-14">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf create-service Redis shared-vm cna-sample-redis-service
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역에 서비스 인스턴스 cna-sample-redis-service 작성 중...
+확인</code></pre></div>
+<h3 id="cf-delete-service">cf delete-service</h3>
+
+<p>서비스 인스턴스를 삭제합니다.</p>
+
+<h4 id="사용법-15">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf delete-service <span style="color:#f92672">[</span>service instance<span style="color:#f92672">]</span></code></pre></div>
+<p><code>[service instance]</code> 삭제할 서비스명. 현재 space에 등록되어 있어야 합니다.</p>
+
+<h4 id="옵션-8">옵션</h4>
+
+<p><code>-f</code> 재확인 없이 애플리케이션을 삭제합니다.</p>
+
+<h4 id="예시-15">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf delete-service cna-sample-redis-service
+
+서비스 cna-sample-redis-service을<span style="color:#f92672">(</span>를<span style="color:#f92672">)</span> 삭제하시겠습니까?&gt; y
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역에서 cna-sample-redis-service 서비스 삭제 중...
+확인</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf delete-service cna-sample-redis-service -f
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역에서 cna-sample-redis-service 서비스 삭제 중...
+확인</code></pre></div>
+<h3 id="cf-bind-service">cf bind-service</h3>
+
+<p>애플리케이션에 서비스를 연동합니다.</p>
+
+<h4 id="사용법-16">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf bind-service <span style="color:#f92672">[</span>app name<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>service instance<span style="color:#f92672">]</span></code></pre></div>
+<ul>
+<li><code>[app name]</code> 대상 애플리케이션명</li>
+<li><code>[service instance]</code> 연동할 service명</li>
+<li><code>cf services</code> 명령어를 통해 해당 space에서 사용할 수 있는 [service instance]를 확인할 수 있습니다.</li>
+</ul>
+
+<h4 id="옵션-9">옵션</h4>
+
+<p><code>-c [parameters as json]</code> 해당 서비스에 전달할 parameter(JSON으로 작성)</p>
+
+<p>OS 별로 파라미터 전달하는 방식은 <a href="http://cli.cloudfoundry.org/en-US/cf/bind-service.html" target="_blank">CF 공식홈페이지의 bind service 가이드</a>를 참고하세요.</p>
+
+<h4 id="예시-16">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf bind-service cna-sample cna-sample-redis-service
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역의 cna-sample 앱에 cna-sample-redis-service 서비스 바인드 중...
+확인
+팁: 환경 변수 변경사항을 적용하려면 <span style="color:#e6db74">&#39;cf restage cna-sample&#39;</span>을<span style="color:#f92672">(</span>를<span style="color:#f92672">)</span> 사용하십시오.</code></pre></div>
+<h3 id="cf-unbind-service">cf unbind-service</h3>
+
+<p>애플리케이션에 연동한 서비스 연동을 해제합니다.</p>
+
+<h4 id="사용법-17">사용법</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cf unbind-service <span style="color:#f92672">[</span>app name<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>service instance<span style="color:#f92672">]</span></code></pre></div>
+<ul>
+<li><code>[app name]</code> 대상 애플리케이션명</li>
+<li><code>[service instance]</code> 연동을 해제할 서비스명</li>
+</ul>
+
+<h4 id="예시-17">예시</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cf unbind-service cna-sample cna-sample-mysql-service
+
+sya@sk.com<span style="color:#f92672">(</span>으<span style="color:#f92672">)</span>로 dtlab 조직/dev 영역의 cna-sample-redis-service 서비스에서 cna-sample 앱 바인드 해제 중...
+확인</code></pre></div>
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/cf-apprelease/">CF에 Cloud Native Application 배포하기 </a></li>
+        
+        <li><a href="/posts/how-to-use-cf-binding-service-in-local-env/">로컬에서 Spring Cloud Connector 사용하기</a></li>
+        
+        <li><a href="/posts/discovery-duration-error-in-bluemix/">Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/cloud-foundry" rel="tag">cloud foundry</a></li><li><a href="/tags/cf" rel="tag">cf</a></li><li><a href="/tags/cf-cli" rel="tag">cf cli</a></li><li><a href="/tags/paas" rel="tag">paas</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fcommand-tool%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fcommand-tool%2f&amp;text=CF%20CLI%20%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fcommand-tool%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fcommand-tool%2f&amp;title=CF%20CLI%20%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fcommand-tool%2f&amp;description=CF%20CLI%20%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fcommand-tool%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/sya">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/seoyoung.jpg'/><div class="author-info">
+    <h3>안서영</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/discovery-duration-error-in-bluemix/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 20
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 9분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/kubernetes/getting-start/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Kubernetes 활용(1/8)] 시작하기</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 20
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 9분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

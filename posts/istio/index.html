@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='최근 MSA(Micro Service Architecture) 관련 세미나, 자료 등을 살펴보면 Istio라는 키워드가 급부상하고 있는 것을 알 수 있습니다. Istio가 무엇인지 조사한 결과를 공유합니다.
+Service Mesh Architecture Istio를 설명하기 전에 Service Mesh Architecture 가 무엇인지 알아보겠습니다.
+MSA(Micro Service Architecture)가 널리 보급되면서 service discovery, routing, failure handling 등 서비스 간 통신 문제가 발생하고 있습니다. 이러한 문제를 해결하기 위해 Spring Cloud Netflix 등 다양한 해결법이 등장하였고, Service Mesh Architecture 또한 이러한 해결 방법 중 하나입니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='Istio | 김봉찬'>
+<meta property='og:description' content='최근 MSA(Micro Service Architecture) 관련 세미나, 자료 등을 살펴보면 Istio라는 키워드가 급부상하고 있는 것을 알 수 있습니다. Istio가 무엇인지 조사한 결과를 공유합니다.
+Service Mesh Architecture Istio를 설명하기 전에 Service Mesh Architecture 가 무엇인지 알아보겠습니다.
+MSA(Micro Service Architecture)가 널리 보급되면서 service discovery, routing, failure handling 등 서비스 간 통신 문제가 발생하고 있습니다. 이러한 문제를 해결하기 위해 Spring Cloud Netflix 등 다양한 해결법이 등장하였고, Service Mesh Architecture 또한 이러한 해결 방법 중 하나입니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/istio/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='istio'><meta property='article:tag' content='msa'><meta property='article:tag' content='service mesh'><meta property='article:tag' content='spring cloud netflix'><meta property='article:published_time' content='2018-04-05T14:50:51&#43;09:00'/><meta property='article:modified_time' content='2018-04-05T14:50:51&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>Istio | 김봉찬</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/istio/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Apr 05, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 2분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>Istio</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/bckim0620">김봉찬</a></p>
+
+
+<p>최근 MSA(Micro Service Architecture) 관련 세미나, 자료 등을 살펴보면 Istio라는 키워드가 급부상하고 있는 것을 알 수 있습니다.
+Istio가 무엇인지 조사한 결과를 공유합니다.</p>
+
+<h2 id="service-mesh-architecture">Service Mesh Architecture</h2>
+
+<p>Istio를 설명하기 전에 Service Mesh Architecture 가 무엇인지 알아보겠습니다.</p>
+
+<p>MSA(Micro Service Architecture)가 널리 보급되면서 service discovery, routing, failure handling 등 서비스 간 통신 문제가 발생하고 있습니다.
+이러한 문제를 해결하기 위해 Spring Cloud Netflix 등 다양한 해결법이 등장하였고, Service Mesh Architecture 또한 이러한 해결 방법 중 하나입니다.
+Service Mesh Architecture란 MSA에서 서비스 간 통신 방법을 구체화한 아키텍처로 다음과 같은 구조를 가집니다.</p>
+
+<ul>
+<li>구조
+
+<ul>
+<li>각 서비스 앞에 Network Layer를 Sidecar로 위치시켜 서비스의 인/아웃 트래픽을 컨트롤한다.</li>
+<li>모든 Network Layer를 컨트롤하는 Service Mesh Control Plane을 사용한다.</li>
+</ul></li>
+<li>동작 방식
+
+<ul>
+<li>Control Plane에 서비스의 정보, 라우팅 정보 등을 등록한다.</li>
+<li>Control Plane은 등록된 정보를 Network Layer(sidecar)에 전달한다.</li>
+<li>Network Layer(sidecar)은 전달받은 정보를 이용하여 서비스 간 통신을 제어한다.
+
+<ul>
+<li>통신 흐름: MicroService1 -&gt; Sidecar1 -&gt; Sidecar2 -&gt; MicroService2</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>이해를 돕기 위해 Docker에의 Service Mesh Architecture 이미지를 첨부합니다.</p>
+
+<p><img src="isto-docker.png" alt="istio-docker" /></p>
+
+<h2 id="istio란">Istio란?</h2>
+
+<p>Service Mesh Architecture는 말 그대로 개발자가 직접 구성해야 할 아키텍처입니다.
+Istio란 Google, IBM이 Service Mesh Architecture 구현해 놓은 플랫폼으로 이를 활용하여 쉽게 Service Mesh Architecture를 적용할 수 있습니다.
+Istio는 Service Mesh Architecture의 구현 체기 때문에 구조, 특징, 동작 방식이 매우 유사합니다.</p>
+
+<p><img src="istio.png" alt="istio" /></p>
+
+<ul>
+<li>구조
+
+<ul>
+<li>Envoy: Service 앞단의 Network Layer로 서비스의 인/아웃 트래픽을 컨트롤한다.</li>
+<li>Control Plane: 모든 Network Layer를 컨트롤한다.
+
+<ul>
+<li>Pliot: Routing, Service Discovery 등 서비스 간 통신 기능을 담당</li>
+<li>Mixer: Metric, Monitoring 등의 기능을 담당</li>
+<li>Istio-Auth: 서비스 간 인증을 담당(TLS, Auth 등)</li>
+</ul></li>
+</ul></li>
+<li>동작 방식
+
+<ul>
+<li>Control Plane에 서비스 정보, 라우팅 정보 등을 등록한다.</li>
+<li>Control Plane은 등록된 정보를 Envoy에 전달한다.</li>
+<li>Envoy 전달받은 정보를 이용하여 서비스 간 통신을 제어한다.
+
+<ul>
+<li>통신 흐름: ServiceA -&gt; EnvoyA-&gt; EnvoyB -&gt; ServiceB</li>
+</ul></li>
+</ul></li>
+<li>주요기능
+
+<ul>
+<li>Service Discovery</li>
+<li>Fault Injection</li>
+<li>Circuit Breaking</li>
+<li>Load Balancing
+
+<ul>
+<li>인스턴스 별로 되는 트래픽양 조절가능(Canary, Bluegreen에 활용가능)</li>
+</ul></li>
+<li>MSA통합된 Metric, Log 수집가능</li>
+<li>MSA간 인증, TLS등</li>
+</ul></li>
+</ul>
+
+<h2 id="마치며">마치며</h2>
+
+<p>Istio는 Spring Cloud Netflix의 기능을 총집합 해둔 것으로 이해하면 됩니다.
+실제로도 많은 사람들이 Istio와 Spring Cloud Netflix를 비교합니다.
+Spring Cloud Netflix는 애플리케이션 소스를 작성하여 사용하기 때문에 개발 언어, 유지 보수등에 많은 문제가 있지만 Istio는 플랫폼 영역에서 동작하기 때문에 개발 언어에 무관하게 동작이 가능하며 유지 보수도 쉽다는 장점을 갖고 있습니다.</p>
+
+<p>Istio와 Spring Cloud Netflix를 직접 사용해본 결과 확실히 Istio가 개발/운영이 편했습니다.
+다만 아직은 인큐베이팅 정도의 기술이며(최신버전 0.8), 레퍼런스가 부족하다는 점 등을 고려해야 할 것으로 보입니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/service-mesh/">Service Mesh 란?</a></li>
+        
+        <li><a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/istio" rel="tag">istio</a></li><li><a href="/tags/msa" rel="tag">msa</a></li><li><a href="/tags/service-mesh" rel="tag">service mesh</a></li><li><a href="/tags/spring-cloud-netflix" rel="tag">spring cloud netflix</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fistio%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fistio%2f&amp;text=Istio" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fistio%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fistio%2f&amp;title=Istio" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fistio%2f&amp;description=Istio" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fistio%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/bckim0620">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/bckim0620.jpg'/><div class="author-info">
+    <h3>김봉찬</h3>
+    <p>Microservice Architecture Design&amp;Dev</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/digital-transformation-journey/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">Digital Transformation Journey</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Apr 05
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 2분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/kubernetes/mariadb-utf8/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">Kubernetes에 구성한 MariaDB(Mysql)의 한글 깨짐 현상 해결방법</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Apr 05
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 2분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

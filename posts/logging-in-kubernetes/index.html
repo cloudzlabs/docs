@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Cloud Native 환경에서 Logging Architecture 소개 및 실습'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='Logging in kubernetes | 윤상준'>
+<meta property='og:description' content='Cloud Native 환경에서 Logging Architecture 소개 및 실습'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/logging-in-kubernetes/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/logging-in-kubernetes/logging-sidecar-detail.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='logging'><meta property='article:tag' content='kubernetes'><meta property='article:tag' content='fluent'><meta property='article:tag' content='cncf'><meta property='article:tag' content='elasticsearch'><meta property='article:tag' content='kibana'><meta property='article:tag' content='로깅'><meta property='article:published_time' content='2018-07-18T08:06:40&#43;09:00'/><meta property='article:modified_time' content='2018-07-18T08:06:40&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/logging-in-kubernetes/http://tech.cloudz-labs.io/logging-sidecar-detail.png'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>Logging in kubernetes | 윤상준</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/logging-in-kubernetes/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Jul 18, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 4분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>Logging in kubernetes</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/yunsangjun">윤상준</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/logging-in-kubernetes/logging-sidecar-detail.png'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<h2 id="cloud-native-환경에서-logging-architecture의-변화">Cloud Native 환경에서 Logging Architecture의 변화</h2>
+
+<h3 id="legacy">Legacy</h3>
+
+<p><img src="logging-legacy.png" alt="" /></p>
+
+<ul>
+<li>고사양의 서버에 Application을 크게 운영</li>
+<li>Log를 Application이 실행 중인 서버 내부에 저장</li>
+<li>개발자/운영자는 서버 내부에 접속해 Log를 확인</li>
+</ul>
+
+<h3 id="cloud-native">Cloud Native</h3>
+
+<p><img src="logging-cloud-native.png" alt="" /></p>
+
+<ul>
+<li>Application을 작게 운영하고 필요할 때 마다 확장</li>
+<li>다중 인스턴스의 로그를 효율적으로 검색하기 위해 외부 Log 시스템에 저장</li>
+<li>개발자/운영자는 서버에 직접 접속하지 않고 외부 Log Backend에서 로그 확인</li>
+</ul>
+
+<h2 id="cloud-native-logging-architecture">Cloud Native Logging Architecture</h2>
+
+<h3 id="overview">Overview</h3>
+
+<h4 id="daemonset-pattern">DaemonSet Pattern</h4>
+
+<p><img src="logging-daemonset.png" alt="" /></p>
+
+<ul>
+<li>App Console Log가 각 Node의 Storage에 자동 저장</li>
+<li>각 Node의 Agent가 Log를 Aggregator로 전달</li>
+<li>Log data를 전/후 처리 후 Backend로 전달</li>
+</ul>
+
+<h4 id="sidecar-pattern">Sidecar Pattern</h4>
+
+<p><img src="logging-sidecar.png" alt="" /></p>
+
+<ul>
+<li>App Log를 Pod의 Storage에 파일로 저장(Log4j 등 사용)</li>
+<li>Pod의 Agent가 Log data를 전/후 처리 후 Backend로 전달</li>
+</ul>
+
+<h3 id="daemonset-pattern-상세-architecture">DaemonSet Pattern 상세 Architecture</h3>
+
+<p><img src="logging-daemonset-detail.png" alt="" /></p>
+
+<ul>
+<li>App Console Log가 각 Node의 Storage에 자동 저장</li>
+<li>Fluentbit가 각 Node의 Log 수집해 FluentD로 전달</li>
+<li>FluentD가 수집한 Log를 전/후 처리 후 ElasticSearch로 전달</li>
+<li>Log raw data를 S3와 같은 저장소에 동시 전달 가능(Log Data 백업 활용)</li>
+<li>Kibana를 통해 ES의 Log data 검색/분석 및 시각화</li>
+</ul>
+
+<h3 id="sidecar-pattern-상세-architecture">Sidecar Pattern 상세 Architecture</h3>
+
+<p><img src="logging-sidecar-detail.png" alt="" /></p>
+
+<ul>
+<li>App Log를 Pod의 Storage에 파일로 저장(Log4j 등 사용)</li>
+<li>Fluentbit가 저장된 Log를 전/후 처리 후 ElasticSearch로 전달.</li>
+<li>Log raw data를 S3와 같은 저장소에 동시 전달 가능(Log Data 백업 활용)</li>
+<li>Kibana를 통해 ES의 Log data 검색/분석 및 시각화</li>
+</ul>
+
+<h2 id="logging-실습">Logging 실습</h2>
+
+<h3 id="sidecar-pattern-1">Sidecar Pattern</h3>
+
+<h4 id="demo-application-download-및-build">Demo Application Download 및 Build</h4>
+
+<ul>
+<li><p>Demo Application Download</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ git clone https://github.com/cloudz-labs/spring-boot-logging-demo
+$ cd spring-boot-logging-demo</pre></div></li>
+
+<li><p>Maven build</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ mvn clean package</pre></div></li>
+
+<li><p>Docker build</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ docker build -t logging-demo .
+
+$ docker images
+REPOSITORY                              TAG                 IMAGE ID            CREATED             SIZE
+logging-demo                            latest              1444f50dcadc        9 seconds ago       117M</pre></div></li>
+
+<li><p>Application 실행 및 Web Browser에서 localhost:8080 접속.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ docker run -p 8080:8080 logging-demo</pre></div></li>
+
+<li><p>Docker Container에 접속하여 log file 확인</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+79e28edfbb12        logging-demo        &#34;java -Djava.securit…&#34;   4 minutes ago       Up 4 minutes        0.0.0.0:8080-&gt;8080/tcp   gifted_ride
+
+$ docker exec -it 79e28edfbb12 sh
+/ # tail -f logs/spring-boot-logging.log
+....
+2018-07-16 17:31:40.153 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - FrameworkServlet &#39;dispatcherServlet&#39;: initialization completed in 86 ms
+2018-07-16 17:31:40.315 [http-nio-8080-exec-1] INFO  com.example.demo.HomeRestController - logback example - info level
+2018-07-16 17:31:40.316 [http-nio-8080-exec-1] WARN  com.example.demo.HomeRestController - logback example - warn level
+2018-07-16 17:31:40.318 [http-nio-8080-exec-1] ERROR com.example.demo.HomeRestController - logback example - error level</pre></div></li>
+</ul>
+
+<h4 id="deom-application-구조">Deom Application 구조</h4>
+
+<p>Logback 설정해 <code>/logs</code> directory 하위에 log message를 file로 저장</p>
+
+<ul>
+<li><p>Log message 출력하는 HomeRestController</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><span style="color:#f92672">package</span> <span style="color:#a6e22e">com</span>.<span style="color:#a6e22e">example</span>.<span style="color:#a6e22e">demo</span>;
+
+<span style="color:#f92672">import</span> <span style="color:#a6e22e">org</span>.<span style="color:#a6e22e">slf4j</span>.<span style="color:#a6e22e">Logger</span>;
+<span style="color:#f92672">import</span> <span style="color:#a6e22e">org</span>.<span style="color:#a6e22e">slf4j</span>.<span style="color:#a6e22e">LoggerFactory</span>;
+<span style="color:#f92672">import</span> <span style="color:#a6e22e">org</span>.<span style="color:#a6e22e">springframework</span>.<span style="color:#a6e22e">web</span>.<span style="color:#a6e22e">bind</span>.<span style="color:#a6e22e">annotation</span>.<span style="color:#a6e22e">RequestMapping</span>;
+<span style="color:#f92672">import</span> <span style="color:#a6e22e">org</span>.<span style="color:#a6e22e">springframework</span>.<span style="color:#a6e22e">web</span>.<span style="color:#a6e22e">bind</span>.<span style="color:#a6e22e">annotation</span>.<span style="color:#a6e22e">RequestMethod</span>;
+<span style="color:#f92672">import</span> <span style="color:#a6e22e">org</span>.<span style="color:#a6e22e">springframework</span>.<span style="color:#a6e22e">web</span>.<span style="color:#a6e22e">bind</span>.<span style="color:#a6e22e">annotation</span>.<span style="color:#a6e22e">RestController</span>;
+
+<span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">RestController</span>
+<span style="color:#a6e22e">public</span> <span style="color:#a6e22e">class</span> <span style="color:#a6e22e">HomeRestController</span> {
+
+  <span style="color:#a6e22e">private</span> <span style="color:#a6e22e">final</span> <span style="color:#a6e22e">Logger</span> <span style="color:#a6e22e">logger</span> = <span style="color:#a6e22e">LoggerFactory</span>.<span style="color:#a6e22e">getLogger</span>(<span style="color:#a6e22e">this</span>.<span style="color:#a6e22e">getClass</span>());
+
+  <span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">RequestMapping</span>(<span style="color:#a6e22e">value</span> = <span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">method</span> = <span style="color:#a6e22e">RequestMethod</span>.<span style="color:#a6e22e">GET</span>)
+  <span style="color:#a6e22e">public</span> <span style="color:#a6e22e">String</span> <span style="color:#a6e22e">getHome</span>() {
+
+      <span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">debug</span>(<span style="color:#e6db74">&#34;logback example - debug level&#34;</span>);
+      <span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">info</span>(<span style="color:#e6db74">&#34;logback example - info level&#34;</span>);
+      <span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">warn</span>(<span style="color:#e6db74">&#34;logback example - warn level&#34;</span>);
+      <span style="color:#a6e22e">logger</span>.error(<span style="color:#e6db74">&#34;logback example - error level&#34;</span>);
+
+      <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello World!&#34;</span>;
+  }    
+
+}</pre></div></li>
+
+<li><p>Logback 설정</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;logback-spring.xml&gt;
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;configuration&gt;
+
+  &lt;!-- Send debug messages to System.out --&gt;
+  &lt;appender name=&#34;STDOUT&#34; class=&#34;ch.qos.logback.core.ConsoleAppender&#34;&gt;
+      &lt;!-- By default, encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder --&gt;
+      &lt;encoder&gt;
+          &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n&lt;/pattern&gt;
+      &lt;/encoder&gt;
+  &lt;/appender&gt;
+
+  &lt;!-- Send debug message to file --&gt;
+  &lt;appender name=&#34;FILE&#34; class=&#34;ch.qos.logback.core.rolling.RollingFileAppender&#34;&gt;
+      &lt;file&gt;logs/spring-boot-logging.log&lt;/file&gt;
+
+      &lt;encoder class=&#34;ch.qos.logback.classic.encoder.PatternLayoutEncoder&#34;&gt;
+          &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+      &lt;/encoder&gt;
+
+      &lt;rollingPolicy class=&#34;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&#34;&gt;
+          &lt;fileNamePattern&gt;logs/spring-boot-logging.%d{yyyy-MM-dd}_%i.log&lt;/fileNamePattern&gt;
+
+          &lt;!-- each file should be at most 10MB, keep 30 days worth of history --&gt;
+          &lt;maxHistory&gt;30&lt;/maxHistory&gt;
+          &lt;timeBasedFileNamingAndTriggeringPolicy class=&#34;ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP&#34;&gt;
+              &lt;maxFileSize&gt;10MB&lt;/maxFileSize&gt;
+          &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;
+      &lt;/rollingPolicy&gt;
+  &lt;/appender&gt;
+
+  &lt;root level=&#34;INFO&#34;&gt;
+      &lt;appender-ref ref=&#34;STDOUT&#34; /&gt;
+      &lt;appender-ref ref=&#34;FILE&#34; /&gt;
+  &lt;/root&gt;
+&lt;/configuration&gt;</pre></div></li>
+</ul>
+
+<h4 id="demo-application-및-fluentbit-배포">Demo Application 및 Fluentbit 배포</h4>
+
+<ul>
+<li><p>Fluentbit Configmap에 Elasticsearch의 정보 설정</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ vi configmap.yaml
+...
+- name: fluent-bit
+  env:
+   - name: FLUENT_ELASTICSEARCH_HOST
+     value: &#34;elasticsearch.kube-system.svc.cluster.local&#34;
+   - name: FLUENT_ELASTICSEARCH_PORT
+     value: &#34;9200&#34;</pre></div>
+<ul>
+<li>FLUENT_ELASTICSEARCH_HOST의 value : Elasticsearch의 endpoint. IP or Domain or Service</li>
+<li>FLUENT_ELASTICSEARCH_PORT의 value : Elasticsearch의 port</li>
+</ul></li>
+
+<li><p>Fluentbit Configmap 배포</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ kubectl apply -f configmap.yaml
+
+$ kubectl get cm
+NAME                 DATA      AGE
+fluent-bit-config    4         1m</pre></div></li>
+
+<li><p>Demo Application Deployment yaml의 docker image 정보 수정(default 그대로 사용해도 무관)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ vi deployment.yaml
+...
+spec:
+    containers:
+    - name: logging-demo
+      image: dtlabs/spring-boot-logging-demo:latest</pre></div></li>
+
+<li><p>Demo Application 및 Fluentbit Kubernetes Deployment 배포</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ kubectl apply -f deployment.yaml
+
+$ kubectl get deploy
+NAME               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+logging-demo       1         1         1            1           1m
+
+$ kubectl get po
+NAME                             READY     STATUS     RESTARTS   AGE
+logging-demo-6c659fb7cb-zndhs    2/2       Running    0          1m</pre></div></li>
+
+<li><p>Demo Application에 Port Forwarding 설정 &gt; Web browser에서 localhost:8080으로 접속</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ kubectl port-forward logging-demo-6c659fb7cb-zndhs 8080:8080
+Forwarding from 127.0.0.1:8080 -&gt; 8080</pre></div></li>
+
+<li><p>Demo Application 및 Fluentbit Container에 접속해 Log file 확인</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ kubectl exec -it logging-demo-6c659fb7cb-zndhs -c logging-demo sh
+/ # tail -f /logs/spring-boot-logging.log
+2018-07-17 07:47:59.751 [http-nio-8080-exec-5] INFO  com.example.demo.HomeRestController - logback example - info level
+
+$ kubectl exec -it logging-demo-6c659fb7cb-zndhs -c fluent-bit sh
+# tail -f /var/logs/spring-boot-logging.log
+2018-07-17 07:47:59.751 [http-nio-8080-exec-5] INFO  com.example.demo.HomeRestController - logback example - info level</pre></div></li>
+</ul>
+
+<h4 id="kibana-index-pattern-설정-및-log-message-검색">Kibana Index Pattern 설정 및 Log message 검색</h4>
+
+<ul>
+<li>Kibana 접속 &gt; Left 메뉴 &gt; Management 메뉴 선택 &gt; Kibana Index Patterns 선택</li>
+</ul>
+
+<p><img src="logging-kibana-index-01.png" alt="" /></p>
+
+<ul>
+<li>Index name or pattern input box에 fluentbit 입력 후 Time Filter field name combo box에 @timestamp 선택</li>
+</ul>
+
+<p><img src="logging-kibana-index-02.png" alt="" /></p>
+
+<ul>
+<li>정상적으로 생성 시 아래와 같은 모습</li>
+</ul>
+
+<p><img src="logging-kibana-index-03.png" alt="" /></p>
+
+<ul>
+<li>Left 메뉴 &gt; Discover 메뉴 선택 &gt; Demo Application의 Log message 검색 됨</li>
+</ul>
+
+<p><img src="logging-kibana-search.png" alt="" /></p>
+
+<p>지금까지 Kubernetes 환경에서 Logging Architecture에 대해 살펴봤습니다.</p>
+
+<p>Log message 전/후처리에 대한 상세한 내용은 향후 추가로 작성예정입니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/fluent-bit/">경량화 Log Processor &amp; Forwarder : Fluent Bit</a></li>
+        
+        <li><a href="/posts/monitoring-in-kubernetes/">Monitoring in kubernetes</a></li>
+        
+        <li><a href="/posts/spinnaker-deploy-helm-chart/">Spinnaker를 활용한 Helm chart 배포</a></li>
+        
+        <li><a href="/posts/kubernetes/secret/">[Kubernetes 활용(7/8)] Secret</a></li>
+        
+        <li><a href="/posts/kubernetes/configmap/">[Kubernetes 활용(6/8)] ConfigMap</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/logging" rel="tag">logging</a></li><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/fluent" rel="tag">fluent</a></li><li><a href="/tags/cncf" rel="tag">cncf</a></li><li><a href="/tags/elasticsearch" rel="tag">elasticsearch</a></li><li><a href="/tags/kibana" rel="tag">kibana</a></li><li><a href="/tags/%EB%A1%9C%EA%B9%85" rel="tag">로깅</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2flogging-in-kubernetes%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2flogging-in-kubernetes%2f&amp;text=Logging%20in%20kubernetes" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2flogging-in-kubernetes%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2flogging-in-kubernetes%2f&amp;title=Logging%20in%20kubernetes" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2flogging-in-kubernetes%2f&amp;description=Logging%20in%20kubernetes" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2flogging-in-kubernetes%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/yunsangjun">
+
+                                        <i class="fa fa-user-circle-o" aria-hidden="true"></i><div class="author-info">
+    <h3>윤상준</h3>
+    <p>Software &amp; Cloud Engineer</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/hugo/hugo/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">Hugo를 활용한 기술 블로그 구축기</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Jul 18
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/monitoring-in-kubernetes/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">Monitoring in kubernetes</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Jul 18
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

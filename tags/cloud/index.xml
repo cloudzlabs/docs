@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cloud on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/cloud/</link>
+    <description>Recent content in cloud on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 22 Feb 2018 11:07:05 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/cloud/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>12-Factor</title>
+      <link>http://tech.cloudz-labs.io/posts/12-factor/</link>
+      <pubDate>Thu, 22 Feb 2018 11:07:05 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/12-factor/</guid>
+      <description>최근 소프트웨어를 Cloud 환경에 배포하여 서비스 형태로 제공하는 SaaS(Software As A Service)가 보편화되고 있습니다. 저희 팀에서도 작년부터 레거시 시스템을 Cloud로 전환하기 위한 컨설팅을 준비하고 있는데요, 그 과정에서 스터디한 12-Factor를 알아보도록 하겠습니다. 12-Factor는 Heroku 플랫폼을 통해 방대한 앱의 개발, 운영, 확장 등을 관찰한 많은 사람들이 고안해낸 SaaS 개발 방법론 입니다. 12-Factor를 준수할 경우 아래 SaaS의 특징을 갖출 수 있습니다. 즉 12-Factor는 애플리케이션이 Cloud 환경에서 올바르게 게 동작하기 위해서 지켜야 하는 12가지 규칙을 말합니다.</description>
+    </item>
+    
+  </channel>
+</rss>

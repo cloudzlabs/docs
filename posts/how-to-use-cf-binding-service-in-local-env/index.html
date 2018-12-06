@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='로컬 개발 환경과 PaaS 환경을 분리해서 개발환경을 구성하는 경우의 불편한점을 개선하기 위한 방법을 찾아보자'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='로컬에서 Spring Cloud Connector 사용하기 | 윤지상'>
+<meta property='og:description' content='로컬 개발 환경과 PaaS 환경을 분리해서 개발환경을 구성하는 경우의 불편한점을 개선하기 위한 방법을 찾아보자'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/how-to-use-cf-binding-service-in-local-env/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='spring cloud connector'><meta property='article:tag' content='cloud foundry'><meta property='article:tag' content='mariadb'><meta property='article:tag' content='h2'><meta property='article:tag' content='paas'><meta property='article:tag' content='spring cloud'><meta property='article:published_time' content='2018-02-13T08:34:45&#43;09:00'/><meta property='article:modified_time' content='2018-02-13T08:34:45&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>로컬에서 Spring Cloud Connector 사용하기 | 윤지상</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/how-to-use-cf-binding-service-in-local-env/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Feb 13, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 3분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>로컬에서 Spring Cloud Connector 사용하기</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/jisangyun">윤지상</a></p>
+
+
+<h2 id="what">What?</h2>
+
+<p>로컬 개발 환경에서 Spring Cloud Connector를 사용해서 Application에 binding 된 PaaS 서비스를 사용해 봅시다.</p>
+
+<h2 id="why">Why?</h2>
+
+<p>로컬 개발 환경과 PaaS 환경(dev, stg, prod 등) 을 분리하여 개발환경을 구성하는 경우 몇가지 <strong>불편한 점</strong>이 있습니다.</p>
+
+<p>그 중 하나가 로컬 개발 환경에서 사용하는 서비스와 PaaS 환경에서 사용하는 서비스가 다른 경우입니다.</p>
+
+<p>예를 들면,</p>
+
+<ul>
+<li><p>로컬 환경에서 H2 DB 를 쓰다가 MariaDB로 배포하는 경우 쿼리가 다릅니다.</p>
+
+<p>H2:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">DROP TABLE IF EXISTS users CASCADE<span style="color:#f92672">;</span>
+CREATE TABLE IF NOT EXISTS <span style="color:#a6e22e">users</span> <span style="color:#f92672">(</span>
+    id          INTEGER<span style="color:#f92672">,</span>
+    username    <span style="color:#a6e22e">VARCHAR</span><span style="color:#f92672">(</span>100<span style="color:#f92672">)</span> NOT NULL<span style="color:#f92672">,</span>
+    age         INTEGER NOT NULL<span style="color:#f92672">,</span>
+    job         <span style="color:#a6e22e">VARCHAR</span><span style="color:#f92672">(</span>100<span style="color:#f92672">)</span> NOT NULL
+<span style="color:#f92672">);</span>
+ALTER TABLE users MODIFY id INTEGER NOT NULL AUTO_INCREMENT<span style="color:#f92672">;</span></code></pre></div>
+<p>MariaDB:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">DROP TABLE IF EXISTS users CASCADE<span style="color:#f92672">;</span>
+CREATE TABLE IF NOT EXISTS <span style="color:#a6e22e">users</span> <span style="color:#f92672">(</span>
+    id          INTEGER<span style="color:#f92672">,</span>
+    username    <span style="color:#a6e22e">VARCHAR</span><span style="color:#f92672">(</span>100<span style="color:#f92672">)</span> NOT NULL<span style="color:#f92672">,</span>
+    age         INTEGER NOT NULL<span style="color:#f92672">,</span>
+    job         <span style="color:#a6e22e">VARCHAR</span><span style="color:#f92672">(</span>100<span style="color:#f92672">)</span> NOT NULL
+<span style="color:#f92672">);</span>
+ALTER TABLE users MODIFY id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT<span style="color:#f92672">;</span></code></pre></div>
+<p>다른 점은 &hellip; ?      MariaDB는 PRIMARY KEY가 빠지면 에러입니다.</p></li>
+
+<li><p>local 환경에서 초기 데이터를 만들기 번거롭습니다.</p>
+
+<p>테스트 데이터를 매번 생성 or 초기화 하는 절차가 추가됩니다.</p>
+
+<p><img src="1518484130041.png" alt="1518484130041" /></p></li>
+
+<li><p>어플리케이션 수정 후 PaaS 환경에서 테스트를 할 때마다 매번 배포를 합니다. -&gt; CI/CD 배포 pipeline이 없다면 번거로운 절차입니다.</p></li>
+
+<li><p>로컬에서는 잘 되는게 PaaS에서는 안됩니다. -&gt; 서비스의 버전이 다른 경우,,,, 로컬에서 아무리 잘 동작해도 서비스하는 환경에서 안되면 말짱 꽝입니다. 버전 맞추는 것도 번거롭습니다.</p></li>
+</ul>
+
+<h2 id="how">How?</h2>
+
+<p>Spring Cloud Connector 와 STS/Eclipse 의 Run Configuration(환경변수 주입) 을 활용합시다.</p>
+
+<h3 id="개발-환경">개발 환경</h3>
+
+<ul>
+<li>STS(Spring Tool Suite)</li>
+<li>Spring Boot 1.5.9</li>
+<li>Spring Cloud Connector <a href="http://cloud.spring.io/spring-cloud-connectors/spring-cloud-connectors.html" target="_blank">Spring Cloud Connector Docs Link</a></li>
+<li>Cloud Foundry 기반의 OpenPaaS
+
+<ul>
+<li>MariaDB 인스턴스</li>
+</ul></li>
+</ul>
+
+<h3 id="미리-준비한-것">미리 준비한 것</h3>
+
+<ul>
+<li>MariaDB 인스턴스 생성 : js-test-MariaDB</li>
+
+<li><p>어플리케이션 : js-local-paas-service-conn</p>
+
+<ul>
+<li>dependency 추가 - Spring Cloud Connector
+<br /></li>
+</ul>
+
+<p><img src="1518495055690.png" alt="1518495055690" /></p>
+
+<ul>
+<li>datasource 설정</li>
+<li>Bean 생성</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#a6e22e">@Configuration</span>
+  <span style="color:#a6e22e">@Profile</span><span style="color:#f92672">({</span><span style="color:#e6db74">&#34;dev&#34;</span><span style="color:#f92672">})</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CloudConfiguration</span> <span style="color:#66d9ef">extends</span> AbstractCloudConfig <span style="color:#f92672">{</span>
+        
+    <span style="color:#a6e22e">@Value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;${services.datasource.name}&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">private</span> String datasourceName<span style="color:#f92672">;</span>
+
+    <span style="color:#a6e22e">@Value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;${services.datasource.initial-size}&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> minPoolSize<span style="color:#f92672">;</span>
+
+    <span style="color:#a6e22e">@Value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;${services.datasource.maximum-pool-size}&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> maxPoolSize<span style="color:#f92672">;</span>
+
+    <span style="color:#a6e22e">@Value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;${services.datasource.max-wait-time}&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> maxWaitTime<span style="color:#f92672">;</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">      * configure datasource.
+</span><span style="color:#75715e">      * @return dataSource object
+</span><span style="color:#75715e">      */</span>
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> DataSource <span style="color:#a6e22e">dataSource</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+      PoolConfig poolConfig <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PoolConfig<span style="color:#f92672">(</span>minPoolSize<span style="color:#f92672">,</span> maxPoolSize<span style="color:#f92672">,</span> maxWaitTime<span style="color:#f92672">);</span>
+      DataSourceConfig dbConfig <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DataSourceConfig<span style="color:#f92672">(</span>poolConfig<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">return</span> connectionFactory<span style="color:#f92672">().</span><span style="color:#a6e22e">dataSource</span><span style="color:#f92672">(</span>datasourceName<span style="color:#f92672">,</span> dbConfig<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span></code></pre></div>
+<ul>
+<li>application-dev.yml - datasource 설정
+<code>yaml
+services:
+  datasource: 
+    initial-size: 1
+    maximum-pool-size: 100
+    max-wait-time: 3000
+    name: js-test-mariadb
+    initialize: false
+</code>
+
+- js-local-paas-service-conn 을 PaaS에 배포한 후 js-test-MariaDB 와 binding 합니다.
+
+<img src="1518484942742.png" alt="1518484942742" />
+
+- 로컬 환경과 PaaS 환경의 데이터가 다른 것을 확인합니다.
+
+<img src="151231-8495551138.png" alt="151231" />
+<br />
+- <strong>준비 끝!</strong>
+
+
+
+### 상세 적용 방법
+
+#### MariaDB ssh 연동
+
+PaaS 환경의 서비스 인스턴스는 로컬에서 바로 연동하지 못하고, ssh로 연동합니다.
+
+<code>cf ssh -N -L 63306:172.132.14.32:3306 js-local-paas-service-conn</code>
+
+#### STS - Run Configuration - Spring Boot - Profiles 설정
+
+어플리케이션의 수행 profile을 dev로 설정합니다.
+
+<img src="1518489287635.png" alt="1518489287635" />
+
+#### STS - Run Configuration - Environment - Environment variables 설정
+
+어플리케이션의 PaaS 환경 변수(VCAP_APPLICATION, VCAP_SERVICES)를 설정합니다.
+
+- VCAP_APPLCATION : {} 로 세팅합니다.
+- VCAP_SERVICES : cf env {어플리케이션명} 으로 조회된 value를 엔터키 없이 복사해서 넣습니다.
+
+<img src="1518492727313.png" alt="1518492727313" />
+
+<img src="1518493193055.png" alt="1518493193055" />
+
+&gt; cf env로 조회된 mariaDB credential 중 hostname과 port 정보를 ssh 연동한 정보로 수정이 필요합니다.
+&gt;
+&gt; ex. &ldquo;hostname&rdquo;: &ldquo;172.132.14.32&rdquo; =&gt; &ldquo;hostname&rdquo;: &ldquo;127.0.0.1&rdquo;
+
+#### 로컬에서 PaaS 데이터 확인
+
+<img src="1518495702705.png" alt="1518495702705" />
+
+<strong>성공!</strong>
+
+<br />
+
+## Conclusion
+
+Spring Cloud Connector와 STS/Eclipse의 Run Configuration(환경변수 주입)을 사용해
+
+로컬 개발 환경에서 PaaS의 binding 된 서비스를 사용할 수 있습니다.</li>
+</ul></li>
+</ul>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/command-tool/">CF CLI 사용하기</a></li>
+        
+        <li><a href="/posts/discovery-duration-error-in-bluemix/">Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix</a></li>
+        
+        <li><a href="/posts/service-mesh/">Service Mesh 란?</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/kubernetes/mariadb-utf8/">Kubernetes에 구성한 MariaDB(Mysql)의 한글 깨짐 현상 해결방법</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/spring-cloud-connector" rel="tag">spring cloud connector</a></li><li><a href="/tags/cloud-foundry" rel="tag">cloud foundry</a></li><li><a href="/tags/mariadb" rel="tag">mariadb</a></li><li><a href="/tags/h2" rel="tag">h2</a></li><li><a href="/tags/paas" rel="tag">paas</a></li><li><a href="/tags/spring-cloud" rel="tag">spring cloud</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhow-to-use-cf-binding-service-in-local-env%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhow-to-use-cf-binding-service-in-local-env%2f&amp;text=%eb%a1%9c%ec%bb%ac%ec%97%90%ec%84%9c%20Spring%20Cloud%20Connector%20%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhow-to-use-cf-binding-service-in-local-env%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhow-to-use-cf-binding-service-in-local-env%2f&amp;title=%eb%a1%9c%ec%bb%ac%ec%97%90%ec%84%9c%20Spring%20Cloud%20Connector%20%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhow-to-use-cf-binding-service-in-local-env%2f&amp;description=%eb%a1%9c%ec%bb%ac%ec%97%90%ec%84%9c%20Spring%20Cloud%20Connector%20%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhow-to-use-cf-binding-service-in-local-env%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/jisangyun">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/jisangyun.jpg'/><div class="author-info">
+    <h3>윤지상</h3>
+    <p>Microservice Architecture Design&amp;Dev</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-12 post-next"><a href='/posts/discovery-duration-error-in-bluemix/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 13
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 3분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

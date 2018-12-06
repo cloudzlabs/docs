@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Cloud Native 환경에서 Monitoring Architecture 소개 및 실습'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='Monitoring in kubernetes | 윤상준'>
+<meta property='og:description' content='Cloud Native 환경에서 Monitoring Architecture 소개 및 실습'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/monitoring-in-kubernetes/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/monitoring-in-kubernetes/monitoring-prometheus-01.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='monitoring'><meta property='article:tag' content='kubernetes'><meta property='article:tag' content='prometheus'><meta property='article:tag' content='cncf'><meta property='article:tag' content='grafana'><meta property='article:tag' content='모니터링'><meta property='article:published_time' content='2018-07-23T08:06:40&#43;09:00'/><meta property='article:modified_time' content='2018-07-23T08:06:40&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/monitoring-in-kubernetes/http://tech.cloudz-labs.io/monitoring-prometheus-01.png'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>Monitoring in kubernetes | 윤상준</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/monitoring-in-kubernetes/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Jul 23, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 4분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>Monitoring in kubernetes</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/yunsangjun">윤상준</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/monitoring-in-kubernetes/monitoring-prometheus-01.png'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<h2 id="container-환경에서-떠오르는-도전-과제">Container 환경에서 떠오르는 도전 과제</h2>
+
+<h3 id="운영-환경으로-container-환경-사용">운영 환경으로 Container 환경 사용</h3>
+
+<p>운영 환경에서 Kubernets 사용 비율 증가. =&gt; Container 기반 운영 환경 증가</p>
+
+<p><img src="monitoring-trend-01.png" alt="" /></p>
+
+<h3 id="container-환경에서-떠오르는-도전-과제-1">Container 환경에서 떠오르는 도전 과제</h3>
+
+<p>Container 환경을 운영 환경으로 고려하기 시작하면서 운영을 위해 꼭 필요한 모니터링에 대한 관심 증가</p>
+
+<p><img src="monitoring-trend-02.png" alt="" /></p>
+
+<p>[출처 : CNCF <a href="https://www.cncf.io/blog/2017/12/06/cloud-native-technologies-scaling-production-applications/" target="_blank">https://www.cncf.io/blog/2017/12/06/cloud-native-technologies-scaling-production-applications/</a>]</p>
+
+<h2 id="cloud-native-환경에서-monitoring-architecture의-변화">Cloud Native 환경에서 Monitoring Architecture의 변화</h2>
+
+<h3 id="legacy">Legacy</h3>
+
+<ul>
+<li>고사양의 서버에 Application을 크게 운영</li>
+<li>Monitoring Agent를 서버에 설치</li>
+<li>Agent가 App 및 OS의 metric 수집해 Backend에 전송</li>
+</ul>
+
+<p><img src="monitoring-legacy.png" alt="" /></p>
+
+<h3 id="cloud-native">Cloud Native</h3>
+
+<ul>
+<li>Application을 작게 운영하고 필요할 때 마다 확장</li>
+<li>동적으로 확장하는 서버에 Agent 설치 불가능</li>
+<li>Kubernetes API를 통해 동적으로 확장된 서버 endpoint를 discovery</li>
+<li>Monitoring Backend에서 discovery한 endpoint를 통해 metric 수집</li>
+</ul>
+
+<p><img src="monitoring-cloud-native.png" alt="" /></p>
+
+<h2 id="monitoring-architecture">Monitoring Architecture</h2>
+
+<h3 id="prometheus">Prometheus</h3>
+
+<ul>
+<li>Service Discovery, Metric 수집 및 저장, Alert 기능을 통합해 제공하는 Monitoring 시스템</li>
+<li>CNCF의 메인 프로젝트로 Container 기반 Monitoring 시스템의 defactor</li>
+<li>Kubernetes외의 다른 Cloud Provider에 대한 Service Discovery 기능 제공으로 동적인 Cloud를 효율적을 모니터링</li>
+<li>자체 Alert 엔진 보유. 외부 시스템과 연계하여 Alarm을 송신 가능</li>
+<li>Web UI와 Grafana를 통해 Data 시각화</li>
+<li>자체 TSDB(Time Series Database) 보유. Metric data 저장 및 관리에 최적화</li>
+<li>다양한 exporter(수집기)를 제공해 외부 시스템 통합 모니터링 가능</li>
+</ul>
+
+<p><img src="monitoring-prometheus-01.png" alt="" /></p>
+
+<h3 id="service-discovery-scrape">Service Discovery &amp; Scrape</h3>
+
+<ul>
+<li>Prometheus가 Kubernetes API Server로 부터 monitoring metric 수집 대상을 discovery</li>
+<li>각 대상으로 부터 metic scrape(pull)</li>
+<li>Pod(Application)이 동적으로 증가하면 discovery 통해 자동으로 수집 대상에 추가</li>
+</ul>
+
+<p><img src="monitoring-prometheus-02.png" alt="" /></p>
+
+<h2 id="monitoring-실습">Monitoring 실습</h2>
+
+<h3 id="실습-목표">실습 목표</h3>
+
+<ul>
+<li>Demo Application 및 JMX Exporter를 Kubernetes cluster에 배포</li>
+<li>Kubernetes로 부터 App 및 JMX Exporter target 정보를 discovery</li>
+<li>Target으로 부터 Pod 및 JVM metrics 수집</li>
+<li>Grafana dashboard에서 Pod 및 JMX metrics 정보를 시각화</li>
+</ul>
+
+<p><img src="monitoring-exercise.png" alt="" /></p>
+
+<ul>
+<li>참고 : 이 실습은 Kubernetes cluster를 위한 Prometheus와 Grafana가 설치되어 있다는 전제하에 작성했습니다.
+Prometheus와 Grafana 설치에 대한 가이드는 추후 작성 예정입니다.</li>
+</ul>
+
+<h3 id="demo-application-download-및-build">Demo Application Download 및 Build</h3>
+
+<ul>
+<li><p>Demo Application 다운로드</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ git clone https://github.com/cloudz-labs/spring-boot-monitoring-demo.git
+$ cd spring-boot-monitoring-demo</pre></div></li>
+
+<li><p>Maven build</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ mvn clean package</pre></div></li>
+
+<li><p>Dockerfile 편집</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ vi Dockerfile
+FROM openjdk:8-jdk-alpine
+
+ADD target/spring-boot-monitoring-demo-0.0.1-SNAPSHOT.jar app.jar
+ADD jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar jmx_prometheus_javaagent-0.3.1.jar
+ADD jmx-exporter/tomcat.yaml tomcat.yaml
+
+ENTRYPOINT [&#34;java&#34;,&#34;-Djava.security.egd=file:/dev/./urandom&#34;,&#34;-javaagent:/jmx_prometheus_javaagent-0.3.1.jar=8090:/tomcat.yaml&#34;,&#34;-jar&#34;,&#34;/app.jar&#34;]</pre></div>
+<ul>
+<li><p><code>ADD target/spring-boot-monitoring-demo-0.0.1-SNAPSHOT.jar app.jar</code></p>
+
+<p>Demo application을 Docker container에 추가</p></li>
+
+<li><p><code>jmx-exporter/jmx_prometheus_javaagent-0.3.1.jar</code></p>
+
+<p>Prometheus JMX exporter agent를 Docker container에 추가</p></li>
+
+<li><p><code>jmx-exporter/tomcat.yaml tomcat.yaml</code></p>
+
+<p>JMX exporter Tomcat configuration file을 Docker container에 추가</p></li>
+
+<li><p><code>ENTRYPOINT ...</code></p>
+
+<p>Demo App 및 JMX exporter agent 실행</p></li>
+</ul></li>
+
+<li><p>Docker build</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ docker build -t spring-boot-monitoring-demo .
+
+$ docker images
+REPOSITORY                        TAG                 IMAGE ID          CREATED            SIZE
+spring-boot-monitoring-demo       latest              1444f50dcadc      9 seconds ago      117M</pre></div></li>
+
+<li><p>Application 실행</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ docker run -p 8080:8080 -p 8090:8090 spring-boot-monitoring-demo</pre></div></li>
+
+<li><p>Web browser에서 <code>localhost:8080</code>에 접속</p>
+
+<p><code>Hello World!</code> 메세지가 출력됨</p></li>
+
+<li><p>Web browser에서 <code>localhost:8090</code>에 접속</p>
+
+<p>아래와 같이 JVM metrics 출력됨</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"># HELP jvm_gc_collection_seconds Time spent in a given JVM garbage collector in seconds.
+# TYPE jvm_gc_collection_seconds summary
+jvm_gc_collection_seconds_count{gc=&#34;PS Scavenge&#34;,} 15.0
+jvm_gc_collection_seconds_sum{gc=&#34;PS Scavenge&#34;,} 0.18
+jvm_gc_collection_seconds_count{gc=&#34;PS MarkSweep&#34;,} 2.0
+jvm_gc_collection_seconds_sum{gc=&#34;PS MarkSweep&#34;,} 0.262
+...</pre></div></li>
+
+<li><p>Docker image를 Docker registry에 push</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ docker tag spring-boot-monitoring-demo:[VERSION] [REPOSITORY_ADDRESS]/spring-boot-monitoring-demo:[VERSION]
+
+$ docker push [REPOSITORY_ADDRESS]/spring-boot-monitoring-demo:[VERSION]</pre></div></li>
+</ul>
+
+<h3 id="demo-application-배포">Demo Application 배포</h3>
+
+<ul>
+<li><p>Demo Application Deployment yaml에 discovery, docker image 정보 수정(default 그대로 사용해도 무관)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ vi kubernetes/deployment.yaml
+...
+spec:
+  ...
+  template:
+    metadata:
+      ...
+      annotations:
+        prometheus.io/scrape: &#34;true&#34;
+        prometheus.io/port: &#34;8090&#34;
+        prometheus.io/path: /metrics
+    spec:
+      containers:
+      - name: spring-boot-monitoring-demo
+        image: dtlabs/spring-boot-monitoring-demo:latest</pre></div>
+<ul>
+<li><p><code>spec.template.metadata.annotations.prometheus.io/scrape</code></p>
+
+<p>Discorvery 대상 여부</p></li>
+
+<li><p><code>spec.template.metadata.annotations.prometheus.io/port</code></p>
+
+<p>Discovery target port</p></li>
+
+<li><p><code>spec.template.metadata.annotations.prometheus.io/path</code></p>
+
+<p>Discovery target path</p></li>
+
+<li><p><code>spec.template.spec.containers.image</code></p>
+
+<p>Docker image path</p></li>
+</ul></li>
+
+<li><p>Demo Application 배포</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ kubectl apply -f kubernetes/deployment.yaml
+
+$ kubectl get po
+NAME                                              READY     STATUS    RESTARTS   AGE
+spring-boot-monitoring-demo-5795695496-ljfkw      1/1       Running   0          1m
+spring-boot-monitoring-demo-5795695496-mqzrr      1/1       Running   0          1m</pre></div></li>
+
+<li><p>Demo Application에 8080 Port Forwarding 설정</p>
+
+<p>Web browser에서 <code>localhost:8080</code>으로 접속.</p>
+
+<p><code>Hello World!</code> 메세지가 출력됨.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ kubectl port-forward spring-boot-monitoring-demo-5795695496-ljfkw 8080:8080
+Forwarding from 127.0.0.1:8080 -&gt; 8080</pre></div></li>
+
+<li><p>Demo Application에 8090 Port Forwarding 설정</p>
+
+<p>Web browser에서 <code>localhost:8090</code>으로 접속.</p>
+
+<p>아래와 같이 JMX metrics가 출력됨.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"># HELP jvm_gc_collection_seconds Time spent in a given JVM garbage collector in seconds.
+# TYPE jvm_gc_collection_seconds summary
+jvm_gc_collection_seconds_count{gc=&#34;PS Scavenge&#34;,} 15.0
+jvm_gc_collection_seconds_sum{gc=&#34;PS Scavenge&#34;,} 0.18
+jvm_gc_collection_seconds_count{gc=&#34;PS MarkSweep&#34;,} 2.0
+jvm_gc_collection_seconds_sum{gc=&#34;PS MarkSweep&#34;,} 0.262
+...</pre></div></li>
+</ul>
+
+<h3 id="monitoring-dashboard-구성-및-활용">Monitoring Dashboard 구성 및 활용</h3>
+
+<h4 id="jmx-dashboard-구성">JMX Dashboard 구성</h4>
+
+<ul>
+<li><p>Grafana Dashboard 접속 &gt; Left 메뉴 &gt; <code>+</code> 버튼 선택 &gt; Import 메뉴 선택</p>
+
+<p><img src="monitoring-dashboard-jmx-01.png" alt="" /></p></li>
+
+<li><p><code>Upload .json File</code> 버튼 선택</p>
+
+<p>다운로드 받은 <code>spring-boot-monitoring-demo</code> 프로젝트 &gt; <code>jmx-exporter</code> &gt; <code>jmx-exporter-tomcat-grafana-dashboard.json</code> 파일 import</p>
+
+<p><img src="monitoring-dashboard-jmx-02.png" alt="" /></p></li>
+
+<li><p>Options &gt; prometheus combo box &gt; 원하는 data source 선택 &gt; <code>Import</code> 버튼 선택</p>
+
+<p><img src="monitoring-dashboard-jmx-03.png" alt="" /></p>
+
+<ul>
+<li>참고 : data source 설정은 prometheus로 부터 data를 검색하기 위한 용도</li>
+</ul></li>
+
+<li><p>Heap Memory, Threads, Class Loading, Open File, GC 등에 대한 metrics을 그래프 형태로 조회</p>
+
+<p><img src="monitoring-dashboard-jmx-04.png" alt="" /></p></li>
+</ul>
+
+<h4 id="pod-application-dashboard-활용">Pod(Application) Dashboard 활용</h4>
+
+<p>Kubernets cluster 용도로 Prometheus 구성 시 동적으로 생성되는 Pod를 discovery 해서 자동으로 metric을 수집합니다.
+이 문서에서는 Kubernetes cluster를 위한 Prometheus와 Grafana가 설치되어 있다는 전제하에 작성했습니다.
+Prometheus와 Grafana 설치에 대한 가이드는 추후 작성 예정입니다.</p>
+
+<ul>
+<li><p>Dashboard List &gt; Container Dashboards &gt; Kubernetes: POD Overview 선택</p>
+
+<p><img src="monitoring-dashboard-pod-01.png" alt="" /></p></li>
+
+<li><p>Pod(Application)의 cpu, memory, network metrics을 그래프 형태로 조회</p>
+
+<p><img src="monitoring-dashboard-pod-02.png" alt="" /></p></li>
+</ul>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/logging-in-kubernetes/">Logging in kubernetes</a></li>
+        
+        <li><a href="/posts/spinnaker-deploy-helm-chart/">Spinnaker를 활용한 Helm chart 배포</a></li>
+        
+        <li><a href="/posts/fluent-bit/">경량화 Log Processor &amp; Forwarder : Fluent Bit</a></li>
+        
+        <li><a href="/posts/kubernetes/secret/">[Kubernetes 활용(7/8)] Secret</a></li>
+        
+        <li><a href="/posts/kubernetes/configmap/">[Kubernetes 활용(6/8)] ConfigMap</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/monitoring" rel="tag">monitoring</a></li><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/prometheus" rel="tag">prometheus</a></li><li><a href="/tags/cncf" rel="tag">cncf</a></li><li><a href="/tags/grafana" rel="tag">grafana</a></li><li><a href="/tags/%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81" rel="tag">모니터링</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fmonitoring-in-kubernetes%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fmonitoring-in-kubernetes%2f&amp;text=Monitoring%20in%20kubernetes" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fmonitoring-in-kubernetes%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fmonitoring-in-kubernetes%2f&amp;title=Monitoring%20in%20kubernetes" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fmonitoring-in-kubernetes%2f&amp;description=Monitoring%20in%20kubernetes" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fmonitoring-in-kubernetes%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/yunsangjun">
+
+                                        <i class="fa fa-user-circle-o" aria-hidden="true"></i><div class="author-info">
+    <h3>윤상준</h3>
+    <p>Software &amp; Cloud Engineer</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/logging-in-kubernetes/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">Logging in kubernetes</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Jul 23
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/fluent-bit/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">경량화 Log Processor &amp; Forwarder : Fluent Bit</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Jul 23
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 4분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

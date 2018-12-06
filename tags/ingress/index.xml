@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ingress on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/ingress/</link>
+    <description>Recent content in ingress on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 10 May 2018 18:24:03 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/ingress/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Kubernetes 활용(5/8)] Ingress</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/ingress/</link>
+      <pubDate>Thu, 10 May 2018 18:24:03 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/ingress/</guid>
+      <description>Kubernetes에서는 애플리케이션을 외부로 노출하기 위해 Service object를 NodePort로 생성합니다. 그러나 노출 형태가 노드의 IP에 특정 포트(30000-32767)로 제공되기 때문에 호출이 까다롭고 사용자가 서비스로 유입되는 경로도 다양해서 관리가 어려워질 수 있는데요. 이 때, 외부 액세스를 관리하고 서비스를 묶어주는 역할을 하는게 바로 Ingress 입니다.
+Ingress 란? 위 그림과 같이 Ingress는 외부 액세스를 관리하고 서비스를 묶어주는 역할을 합니다. Ingress를 만들 때 도메인을 지정할 수 있고 사용자는 그 도메인으로 접속을 하게 되며 도메인 하위의 path 설정을 통해 서비스들을 라우팅할 수 있게 됩니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(8/8)] Docker의 Network</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/docker-network/</link>
+      <pubDate>Fri, 09 Mar 2018 08:29:07 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/docker-network/</guid>
+      <description>Docker Swarm은 두 가지 종류의 Traffic을 생성합니다.
+ 제어 및 관리 영역 Traffic: Docker Swarm에 대한 참가 및 탈퇴 요청과 같은 Docker Swarm의 관리 Message가 포함됩니다. 해당 Traffic은 항상 암호화됩니다. Application Data 영역 Traffic: Container 및 외부 Client와의 Traffic이 포함됩니다.  이 중에서 해당 Post에서는, Application Data 영역의 Traffic에 대해서 확인해보고자 합니다.
+Docker의 Networking에 대한 자세한 내용은 Docker Networking Reference Architecture문서를 참고하시기 바랍니다.
+ Docker의 Network 먼저, Docker는 Overlay, Ingress, docker\_gwbridge의 세 가지 Network이 존재합니다.</description>
+    </item>
+    
+  </channel>
+</rss>

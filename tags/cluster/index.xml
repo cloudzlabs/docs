@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cluster on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/cluster/</link>
+    <description>Recent content in cluster on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 09 Mar 2018 08:27:01 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/cluster/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/swarm/</link>
+      <pubDate>Fri, 09 Mar 2018 08:27:01 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/swarm/</guid>
+      <description>지금까지는 단일 Docker Machine에서 Container를 실행시켜 서비스를 제공했습니다. 그렇다면, 현 상태로 실제 서비스를 운영할 수 있을까요? 한참 부족합니다! 장애없이 원활한 서비스를 제공하기 위해서는, 내결함성, 고가용성 등등 많은 사항들을 고려하여야 합니다. 결국은 단일 Machine으로는 사용할 수 없고 Cluster 형태로 구성되어야하며, 그 위에서 서비스들은 여러개의 Instance로 부하가 분산되어야 하며, 장애가 발생하더라도 스스로 복구 할 수 있는 구조로 실행되어야 합니다. 마지막으로 이것들이 자동화되어 있어야합니다. 수 십개에서 수 백개로 나뉘어진 Service들을 사람이 직접 관리할 수 없기 때문입니다.</description>
+    </item>
+    
+  </channel>
+</rss>

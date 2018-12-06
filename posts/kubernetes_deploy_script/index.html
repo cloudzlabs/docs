@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='최근 Container 기술이 각광을 받고 있습니다. 그래서 저도 Kubernets 교육을 수강하고 있는데, Kubernets에 배포 한번 하기 참 힘드네요. Project build, Docker image build, Docker push, K8s deploy 총 4개의 과정을 거쳐야 애플리케이션 배포가 끝이 납니다. 도저히 이 과정을 참을 수 없어서 배포 스크립트를 만들었습니다. 사용방법은 아래 설명하였으니, 잘 활용하시기 바랍니다.
+사용법 1. deploy.sh 저장 페이지 하단 deploy.sh 파일을 개발중인 프로젝트 루트에 저장합니다.
+2. 설정 deploy.sh 파일의 상단 설정을 입력합니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='K8S App deploy script | 김봉찬'>
+<meta property='og:description' content='최근 Container 기술이 각광을 받고 있습니다. 그래서 저도 Kubernets 교육을 수강하고 있는데, Kubernets에 배포 한번 하기 참 힘드네요. Project build, Docker image build, Docker push, K8s deploy 총 4개의 과정을 거쳐야 애플리케이션 배포가 끝이 납니다. 도저히 이 과정을 참을 수 없어서 배포 스크립트를 만들었습니다. 사용방법은 아래 설명하였으니, 잘 활용하시기 바랍니다.
+사용법 1. deploy.sh 저장 페이지 하단 deploy.sh 파일을 개발중인 프로젝트 루트에 저장합니다.
+2. 설정 deploy.sh 파일의 상단 설정을 입력합니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/kubernetes_deploy_script/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='kubernetes'><meta property='article:tag' content='docker'><meta property='article:tag' content='deploy'><meta property='article:published_time' content='2018-02-23T16:42:27&#43;09:00'/><meta property='article:modified_time' content='2018-02-23T16:42:27&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>K8S App deploy script | 김봉찬</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/kubernetes_deploy_script/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Feb 23, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 2분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>K8S App deploy script</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/bckim0620">김봉찬</a></p>
+
+
+<p>최근 Container 기술이 각광을 받고 있습니다. 그래서 저도 Kubernets 교육을 수강하고 있는데, Kubernets에 배포 한번 하기 참 힘드네요.
+Project build, Docker image build, Docker push, K8s deploy 총 4개의 과정을 거쳐야 애플리케이션 배포가 끝이 납니다.
+도저히 이 과정을 참을 수 없어서 배포 스크립트를 만들었습니다. 사용방법은 아래 설명하였으니, 잘 활용하시기 바랍니다.</p>
+
+<h3 id="사용법">사용법</h3>
+
+<h4 id="1-deploy-sh-저장">1. deploy.sh 저장</h4>
+
+<p>페이지 하단 deploy.sh 파일을 개발중인 프로젝트 루트에 저장합니다.</p>
+
+<h4 id="2-설정">2. 설정</h4>
+
+<p>deploy.sh 파일의 상단 설정을 입력합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  <span style="color:#75715e">#!/bin/sh
+</span><span style="color:#75715e"></span>
+  <span style="color:#75715e">#작성중인 Project 종류</span>
+  <span style="color:#75715e">#maven | node</span>
+  PROJECT_TYPE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;maven&#34;</span>
+
+  <span style="color:#75715e">#Maven build 과정 중 테스트 수행 여부</span>
+  MAVEN_TEST_SKIP<span style="color:#f92672">=</span>true;
+  NODE_NPM_INSTALL<span style="color:#f92672">=</span>false;
+
+  <span style="color:#75715e">#기존에 생성된 Docker Image, Kubernetes deploy, service 삭제여부</span>
+  <span style="color:#75715e">#기존에 생성된 Kubernetes deploy, service는 kubectl apply로 덮어쓰기 불가, 삭제 후 재생성 필요</span> 
+  DELETE_PREVIOUS_DOCKER_IMAGE_AND_KUBERNETES_DEPLOYMENT<span style="color:#f92672">=</span>true
+
+  <span style="color:#75715e">#Docker Repository 정보</span>
+  <span style="color:#75715e">#Dockerhub registry: docker.io</span>
+  <span style="color:#75715e">#Harbor registry: harbor1.ghama.io</span>
+  <span style="color:#75715e">#Docker hub는 DOCKER_REPOSITORY_PROJECT와 DOCKER_REPOSITORY_USER 동일</span>
+
+  DOCKER_REPOSITORY_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+  DOCKER_REPOSITORY_PROJECT<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+  DOCKER_REPOSITORY_USER<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+  DOCKER_REPOSITORY_PASSWORD<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+  DOCKER_IMAGE_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+
+
+  <span style="color:#75715e">#Kuberetes deployment, service/Dockerfile 경로</span>
+  <span style="color:#75715e">#파일이 존재하는 폴더까지의 경로</span>
+  KUBERNETES_DEPLOYMENT_PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./k8s/&#34;</span>
+  DOCKER_FILE_PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./&#34;</span>
+
+  <span style="color:#75715e">#Kuberetes Cluster 정보</span>
+  <span style="color:#75715e">#ICP의 경우 포탈에서 Configur client 코드를 복사하여 showlog &#34;Login kubernetes&#34; 밑에 덮어쓰기</span>
+  KUBERNETES_CLUSTER_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+  KUBERNETES_CLUSTER_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+  KUBERNETES_CLUSTER_USERNAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+  KUBERNETES_CLUSTER_TOKEN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+  KUBERNETES_CLUSTER_NAMESPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+  KUBERNETES_CONTEXT_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span></code></pre></div>
+<h4 id="3-deploy-sh-실행">3. deploy.sh 실행</h4>
+
+<p>deploy.sh를 실행합니다. 단, Windows docker toolbox를 사용할 경우 docker terminal에서 실행해야합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ ./deploy.sh</code></pre></div>
+<h3 id="deploy-sh-코드">deploy.sh 코드</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e">#!/bin/sh
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#작성중인 Project 종류</span>
+<span style="color:#75715e">#maven | node</span>
+PROJECT_TYPE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;maven&#34;</span>
+
+<span style="color:#75715e">#Maven build 과정 중 테스트 수행 여부</span>
+MAVEN_TEST_SKIP<span style="color:#f92672">=</span>true;
+NODE_NPM_INSTALL<span style="color:#f92672">=</span>false;
+
+<span style="color:#75715e">#기존에 생성된 Docker Image, Kubernetes deploy, service 삭제여부</span>
+<span style="color:#75715e">#기존에 생성된 Kubernetes deploy, service는 kubectl apply로 덮어쓰기 불가, 삭제 후 재생성 필요</span> 
+DELETE_PREVIOUS_DOCKER_IMAGE_AND_KUBERNETES_DEPLOYMENT<span style="color:#f92672">=</span>true
+
+<span style="color:#75715e">#Docker Repository 정보</span>
+<span style="color:#75715e">#Dockerhub registry: docker.io</span>
+<span style="color:#75715e">#Harbor registry: harbor1.ghama.io</span>
+<span style="color:#75715e">#Docker hub는 DOCKER_REPOSITORY_PROJECT와 DOCKER_REPOSITORY_USER 동일</span>
+
+DOCKER_REPOSITORY_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+DOCKER_REPOSITORY_PROJECT<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+DOCKER_REPOSITORY_USER<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+DOCKER_REPOSITORY_PASSWORD<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+DOCKER_IMAGE_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+
+
+<span style="color:#75715e">#Kuberetes deployment, service/Dockerfile 경로</span>
+<span style="color:#75715e">#파일이 존재하는 폴더까지의 경로</span>
+KUBERNETES_DEPLOYMENT_PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./k8s/&#34;</span>
+DOCKER_FILE_PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./&#34;</span>
+
+<span style="color:#75715e">#Kuberetes Cluster 정보</span>
+<span style="color:#75715e">#ICP의 경우 포탈에서 Configur client 코드를 복사하여 showlog &#34;Login kubernetes&#34; 밑에 덮어쓰기</span>
+KUBERNETES_CLUSTER_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+KUBERNETES_CLUSTER_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+KUBERNETES_CLUSTER_USERNAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+KUBERNETES_CLUSTER_TOKEN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+KUBERNETES_CLUSTER_NAMESPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+KUBERNETES_CONTEXT_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+
+
+
+<span style="color:#66d9ef">function</span> showlog<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+	echo <span style="color:#e6db74">&#34;&#34;</span>
+	echo <span style="color:#e6db74">&#34;&#34;</span>
+	echo <span style="color:#e6db74">&#34;&#34;</span>
+	echo <span style="color:#e6db74">&#34;--------------------------- </span>$1<span style="color:#e6db74"> ---------------------------&#34;</span>
+<span style="color:#f92672">}</span>
+
+showlog <span style="color:#e6db74">&#34;deploy.sh&#34;</span>
+
+showlog <span style="color:#e6db74">&#34;Packaging&#34;</span>
+
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>PROJECT_TYPE<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;maven&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+	showlog <span style="color:#e6db74">&#34;Maven packaging&#34;</span>
+	<span style="color:#66d9ef">if</span> ./mvnw clean install -Dmaven.test.skip<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>MAVEN_TEST_SKIP<span style="color:#e6db74">}</span>; <span style="color:#66d9ef">then</span>
+		echo <span style="color:#e6db74">&#34;&#34;</span>
+	<span style="color:#66d9ef">else</span>
+		exit <span style="color:#ae81ff">1</span>
+	<span style="color:#66d9ef">fi</span>
+<span style="color:#66d9ef">else</span>
+	showlog <span style="color:#e6db74">&#34;Node packaging&#34;</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#e6db74">${</span>NODE_NPM_INSTALL<span style="color:#e6db74">}</span>; <span style="color:#66d9ef">then</span>
+		npm install
+	<span style="color:#66d9ef">fi</span>
+<span style="color:#66d9ef">fi</span>
+
+<span style="color:#66d9ef">if</span> <span style="color:#e6db74">${</span>DELETE_PREVIOUS_DOCKER_IMAGE_AND_KUBERNETES_DEPLOYMENT<span style="color:#e6db74">}</span>; <span style="color:#66d9ef">then</span>
+	showlog <span style="color:#e6db74">&#34;Delete docker image, kubernetes deployment&#34;</span>
+	kubectl delete -f <span style="color:#e6db74">${</span>KUBERNETES_DEPLOYMENT_PATH<span style="color:#e6db74">}</span>
+	docker rmi <span style="color:#e6db74">${</span>DOCKER_REPOSITORY_URL<span style="color:#e6db74">}</span>/<span style="color:#e6db74">${</span>DOCKER_REPOSITORY_PROJECT<span style="color:#e6db74">}</span>/<span style="color:#e6db74">${</span>DOCKER_IMAGE_NAME<span style="color:#e6db74">}</span>
+	docker rmi <span style="color:#e6db74">${</span>DOCKER_REPOSITORY_PROJECT<span style="color:#e6db74">}</span>/<span style="color:#e6db74">${</span>DOCKER_IMAGE_NAME<span style="color:#e6db74">}</span>
+<span style="color:#66d9ef">fi</span>
+
+showlog <span style="color:#e6db74">&#34;Build/Tag docker image&#34;</span> 
+docker build <span style="color:#e6db74">${</span>DOCKER_FILE_PATH<span style="color:#e6db74">}</span> -t <span style="color:#e6db74">${</span>DOCKER_REPOSITORY_URL<span style="color:#e6db74">}</span>/<span style="color:#e6db74">${</span>DOCKER_REPOSITORY_PROJECT<span style="color:#e6db74">}</span>/<span style="color:#e6db74">${</span>DOCKER_IMAGE_NAME<span style="color:#e6db74">}</span>
+
+showlog <span style="color:#e6db74">&#34;Login docker repository&#34;</span>
+docker login <span style="color:#e6db74">${</span>DOCKER_REPOSITORY_URL<span style="color:#e6db74">}</span> -u <span style="color:#e6db74">${</span>DOCKER_REPOSITORY_USER<span style="color:#e6db74">}</span> -p <span style="color:#e6db74">${</span>DOCKER_REPOSITORY_PASSWORD<span style="color:#e6db74">}</span>
+
+showlog <span style="color:#e6db74">&#34;Push Docker image&#34;</span>
+docker push <span style="color:#e6db74">${</span>DOCKER_REPOSITORY_URL<span style="color:#e6db74">}</span>/<span style="color:#e6db74">${</span>DOCKER_REPOSITORY_PROJECT<span style="color:#e6db74">}</span>/<span style="color:#e6db74">${</span>DOCKER_IMAGE_NAME<span style="color:#e6db74">}</span>
+
+showlog <span style="color:#e6db74">&#34;Login kubernetes&#34;</span>
+kubectl config set-cluster <span style="color:#e6db74">${</span>KUBERNETES_CLUSTER_NAME<span style="color:#e6db74">}</span> --server<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>KUBERNETES_CLUSTER_URL<span style="color:#e6db74">}</span> --insecure-skip-tls-verify<span style="color:#f92672">=</span>true
+kubectl config set-context <span style="color:#e6db74">${</span>KUBERNETES_CONTEXT_NAME<span style="color:#e6db74">}</span> --cluster<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>KUBERNETES_CLUSTER_NAME<span style="color:#e6db74">}</span> 
+kubectl config set-credentials <span style="color:#e6db74">${</span>KUBERNETES_CLUSTER_USERNAME<span style="color:#e6db74">}</span> --token<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>KUBERNETES_CLUSTER_TOKEN<span style="color:#e6db74">}</span>
+kubectl config set-context <span style="color:#e6db74">${</span>KUBERNETES_CONTEXT_NAME<span style="color:#e6db74">}</span> --user<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>KUBERNETES_CLUSTER_USERNAME<span style="color:#e6db74">}</span> --namespace<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>KUBERNETES_CLUSTER_NAMESPACE<span style="color:#e6db74">}</span>
+kubectl config use-context <span style="color:#e6db74">${</span>KUBERNETES_CONTEXT_NAME<span style="color:#e6db74">}</span>
+
+showlog <span style="color:#e6db74">&#34;Create kuberetes deployment&#34;</span>
+kubectl apply -f <span style="color:#e6db74">${</span>KUBERNETES_DEPLOYMENT_PATH<span style="color:#e6db74">}</span>
+
+showlog <span style="color:#e6db74">&#34;Pod infomation&#34;</span>
+kubectl get pod
+
+showlog <span style="color:#e6db74">&#34;Service infomation&#34;</span>
+kubectl get service</code></pre></div>
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a></li>
+        
+        <li><a href="/posts/spinnaker-deploy-helm-chart/">Spinnaker를 활용한 Helm chart 배포</a></li>
+        
+        <li><a href="/posts/fluent-bit/">경량화 Log Processor &amp; Forwarder : Fluent Bit</a></li>
+        
+        <li><a href="/posts/monitoring-in-kubernetes/">Monitoring in kubernetes</a></li>
+        
+        <li><a href="/posts/logging-in-kubernetes/">Logging in kubernetes</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/deploy" rel="tag">deploy</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes_deploy_script%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes_deploy_script%2f&amp;text=K8S%20App%20deploy%20script" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes_deploy_script%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes_deploy_script%2f&amp;title=K8S%20App%20deploy%20script" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes_deploy_script%2f&amp;description=K8S%20App%20deploy%20script" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes_deploy_script%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/bckim0620">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/bckim0620.jpg'/><div class="author-info">
+    <h3>김봉찬</h3>
+    <p>Microservice Architecture Design&amp;Dev</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/kubernetes/hpa/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">[Kubernetes 활용(3/8)] HPA(오토스케일링)</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 23
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 2분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/ubiquitous-language-in-msa/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">MSA 에서 유비쿼터스 언어(보편 언어)의 중요성</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 23
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 2분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

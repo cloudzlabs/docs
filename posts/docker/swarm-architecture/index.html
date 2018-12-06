@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='이제는 구성된 Docker Swarm에 Application을 배포해보겠습니다. Docker Swarm에 Application Image를 배포하기 위해선, Service를 생성해야 합니다. Service는 큰 Application Context 내의 Microservice들의 Image를 의미하며, 예로 HTTP Server, Database 또는 분산 환경에서 실행하고자 하는 다양한 유형의 Runtime Program들이 여기에 속한다고 할 수 있습니다. Service를 생성하고자 할 때, 사용할 Container Image와 Container 내에서 실행할 명령을 지정합니다. 또한, 다음과 같은 Option들을 정의하여 사용합니다.
+ Docker Swarm 외부에서 접속할 수 있는 Port Docker Swarm 내부의 다른 Service와 통신하기 위한 Overlay Network CPU 및 Memory 사용에 대한 정책 Rolling Update 정책 Image의 Replica 개수  Service Service가 독립형 Container들을 직접 실행하는 것에 비해 갖는 주요 장점 중 하나는, 수동으로 Service를 다시 시작할 필요없이 연결된 Network 및 Volume 등의 구성을 수정할 수 있습니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기 | 정재훈'>
+<meta property='og:description' content='이제는 구성된 Docker Swarm에 Application을 배포해보겠습니다. Docker Swarm에 Application Image를 배포하기 위해선, Service를 생성해야 합니다. Service는 큰 Application Context 내의 Microservice들의 Image를 의미하며, 예로 HTTP Server, Database 또는 분산 환경에서 실행하고자 하는 다양한 유형의 Runtime Program들이 여기에 속한다고 할 수 있습니다. Service를 생성하고자 할 때, 사용할 Container Image와 Container 내에서 실행할 명령을 지정합니다. 또한, 다음과 같은 Option들을 정의하여 사용합니다.
+ Docker Swarm 외부에서 접속할 수 있는 Port Docker Swarm 내부의 다른 Service와 통신하기 위한 Overlay Network CPU 및 Memory 사용에 대한 정책 Rolling Update 정책 Image의 Replica 개수  Service Service가 독립형 Container들을 직접 실행하는 것에 비해 갖는 주요 장점 중 하나는, 수동으로 Service를 다시 시작할 필요없이 연결된 Network 및 Volume 등의 구성을 수정할 수 있습니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/docker/swarm-architecture/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='docker'><meta property='article:tag' content='swarm'><meta property='article:tag' content='service'><meta property='article:tag' content='rolling update'><meta property='article:tag' content='container ochestration'><meta property='article:published_time' content='2018-03-09T08:27:58&#43;09:00'/><meta property='article:modified_time' content='2018-03-09T08:27:58&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기 | 정재훈</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/docker/swarm-architecture/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Mar 09, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 13분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/1000jaeh">정재훈</a></p>
+
+
+<p>이제는 구성된 Docker Swarm에 Application을 배포해보겠습니다. Docker Swarm에 Application Image를 배포하기 위해선, Service를 생성해야 합니다. Service는 큰 Application Context 내의 Microservice들의 Image를 의미하며, 예로 HTTP Server, Database 또는 분산 환경에서 실행하고자 하는 다양한 유형의 Runtime Program들이 여기에 속한다고 할 수 있습니다. Service를 생성하고자 할 때, 사용할 Container Image와 Container 내에서 실행할 명령을 지정합니다. 또한, 다음과 같은 Option들을 정의하여 사용합니다.</p>
+
+<ul>
+<li>Docker Swarm 외부에서 접속할 수 있는 Port</li>
+<li>Docker Swarm 내부의 다른 Service와 통신하기 위한 Overlay Network</li>
+<li>CPU 및 Memory 사용에 대한 정책</li>
+<li>Rolling Update 정책</li>
+<li>Image의 Replica 개수</li>
+</ul>
+
+<h2 id="service">Service</h2>
+
+<p>Service가 독립형 Container들을 직접 실행하는 것에 비해 갖는 주요 장점 중 하나는, 수동으로 Service를 다시 시작할 필요없이 연결된 Network 및 Volume 등의 구성을 수정할 수 있습니다. Docker는 Configuration을 수정하고 만료된 Configuration의 Service Task를 중지할 것이며, 원하는 Configuration과 일치하는 새로운 Task를 생성할 것입니다. Docker가 Swarm Mode에서 실행 중이라고 한다면, Service들 뿐만 아니라, Swarm에 참여하고 있는 모든 Docker Host들 위에서도 독립 실행형 Container들을 실행할 수 있습니다. Service와 독립형 Container의 주요 차이점은 Service는 Manager Node에서만 관리할 수 있고, 독립형 Container들은 모든 Docker Daemon에서 실행될 수 있다는 점입니다.</p>
+
+<h3 id="service가-task를-task가-container를">Service가 Task를 Task가 Container를</h3>
+
+<p>Service를 배포할 때, 먼저 Manager Node는 Service 정의서로 생성할 Service에 대한 상태 및 설정 정보를 받아들입니다. 그런 다음, 타 Node들에서 Service에 대한 복제 Task가 실행되도록 Scheduling합니다. 이 때, Node들에 위치한 Task는 서로 독립적으로 실행됩니다. Container는 격리된 Process이며, 각각의 Task는 정확히 하나의 Container를 호출하게 됩니다. 일단 Container가 기동되면, Scheduler는 Task가 실행 중인 상태임을 인식하고, 만약 Container의 상태 검사를 실패하거나 종료된다면, Task도 종료됩니다.</p>
+
+<p>Task는 Docker Swarm의 가장 작은 Scheduling 단위입니다. Serivce를 생성하거나 수정하기 위해 Service의 상태를 정의하면, Ochestrator는 Task를 Scheduling하여 정의된 상태로 Service를 구체화시킵니다. 예를들어, Ochestrator에게 Microservice를 항상 3개의 Instance로 유지하도록 Service를 정의한다고 했을 때, Ochestrator는 3개의 Task를 생성시킵니다. 각각의 Task는 Scheduler가 Container를 생성하여 채우는 <strong>Slot</strong>이라고 할 수 있으며 Container는 Task가 인스턴스화된 것으로, 할당 - 준비 - 실행의 단방향 메커니즘으로 진행됩니다. 만약 Task가 실행에 실패하면, Ochestrator는 해당 Task와 Container를 제거한 다음, 이를 대체할 새로운 Task를 생성합니다. 아래 그림은 Docker Swarm에서 Service 생성 요청을 받아들이고, Task를 Worker Node에 Scheduling하는 방법을 나타내고 있습니다.</p>
+
+<div class='align-center'>
+    <p><img src="../images/service-lifecycle.png" alt="Service Lifecycle" /><a href="https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/#tasks-and-scheduling" target="_blank">출처: Docker Docs - How services work</a></p>
+
+</div>
+
+
+<h3 id="service-배포-유형">Service 배포 유형</h3>
+
+<p>Service 배포에는 Replicatied와 Global이라는 두 가지 유형이 있습니다. Replicated Service는 사용자가 원하는 수만큼 Task를 동일하게 생성하여 실행되는 Service입니다(가장 일반적인 Service유형이며, 일반적인 Application을 배포할 때 사용된다고 생각하면 됩니다). Global Service는 모든 Node에서 하나의 Task를 실행하는 Service이며, 미리 지정된 Task의 개수가 없습니다. Swarm에 Node를 추가할 때마다, Ochestrator는 Task를 만들고 Scheduler는 Task를 새로운 Node에 할당합니다. Global Service는 Monitoring Agent, Virus 백신 Scanner 또는 Swarm의 모든 Node에서 실행해야하는 Container들을 들 수 있습니다. 아래 그림은 황색으로 표현된 3개의 Replicated Service와 회색으로 표현된 Global Service를 보여줍니다.</p>
+
+<div class='align-center'>
+    <p><img src="../images/replicated-vs-global.png" alt="Replicated VS Global" /><a href="https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/#replicated-and-global-services" target="_blank">출처: Docker Docs - How services work</a></p>
+
+</div>
+
+
+<h3 id="service의-부하-분산-처리">Service의 부하 분산 처리</h3>
+
+<p>Docker Swarm의 Manager Node는 Service가 수 많은 Request를 수용할 수 있도록 하기위해, Ingress Load Balancing이라는 기능을 사용합니다. 이를 위해, Manager Node가 자동으로 해당 Service의 노출 Port(PublishedPort)를
+지정하거나, 관리자가 직접 해당 Service를 위한 PublishedPort를 설정할 수도 있습니다(만약 Port를 지정하지 않을 경우, Manager Node는 30000 ~ 32767 범위내의 Port를 자동으로 할당합니다). 이 후 외부에서는 Node가 현재 Task를 실행 중인지 여부와 관계없이, Cluster의 모든 Node의 PublishedPort를 통해서 Service에 접근할 수 있습니다.</p>
+
+<p>또한, Docker Swarm은 내부 DNS Component를 갖고 있어서, DNS 항목에 있는 각 Service를 자동으로 할당할 수 있습니다. Manager Node는 내부 Load Balancing을 사용하여, Service의 DNS 이름에 따라 Cluster 내의 Service 간에 요청을 분산시킵니다. Cluster 내에 위치한 Container간 내부 Load Balancing과 Cluster에 진입하는 Traffic들에 대한 외부 Load Balancing 모두 처리가 가능하며, 이는 Docker Engine에 내장된 Load Balancing 기능에 의해서 수행됩니다.</p>
+
+<h2 id="service-배포하기">Service 배포하기</h2>
+
+<p>이제부터는 직접 Service를 Docker Swarm에 배포해 보겠습니다(아래의 예제는 Docker 공식문서에서 .</p>
+
+<h3 id="swarm-manager에서-service-배포">Swarm Manager에서 Service 배포</h3>
+
+<p>Docker Swarm의 Manager Node에 접속합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker-machine ssh default
+                        <span style="color:#75715e">##         .</span>
+                  <span style="color:#75715e">## ## ##        ==</span>
+               <span style="color:#75715e">## ## ## ## ##    ===</span>
+           /<span style="color:#e6db74">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;\___/ ===
+</span><span style="color:#e6db74">      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+</span><span style="color:#e6db74">           \______ o           __/
+</span><span style="color:#e6db74">             \    \         __/
+</span><span style="color:#e6db74">              \____\_______/
+</span><span style="color:#e6db74"> _                 _   ____     _            _
+</span><span style="color:#e6db74">| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+</span><span style="color:#e6db74">| &#39;_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ &#39;__|
+</span><span style="color:#e6db74">| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   &lt;  __/ |
+</span><span style="color:#e6db74">|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+</span><span style="color:#e6db74">Boot2Docker version 17.10.0-ce, build HEAD : 34fe485 - Wed Oct 18 17:16:34 UTC 2017
+</span><span style="color:#e6db74">Docker version 17.10.0-ce, build f4ffd25
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">docker@default:~</span>$</code></pre></div>
+<p>Service를  <code>docker service create [OPTIONS] IMAGE [COMMAND] [ARG...]</code>으로 생성합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service create -p <span style="color:#ae81ff">80</span>:80 --name web nginx:latest
+1lc92552oo4mxh25l4iur54pj
+overall progress: <span style="color:#ae81ff">1</span> out of <span style="color:#ae81ff">1</span> tasks
+<span style="color:#ae81ff">1</span>/1: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+verify: Service converged</code></pre></div>
+<p>Service가 생성되었는지 <code>docer service ls [OPTIONS]</code>으로 Service 목록을 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+1lc92552oo4m        web                 replicated          <span style="color:#ae81ff">1</span>/1                 nginx:latest        *:80-&gt;80/tcp</code></pre></div>
+<p>생성된 Service가 정상적으로 기동되었는지 <code>docker service ps [OPTIONS] SERVICE [SERVICE...]</code>로 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service ps web
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+u3pmniq55z8a        web.1               nginx:latest        default             Running             Running <span style="color:#ae81ff">43</span> seconds ago</code></pre></div>
+<p><code>docker service inspect [OPTIONS] SERVICE [SERVICE...]</code>로 생성된 Serivce의 상세정보를 확인합니다. <code>--pretty</code> Option으로 JSON형식의 Data를 사람이 읽기 쉽운 형태로 변환하여 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service inspect web
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;ID&#34;</span>: <span style="color:#e6db74">&#34;1lc92552oo4mxh25l4iur54pj&#34;</span>,
+        <span style="color:#e6db74">&#34;Version&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Index&#34;</span>: <span style="color:#ae81ff">68</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;CreatedAt&#34;</span>: <span style="color:#e6db74">&#34;2017-11-07T01:19:38.721156306Z&#34;</span>,
+        <span style="color:#e6db74">&#34;UpdatedAt&#34;</span>: <span style="color:#e6db74">&#34;2017-11-07T01:19:38.721966563Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Spec&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;web&#34;</span>,
+            <span style="color:#e6db74">&#34;Labels&#34;</span>: <span style="color:#f92672">{}</span>,
+            <span style="color:#e6db74">&#34;TaskTemplate&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;ContainerSpec&#34;</span>: <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Image&#34;</span>: <span style="color:#e6db74">&#34;nginx:latest@sha256:9fca103a62af6db7f188ac3376c60927db41f88b8d2354bf02d2290a672dc425&#34;</span>,
+                    <span style="color:#e6db74">&#34;StopGracePeriod&#34;</span>: <span style="color:#ae81ff">10000000000</span>,
+                    <span style="color:#e6db74">&#34;DNSConfig&#34;</span>: <span style="color:#f92672">{}</span>
+                <span style="color:#f92672">}</span>,
+                <span style="color:#e6db74">&#34;Resources&#34;</span>: <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Limits&#34;</span>: <span style="color:#f92672">{}</span>,
+                    <span style="color:#e6db74">&#34;Reservations&#34;</span>: <span style="color:#f92672">{}</span>
+                <span style="color:#f92672">}</span>,
+                <span style="color:#e6db74">&#34;RestartPolicy&#34;</span>: <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Condition&#34;</span>: <span style="color:#e6db74">&#34;any&#34;</span>,
+                    <span style="color:#e6db74">&#34;Delay&#34;</span>: <span style="color:#ae81ff">5000000000</span>,
+                    <span style="color:#e6db74">&#34;MaxAttempts&#34;</span>: <span style="color:#ae81ff">0</span>
+                <span style="color:#f92672">}</span>,
+                <span style="color:#e6db74">&#34;Placement&#34;</span>: <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Platforms&#34;</span>: <span style="color:#f92672">[</span>
+                        <span style="color:#f92672">{</span>
+                            <span style="color:#e6db74">&#34;Architecture&#34;</span>: <span style="color:#e6db74">&#34;amd64&#34;</span>,
+                            <span style="color:#e6db74">&#34;OS&#34;</span>: <span style="color:#e6db74">&#34;linux&#34;</span>
+                        <span style="color:#f92672">}</span>,
+                        <span style="color:#f92672">{</span>
+                            <span style="color:#e6db74">&#34;OS&#34;</span>: <span style="color:#e6db74">&#34;linux&#34;</span>
+                        <span style="color:#f92672">}</span>,
+                        <span style="color:#f92672">{</span>
+                            <span style="color:#e6db74">&#34;Architecture&#34;</span>: <span style="color:#e6db74">&#34;arm64&#34;</span>,
+                            <span style="color:#e6db74">&#34;OS&#34;</span>: <span style="color:#e6db74">&#34;linux&#34;</span>
+                        <span style="color:#f92672">}</span>,
+                        <span style="color:#f92672">{</span>
+                            <span style="color:#e6db74">&#34;Architecture&#34;</span>: <span style="color:#e6db74">&#34;386&#34;</span>,
+                            <span style="color:#e6db74">&#34;OS&#34;</span>: <span style="color:#e6db74">&#34;linux&#34;</span>
+                        <span style="color:#f92672">}</span>,
+                        <span style="color:#f92672">{</span>
+                            <span style="color:#e6db74">&#34;Architecture&#34;</span>: <span style="color:#e6db74">&#34;ppc64le&#34;</span>,
+                            <span style="color:#e6db74">&#34;OS&#34;</span>: <span style="color:#e6db74">&#34;linux&#34;</span>
+                        <span style="color:#f92672">}</span>,
+                        <span style="color:#f92672">{</span>
+                            <span style="color:#e6db74">&#34;Architecture&#34;</span>: <span style="color:#e6db74">&#34;s390x&#34;</span>,
+                            <span style="color:#e6db74">&#34;OS&#34;</span>: <span style="color:#e6db74">&#34;linux&#34;</span>
+                        <span style="color:#f92672">}</span>
+                    <span style="color:#f92672">]</span>
+                <span style="color:#f92672">}</span>,
+                <span style="color:#e6db74">&#34;ForceUpdate&#34;</span>: <span style="color:#ae81ff">0</span>,
+                <span style="color:#e6db74">&#34;Runtime&#34;</span>: <span style="color:#e6db74">&#34;container&#34;</span>
+            <span style="color:#f92672">}</span>,
+            <span style="color:#e6db74">&#34;Mode&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Replicated&#34;</span>: <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Replicas&#34;</span>: <span style="color:#ae81ff">1</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>,
+            <span style="color:#e6db74">&#34;UpdateConfig&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Parallelism&#34;</span>: <span style="color:#ae81ff">1</span>,
+                <span style="color:#e6db74">&#34;FailureAction&#34;</span>: <span style="color:#e6db74">&#34;pause&#34;</span>,
+                <span style="color:#e6db74">&#34;Monitor&#34;</span>: <span style="color:#ae81ff">5000000000</span>,
+                <span style="color:#e6db74">&#34;MaxFailureRatio&#34;</span>: <span style="color:#ae81ff">0</span>,
+                <span style="color:#e6db74">&#34;Order&#34;</span>: <span style="color:#e6db74">&#34;stop-first&#34;</span>
+            <span style="color:#f92672">}</span>,
+            <span style="color:#e6db74">&#34;RollbackConfig&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Parallelism&#34;</span>: <span style="color:#ae81ff">1</span>,
+                <span style="color:#e6db74">&#34;FailureAction&#34;</span>: <span style="color:#e6db74">&#34;pause&#34;</span>,
+                <span style="color:#e6db74">&#34;Monitor&#34;</span>: <span style="color:#ae81ff">5000000000</span>,
+                <span style="color:#e6db74">&#34;MaxFailureRatio&#34;</span>: <span style="color:#ae81ff">0</span>,
+                <span style="color:#e6db74">&#34;Order&#34;</span>: <span style="color:#e6db74">&#34;stop-first&#34;</span>
+            <span style="color:#f92672">}</span>,
+            <span style="color:#e6db74">&#34;EndpointSpec&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Mode&#34;</span>: <span style="color:#e6db74">&#34;vip&#34;</span>,
+                <span style="color:#e6db74">&#34;Ports&#34;</span>: <span style="color:#f92672">[</span>
+                    <span style="color:#f92672">{</span>
+                        <span style="color:#e6db74">&#34;Protocol&#34;</span>: <span style="color:#e6db74">&#34;tcp&#34;</span>,
+                        <span style="color:#e6db74">&#34;TargetPort&#34;</span>: <span style="color:#ae81ff">80</span>,
+                        <span style="color:#e6db74">&#34;PublishedPort&#34;</span>: <span style="color:#ae81ff">80</span>,
+                        <span style="color:#e6db74">&#34;PublishMode&#34;</span>: <span style="color:#e6db74">&#34;ingress&#34;</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">]</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#e6db74">&#34;Endpoint&#34;</span>: <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Spec&#34;</span>: <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Mode&#34;</span>: <span style="color:#e6db74">&#34;vip&#34;</span>,
+                <span style="color:#e6db74">&#34;Ports&#34;</span>: <span style="color:#f92672">[</span>
+                    <span style="color:#f92672">{</span>
+                        <span style="color:#e6db74">&#34;Protocol&#34;</span>: <span style="color:#e6db74">&#34;tcp&#34;</span>,
+                        <span style="color:#e6db74">&#34;TargetPort&#34;</span>: <span style="color:#ae81ff">80</span>,
+                        <span style="color:#e6db74">&#34;PublishedPort&#34;</span>: <span style="color:#ae81ff">80</span>,
+                        <span style="color:#e6db74">&#34;PublishMode&#34;</span>: <span style="color:#e6db74">&#34;ingress&#34;</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">]</span>
+            <span style="color:#f92672">}</span>,
+            <span style="color:#e6db74">&#34;Ports&#34;</span>: <span style="color:#f92672">[</span>
+                <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;Protocol&#34;</span>: <span style="color:#e6db74">&#34;tcp&#34;</span>,
+                    <span style="color:#e6db74">&#34;TargetPort&#34;</span>: <span style="color:#ae81ff">80</span>,
+                    <span style="color:#e6db74">&#34;PublishedPort&#34;</span>: <span style="color:#ae81ff">80</span>,
+                    <span style="color:#e6db74">&#34;PublishMode&#34;</span>: <span style="color:#e6db74">&#34;ingress&#34;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">]</span>,
+            <span style="color:#e6db74">&#34;VirtualIPs&#34;</span>: <span style="color:#f92672">[</span>
+                <span style="color:#f92672">{</span>
+                    <span style="color:#e6db74">&#34;NetworkID&#34;</span>: <span style="color:#e6db74">&#34;3fbffkmpwe24mhpphqjxyudo9&#34;</span>,
+                    <span style="color:#e6db74">&#34;Addr&#34;</span>: <span style="color:#e6db74">&#34;10.255.0.12/16&#34;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span>
+
+docker@default:~$ docker service inspect --pretty web
+ID:     1lc92552oo4mxh25l4iur54pj
+Name:       web
+Service Mode:   Replicated
+ Replicas:  <span style="color:#ae81ff">1</span>
+Placement:
+UpdateConfig:
+ Parallelism:   <span style="color:#ae81ff">1</span>
+ On failure:    pause
+ Monitoring Period: 5s
+ Max failure ratio: <span style="color:#ae81ff">0</span>
+ Update order:      stop-first
+RollbackConfig:
+ Parallelism:   <span style="color:#ae81ff">1</span>
+ On failure:    pause
+ Monitoring Period: 5s
+ Max failure ratio: <span style="color:#ae81ff">0</span>
+ Rollback order:    stop-first
+ContainerSpec:
+ Image:     nginx:latest@sha256:9fca103a62af6db7f188ac3376c60927db41f88b8d2354bf02d2290a672dc425
+Resources:
+Endpoint Mode:  vip
+Ports:
+ PublishedPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>
+  Protocol <span style="color:#f92672">=</span> tcp
+  TargetPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>
+  PublishMode <span style="color:#f92672">=</span> ingress</code></pre></div>
+<p>Docker Swarm의 Manager Node에서 빠져나와 <code>docker-machine ls [OPTIONS] [ARG...]</code>로 각 Worker Node의 <code>URL</code>을 확인한 뒤, 접속합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker-machine ls
+NAME        ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
+default     -        virtualbox   Running   tcp://192.168.99.100:2376           v17.10.0-ce
+default-2   -        virtualbox   Running   tcp://192.168.99.101:2376           v17.10.0-ce
+default-3   -        virtualbox   Running   tcp://192.168.99.102:2376           v17.10.0-ce</code></pre></div>
+<ul>
+<li>Manager Node
+<img src="../images/manager-node.png" alt="manager-node:default" /></li>
+<li>Worker Node
+<img src="../images/worker-node-1.png" alt="worker-node:default-2" />
+<img src="../images/worker-node-2.png" alt="worker-node:default-3" /></li>
+</ul>
+
+<h3 id="worker-node에서-service-배포">Worker Node에서 Service 배포</h3>
+
+<p>구성한 Worker Node들 중 한 Node에 접속합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker-machine ssh default-2
+                        <span style="color:#75715e">##         .</span>
+                  <span style="color:#75715e">## ## ##        ==</span>
+               <span style="color:#75715e">## ## ## ## ##    ===</span>
+           /<span style="color:#e6db74">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;\___/ ===
+</span><span style="color:#e6db74">      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+</span><span style="color:#e6db74">           \______ o           __/
+</span><span style="color:#e6db74">             \    \         __/
+</span><span style="color:#e6db74">              \____\_______/
+</span><span style="color:#e6db74"> _                 _   ____     _            _
+</span><span style="color:#e6db74">| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+</span><span style="color:#e6db74">| &#39;_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ &#39;__|
+</span><span style="color:#e6db74">| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   &lt;  __/ |
+</span><span style="color:#e6db74">|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+</span><span style="color:#e6db74">Boot2Docker version 17.10.0-ce, build HEAD : 34fe485 - Wed Oct 18 17:16:34 UTC 2017
+</span><span style="color:#e6db74">Docker version 17.10.0-ce, build f4ffd25
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">docker@default-2:~</span>$</code></pre></div>
+<p>Service를 <code>docker service create [OPTIONS] IMAGE [COMMAND] [ARG...]</code>로 생성합니다. Service는 생성되지 않으며, Swarm Manager가 아닌 Node에서는 Cluster 상태를 변경할 수 없다는 Error Message를 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default-2:~$ docker service create -p <span style="color:#ae81ff">80</span>:80 --name web nginx:latest
+Error response from daemon: This node is not a swarm manager. Worker nodes can<span style="color:#960050;background-color:#1e0010">&#39;</span>t be used to view or modify cluster state. Please run this command on a manager node or promote the current node to a manager.</code></pre></div>
+<h2 id="배포된-service-수정하기">배포된 Service 수정하기</h2>
+
+<p>지금부터는 Docker Swarm에 배포된 Service를 통해, Scaling과 배포된 Application의 Version Update/Rollback 기능을 사용해보겠습니다.</p>
+
+<h3 id="scaling">Scaling</h3>
+
+<p><code>docker service ls [OPTIONS]</code>으로 Service 목록을 확인합니다. 현재 생성된 Service의 Replica 개수가 1인 것을 알 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+te07odz7sd0d        web                 replicated          <span style="color:#ae81ff">1</span>/1                 nginx:latest        *:80-&gt;80/tcp</code></pre></div>
+<p>Service 목록 중 Service 하나를 선택하여 <code>docker service scale SERVICE=REPLICAS [SERVICE=REPLICAS...]</code>로 원하는 개수만큼 Scaling합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service scale web<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>
+web scaled to <span style="color:#ae81ff">5</span>
+overall progress: <span style="color:#ae81ff">5</span> out of <span style="color:#ae81ff">5</span> tasks
+<span style="color:#ae81ff">1</span>/5: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2</span>/5: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">3</span>/5: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">4</span>/5: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">5</span>/5: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+verify: Service converged</code></pre></div>
+<p>Service가 Scaling 되었는지 <code>docker service ls [OPTIONS]</code>으로 확인합니다. REPLICAS열에서 지정한 수만큼 변경되었는지 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+1lc92552oo4m        web                 replicated          <span style="color:#ae81ff">5</span>/5                 nginx:latest        *:80-&gt;80/tcp</code></pre></div>
+<p><code>docker service ps [OPTIONS] SERVICE [SERVICE...]</code>로 실제로 몇 개의 Task가 실행중인지 확인합니다. 지정한 개수만큼 Task가 늘어난 것을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service ps web
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE                ERROR               PORTS
+u3pmniq55z8a        web.1               nginx:latest        default             Running             Running about a minute ago
+p8i67ito9574        web.2               nginx:latest        default             Running             Running <span style="color:#ae81ff">13</span> seconds ago
+lxtyceb71nk9        web.3               nginx:latest        default-2           Running             Running <span style="color:#ae81ff">13</span> seconds ago
+yd7ijk5qyqaa        web.4               nginx:latest        default-3           Running             Running <span style="color:#ae81ff">13</span> seconds ago
+q84hr00ompib        web.5               nginx:latest        default-3           Running             Running <span style="color:#ae81ff">13</span> seconds ago</code></pre></div>
+<h3 id="rollilng-update">Rollilng Update</h3>
+
+<p><code>docker service inspect [OPTIONS] SERVICE [SERVICE...]</code>로 생성된 Serivce의 상세정보를 확인합니다. 해당 Service는 Latest Version(1.13.6)의 Nginx Image를 바탕으로 생성된 것을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service inspect --pretty web
+ID:     1lc92552oo4mxh25l4iur54pj
+Name:       web
+Service Mode:   Replicated
+ Replicas:  <span style="color:#ae81ff">5</span>
+Placement:
+UpdateConfig:
+ Parallelism:   <span style="color:#ae81ff">1</span>
+ On failure:    pause
+ Monitoring Period: 5s
+ Max failure ratio: <span style="color:#ae81ff">0</span>
+ Update order:      stop-first
+RollbackConfig:
+ Parallelism:   <span style="color:#ae81ff">1</span>
+ On failure:    pause
+ Monitoring Period: 5s
+ Max failure ratio: <span style="color:#ae81ff">0</span>
+ Rollback order:    stop-first
+ContainerSpec:
+ Image:     nginx:latest@sha256:9fca103a62af6db7f188ac3376c60927db41f88b8d2354bf02d2290a672dc425
+Resources:
+Endpoint Mode:  vip
+Ports:
+ PublishedPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>
+  Protocol <span style="color:#f92672">=</span> tcp
+  TargetPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>
+  PublishMode <span style="color:#f92672">=</span> ingress</code></pre></div>
+<p>Service의 Image를 <code>docker service update [OPTIONS] SERVICE</code>를 사용하여 다른 Version의 Image로 변경합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service update --image nginx:1.12.2 web
+web
+overall progress: <span style="color:#ae81ff">5</span> out of <span style="color:#ae81ff">5</span> tasks
+<span style="color:#ae81ff">1</span>/5: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2</span>/5: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">3</span>/5: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">4</span>/5: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">5</span>/5: running   <span style="color:#f92672">[==================================================</span>&gt;<span style="color:#f92672">]</span>
+verify: Service converged</code></pre></div>
+<p>Service가 Update되었는지, <code>docker service ps [OPTIONS] SERVICE [SERVICE...]</code>로 확인합니다. 기존 Task의 상태는 Shutdown으로 변경되었으며, 각각의 REPLICA마다 새로운 Task들이 실행중임을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service ps web
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE                 ERROR               PORTS
+p3zonnmr967b        web.1               nginx:1.12.2        default-2           Running             Running about a minute ago
+u3pmniq55z8a         <span style="color:#ae81ff">\_</span> web.1           nginx:latest        default             Shutdown            Shutdown <span style="color:#ae81ff">2</span> minutes ago
+t6tlduvxpjlx        web.2               nginx:1.12.2        default-2           Running             Running <span style="color:#ae81ff">40</span> seconds ago
+p8i67ito9574         <span style="color:#ae81ff">\_</span> web.2           nginx:latest        default             Shutdown            Shutdown <span style="color:#ae81ff">41</span> seconds ago
+oww8cmtlnc14        web.3               nginx:1.12.2        default-3           Running             Running <span style="color:#ae81ff">44</span> seconds ago
+lxtyceb71nk9         <span style="color:#ae81ff">\_</span> web.3           nginx:latest        default-2           Shutdown            Shutdown <span style="color:#ae81ff">44</span> seconds ago
+yl4af19swwk7        web.4               nginx:1.12.2        default             Running             Running <span style="color:#ae81ff">48</span> seconds ago
+yd7ijk5qyqaa         <span style="color:#ae81ff">\_</span> web.4           nginx:latest        default-3           Shutdown            Shutdown about a minute ago
+yj7q0bxxm2zh        web.5               nginx:1.12.2        default-3           Running             Running <span style="color:#ae81ff">2</span> minutes ago
+q84hr00ompib         <span style="color:#ae81ff">\_</span> web.5           nginx:latest        default-3           Shutdown            Shutdown <span style="color:#ae81ff">3</span> minutes ago</code></pre></div>
+<p>추가적으로, <code>docker service inspect [OPTIONS] SERVICE [SERVICE...]</code>로 Service의 Image에 대한 상세정보를 확인합니다. Image가 지정한 Version의 Image로 변경되었음을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service inspect --pretty web
+
+ID:     1lc92552oo4mxh25l4iur54pj
+Name:       web
+Service Mode:   Replicated
+ Replicas:  <span style="color:#ae81ff">5</span>
+UpdateStatus:
+ State:     completed
+ Started:   <span style="color:#ae81ff">3</span> minutes ago
+ Completed: <span style="color:#ae81ff">28</span> seconds ago
+ Message:   update completed
+Placement:
+UpdateConfig:
+ Parallelism:   <span style="color:#ae81ff">1</span>
+ On failure:    pause
+ Monitoring Period: 5s
+ Max failure ratio: <span style="color:#ae81ff">0</span>
+ Update order:      stop-first
+RollbackConfig:
+ Parallelism:   <span style="color:#ae81ff">1</span>
+ On failure:    pause
+ Monitoring Period: 5s
+ Max failure ratio: <span style="color:#ae81ff">0</span>
+ Rollback order:    stop-first
+ContainerSpec:
+ Image:     nginx:1.12.2@sha256:5269659b61c4f19a3528a9c22f9fa8f4003e186d6cb528d21e411578d1e16bdb
+Resources:
+Endpoint Mode:  vip
+Ports:
+ PublishedPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>
+  Protocol <span style="color:#f92672">=</span> tcp
+  TargetPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>
+  PublishMode <span style="color:#f92672">=</span> ingress</code></pre></div>
+<h3 id="roll-back">Roll Back</h3>
+
+<p><code>docker service rollback [OPTIONS] SERVICE</code>로 이전 상태의 버전으로 복구합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service rollback web
+web
+rollback: manually requested rollback 
+overall progress: rolling back update: <span style="color:#ae81ff">5</span> out of <span style="color:#ae81ff">5</span> tasks
+<span style="color:#ae81ff">1</span>/5: running   <span style="color:#f92672">[</span>&gt;                                                  <span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2</span>/5: running   <span style="color:#f92672">[</span>&gt;                                                  <span style="color:#f92672">]</span>
+<span style="color:#ae81ff">3</span>/5: running   <span style="color:#f92672">[</span>&gt;                                                  <span style="color:#f92672">]</span>
+<span style="color:#ae81ff">4</span>/5: running   <span style="color:#f92672">[</span>&gt;                                                  <span style="color:#f92672">]</span>
+<span style="color:#ae81ff">5</span>/5: running   <span style="color:#f92672">[</span>&gt;                                                  <span style="color:#f92672">]</span>
+verify: Service converged</code></pre></div>
+<p>추가적으로, <code>docker service inspect [OPTIONS] SERVICE [SERVICE...]</code>로 Service의 Image에 대한 상세정보를 확인합니다. 1.12.2 Version으로 생성된 Service의 상태가 Shutdown으로 변경되었고, 다시 Latest Version으로 Task가 생성되어 Running 상태임을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service ps web
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE             ERROR               PORTS
+ksilhkwx7lkj        web.1               nginx:latest        default-2           Running             Running <span style="color:#ae81ff">21</span> seconds ago
+p3zonnmr967b         <span style="color:#ae81ff">\_</span> web.1           nginx:1.12.2        default-2           Shutdown            Shutdown <span style="color:#ae81ff">22</span> seconds ago
+u3pmniq55z8a         <span style="color:#ae81ff">\_</span> web.1           nginx:latest        default             Shutdown            Shutdown <span style="color:#ae81ff">3</span> hours ago
+9ctk9l8n1lmp        web.2               nginx:latest        default-2           Running             Running <span style="color:#ae81ff">18</span> seconds ago
+t6tlduvxpjlx         <span style="color:#ae81ff">\_</span> web.2           nginx:1.12.2        default-2           Shutdown            Shutdown <span style="color:#ae81ff">18</span> seconds ago
+p8i67ito9574         <span style="color:#ae81ff">\_</span> web.2           nginx:latest        default             Shutdown            Shutdown <span style="color:#ae81ff">3</span> hours ago
+cv5z21ep2u6p        web.3               nginx:latest        default-3           Running             Running <span style="color:#ae81ff">25</span> seconds ago
+oww8cmtlnc14         <span style="color:#ae81ff">\_</span> web.3           nginx:1.12.2        default-3           Shutdown            Shutdown <span style="color:#ae81ff">26</span> seconds ago
+lxtyceb71nk9         <span style="color:#ae81ff">\_</span> web.3           nginx:latest        default-2           Shutdown            Shutdown <span style="color:#ae81ff">3</span> hours ago
+xetjjjb5ed5t        web.4               nginx:latest        default             Running             Running <span style="color:#ae81ff">10</span> seconds ago
+yl4af19swwk7         <span style="color:#ae81ff">\_</span> web.4           nginx:1.12.2        default             Shutdown            Shutdown <span style="color:#ae81ff">10</span> seconds ago
+yd7ijk5qyqaa         <span style="color:#ae81ff">\_</span> web.4           nginx:latest        default-3           Shutdown            Shutdown <span style="color:#ae81ff">3</span> hours ago
+ftcfg2xwuj8u        web.5               nginx:latest        default             Running             Running <span style="color:#ae81ff">14</span> seconds ago
+yj7q0bxxm2zh         <span style="color:#ae81ff">\_</span> web.5           nginx:1.12.2        default-3           Shutdown            Shutdown <span style="color:#ae81ff">14</span> seconds ago
+q84hr00ompib         <span style="color:#ae81ff">\_</span> web.5           nginx:latest        default-3           Shutdown            Shutdown <span style="color:#ae81ff">3</span> hours ago</code></pre></div>
+<p>추가적으로, <code>docker service inspect [OPTIONS] SERVICE [SERVICE...]</code>로 Service의 Image에 대한 상세정보를 확인합니다. Image가 초기 지정한 Version의 Image로 변경되었음을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service inspect --pretty web
+
+ID:     1lc92552oo4mxh25l4iur54pj
+Name:       web
+Service Mode:   Replicated
+ Replicas:  <span style="color:#ae81ff">5</span>
+UpdateStatus:
+ State:     rollback_completed
+ Started:   <span style="color:#ae81ff">4</span> minutes ago
+ Message:   rollback completed
+Placement:
+UpdateConfig:
+ Parallelism:   <span style="color:#ae81ff">1</span>
+ On failure:    pause
+ Monitoring Period: 5s
+ Max failure ratio: <span style="color:#ae81ff">0</span>
+ Update order:      stop-first
+RollbackConfig:
+ Parallelism:   <span style="color:#ae81ff">1</span>
+ On failure:    pause
+ Monitoring Period: 5s
+ Max failure ratio: <span style="color:#ae81ff">0</span>
+ Rollback order:    stop-first
+ContainerSpec:
+ Image:     nginx:latest@sha256:9fca103a62af6db7f188ac3376c60927db41f88b8d2354bf02d2290a672dc425
+Resources:
+Endpoint Mode:  vip
+Ports:
+ PublishedPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>
+  Protocol <span style="color:#f92672">=</span> tcp
+  TargetPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>
+  PublishMode <span style="color:#f92672">=</span> ingress</code></pre></div>
+<h3 id="service-삭제하기">Service 삭제하기</h3>
+
+<p><code>docker service ls [OPTIONS]</code>와 <code>docker service ps [OPTIONS] SERVICE [SERVICE...]</code>로 현재 실행중인 Service 목록을 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+1lc92552oo4m        web                 replicated          <span style="color:#ae81ff">5</span>/5                 nginx:latest        *:80-&gt;80/tcp
+
+docker@default:~$ docker service ps web
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE             ERROR               PORTS
+ksilhkwx7lkj        web.1               nginx:latest        default-2           Running             Running <span style="color:#ae81ff">21</span> seconds ago
+p3zonnmr967b         <span style="color:#ae81ff">\_</span> web.1           nginx:1.12.2        default-2           Shutdown            Shutdown <span style="color:#ae81ff">22</span> seconds ago
+u3pmniq55z8a         <span style="color:#ae81ff">\_</span> web.1           nginx:latest        default             Shutdown            Shutdown <span style="color:#ae81ff">3</span> hours ago
+9ctk9l8n1lmp        web.2               nginx:latest        default-2           Running             Running <span style="color:#ae81ff">18</span> seconds ago
+t6tlduvxpjlx         <span style="color:#ae81ff">\_</span> web.2           nginx:1.12.2        default-2           Shutdown            Shutdown <span style="color:#ae81ff">18</span> seconds ago
+p8i67ito9574         <span style="color:#ae81ff">\_</span> web.2           nginx:latest        default             Shutdown            Shutdown <span style="color:#ae81ff">3</span> hours ago
+cv5z21ep2u6p        web.3               nginx:latest        default-3           Running             Running <span style="color:#ae81ff">25</span> seconds ago
+oww8cmtlnc14         <span style="color:#ae81ff">\_</span> web.3           nginx:1.12.2        default-3           Shutdown            Shutdown <span style="color:#ae81ff">26</span> seconds ago
+lxtyceb71nk9         <span style="color:#ae81ff">\_</span> web.3           nginx:latest        default-2           Shutdown            Shutdown <span style="color:#ae81ff">3</span> hours ago
+xetjjjb5ed5t        web.4               nginx:latest        default             Running             Running <span style="color:#ae81ff">10</span> seconds ago
+yl4af19swwk7         <span style="color:#ae81ff">\_</span> web.4           nginx:1.12.2        default             Shutdown            Shutdown <span style="color:#ae81ff">10</span> seconds ago
+yd7ijk5qyqaa         <span style="color:#ae81ff">\_</span> web.4           nginx:latest        default-3           Shutdown            Shutdown <span style="color:#ae81ff">3</span> hours ago
+ftcfg2xwuj8u        web.5               nginx:latest        default             Running             Running <span style="color:#ae81ff">14</span> seconds ago
+yj7q0bxxm2zh         <span style="color:#ae81ff">\_</span> web.5           nginx:1.12.2        default-3           Shutdown            Shutdown <span style="color:#ae81ff">14</span> seconds ago
+q84hr00ompib         <span style="color:#ae81ff">\_</span> web.5           nginx:latest        default-3           Shutdown            Shutdown <span style="color:#ae81ff">3</span> hours ago</code></pre></div>
+<p><code>docker service rm SERVICE [SERVICE...]</code>으로 Service를 삭제 합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service rm web
+web</code></pre></div>
+<p>Service가 정상적으로 삭제되었는지 <code>docker service ls [OPTIONS]</code>와 <code>docker service ps [OPTIONS] SERVICE [SERVICE...]</code>로 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker@default:~$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+
+docker@default:~$ docker service ps web
+no such service: web</code></pre></div>
+<p>Docker Swarm의 Service는 배포된 Application들의 고가용성을 보장하고 있습니다. Rolling Update와 Roll Back 기능을 제공함으로써, 배포 시 발생할 수 있는 서비스 중단 상황에 대한 대비도 할 수 있도록 되어 있으며, 정의된 Replica의 개수만큼 정상동작하는 Container들을 유지시켜주기도 합니다. 또한, Traffic에 따라 Load Balancing이 적절히 이루어지도록 관리됩니다. 이 모든 것들이 유기적으로 동작할 수 있었던 점은, Cluster Node간 또는 배포된 Service나 Container간 연결된 Docker의 Network 구조 때문이라 생각할 수 있습니다. 따라서, 다음 챕터에서는 Docker의 Network에 대해서 알아보도록 하겠습니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker/swarm/">[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/docker/docker-start/">Docker 시작하기</a></li>
+        
+        <li><a href="/posts/kubernetes/ingress/">[Kubernetes 활용(5/8)] Ingress</a></li>
+        
+        <li><a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/swarm" rel="tag">swarm</a></li><li><a href="/tags/service" rel="tag">service</a></li><li><a href="/tags/rolling-update" rel="tag">rolling update</a></li><li><a href="/tags/container-ochestration" rel="tag">container ochestration</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm-architecture%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm-architecture%2f&amp;text=%5bDocker%20%ea%b8%b0%eb%b3%b8%287%2f8%29%5d%20Docker%20Swarm%ec%9d%98%20%ea%b5%ac%ec%a1%b0%ec%99%80%20Service%20%eb%b0%b0%ed%8f%ac%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm-architecture%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm-architecture%2f&amp;title=%5bDocker%20%ea%b8%b0%eb%b3%b8%287%2f8%29%5d%20Docker%20Swarm%ec%9d%98%20%ea%b5%ac%ec%a1%b0%ec%99%80%20Service%20%eb%b0%b0%ed%8f%ac%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm-architecture%2f&amp;description=%5bDocker%20%ea%b8%b0%eb%b3%b8%287%2f8%29%5d%20Docker%20Swarm%ec%9d%98%20%ea%b5%ac%ec%a1%b0%ec%99%80%20Service%20%eb%b0%b0%ed%8f%ac%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fswarm-architecture%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/1000jaeh">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/1000jaeh.jpeg'/><div class="author-info">
+    <h3>정재훈</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/docker/swarm/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 09
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 13분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/docker/docker-network/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(8/8)] Docker의 Network</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 09
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 13분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

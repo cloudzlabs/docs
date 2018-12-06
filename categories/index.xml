@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/categories/</link>
+    <description>Recent content in Categories on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="http://tech.cloudz-labs.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>posts</title>
+      <link>http://tech.cloudz-labs.io/categories/posts/</link>
+      <pubDate>Wed, 17 Oct 2018 10:14:07 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/categories/posts/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

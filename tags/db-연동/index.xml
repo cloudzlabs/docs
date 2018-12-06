@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DB 연동 on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/db-%EC%97%B0%EB%8F%99/</link>
+    <description>Recent content in DB 연동 on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 08 May 2018 15:23:03 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/db-%EC%97%B0%EB%8F%99/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Kubernetes 활용(4/8)] Mysql DB 연동하기</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/backingservice/</link>
+      <pubDate>Tue, 08 May 2018 15:23:03 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/backingservice/</guid>
+      <description>지난 챕터에서는 사용한 리소스를 기반으로 애플리케이션의 수를 자동으로 조절할 수 있는 HPA 라는 기능을 적용해 보았습니다. 그렇다면 애플리케이션에 Mysql 또는 Redis 등과 같은 서비스를 연동하고 싶을 땐 어떻게 해야할까요? Kubernetes에서는 애플리케이션에서 필요한 서비스를 Docker Image를 사용하여 바로 구성할 수 있습니다. 물론 대부분이 오픈소스 솔루션에 대한 서비스겠지요. Legacy에 있는 서비스들 역시 연동이 가능하긴 하지만, 여기서는 Docker Image 를 통해 Mysql DB를 구성하고 애플리케이션에 연동해보도록 하겠습니다.
+샘플 애플리케이션에 대한 자세한 설명은 Spring의 Accessing data with MySQL 문서를 참고하시기 바랍니다.</description>
+    </item>
+    
+  </channel>
+</rss>

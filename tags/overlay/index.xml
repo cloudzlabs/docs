@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>overlay on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/overlay/</link>
+    <description>Recent content in overlay on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 09 Mar 2018 08:29:07 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/overlay/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Docker 기본(8/8)] Docker의 Network</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/docker-network/</link>
+      <pubDate>Fri, 09 Mar 2018 08:29:07 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/docker-network/</guid>
+      <description>Docker Swarm은 두 가지 종류의 Traffic을 생성합니다.
+ 제어 및 관리 영역 Traffic: Docker Swarm에 대한 참가 및 탈퇴 요청과 같은 Docker Swarm의 관리 Message가 포함됩니다. 해당 Traffic은 항상 암호화됩니다. Application Data 영역 Traffic: Container 및 외부 Client와의 Traffic이 포함됩니다.  이 중에서 해당 Post에서는, Application Data 영역의 Traffic에 대해서 확인해보고자 합니다.
+Docker의 Networking에 대한 자세한 내용은 Docker Networking Reference Architecture문서를 참고하시기 바랍니다.
+ Docker의 Network 먼저, Docker는 Overlay, Ingress, docker\_gwbridge의 세 가지 Network이 존재합니다.</description>
+    </item>
+    
+  </channel>
+</rss>

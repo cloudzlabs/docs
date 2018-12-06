@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='현재 보고계신 블로그는 Hugo &#43; Github Pages로 운영되고 있습니다. 이번 글에서는 Hugo를 활용한 Static Site 구축에 대해서 얘기해볼까 합니다.
+CMS에서 Static Generator까지 많은 사람들이 블로그를 구축한다고 했을 때, 가장 많이 떠올리는 것은 다음과 같이 2가지 형태일 것입니다.
+ Naver Blog, Tistroy, Blogger 등등 Wordpress, Drupal, Joomla  첫번째 형태인 Naver나 Tistroy의 포털 사이트에서 제공하는 가입형 블로그 서비스는, 단순하게 가입만 해도 사용할 수 있기 때문에, 도메인이나 호스팅 등등의 것들을 신경쓰지 않고 바로 글을 작성할 수 있죠.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='Hugo를 활용한 기술 블로그 구축기 | 정재훈'>
+<meta property='og:description' content='현재 보고계신 블로그는 Hugo &#43; Github Pages로 운영되고 있습니다. 이번 글에서는 Hugo를 활용한 Static Site 구축에 대해서 얘기해볼까 합니다.
+CMS에서 Static Generator까지 많은 사람들이 블로그를 구축한다고 했을 때, 가장 많이 떠올리는 것은 다음과 같이 2가지 형태일 것입니다.
+ Naver Blog, Tistroy, Blogger 등등 Wordpress, Drupal, Joomla  첫번째 형태인 Naver나 Tistroy의 포털 사이트에서 제공하는 가입형 블로그 서비스는, 단순하게 가입만 해도 사용할 수 있기 때문에, 도메인이나 호스팅 등등의 것들을 신경쓰지 않고 바로 글을 작성할 수 있죠.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/hugo/hugo/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/hugo/hugo/../images/hugo.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='static generator'><meta property='article:tag' content='hugo'><meta property='article:tag' content='go'><meta property='article:tag' content='github pages'><meta property='article:published_time' content='2018-06-21T10:01:45&#43;09:00'/><meta property='article:modified_time' content='2018-06-21T10:01:45&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/hugo/hugo/http://tech.cloudz-labs.io/images/hugo.png'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>Hugo를 활용한 기술 블로그 구축기 | 정재훈</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/hugo/hugo/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Jun 21, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 6분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>Hugo를 활용한 기술 블로그 구축기</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/1000jaeh">정재훈</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/hugo/hugo/../images/hugo.png'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<p>현재 보고계신 블로그는 <strong>Hugo + Github Pages</strong>로 운영되고 있습니다.
+이번 글에서는 Hugo를 활용한 Static Site 구축에 대해서 얘기해볼까 합니다.</p>
+
+<h2 id="cms에서-static-generator까지">CMS에서 Static Generator까지</h2>
+
+<p>많은 사람들이 블로그를 구축한다고 했을 때, 가장 많이 떠올리는 것은 다음과 같이 2가지 형태일 것입니다.</p>
+
+<ul>
+<li>Naver Blog, Tistroy, Blogger 등등</li>
+<li>Wordpress, Drupal, Joomla</li>
+</ul>
+
+<p>첫번째 형태인 Naver나 Tistroy의 포털 사이트에서 제공하는 가입형 블로그 서비스는, 단순하게 가입만 해도 사용할 수 있기 때문에, 도메인이나 호스팅 등등의 것들을 신경쓰지 않고 바로 글을 작성할 수 있죠. 그러나, 운영자가 블로그를 커스터마이징할 수 있는 영역이 매우 적습니다.</p>
+
+<p>그래서 처음에 기술 블로그를 운영하려고 했을 때 선택한 형태는, CMS를 사용하는 것이었습니다. CMS는 &lsquo;Contents Management System&rsquo;의 약자로 Blog를 직접 설치해서 사용한다고 이해를 하면 쉬울 것 같습니다. 저희가 생각했던 초기 컨셉에 맞게 블로그를 구성하고 싶었고, 다양한 기능들을 블로그에 적용하고 싶었습니다. 최종적으로 저희는 <strong>Wordpress</strong>를 선택했었습니다.</p>
+
+<h3 id="cms-대장-wordpress">CMS 대장 Wordpress</h3>
+
+<p>Wordpress는 PHP로 이루어진 <a href="https://stackshare.io/self-hosted-blogging-cms" target="_blank">CMS의 최강자</a>입니다. 수천가지의 테마와 플러그인을 유/무료 제공하고 있으며, 커뮤니티도 활발하게 이루어져 있습니다. Linkedin, ebay, mozilla등의 기업들도 Wordpress를 이용하여 블로그를 운영하고 있습니다.</p>
+
+<p>Wordpress는 <a href="https://wordpress.org/" target="_blank">오픈소스 버전</a>과 <a href="https://ko.wordpress.com/" target="_blank">상용 버전</a>이 존재합니다. 오픈소스는 직접 Wordpress를 설치하여 구성해야합니다. 서버, 도메인, 호스팅까지 모든 것들을 사용자가 직접 설정하고 운영해야합니다. 반대로 상용버전은 가입만 하면 별도의 서버를 운영할 필요없습니다. 단, 요금제에 따라 제공되는 기능이 다릅니다. 그래서 저희는 상용 버전의 Wordpress를 사용했습니다. 별도의 서버 및 호스팅에 대한 부분을 Wordpress에 맡기고, 저희는 블로그를 간단히 구성하고 글만 잘 작성하여 관리하면 될 줄 알았습니다&hellip;</p>
+
+<h3 id="글쓰기가-스트레스가-되다">글쓰기가 스트레스가 되다</h3>
+
+<p>Wordpress를 하면서, 가장 마음에 안들었던 점은 글쓰는 것이 너무 불편하고, 나타나는 결과물이 너무 만족스럽지 못했습니다. 현재, 저희는 업무 공유 Tool로 <a href="https://ko.atlassian.com/software/confluence" target="_blank">Atlassian의 Confluence</a>를 사용하고 있습니다. Confluence에 온갖 내용들을 Draft형식으로 남기고, 그것을 직접 공유해서 사용했습니다. 별도로 글을 이쁘게 꾸밀 필요가 거의 없이, 깔끔하게 보여졌습니다. 바로, Wordpress에서 그런 것들을 기대했는데 전혀 아니었습니다. 글을 쓴 첫느낌은&hellip; Wordpad에 글을 적는 느낌을 받았고, 결국은 다시 깔끔하고 꾸미는 시간이 필요했습니다.</p>
+
+<p>두번째는 너무 많고 복잡했습니다. 기본으로 제공되는 에디터의 기능이 너무 부족해서 플러그인을 설치하고, 표를 이쁘게 삽입하기 위해서 플러그인을 설치하고, 소셜을 연동하기 위해서 플러그인을 설치하고&hellip; 필요한 플러그인만 10개 이상이 넘어갔고, 주기적으로 업데이트도 해야했습니다. 그리고 제공되는 테마 중 마음에 드는 것이 없어서, 새로 적용하려고 해도 PHP를 어느정도 공부하고 Wordpress만의 구조를 이해하고 넣어야 했죠.</p>
+
+<p>이 2가지가 저희에게는 너무 큰 부담으로 다가왔습니다. 그래서 과감히 Wordpress를 버렸습니다.</p>
+
+<h2 id="solutions">Solutions</h2>
+
+<p>저희는 기술 블로그를 운영함에 있어서 가장 중요하게 고려되어야 할 점들에 대해서 다시 정리하고, 한가지씩 답을 도출했습니다.</p>
+
+<ol>
+<li>글을 작성하고 꾸미는 것이 쉬울 것</li>
+<li>테마를 자유롭게 바꿀 수 있을 것</li>
+<li>운영이 쉬울 것</li>
+</ol>
+
+<p>3가지 항목을 모두 만족시킬 수 있는 방안에 대해서 고민한 결과, 최종적으로 도달한 결론은</p>
+
+<div class='align-center'>
+    <p><strong><em>GitHub Pages + Static Generator(정적 웹사이트 생성기)</em></strong></p>
+
+</div>
+
+
+<p>로 기술 블로그를 구성하는 방법이었습니다.</p>
+
+<h3 id="github-pages">GitHub Pages</h3>
+
+<p>GitHub pages란, GitHub Reposiroty의 내용들을 Web Page로 볼 수 있게 서비스해주는 기능입니다. GitHub Pages는 Static Contents만을 서비스할 수 있기 때문에, OpenSource Project들의 공식 Documents나 소개 서비스로 많이 사용됩니다. 사용법은 매우 간단합니다. <code>[REPOSITORY_NAME].github.io</code>으로 Repository를 Public으로 생성한 뒤 HTML을 해당 Reposiroty로 Push하면 완료입니다. Static Contents만 지정된 Repository에 Push 된다면, GitHub 서버에 무료로 호스팅할 수 있습니다(단, URL에 <code>github.io</code>가 붙습니다).</p>
+
+<h3 id="static-generator">Static Generator</h3>
+
+<p>그럼 블로그 글은 HTML로 작성을 해야할까요? 아닙니다. 바로 Static Contents를 생성해 주는 것이 Static Generator의 역할이며, GitHub Pages와 결합되어 사용했을 때, 빛을 발합니다!!! 우리는 그저 텍스트(마크다운) 형식으로 글을 작성하고, 디렉토리 별로 글들을 정리하면 됩니다. 그러면 Static Generator가 자동으로 정리된 글들과 HTML 템플릿을 함께 합쳐서, 완전한 정적 웹사이트로 만들어 줍니다.</p>
+
+<p>가장 대표적인 Static Generator는 <a href="https://jekyllrb-ko.github.io/" target="_blank">Jekyll</a>이 있습니다. Jekyll은 Ruby로 Github의 창업자인 Tom Preston-Werner가 만들었으며, 현재 GitHub Pages의 내부 엔진으로 사용되고 있습니다. <a href="https://github.com/docker/docker.github.io" target="_blank">Docker Documents</a>가 Jekyll로 되어 있습니다.</p>
+
+<h3 id="hugo">Hugo</h3>
+
+<p><a href="https://stackshare.io/static-site-generators" target="_blank">Static Generator</a>는 Jekyll외에도 Hugo, Gatsby, Hexo 등등 많이 있습니다. 그 중에서도 저희 블로그는 Go언어로 만들어진 Hugo를 사용하였습니다. Jekyll을 사용할 경우, 별도의 Build 과정 없이 Repository에 Push만으로 작성한 글들이 알아서 Publishing됩니다. 하지만, 글이 많아질 수록 Jekyll의 빌드 성능은 현저하게 저하됩니다. 하지만, Hugo는 Build 과정이 있어도 성능저하 없이, 빠르게 글을 Publishing할 수 있습니다. Go나 기타 종속성 없이, Hugo CLI를 통해서 쉽게 블로그 및 글을 생성할 수 있습니다. 그래서, Hugo로 블로그를 만들게 되었습니다.</p>
+
+<h2 id="블로그-구축">블로그 구축</h2>
+
+<p>자, 서론이 길었습니다. 지금부터는 Hugo를 사용하여 블로그를 구성해보겠습니다.</p>
+
+<div class="notices info" ><p>본 내용은 Mac을 기준으로 작성하였습니다. 타 OS는 <a href="https://gohugo.io/getting-started/installing/" target="_blank">Install Hugo</a>를 참고하여 설치하시기 바랍니다.</p>
+</div>
+
+
+<h3 id="hugo-설치">Hugo 설치</h3>
+
+<p>Homebrew로 hugo를 설치합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ brew install hugo
+... 설치 진행 ...
+
+$ hugo version
+Hugo Static Site Generator v0.34 darwin/amd64 BuildDate:</code></pre></div>
+<h3 id="static-site-생성하기">Static Site 생성하기</h3>
+
+<p><code>hugo new site [PATH]</code>로 Static Site를 생성합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ hugo new site tech-blog
+Congratulations! Your new Hugo site is created in /tech-blog.
+
+Just a few more steps and you<span style="color:#960050;background-color:#1e0010">&#39;</span>re ready to go:
+
+<span style="color:#ae81ff">1</span>. Download a theme into the same-named folder.
+   Choose a theme from https://themes.gohugo.io/, or
+   create your own with the <span style="color:#e6db74">&#34;hugo new theme &lt;THEMENAME&gt;&#34;</span> command.
+<span style="color:#ae81ff">2</span>. Perhaps you want to add some content. You can add single files
+   with <span style="color:#e6db74">&#34;hugo new &lt;SECTIONNAME&gt;/&lt;FILENAME&gt;.&lt;FORMAT&gt;&#34;</span>.
+<span style="color:#ae81ff">3</span>. Start the built-in live server via <span style="color:#e6db74">&#34;hugo server&#34;</span>.
+
+Visit https://gohugo.io/ <span style="color:#66d9ef">for</span> quickstart guide and full documentation.</code></pre></div>
+<p>Hugo로 생성된 Static Site의 구조는 다음과 같습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/tech-blog $ tree
+.
+├── archetypes
+│   └── default.md
+├── config.toml
+├── content
+├── data
+├── layouts
+├── static
+└── themes</code></pre></div>
+<p>각 항목에 대한 상세역할은 다음과 같습니다.</p>
+
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+<th>비고</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>archetypes</td>
+<td>컨텐츠 기본 구조 정의</td>
+<td>default.md 파일에서 마크다운 구조 설정</td>
+</tr>
+
+<tr>
+<td>config.toml</td>
+<td>Hugo 블로그 전체 설정 파일</td>
+<td></td>
+</tr>
+
+<tr>
+<td>content/posts</td>
+<td>블로그에 올라갈 마크다운 파일 위치</td>
+<td></td>
+</tr>
+
+<tr>
+<td>data</td>
+<td>태그, 카테고리, 저자 등 기타 항목 정의</td>
+<td></td>
+</tr>
+
+<tr>
+<td>layouts, static</td>
+<td>블로그의 템플릿 및 정적 리소스 위치</td>
+<td>현재는 테마를 사용하기 때문에 사용안함</td>
+</tr>
+
+<tr>
+<td>themes</td>
+<td>사용할 Hugo 테마 위치</td>
+<td></td>
+</tr>
+
+<tr>
+<td>public</td>
+<td>블로그 빌드 타켓 폴더</td>
+<td>gh-pages 브랜치에 Push될 결과물</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="theme-적용하기">Theme 적용하기</h2>
+
+<p>갓 생성된 Static Site는 디렉토리로만 구성되어 있습니다. 따라서, Theme를 적용하여 화면이 보일 수 있도록 하겠습니다. Hugo도 Wordpress와 마찬가지로 다양한 Theme이 제공되고 있으며, 대부분 Open Source로 자유롭게 사용하실 수 있습니다. Theme에 대한 상세내용 <a href="https://themes.gohugo.io/" target="_blank">Hugo Themes</a>에서 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cd tech-blog
+/tech-blog $ git init;
+Initialized empty Git repository in /Volumes/1000jaeh/test/workspace/tech-blog/.git/
+/tech-blog $ git submodule add https://github.com/budparr/gohugo-theme-ananke.git themes/ananke;
+Cloning into <span style="color:#e6db74">&#39;/Volumes/1000jaeh/test/workspace/tech-blog/themes/ananke&#39;</span>...
+remote: Counting objects: <span style="color:#ae81ff">1104</span>, <span style="color:#66d9ef">done</span>.
+remote: Compressing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">17</span>/17<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+remote: Total <span style="color:#ae81ff">1104</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">9</span><span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">9</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">4</span><span style="color:#f92672">)</span>, pack-reused <span style="color:#ae81ff">1083</span>
+Receiving objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">1104</span>/1104<span style="color:#f92672">)</span>, <span style="color:#ae81ff">2</span>.51 MiB | <span style="color:#ae81ff">1</span>.85 MiB/s, <span style="color:#66d9ef">done</span>.
+Resolving deltas: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">584</span>/584<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.</code></pre></div>
+<p>Git으로 Pull 받은 Ananke Theme을 사용하기 위해서 <code>config.toml</code> 파일에 <code>theme</code>의 속성값을 <code>ananke</code>로 적용합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#a6e22e">baseURL</span> = <span style="color:#e6db74">&#34;http://example.org/&#34;</span>
+<span style="color:#a6e22e">languageCode</span> = <span style="color:#e6db74">&#34;en-us&#34;</span>
+<span style="color:#a6e22e">title</span> = <span style="color:#e6db74">&#34;My New Hugo Site&#34;</span>
+<span style="color:#a6e22e">theme</span> = <span style="color:#e6db74">&#34;ananke&#34;</span></code></pre></div>
+<div class="notices info" ><p>TOML이란 &ldquo;Tom&rsquo;s Obvious, Minimal Language.&ldquo;의 약자로 Github의 창업자인 Tom Preston-Werner가 만든 새로운 설정 파일 형식이다.</p>
+</div>
+
+
+<h3 id="posting">Posting</h3>
+
+<p><code>hugo new [PATH]</code>를 사용하여 새로 포스팅할 글을 <code>/content/posts</code>내에 Markdown형식으로 생성합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/tech-blog $ hugo new posts/my-first-post.md
+/Volumes/1000jaeh/test/workspace/tech-blog/content/posts/my-first-post.md created</code></pre></div>
+<p>생성된 Markdown은 다음과 같이 구성되어 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">---<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>title: &#34;My First Post&#34;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>date: 2018-06-26T13:35:54+09:00<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>draft: true<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>---<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>Hello HUGO!!!</code></pre></div>
+<p>상단의 <code>---</code> 영역에 작성된 부분은 생성된 Post에 대한 Metadata를 담고 있는 <strong>Front Matter</strong>부분이며, 하단 부분부터 실제 글이 작성되는 부분입니다. Front Matter는 <code>hugo new</code>로 새로운 Post가 생성될 때 자동으로 작성되며, Metadata에 대한 Template는 <code>/archetypes/default.md</code>에서 확인하고 수정할 수 있습니다.</p>
+
+<h3 id="run-hugo">Run Hugo</h3>
+
+<p>구성된 Static Site를 <code>hugo serve [FLAGS]</code>로 실행시킵니다. Hugo의 Default Port는 1313입니다. <code>-D</code> 옵션은 <code>draft</code>상태의 글을 Build시킬지 확인하는 옵션입니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/tech-blog $ hugo serve -D
+
+                   | EN  
++------------------+----+
+  Pages            | <span style="color:#ae81ff">10</span>  
+  Paginator pages  |  <span style="color:#ae81ff">0</span>  
+  Non-page files   |  <span style="color:#ae81ff">0</span>  
+  Static files     |  <span style="color:#ae81ff">3</span>  
+  Processed images |  <span style="color:#ae81ff">0</span>  
+  Aliases          |  <span style="color:#ae81ff">1</span>  
+  Sitemaps         |  <span style="color:#ae81ff">1</span>  
+  Cleaned          |  <span style="color:#ae81ff">0</span>  
+
+Total in <span style="color:#ae81ff">49</span> ms
+Watching <span style="color:#66d9ef">for</span> changes in /Volumes/1000jaeh/test/workspace/tech-blog/<span style="color:#f92672">{</span>content,data,layouts,static,themes<span style="color:#f92672">}</span>
+Watching <span style="color:#66d9ef">for</span> config changes in /Volumes/1000jaeh/test/workspace/tech-blog/config.toml
+Serving pages from memory
+Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
+Web Server is available at http://localhost:1313/ <span style="color:#f92672">(</span>bind address <span style="color:#ae81ff">127</span>.0.0.1<span style="color:#f92672">)</span>
+Press Ctrl+C to stop</code></pre></div>
+<p><a href="http://localhost:1313에" target="_blank">http://localhost:1313에</a> 접속하여, 정상적으로 Static Site가 구성되었는지, 작성한 글이 제대로 Posting 되었는지 확인합니다.</p>
+
+<div class='align-center'>
+    <p><img src="../images/hugo-site.png" alt="tech-blog" /></p>
+
+</div>
+
+
+<p>이번 글에서는 Static Generator인 Hugo로 간단하게 블로그를 구성해 봤습니다. 다음 글에서는 Travis-CI를 이용하여, Github에 자동으로 배포되고, 작성한 글이 Publishing되는지 확인해보겠습니다.</p>
+
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/static-generator" rel="tag">static generator</a></li><li><a href="/tags/hugo" rel="tag">hugo</a></li><li><a href="/tags/go" rel="tag">go</a></li><li><a href="/tags/github-pages" rel="tag">github pages</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhugo%2fhugo%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhugo%2fhugo%2f&amp;text=Hugo%eb%a5%bc%20%ed%99%9c%ec%9a%a9%ed%95%9c%20%ea%b8%b0%ec%88%a0%20%eb%b8%94%eb%a1%9c%ea%b7%b8%20%ea%b5%ac%ec%b6%95%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhugo%2fhugo%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhugo%2fhugo%2f&amp;title=Hugo%eb%a5%bc%20%ed%99%9c%ec%9a%a9%ed%95%9c%20%ea%b8%b0%ec%88%a0%20%eb%b8%94%eb%a1%9c%ea%b7%b8%20%ea%b5%ac%ec%b6%95%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhugo%2fhugo%2f&amp;description=Hugo%eb%a5%bc%20%ed%99%9c%ec%9a%a9%ed%95%9c%20%ea%b8%b0%ec%88%a0%20%eb%b8%94%eb%a1%9c%ea%b7%b8%20%ea%b5%ac%ec%b6%95%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fhugo%2fhugo%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/1000jaeh">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/1000jaeh.jpeg'/><div class="author-info">
+    <h3>정재훈</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/service-mesh/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">Service Mesh 란?</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Jun 21
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 6분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/logging-in-kubernetes/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">Logging in kubernetes</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Jun 21
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 6분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

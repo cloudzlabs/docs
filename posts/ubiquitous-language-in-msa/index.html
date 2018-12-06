@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Health-Care Application의 MS 분리 워크샵을 진행한 후 자문해봤다.
+ 보상/혜택  Reward가 사용자에게 주어지면 그게 사용자 입장에서는? Item인가 Reward인가? 운동을 안해서 주는 경고도 Reward인가? 내가 운동을 많이 했다고 선물이 아니라 칭찬메시지가 오는 것도 Reward인가? 친구가 나를 역전했다고 알려주는 것이 Reward인가?  챌린지/목표/이벤트  챌린지와 목표의 차이는? 챌린지가 이벤트와 다른 것인가? 마케팅 기획이 이벤트인가? 챌린지를 집단으로 한다면 챌린지인가 이벤트인가?  포인트  포인트가 챌린지의 보상인가? 포인트가 사용자의 경험치인가? 운동량과 포인트는 누구에게나 동일한 비율로 적재되는가?'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='MSA 에서 유비쿼터스 언어(보편 언어)의 중요성 | 윤지상'>
+<meta property='og:description' content='Health-Care Application의 MS 분리 워크샵을 진행한 후 자문해봤다.
+ 보상/혜택  Reward가 사용자에게 주어지면 그게 사용자 입장에서는? Item인가 Reward인가? 운동을 안해서 주는 경고도 Reward인가? 내가 운동을 많이 했다고 선물이 아니라 칭찬메시지가 오는 것도 Reward인가? 친구가 나를 역전했다고 알려주는 것이 Reward인가?  챌린지/목표/이벤트  챌린지와 목표의 차이는? 챌린지가 이벤트와 다른 것인가? 마케팅 기획이 이벤트인가? 챌린지를 집단으로 한다면 챌린지인가 이벤트인가?  포인트  포인트가 챌린지의 보상인가? 포인트가 사용자의 경험치인가? 운동량과 포인트는 누구에게나 동일한 비율로 적재되는가?'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/ubi-lang.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='ubiquitous language'><meta property='article:tag' content='bounded context'><meta property='article:tag' content='ms 분리 워크샵'><meta property='article:tag' content='domain driven design'><meta property='article:published_time' content='2018-02-26T17:52:54&#43;09:00'/><meta property='article:modified_time' content='2018-02-26T17:52:54&#43;09:00'/><meta name='twitter:card' content='summary_large_image'><meta property='twitter:image' content='http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/http://tech.cloudz-labs.io/ubi-lang.png'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>MSA 에서 유비쿼터스 언어(보편 언어)의 중요성 | 윤지상</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Feb 26, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 3분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>MSA 에서 유비쿼터스 언어(보편 언어)의 중요성</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/jisangyun">윤지상</a></p>
+<div class='entry-cover-container'>
+    <figure class='entry-cover'><img class="img-responsive" src='http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/ubi-lang.png'/>
+
+
+
+
+
+</figure>
+</div>
+
+
+<p>Health-Care Application의 MS 분리 워크샵을 진행한 후 자문해봤다.</p>
+
+<ul>
+<li>보상/혜택
+
+<ul>
+<li>Reward가 사용자에게 주어지면 그게 사용자 입장에서는? Item인가 Reward인가?</li>
+<li>운동을 안해서 주는 경고도 Reward인가?</li>
+<li>내가 운동을 많이 했다고 선물이 아니라 칭찬메시지가 오는 것도 Reward인가?</li>
+<li>친구가 나를 역전했다고 알려주는 것이 Reward인가?</li>
+</ul></li>
+<li>챌린지/목표/이벤트
+
+<ul>
+<li>챌린지와 목표의 차이는?</li>
+<li>챌린지가 이벤트와 다른 것인가?</li>
+<li>마케팅 기획이 이벤트인가?</li>
+<li>챌린지를 집단으로 한다면 챌린지인가 이벤트인가?</li>
+</ul></li>
+<li>포인트
+
+<ul>
+<li>포인트가 챌린지의 보상인가?</li>
+<li>포인트가 사용자의 경험치인가?</li>
+<li>운동량과 포인트는 누구에게나 동일한 비율로 적재되는가?</li>
+</ul></li>
+<li>리워드 지갑/혜택 저장
+
+<ul>
+<li>리워드를 지갑에 넣는 순간 Item 아닌가?</li>
+</ul></li>
+<li>활동/액티비티
+
+<ul>
+<li>걸음 등 운동만 활동인가?</li>
+<li>회원 가입도 활동으로 보는가?</li>
+<li>쿠폰 사용도 활동으로 보는가?</li>
+<li>친구 맺기 등 소셜 기능은 활동인가?</li>
+<li>활동은 정보 수집의 대상인가?</li>
+</ul></li>
+</ul>
+
+<p>문제점 투성이다. 같은 의미로 내뱉는 말들이 제각각 다르고, 똑같은 말로 들리는데 그 의도는 다른 것이란다.</p>
+
+<p>이 이름들로 API 를 구현하고 DB Table 을 정의한다면, 짬뽕 시스템이 될 것만 같다.</p>
+
+<p>이를 타파할 방법은 &hellip; <strong>Ubiquitous Language(보편 언어)</strong> 다.</p>
+
+<h2 id="what">What ?</h2>
+
+<p>Ubiquitous Language(보편 언어) 는 도메인 전문가, 아키텍트, 개발자 등 프로젝트 구성원 모두에게 공유된 언어를 뜻한다.</p>
+
+<p>표준 비즈니스 용어나 도메인 전문가들의 은어가 아니다. 커버 영역은 전 세계 공통, 전사 조직 등에서 소화하는 것이 아니라 프로젝트를 수행하는 조직 내부에서만 유효하다.</p>
+
+<p>유비쿼터스 언어는 다양하게 사용된다.</p>
+
+<ul>
+<li>구성원 간 의사소통</li>
+<li>설계 모델링, UML 작성 등</li>
+<li>설계를 바탕으로 구현시의 코드의 클래스명, 메소드명 정의</li>
+</ul>
+
+<p>따라서, 유비쿼터스 언어(보편 언어) 가 도메인의 의도를 정확히 반영하고 핵심 개념이 잘 표현될 수 있도록 정의해야 한다.</p>
+
+<h2 id="why">Why ?</h2>
+
+<h4 id="1-커뮤니케이션의-오류는-프로젝트-진행의-병목-지점이-된다">1. 커뮤니케이션의 오류는 프로젝트 진행의 병목 지점이 된다.</h4>
+
+<p><img src="comm-error.jpg" alt="comm-error" /></p>
+
+<p>구성원 간 각자의 언어를 사용하는 경우, 의사소통에 비용이 든다. 상대방이 내뱉은 단어를 내가 사용하는 단어로 번역해서 이해해야 하고, 회의 내용을 공유할 때 각자 해석이 분분한 지점에 첨언을 달아야 한다.</p>
+
+<p>혹은 전달받은 정의서대로 구현을 마치고 나면, 그 결과가 아니라고 할 때가 있다. 정의서를 펼쳐놓고 얼굴 맞대로 얘기하면 그제야 어디서 어긋 낫는지 파악된다. 재작업의 연속이다.</p>
+
+<h4 id="2-msa를-도입한-조직에서-언어는-업무-범위와-책임을-정의한다">2. MSA를 도입한 조직에서 언어는 업무 범위와 책임을 정의한다.</h4>
+
+<p><img src="bounded-context.png" alt="bounded-context" /></p>
+
+<p>Bounded Context는 Ubiquitous Language(보편 언어) 로 정의된 모델을 기반으로 경계를 만든다. MSA에서 각각의 마이크로 서비스는 Bounded Context와 대응된다. 그리고 마이크로 서비스는 담당 조직의 규모, 기술 스택, 책임 등에 매우 연관이 깊다.</p>
+
+<p>즉, Ubiquitous Language(보편 언어) 가 조직에 영향을 끼친다.</p>
+
+<h2 id="how">How ?</h2>
+
+<h4 id="용어-사전을-만든다">용어 사전을 만든다.</h4>
+
+<p>Wiki 등 다양한 형태로 도메인 전문가, 아키텍트, 개발자 등 프로젝트 구성원이 모여 용어 사전을 만든다. 워크샵의 형태가 적당하다.(MS 분리 워크샵 등)</p>
+
+<p>약어나 코드 값 등 직관적으로 이해가 되지 않는 내용은 줄이고 Full Name을 사용한다.</p>
+
+<p>특정 형식 없이 그림 등의 형태로 관리한다.</p>
+
+<p>만들어진 용어 사전은 모두가 편히 접할 수 있는 곳에 위치한다.</p>
+
+<h4 id="ubiquitous-language-보편-언어-를-사용한다">Ubiquitous Language(보편 언어) 를 사용한다.</h4>
+
+<p>도메인 모델링, UML 다이어그램 작성시 Ubiquitous Language(보편 언어) 를 사용한다.</p>
+
+<p>구성원 간 커뮤니케이션에 이를 활용해 텍스트 뿐만 아니라 소리내어 사용한다.</p>
+
+<p>커뮤니케이션, 문서만 아니라 코드에도 Ubiquitous Language(보편 언어) 를 녹여서 구현한다.</p>
+
+<h4 id="ubiquitous-language-보편-언어-를-지속적으로-발견하고-발전시킨다">Ubiquitous Language(보편 언어) 를 지속적으로 발견하고 발전시킨다.</h4>
+
+<p>프로젝트 진행 중에 구성원 간에 용어에 대한 의견을 개진하고 지속적으로 갱신한다.</p>
+
+<p>용어를 처음 정한 형태로 계속 사용하지 않아도 된다. 이를 문서, 코드 등에도 갱신하고 최종적으로 모델링과 코드에 잘 담겨 있어야 한다.</p>
+
+<p>이를 위해 짧은 주기로 반복 개발/검증하는 에자일 개발 프로세스가 적합해 보인다.</p>
+
+<p>주기적으로 Ubiquitous Language(보편 언어) 를 갱신, 모델링 UML 다이어그램에 반영하고 코드에 녹여낸다. 그 후 피드백하는 과정을 반복한다.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>프로젝트에서 언어의 중요성은 아무리 강조해도 모자라다.</p>
+
+<p>특히 MSA 를 적용한 개발팀은 언어 정의에 따라 업무 범위와 책임이 구별되는 만큼 중요하게 생각해야 한다.</p>
+
+<p><strong>모두가 함께 쓰는 공통 언어 + 중의적 의미가 제거된 명확한 언어 + 번역이 필요없는 언어를 추구하자.</strong></p>
+
+<blockquote>
+<p>추가로, Ubiquitous Language(보편 언어) 는 Domain Driven Design 을 언급할 때 함께 설명된다.</p>
+
+<p>Domain Driven Design 도 같이 알아볼 필요가 있다.</p>
+</blockquote>
+
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/ubiquitous-language" rel="tag">ubiquitous language</a></li><li><a href="/tags/bounded-context" rel="tag">bounded context</a></li><li><a href="/tags/ms-%EB%B6%84%EB%A6%AC-%EC%9B%8C%ED%81%AC%EC%83%B5" rel="tag">ms 분리 워크샵</a></li><li><a href="/tags/domain-driven-design" rel="tag">domain driven design</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fubiquitous-language-in-msa%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fubiquitous-language-in-msa%2f&amp;text=MSA%20%ec%97%90%ec%84%9c%20%ec%9c%a0%eb%b9%84%ec%bf%bc%ed%84%b0%ec%8a%a4%20%ec%96%b8%ec%96%b4%28%eb%b3%b4%ed%8e%b8%20%ec%96%b8%ec%96%b4%29%ec%9d%98%20%ec%a4%91%ec%9a%94%ec%84%b1" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fubiquitous-language-in-msa%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fubiquitous-language-in-msa%2f&amp;title=MSA%20%ec%97%90%ec%84%9c%20%ec%9c%a0%eb%b9%84%ec%bf%bc%ed%84%b0%ec%8a%a4%20%ec%96%b8%ec%96%b4%28%eb%b3%b4%ed%8e%b8%20%ec%96%b8%ec%96%b4%29%ec%9d%98%20%ec%a4%91%ec%9a%94%ec%84%b1" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fubiquitous-language-in-msa%2f&amp;description=MSA%20%ec%97%90%ec%84%9c%20%ec%9c%a0%eb%b9%84%ec%bf%bc%ed%84%b0%ec%8a%a4%20%ec%96%b8%ec%96%b4%28%eb%b3%b4%ed%8e%b8%20%ec%96%b8%ec%96%b4%29%ec%9d%98%20%ec%a4%91%ec%9a%94%ec%84%b1" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fubiquitous-language-in-msa%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/jisangyun">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/jisangyun.jpg'/><div class="author-info">
+    <h3>윤지상</h3>
+    <p>Microservice Architecture Design&amp;Dev</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/kubernetes_deploy_script/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">K8S App deploy script</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 26
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 3분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/zuul-swagger-integration/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">Zuul Swagger 연동</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 26
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 3분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

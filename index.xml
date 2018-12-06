@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/</link>
+    <description>Recent content on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 17 Oct 2018 10:14:07 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Event Driven Microservice 란?</title>
+      <link>http://tech.cloudz-labs.io/posts/event-driven-microservice/</link>
+      <pubDate>Wed, 17 Oct 2018 10:14:07 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/event-driven-microservice/</guid>
+      <description>MicroService Architecture(MSA)는 loosely coupled를 기반으로 빠른 배포주기, 폴리글랏 프로그래밍, 관심사의 집중 등의 장점을 발휘해 Enterprise IT에서 가장 주목받고 있는 아키텍처 입니다. 또한, 분해된 서비스의 scalabililty, resiliency 등 컨테이너 기반의 플랫폼(Kubernetes 등)과 잘 어우러지는 성향으로 서로 끌어주고 밀어주며 발전하고 있습니다.
+하지만 MSA를 도입한 이후 새로운 문제점은 발생하지 않았나요 ? Database Per Service 라는 새로운 요구사항은 잘 지켜지나요 ? rest 통신(synchronized)으로 인한 제약사항은 없나요 ? 분산된 서비스 간 트랜잭션 처리 / 반정규화 된 데이터의 동기 처리는 잘 이루어지고 있나요 ?</description>
+    </item>
+    
+    <item>
+      <title>Spinnaker를 활용한 Helm chart 배포</title>
+      <link>http://tech.cloudz-labs.io/posts/spinnaker-deploy-helm-chart/</link>
+      <pubDate>Mon, 15 Oct 2018 12:30:40 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/spinnaker-deploy-helm-chart/</guid>
+      <description>이 페이지는 Spinnaker에서 Helm chart를 배포하는 방법에 대해 설명합니다.
+자세한 내용은 Spinnaker 공식 가이드 문서의 Deploy Helm Charts를 참고하세요.
+사전 준비 GitHub 계정 생성 및 저장소 fork GitHub 계정을 생성하고 아래 저장소를 fork 합니다.
+https://github.com/YunSangJun/my-charts
+GitHub Webhook 설정 GitHub Webhooks 설정하기
+GitHub Artifact 설정 GitHub Artifact 설정하기
+Application 생성 Spinnaker top menu &amp;gt; Applications &amp;gt; 우측 Actions dropbox &amp;gt; Create Application을 선택합니다.
+아래와 같이 내용 입력 후 Create 버튼을 선택합니다.</description>
+    </item>
+    
+    <item>
+      <title>경량화 Log Processor &amp; Forwarder : Fluent Bit</title>
+      <link>http://tech.cloudz-labs.io/posts/fluent-bit/</link>
+      <pubDate>Fri, 27 Jul 2018 14:19:56 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/fluent-bit/</guid>
+      <description>Fluent Bit v0.13을 기준으로 작성된 포스팅입니다. https://fluentbit.io
+ Log Collector 요즘은 오픈소스화된 다양한 플랫폼이 나오게 되면서 데이터 정보를 수집하기 위해 어려움이 발생합니다. 서로간의 정보의 출처도 다를뿐더러 다양한 데이터 포맷으로 전달해 오는 데이터를 처리해야만 하고 마지막으로 최종 목적지 또한 다를 수 있습니다.
+이러한 요구를 만족시키기 위해 2011년 Fluentd라는 프로젝트가 탄생하게 됩니다. Ruby로 작성된 Fluentd는 여러 소스의 데이터를 집계하고 형식이 다른 데이터를 JSON 객체로 통합하여 다른 출력 대상으로 라우팅 할 수 있는 원 스톱 구성 요소인 통합 로깅 레이어로 작동하도록 개발되었습니다.</description>
+    </item>
+    
+    <item>
+      <title>Monitoring in kubernetes</title>
+      <link>http://tech.cloudz-labs.io/posts/monitoring-in-kubernetes/</link>
+      <pubDate>Mon, 23 Jul 2018 08:06:40 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/monitoring-in-kubernetes/</guid>
+      <description>Container 환경에서 떠오르는 도전 과제 운영 환경으로 Container 환경 사용 운영 환경에서 Kubernets 사용 비율 증가. =&amp;gt; Container 기반 운영 환경 증가
+Container 환경에서 떠오르는 도전 과제 Container 환경을 운영 환경으로 고려하기 시작하면서 운영을 위해 꼭 필요한 모니터링에 대한 관심 증가
+[출처 : CNCF https://www.cncf.io/blog/2017/12/06/cloud-native-technologies-scaling-production-applications/]
+Cloud Native 환경에서 Monitoring Architecture의 변화 Legacy  고사양의 서버에 Application을 크게 운영 Monitoring Agent를 서버에 설치 Agent가 App 및 OS의 metric 수집해 Backend에 전송  Cloud Native  Application을 작게 운영하고 필요할 때 마다 확장 동적으로 확장하는 서버에 Agent 설치 불가능 Kubernetes API를 통해 동적으로 확장된 서버 endpoint를 discovery Monitoring Backend에서 discovery한 endpoint를 통해 metric 수집  Monitoring Architecture Prometheus  Service Discovery, Metric 수집 및 저장, Alert 기능을 통합해 제공하는 Monitoring 시스템 CNCF의 메인 프로젝트로 Container 기반 Monitoring 시스템의 defactor Kubernetes외의 다른 Cloud Provider에 대한 Service Discovery 기능 제공으로 동적인 Cloud를 효율적을 모니터링 자체 Alert 엔진 보유.</description>
+    </item>
+    
+    <item>
+      <title>Logging in kubernetes</title>
+      <link>http://tech.cloudz-labs.io/posts/logging-in-kubernetes/</link>
+      <pubDate>Wed, 18 Jul 2018 08:06:40 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/logging-in-kubernetes/</guid>
+      <description>Cloud Native 환경에서 Logging Architecture의 변화 Legacy  고사양의 서버에 Application을 크게 운영 Log를 Application이 실행 중인 서버 내부에 저장 개발자/운영자는 서버 내부에 접속해 Log를 확인  Cloud Native  Application을 작게 운영하고 필요할 때 마다 확장 다중 인스턴스의 로그를 효율적으로 검색하기 위해 외부 Log 시스템에 저장 개발자/운영자는 서버에 직접 접속하지 않고 외부 Log Backend에서 로그 확인  Cloud Native Logging Architecture Overview DaemonSet Pattern  App Console Log가 각 Node의 Storage에 자동 저장 각 Node의 Agent가 Log를 Aggregator로 전달 Log data를 전/후 처리 후 Backend로 전달  Sidecar Pattern  App Log를 Pod의 Storage에 파일로 저장(Log4j 등 사용) Pod의 Agent가 Log data를 전/후 처리 후 Backend로 전달  DaemonSet Pattern 상세 Architecture  App Console Log가 각 Node의 Storage에 자동 저장 Fluentbit가 각 Node의 Log 수집해 FluentD로 전달 FluentD가 수집한 Log를 전/후 처리 후 ElasticSearch로 전달 Log raw data를 S3와 같은 저장소에 동시 전달 가능(Log Data 백업 활용) Kibana를 통해 ES의 Log data 검색/분석 및 시각화  Sidecar Pattern 상세 Architecture  App Log를 Pod의 Storage에 파일로 저장(Log4j 등 사용) Fluentbit가 저장된 Log를 전/후 처리 후 ElasticSearch로 전달.</description>
+    </item>
+    
+    <item>
+      <title>Hugo를 활용한 기술 블로그 구축기</title>
+      <link>http://tech.cloudz-labs.io/posts/hugo/hugo/</link>
+      <pubDate>Thu, 21 Jun 2018 10:01:45 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/hugo/hugo/</guid>
+      <description>현재 보고계신 블로그는 Hugo + Github Pages로 운영되고 있습니다. 이번 글에서는 Hugo를 활용한 Static Site 구축에 대해서 얘기해볼까 합니다.
+CMS에서 Static Generator까지 많은 사람들이 블로그를 구축한다고 했을 때, 가장 많이 떠올리는 것은 다음과 같이 2가지 형태일 것입니다.
+ Naver Blog, Tistroy, Blogger 등등 Wordpress, Drupal, Joomla  첫번째 형태인 Naver나 Tistroy의 포털 사이트에서 제공하는 가입형 블로그 서비스는, 단순하게 가입만 해도 사용할 수 있기 때문에, 도메인이나 호스팅 등등의 것들을 신경쓰지 않고 바로 글을 작성할 수 있죠.</description>
+    </item>
+    
+    <item>
+      <title>Service Mesh 란?</title>
+      <link>http://tech.cloudz-labs.io/posts/service-mesh/</link>
+      <pubDate>Fri, 01 Jun 2018 08:06:40 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/service-mesh/</guid>
+      <description>수년간 Enterprise IT환경은 급격하게 변하고 있습니다. 특히 Cloud로 대변되는 시스템 구축 환경의 변화에 따라 이를 잘 활용할 수 있는 다양한 Architecture들이 대두되고 있습니다.
+Service Mesh Architecture는 MicroService Architecture와 더불어 최근 활발하게 언급되고 있습니다.
+이번 포스팅에서는 Service Mesh Architecture가 &amp;lsquo;무엇&amp;rsquo;인지, &amp;lsquo;왜&amp;rsquo; 활발하게 언급되고 있는지, Service Mesh Architecture &amp;lsquo;구현체&amp;rsquo; 간단 소개와 &amp;lsquo;장단점&amp;rsquo; 등을 알아보겠습니다.
+Service Mesh 란? Service Mesh는 모티브와 정의, 구현체의 기능 등 다양한 관점에서 용어를 정의하고 있습니다.
+ MicroService Architecture를 적용한 시스템의 내부 통신이 Mesh 네트워크의 형태를 띄는 것에 빗대어 Service Mesh로 명명되었습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/</link>
+      <pubDate>Sun, 20 May 2018 18:13:30 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/</guid>
+      <description>지난 포스팅에서 Docker의 네트워크 기능과 연관된 factors를 경우의 수에 따라 검증을 했습니다.
+Docker toolbox를 사용하는 환경(win7)에서 테스트 결과, 아래의 경우에 서비스 간 호출이 성공했습니다.
+ 컨테이너의 Port를 노출하고 {docker-machine ip}:{외부 노출 Port}으로 접속한 경우 컨테이너를 user defined network에 연결하고 {컨테이너 명}:{컨테이너 내부 port}로 접근한 경우 컨테이너를 user defined network에 연결하고 {user defined network ip}:{컨테이너 내부 port}로 접근한 경우  이 중 2번. 컨테이너를 user defined network에 연결하고 {컨테이너 명}:{컨테이너 내부 port}로 접근하는 방법으로 Docker에서 최소 단위의 MSA가 적용된 system을 구성해보겠습니다.</description>
+    </item>
+    
+    <item>
+      <title>Docker 시작하기</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/docker-start/</link>
+      <pubDate>Fri, 11 May 2018 17:43:17 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/docker-start/</guid>
+      <description>리눅스의 컨테이너 기술은 굉장히 오래전부터 있던 기술입니다. 그런데 왜 최근에 화두로 떠오르고 있는걸까요? 저는 컨테이너 기술 활성화에 크게 기여한 것이 바로 Docker라고 생각합니다. Docker는 Docker Store(구 Docker Hub)라는 퍼블릭한 레지스트리를 통해 여러 기업들에서 참여하여 이미지를 제공해주고 있지요. 오픈소스 솔루션 중에는 없는 이미지를 찾는게 더 어려운 것 같습니다. 이처럼 Docker 생태계가 잘 되어 있는데 그 생태계를 사용자들로 하여금 굉장히 쉽게 활용할 수 있도록 편의성을 제공해주고 있기 때문에 사용자들은 원하는 솔루션에 대한 이미지를 받아서 컨테이너로 띄우기만 하면 끝입니다.</description>
+    </item>
+    
+    <item>
+      <title>[Kubernetes 활용(7/8)] Secret</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/secret/</link>
+      <pubDate>Fri, 11 May 2018 13:55:54 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/secret/</guid>
+      <description>지난 챕터의 ConfigMap에 이어서 이번에는 Secret Object를 보도록 하겠습니다.
+Secret 이란? Secret은 비밀번호나 OAuth 토큰값 또는 ssh key 등의 민감한 정보를 유지하기 위해 사용됩니다. 이러한 정보를 Docker 이미지나 Pod에 그대로 정의하기 보다 Secret을 활용하면 더욱 안전하고 유동적으로 사용할 수 있습니다.
+Secret 적용하기 Secret 생성 명령어를 통해 생성하기 아래와 같이 kubectl create secret 명령어를 통해 Secret을 생성합니다.
+Window OS의 경우 아래 yaml 파일로 Secret을 직접 생성하는 방식으로 사용하세요.
+$ kubectl create secret generic db-user-pass --from-literal=user=admin --from-literal=password=1f2d1e2e67df secret &amp;#34;db-user-pass&amp;#34; created 아래와 같이 kubectl get 명령어와 kuberctl describe 명령어를 통해 생성된 Secret을 확인합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Kubernetes 활용(6/8)] ConfigMap</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/configmap/</link>
+      <pubDate>Fri, 11 May 2018 13:55:48 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/configmap/</guid>
+      <description>이번에는 Kubernetes에서 제공하는 ConfigMap이라는 Object를 보도록 하겠습니다.
+ConfigMap 이란? ConfigMap은 컨테이너 이미지에서 사용하는 환경변수와 같은 세부 정보를 분리하고, 그 환경변수에 대한 값을 외부로 노출 시키지 않고 내부에 존재하는 스토리지에 저장해서 사용하는 방법입니다. 혹시 마이크로서비스 아키텍처에서 사용하는 Spring Cloud Config(Config Server)를 사용한 적이 있다면 동일한 역할을 하는 것인지 하는 생각이 들 수 있는데요. Spring Cloud Config 같은 경우에는 설정 파일 자체를 분리하고 파일에 대한 내용이 변경된다면 자동으로 Refresh 해주는 기능을 가지고 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Kubernetes 활용(5/8)] Ingress</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/ingress/</link>
+      <pubDate>Thu, 10 May 2018 18:24:03 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/ingress/</guid>
+      <description>Kubernetes에서는 애플리케이션을 외부로 노출하기 위해 Service object를 NodePort로 생성합니다. 그러나 노출 형태가 노드의 IP에 특정 포트(30000-32767)로 제공되기 때문에 호출이 까다롭고 사용자가 서비스로 유입되는 경로도 다양해서 관리가 어려워질 수 있는데요. 이 때, 외부 액세스를 관리하고 서비스를 묶어주는 역할을 하는게 바로 Ingress 입니다.
+Ingress 란? 위 그림과 같이 Ingress는 외부 액세스를 관리하고 서비스를 묶어주는 역할을 합니다. Ingress를 만들 때 도메인을 지정할 수 있고 사용자는 그 도메인으로 접속을 하게 되며 도메인 하위의 path 설정을 통해 서비스들을 라우팅할 수 있게 됩니다.</description>
+    </item>
+    
+    <item>
+      <title>[Kubernetes 활용(4/8)] Mysql DB 연동하기</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/backingservice/</link>
+      <pubDate>Tue, 08 May 2018 15:23:03 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/backingservice/</guid>
+      <description>지난 챕터에서는 사용한 리소스를 기반으로 애플리케이션의 수를 자동으로 조절할 수 있는 HPA 라는 기능을 적용해 보았습니다. 그렇다면 애플리케이션에 Mysql 또는 Redis 등과 같은 서비스를 연동하고 싶을 땐 어떻게 해야할까요? Kubernetes에서는 애플리케이션에서 필요한 서비스를 Docker Image를 사용하여 바로 구성할 수 있습니다. 물론 대부분이 오픈소스 솔루션에 대한 서비스겠지요. Legacy에 있는 서비스들 역시 연동이 가능하긴 하지만, 여기서는 Docker Image 를 통해 Mysql DB를 구성하고 애플리케이션에 연동해보도록 하겠습니다.
+샘플 애플리케이션에 대한 자세한 설명은 Spring의 Accessing data with MySQL 문서를 참고하시기 바랍니다.</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes에 구성한 MariaDB(Mysql)의 한글 깨짐 현상 해결방법</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/</link>
+      <pubDate>Tue, 10 Apr 2018 15:53:58 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/</guid>
+      <description>Why? Kubernetes(a.k.a. K8S)에서 Mysql 또는 Mariadb 이미지를 사용해서 컨테이너를 구성할 때 initialize된 Data에 한글이 깨지는 현상이 발생하는 경우가 있습니다.
+구글에서 &amp;ldquo;mysql 한글 깨짐&amp;rdquo;이라고 검색만 해도 같은 문제를 호소하는 분들이 많고, 이를 해결하기 위한 다양한 해결 방법을 가이드하고 있습니다.
+하지만 Docker 또는 Kubernetes 환경에서는 대부분이 이미 업로드된 official 이미지를 사용해서 컨테이너를 구성하기 때문에 이를 처리하는데 약간의 수고로움 존재합니다.
+이번 세션에서는 K8S 환경에서 mysql(mariadb) 을 구성할 때 한글 깨짐 증상을 해결하고 더 나아가 설정을 자유롭게 할 수 있는 내용을 적어보았습니다.</description>
+    </item>
+    
+    <item>
+      <title>Istio</title>
+      <link>http://tech.cloudz-labs.io/posts/istio/</link>
+      <pubDate>Thu, 05 Apr 2018 14:50:51 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/istio/</guid>
+      <description>최근 MSA(Micro Service Architecture) 관련 세미나, 자료 등을 살펴보면 Istio라는 키워드가 급부상하고 있는 것을 알 수 있습니다. Istio가 무엇인지 조사한 결과를 공유합니다.
+Service Mesh Architecture Istio를 설명하기 전에 Service Mesh Architecture 가 무엇인지 알아보겠습니다.
+MSA(Micro Service Architecture)가 널리 보급되면서 service discovery, routing, failure handling 등 서비스 간 통신 문제가 발생하고 있습니다. 이러한 문제를 해결하기 위해 Spring Cloud Netflix 등 다양한 해결법이 등장하였고, Service Mesh Architecture 또한 이러한 해결 방법 중 하나입니다.</description>
+    </item>
+    
+    <item>
+      <title>Digital Transformation Journey</title>
+      <link>http://tech.cloudz-labs.io/posts/digital-transformation-journey/</link>
+      <pubDate>Tue, 03 Apr 2018 20:59:36 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/digital-transformation-journey/</guid>
+      <description>Software is &amp;ldquo;still&amp;rdquo; eating the world  &amp;ldquo;소프트웨어가 세상을 먹어치우고 있다&amp;hellip;여전히!&amp;rdquo;
+ &amp;ldquo;Software is eating the world&amp;rdquo; 는 Marc Andreessen이 아주 오래전에 Wall Street Journal에 올렸던 기고입니다. 그 이후 세상은 호텔을 하나도 소유하지 않은 에어비엔비가 숙박업을, 영화관을 하나도 소유하지 않은 넷플릭스가 미디어 산업을, 오프라인 상점을 하나도 소유하지 않았던(지금은 있지만) 아마존이 리테일 산업을 장악하는 세상으로 바뀌어 버렸습니다.
+중요한 것은 &amp;ldquo;아직도&amp;rdquo; 먹어치우고 있다는 것입니다.
+사실 몇 년 전만 해도 인터넷 서비스, 미디어, 통신, 리테일 외의 전통 산업에서 Digital Disruption은 올 듯 올 듯 하면서 동인이 잘 생기지 않았습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/</link>
+      <pubDate>Wed, 21 Mar 2018 11:16:00 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/</guid>
+      <description>지난 포스팅에서 docker user defined network의 간단한 설명과 동작을 확인했습니다.
+이번에는 docker user defined network를 활용한 컨테이너 간 통신에 연관된 factors를 확인하고 경우의 수에 따라 테스트를 진행하겠습니다.
+Docker Network 기능 Service Discovery Docker는 각 Network 내 컨테이너의 ip주소, 컨테이너 명, Hostname 등을 관리합니다. 각 네트워크는 Subnet mask와 Gateway를 가집니다. 기본적으로 컨테이너의 ip주소는 Network에서 관리하는 Pool 중 할당이 됩니다. 할당하고 싶은 ip주소, Hostname이나 network 정보가 있으면 option을 적용해 지정 가능합니다. 각 Network 별 Host정보를 관리하는 기능을 사용해서 컨테이너 명으로 컨테이너 간 통신을 하는 Service Discovery 기능을 수행할 수 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/</link>
+      <pubDate>Tue, 20 Mar 2018 18:12:19 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/</guid>
+      <description>Docker는 몇가지 네트워크 드라이버를 기본 제공하여 강력한 네트워크 기능을 활용할 수 있게 합니다.
+ bridge: 기본 네트워크 드라이버. docker0이라는 이름의 bridge 네트워크를 생성됩니다. 설정없이 컨테이너를 생성하게되면 docker0 bridge에 컨테이너를 binding 해서 네트워크 기능을 수행합니다. host: 컨테이너 네트워크가 독립/격리되지 않고, Host의 네트워크를 직접적으로 사용합니다. overlay: 서로 다른 Docker Host에서 실행되는 컨테이너 간 통신이 필요하거나, Docker Swarm 상에서 여러 컨테이너를 동시에 운영할 때 유용합니다. Macvlan: Mac주소를 컨테이너에 할당합니다. Docker 데몬은 트래픽을 컨테이너의 MAC 주소로 라우팅합니다.</description>
+    </item>
+    
+    <item>
+      <title>CF에 Docker Image 배포</title>
+      <link>http://tech.cloudz-labs.io/posts/using_docker_in_cloudfoundry/</link>
+      <pubDate>Mon, 12 Mar 2018 13:23:13 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/using_docker_in_cloudfoundry/</guid>
+      <description>Cloud에서 애플리케이션은 Cloud Fondry(CF), Docker 등 다양한 환경에 배포할 수 있습니다. CF는 웹 애플리케이션 개발에 특화되어 있어 Docker에 비해 웹 애플리케이션 개발에 필요한 다양한 기능을 제공하고 있습니다. 반면에 Docker는 다양한 형태의 애플리케이션 개발이 가능하며 자유도가 높은 장점을 갖고 있습니다. 이 둘의 장점을 모두 사용하기 위해 Docker Image를 CF에 배포하는 리서치를 진행하여 이를 공유합니다.
+사용법 CF 설정 CF에 Docker image를 배포하기 위해서는 diego_docker플래그가 설정되어야 합니다. 아래 코드로 설정할 수 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(8/8)] Docker의 Network</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/docker-network/</link>
+      <pubDate>Fri, 09 Mar 2018 08:29:07 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/docker-network/</guid>
+      <description>Docker Swarm은 두 가지 종류의 Traffic을 생성합니다.
+ 제어 및 관리 영역 Traffic: Docker Swarm에 대한 참가 및 탈퇴 요청과 같은 Docker Swarm의 관리 Message가 포함됩니다. 해당 Traffic은 항상 암호화됩니다. Application Data 영역 Traffic: Container 및 외부 Client와의 Traffic이 포함됩니다.  이 중에서 해당 Post에서는, Application Data 영역의 Traffic에 대해서 확인해보고자 합니다.
+Docker의 Networking에 대한 자세한 내용은 Docker Networking Reference Architecture문서를 참고하시기 바랍니다.
+ Docker의 Network 먼저, Docker는 Overlay, Ingress, docker\_gwbridge의 세 가지 Network이 존재합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(7/8)] Docker Swarm의 구조와 Service 배포하기</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/swarm-architecture/</link>
+      <pubDate>Fri, 09 Mar 2018 08:27:58 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/swarm-architecture/</guid>
+      <description>이제는 구성된 Docker Swarm에 Application을 배포해보겠습니다. Docker Swarm에 Application Image를 배포하기 위해선, Service를 생성해야 합니다. Service는 큰 Application Context 내의 Microservice들의 Image를 의미하며, 예로 HTTP Server, Database 또는 분산 환경에서 실행하고자 하는 다양한 유형의 Runtime Program들이 여기에 속한다고 할 수 있습니다. Service를 생성하고자 할 때, 사용할 Container Image와 Container 내에서 실행할 명령을 지정합니다. 또한, 다음과 같은 Option들을 정의하여 사용합니다.
+ Docker Swarm 외부에서 접속할 수 있는 Port Docker Swarm 내부의 다른 Service와 통신하기 위한 Overlay Network CPU 및 Memory 사용에 대한 정책 Rolling Update 정책 Image의 Replica 개수  Service Service가 독립형 Container들을 직접 실행하는 것에 비해 갖는 주요 장점 중 하나는, 수동으로 Service를 다시 시작할 필요없이 연결된 Network 및 Volume 등의 구성을 수정할 수 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/swarm/</link>
+      <pubDate>Fri, 09 Mar 2018 08:27:01 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/swarm/</guid>
+      <description>지금까지는 단일 Docker Machine에서 Container를 실행시켜 서비스를 제공했습니다. 그렇다면, 현 상태로 실제 서비스를 운영할 수 있을까요? 한참 부족합니다! 장애없이 원활한 서비스를 제공하기 위해서는, 내결함성, 고가용성 등등 많은 사항들을 고려하여야 합니다. 결국은 단일 Machine으로는 사용할 수 없고 Cluster 형태로 구성되어야하며, 그 위에서 서비스들은 여러개의 Instance로 부하가 분산되어야 하며, 장애가 발생하더라도 스스로 복구 할 수 있는 구조로 실행되어야 합니다. 마지막으로 이것들이 자동화되어 있어야합니다. 수 십개에서 수 백개로 나뉘어진 Service들을 사람이 직접 관리할 수 없기 때문입니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(5/8)] Volume을 활용한 Data 관리</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/volume/</link>
+      <pubDate>Fri, 09 Mar 2018 08:25:25 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/volume/</guid>
+      <description>우리는 Container의 Writable Layer에 Data를 저장할 수 있다는 것을 알고 있습니다. 하지만, 여기에는 몇 가지 문제점이 존재합니다.
+ Container가 삭제되면 Data도 같이 삭제됩니다. 또한, 다른 프로세스에서 Container에 저장된 Data를 사용하기 어렵습니다. Container의 Writable Layer에는 Container가 실행 중인 Host Machine과 밀접하게 연결됩니다. 따라서, Data를 다른 곳으로 쉽게 옮길 수 없습니다. Container의 Writable Layer에 Data를 저장하기 위해서는 File System을 관리하는 Storage Driver가 필요합니다. Storage Driver는 Linux 커널을 사용하여 공용 File System을 제공합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(4/8)] docker build &amp; push</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/docker-build-push/</link>
+      <pubDate>Fri, 09 Mar 2018 08:23:38 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/docker-build-push/</guid>
+      <description>Docker 환경에 Service 및 Application을 구동시키 위한 전체적인 과정은 다음과 같습니다.
+graph BT; A[Dockerfile] --|build| B[Images] B --|push| C[Docker Registry] C --|pull| B subgraph Local Docker Instance B --|Run| D[Container] end  지금까지는, Docker Registry(Docker Hub)에 배포되어 있는 있는 Image를 이용해 Container를 구동시켰습니다. 이제부터는 위에서 정리한 과정대로, Dockerfile로 Image를 생성하고 다른 Machine에서 배포된 Image로 Container를 실행시켜 보겠습니다.
+본 예제는 About storage drivers에 있는 예제를 참고하여 진행했습니다.
+ 신규 Image 생성에서 배포까지 Dockerfile 작성 image-build-test 폴더를 생성한 뒤, 다음의 내용이 포함된 Dockerfile을 생성합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(3/8)] Container는 뭘까?</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/what-is-container/</link>
+      <pubDate>Fri, 09 Mar 2018 08:22:39 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/what-is-container/</guid>
+      <description>Docker는 Application의 배포와 운영을 쉽게 도와주는 &amp;lsquo;Containers as a Service(CaaS) Platform이며, Client-Server Model로 동작하고 있습니다. 여기서 Container란, 운영체제의 커널이 하나의 인스턴스가 아닌, 여러 개의 격리된 인스턴스들을 갖출 수 있도록 하는 서버 가상화 방식입니다. 이러한 인스턴스들은 이를 소유하고 있는 Host Machine과 사용자의 관점에서 바라보면, 실제 서버인 것처럼 보입니다.
+가상화(Virtualization) Container는 가상화 방식의 한 종류입니다. 하지만, 흔히 우리가 알고있는 가상화(Virtualization)는 VMWare Workstation과 같은 소프트웨어를 이용해, Linux나 MacOS위에 Windows를 올려서 사용하는 그런 것을 떠올릴 것입니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(2/8)] Docker&#39;s Skeleton</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/docker-architecture/</link>
+      <pubDate>Thu, 08 Mar 2018 23:23:28 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/docker-architecture/</guid>
+      <description>Docker는 Container를 구동시킬 수 있는 환경만 구성되어 있다면, Application들을 한 번의 Build로 어디서든 구동시킬 수 있습니다. 하지만 1차원적으로만 살펴보면, Java Application이 JVM 위에서 실행되는 모습과 크게 다르지 않아 보입니다. Java Application도 JVM만 설치되어 있다면, 어디에서든 실행되죠. 마찬가지로, Python Application도 동일합니다. 그렇다면, 이 모든 것들이 결국은 똑같이 생겼고, 단지 실행되는 주체(Container, JAR, py)만 다른 것일까요?
+Client-Server Model Docker는 서비스의 요청자(Docker Client)와 제공자(Docker Server)간의 작업이 분리되어 동작하는 Client-Server Model로 되어있으며, Docker Client는 REST API를 사용하여 Docker Server를 제어합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker 기본(1/8)] Hello Docker!</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/hello-docker/</link>
+      <pubDate>Thu, 08 Mar 2018 18:47:30 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/hello-docker/</guid>
+      <description>Docker란 리눅스의 응용프로그램들을 소프트웨어 Container 안에 배치시키는 일을 자동화하는 오픈 소스 프로젝트로서, Docker 공식 문서에 따르면 Containers as a Service(CaaS) Platform으로 정의하고 있습니다.
+Docker는 홈페이지에 Docker의 기능을 아래와 같이 명시 하고 있습니다.
+ Docker Container는 일종의 소프트웨어 실행에 필요한 모든 것들을 포함하는 완전한 파일 시스템 안에 감싼다. 여기에는 코드, 런타임, 시스템 도구, 시스템 라이브러리 등 서버에 설치되는 무엇이든 전부 아우른다. 이는 실행 중인 환경에 관계 없이 언제나 동일하게 실행될 것을 보증한다.</description>
+    </item>
+    
+    <item>
+      <title>Redis Overview(with Spring Boot)</title>
+      <link>http://tech.cloudz-labs.io/posts/redis-overview/</link>
+      <pubDate>Mon, 05 Mar 2018 13:10:36 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/redis-overview/</guid>
+      <description>Redis는 Key/Value형태의 In-Memory 데이터베이스로서 데이터 저장 및 캐싱, 그리고 메시지 브로커로 널리 사용 되고 있습니다.
+Redis의 가장 큰 특징으로는 In-Memory 데이터베이스가 가지는 장점인 처리속도가 굉장히 빠르다는 점이 있습니다. 물론 이것 자체는 휘발성 데이터이기 때문에 케이스에 따라서 데이터를 덤프하는 스케쥴링을 통해 정합성 및 영속성을 관리할 수 있습니다. 하지만 이것도 불안하다 싶어 조금 더 나아간다면 고가용성을 보장하기 위해 Master-Slave 구조의 아키텍쳐링까지 설계할 수 있습니다.
+또한, Redis의 내부를 열어보면 데이터 스트럭쳐로 String, Hash, List, Sets, Sorted Sets등 기본적인 쿼리 뿐만 아니라 Bitmaps, Hyperloglogs, Geospatial indexes와 같은 Radius 쿼리까지도 지원하는 등 강력한 기능이 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>CF에 Cloud Native Application 배포하기 </title>
+      <link>http://tech.cloudz-labs.io/posts/cf-apprelease/</link>
+      <pubDate>Fri, 02 Mar 2018 11:07:05 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/cf-apprelease/</guid>
+      <description>PaaS에 Cloud Application을 배포하는 전 과정을 정리해보았습니다. Java로 만든 Cloud Native Application을 CF에 배포하는 간단한 실습인데요, 개발 환경 세팅부터 PaaS에 애플리케이션 배포하기까지의 흐름을 살펴볼 수 있어요. 코딩이 필요하지 않은 초보 개발자 위주의 간단한 실습이라 처음 접하는 사람도 쉽게 따라할 수 있으실꺼예요. 처음부터 끝까지 따라하면서 Cloud Native Application 개발을 시작해보세요!
+실습 과정 아래 과정의 순서대로 진행합니다.
+준비 사항 전제조건  CF 기반 PaaS  PaaS에 애플리케이션을 배포, 업데이트, 삭제, 스케일링 등의 작업을 할 수 있는 CF기반의 PaaS가 있어야 합니다.</description>
+    </item>
+    
+    <item>
+      <title>Microservices io 페이지 훑어보기 </title>
+      <link>http://tech.cloudz-labs.io/posts/microservices-io/</link>
+      <pubDate>Fri, 02 Mar 2018 10:16:04 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/microservices-io/</guid>
+      <description>최근 마이크로 서비스 아키텍처를 적용하는 사이트가 점차 많아지면서 Cloudz Labs에도 마이크로 서비스 아키텍처에 대한 문의가 부쩍 많아지고 있습니다.
+CloudZ Labs에서는 작년부터 마이크로 서비스 아키텍처 적용을 위해 필요한 기술들을 리서치하고 적용하는 업무를 진행하고 있습니다.
+마이크로 서비스 아키텍처에 관련된 항목을 잘 정리해둔 Microservices.io 페이지 내용을 훑어보며 CloudZ Labs에서 이미 적용 중인 내용과 보충할 내용 추가 리서치가 필요한 내용들을 정리해 볼 생각입니다.
+Microservices.io 페이지를 정리한 내용입니다. http://microservices.io/
+마이크로 서비스 적용 방법 마이크로 서비스 아키텍처 적용 프로세스</description>
+    </item>
+    
+    <item>
+      <title>Docker in docker</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-in-docker/</link>
+      <pubDate>Wed, 28 Feb 2018 10:59:06 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-in-docker/</guid>
+      <description>지난 한주 동안 애플리케이션을 Kubernetes 배포하는 CI/CD 파이프라인 구성했습니다. K8S CI/CD 파이프라인 구성은 차후에 포스팅하기로 하고, K8S용 파이프라인 구성에 사용된 Docker in docker 기술을 소개하겠습니다.
+DinD(Docker In Docker)기술은 컨테이너 내부에 Docker를 사용하는 기술을 말하며 일반적으로 K8S CI/CD 구성, Docker 엔진 개발 등에 사용됩니다.
+DinD 원리 DinD 원리를 이해하기 위해서는 Docker의 명령어 실행 구조를 이해해야 합니다.
+Docker를 설치/실행하면 Docker daemon과 Docker CLI가 설치/실행됩니다. 콘솔 화면에서 Docker 명령어를 입력할 경우 Docker CLI가 명령어를 받아서 Socket을 통해 Docker daemon에 전달합니다.</description>
+    </item>
+    
+    <item>
+      <title>Zuul Swagger 연동</title>
+      <link>http://tech.cloudz-labs.io/posts/zuul-swagger-integration/</link>
+      <pubDate>Tue, 27 Feb 2018 17:21:07 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/zuul-swagger-integration/</guid>
+      <description>MSA(Micro Service Architecture) 활용하여 팀 홈페이지를 제작하는 과정에서 User BFF에서 백엔드 서비스를 호출하기 위해 Zuul을 사용하였습니다. 여러 가지 서비스가 Zuul을 통해 User BFF에 노출되고 있어, Zuul을 통해 서비스되는 모든 API를 하나의 Swagger page로 노출하고 싶었습니다. 다행히도 Swagger에서 Zuul 연계하는 기능이 있어 이를 소개합니다.
+MSA에 대한 자세한 설명은 차후에 포스팅하기로 하고, 이해를 돕기 위해 간단한 홈페이지 아키텍처 첨부합니다.
+graph LR; A[Client] --|Request| B(User BFF) B --|Request| C{Zuul} C --|Request| D[Mail service] C --|Request| E[User service]  사용법 1.</description>
+    </item>
+    
+    <item>
+      <title>MSA 에서 유비쿼터스 언어(보편 언어)의 중요성</title>
+      <link>http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/</link>
+      <pubDate>Mon, 26 Feb 2018 17:52:54 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/</guid>
+      <description>Health-Care Application의 MS 분리 워크샵을 진행한 후 자문해봤다.
+ 보상/혜택  Reward가 사용자에게 주어지면 그게 사용자 입장에서는? Item인가 Reward인가? 운동을 안해서 주는 경고도 Reward인가? 내가 운동을 많이 했다고 선물이 아니라 칭찬메시지가 오는 것도 Reward인가? 친구가 나를 역전했다고 알려주는 것이 Reward인가?  챌린지/목표/이벤트  챌린지와 목표의 차이는? 챌린지가 이벤트와 다른 것인가? 마케팅 기획이 이벤트인가? 챌린지를 집단으로 한다면 챌린지인가 이벤트인가?  포인트  포인트가 챌린지의 보상인가? 포인트가 사용자의 경험치인가? 운동량과 포인트는 누구에게나 동일한 비율로 적재되는가?</description>
+    </item>
+    
+    <item>
+      <title>K8S App deploy script</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes_deploy_script/</link>
+      <pubDate>Fri, 23 Feb 2018 16:42:27 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes_deploy_script/</guid>
+      <description>최근 Container 기술이 각광을 받고 있습니다. 그래서 저도 Kubernets 교육을 수강하고 있는데, Kubernets에 배포 한번 하기 참 힘드네요. Project build, Docker image build, Docker push, K8s deploy 총 4개의 과정을 거쳐야 애플리케이션 배포가 끝이 납니다. 도저히 이 과정을 참을 수 없어서 배포 스크립트를 만들었습니다. 사용방법은 아래 설명하였으니, 잘 활용하시기 바랍니다.
+사용법 1. deploy.sh 저장 페이지 하단 deploy.sh 파일을 개발중인 프로젝트 루트에 저장합니다.
+2. 설정 deploy.sh 파일의 상단 설정을 입력합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Kubernetes 활용(3/8)] HPA(오토스케일링)</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/hpa/</link>
+      <pubDate>Thu, 22 Feb 2018 14:41:49 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/hpa/</guid>
+      <description>지난 챕터에서는 이미 배포되어 있는 애플리케이션을 무중단으로 업데이트하는 방법에 대해 보았습니다. 이번에는 이어서 애플리케이션을 자동으로 Scale-out 할수 있는 Horizontal Pod Autoscaler 기능을 적용해보도록 하겠습니다.
+Horizontal Pod Autoscaler 란 Horizontal Pod Autoscaler는 지정된 CPU 사용률을 기반으로 Replication Controller, Deployment 또는 Replica Set의 Pod 수를 자동으로 조정합니다. Kubernetes에서는 CPU 자원에 대한 사용량을 다음과 같은 식으로 계산하여 Pod을 자동 Scale-out 할 수 있습니다.
+[CPU example] TargetNumOfPods = ceil(sum(CurrentPodsCPUUtilization) / Target) 주기적으로 Pod의 자원 사용을 체크하고, 특정 시간의 여유를 두고 downscale/upscale이 이루어지는데, 이는 kube-controller-manager가 담당합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Kubernetes 활용(2/8)] Rolling Update(무중단 배포)</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/rolling-update/</link>
+      <pubDate>Thu, 22 Feb 2018 14:41:42 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/rolling-update/</guid>
+      <description>지난 챕터에서는 Kubernetes 환경에서 애플리케이션을 배포하고 접속하는 방법을 알아보았습니다. 그렇다면 이미 배포되어 있는 애플리케이션을 업데이트할 때 중단 없이 처리할 수 있을까요?? 네. 가능합니다! Kubernetes에서는 중단 없이 애플리케이션을 배포할 수 있도록 Rolling Update라는 기능을 지원하고 있습니다. 지난 챕터에서 간단히 나오긴 했지만 다시 한번 자세히 알아봅시다.
+Rolling Update 란? 서비스 중단 없이 애플리케이션을 업데이트 하기 위해서, Kubernetes에서는 rolling update라는 기능을 지원합니다. 이 기능을 통해서 전체 Pod을 일시에 중단/업데이트 하는 것이 아니라, 한번에 n개씩 Pod을 순차적으로 업데이트할 수 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>12-Factor</title>
+      <link>http://tech.cloudz-labs.io/posts/12-factor/</link>
+      <pubDate>Thu, 22 Feb 2018 11:07:05 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/12-factor/</guid>
+      <description>최근 소프트웨어를 Cloud 환경에 배포하여 서비스 형태로 제공하는 SaaS(Software As A Service)가 보편화되고 있습니다. 저희 팀에서도 작년부터 레거시 시스템을 Cloud로 전환하기 위한 컨설팅을 준비하고 있는데요, 그 과정에서 스터디한 12-Factor를 알아보도록 하겠습니다. 12-Factor는 Heroku 플랫폼을 통해 방대한 앱의 개발, 운영, 확장 등을 관찰한 많은 사람들이 고안해낸 SaaS 개발 방법론 입니다. 12-Factor를 준수할 경우 아래 SaaS의 특징을 갖출 수 있습니다. 즉 12-Factor는 애플리케이션이 Cloud 환경에서 올바르게 게 동작하기 위해서 지켜야 하는 12가지 규칙을 말합니다.</description>
+    </item>
+    
+    <item>
+      <title>[Kubernetes 활용(1/8)] 시작하기</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/getting-start/</link>
+      <pubDate>Wed, 21 Feb 2018 11:33:28 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/getting-start/</guid>
+      <description>언젠가부터 클라우드 열풍이 불어 닥치고 있습니다. 기술의 변화를 보면 IaaS보다는 PaaS나 SaaS를 선호하고, VM에서 직접 컨트롤 하기 보다는 컨테이너, 서버리스 형태의 기술들이 뜨고 있습니다. 저도 그러한 이유로 작년부터 조금씩 회사에서 Kubernetes 스터디를 하고 있네요. 이번 첫번째 챕터에서는 Kubernetes를 처음 접하는 사용자를 위해 Kubernetes 환경에서 애플리케이션을 배포/접속하고 관리하는 기본적인 방법에 대해 보도록 하겠습니다.
+시작하기 전에 애플리케이션 배포를 진행하기 전에 이해가 필요한 기본 개념입니다.
+Kubernetes  Kubernetes는 2014년 Google이 시작한 프로젝트로, 애플리케이션 컨테이너의 배포, 스케일링, 오퍼레이팅을 자동화 해주는 오픈 소스 플랫폼입니다.</description>
+    </item>
+    
+    <item>
+      <title>CF CLI 사용하기</title>
+      <link>http://tech.cloudz-labs.io/posts/command-tool/</link>
+      <pubDate>Tue, 20 Feb 2018 16:55:36 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/command-tool/</guid>
+      <description>오픈소스 CF CLI에서 자주 사용하는 CF CLI 명령어를 사용하는 방법을 정리해보았습니다.
+CF CLI에서 사용 가능한 모든 명령어의 사용법은 CF 공식 홈페이지 문서를 참고하길 바랍니다.
+ CF CF CLI 사용 방법을 알아보기에 앞서 CF가 무엇인지 간단히 살펴보겠습니다. CF는 Cloud Foundry의 약자로, 2011년 VMWare가 업계 최초로 만든 오픈소스 PaaS 플랫폼입니다. 지금은 Cloud Foundry 재단에서 관리하고 있습니다.
+오픈소스 CF 제품 Cloud Foundry의 오픈소스 Cloud Foundry 기술을 기반으로 만든 제품은 다음과 같습니다.
+ PCF (Pivotal Cloud Foundry)  Pivotal에서 오픈소스 Cloud Foundry로 만든 상용 PaaS  Bluemix  IBM에서 오픈 소스 Cloud Foundry로 만든 상용 PaaS   CF CLI GO 언어로 개발된 Cloud Foundry의 Command Line Interface입니다.</description>
+    </item>
+    
+    <item>
+      <title>Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix</title>
+      <link>http://tech.cloudz-labs.io/posts/discovery-duration-error-in-bluemix/</link>
+      <pubDate>Mon, 19 Feb 2018 10:39:44 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/discovery-duration-error-in-bluemix/</guid>
+      <description>What ? 예전에 bluemix에 배포한 어플리케이션이 eureka와 연계했을 때 생각과 다르게 동작하는 것을 발견했습니다.
+해당 현상은 eureka client 어플리케이션이 종료됐을 때, eureka server에서 해당 어플리케이션 정보가 삭제되는데 생각보다 delay가 생기는 것 입니다. (예상 : 5초 내외, but 수 분이상 dashboard 상에서 조회)
+어디서 꼬인 것일까요 ?
+Why ?  eureka 설정이 잘못됐을 가능성
+eureka server 적용된 설정은 아래와 같습니다.
+eureka: instance: instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}} hostname: ${vcap.application.uris[0]} prefer-ip-address: false non-secure-port: 80 lease-renewal-interval-in-seconds: 5 lease-expiration-duration-in-seconds: 5 client: region: default fetch-registry: false register-with-eureka: false service-url: defaultZone: http://${eureka.</description>
+    </item>
+    
+    <item>
+      <title>로컬에서 Spring Cloud Connector 사용하기</title>
+      <link>http://tech.cloudz-labs.io/posts/how-to-use-cf-binding-service-in-local-env/</link>
+      <pubDate>Tue, 13 Feb 2018 08:34:45 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/how-to-use-cf-binding-service-in-local-env/</guid>
+      <description>What? 로컬 개발 환경에서 Spring Cloud Connector를 사용해서 Application에 binding 된 PaaS 서비스를 사용해 봅시다.
+Why? 로컬 개발 환경과 PaaS 환경(dev, stg, prod 등) 을 분리하여 개발환경을 구성하는 경우 몇가지 불편한 점이 있습니다.
+그 중 하나가 로컬 개발 환경에서 사용하는 서비스와 PaaS 환경에서 사용하는 서비스가 다른 경우입니다.
+예를 들면,
+ 로컬 환경에서 H2 DB 를 쓰다가 MariaDB로 배포하는 경우 쿼리가 다릅니다.
+H2:
+DROP TABLE IF EXISTS users CASCADE; CREATE TABLE IF NOT EXISTS users ( id INTEGER, username VARCHAR(100) NOT NULL, age INTEGER NOT NULL, job VARCHAR(100) NOT NULL ); ALTER TABLE users MODIFY id INTEGER NOT NULL AUTO_INCREMENT; MariaDB:</description>
+    </item>
+    
+  </channel>
+</rss>

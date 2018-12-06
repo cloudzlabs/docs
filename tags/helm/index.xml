@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>helm on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/helm/</link>
+    <description>Recent content in helm on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 15 Oct 2018 12:30:40 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/helm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Spinnaker를 활용한 Helm chart 배포</title>
+      <link>http://tech.cloudz-labs.io/posts/spinnaker-deploy-helm-chart/</link>
+      <pubDate>Mon, 15 Oct 2018 12:30:40 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/spinnaker-deploy-helm-chart/</guid>
+      <description>이 페이지는 Spinnaker에서 Helm chart를 배포하는 방법에 대해 설명합니다.
+자세한 내용은 Spinnaker 공식 가이드 문서의 Deploy Helm Charts를 참고하세요.
+사전 준비 GitHub 계정 생성 및 저장소 fork GitHub 계정을 생성하고 아래 저장소를 fork 합니다.
+https://github.com/YunSangJun/my-charts
+GitHub Webhook 설정 GitHub Webhooks 설정하기
+GitHub Artifact 설정 GitHub Artifact 설정하기
+Application 생성 Spinnaker top menu &amp;gt; Applications &amp;gt; 우측 Actions dropbox &amp;gt; Create Application을 선택합니다.
+아래와 같이 내용 입력 후 Create 버튼을 선택합니다.</description>
+    </item>
+    
+  </channel>
+</rss>

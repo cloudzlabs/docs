@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>java buildpack on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/java-buildpack/</link>
+    <description>Recent content in java buildpack on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 19 Feb 2018 10:39:44 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/java-buildpack/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix</title>
+      <link>http://tech.cloudz-labs.io/posts/discovery-duration-error-in-bluemix/</link>
+      <pubDate>Mon, 19 Feb 2018 10:39:44 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/discovery-duration-error-in-bluemix/</guid>
+      <description>What ? 예전에 bluemix에 배포한 어플리케이션이 eureka와 연계했을 때 생각과 다르게 동작하는 것을 발견했습니다.
+해당 현상은 eureka client 어플리케이션이 종료됐을 때, eureka server에서 해당 어플리케이션 정보가 삭제되는데 생각보다 delay가 생기는 것 입니다. (예상 : 5초 내외, but 수 분이상 dashboard 상에서 조회)
+어디서 꼬인 것일까요 ?
+Why ?  eureka 설정이 잘못됐을 가능성
+eureka server 적용된 설정은 아래와 같습니다.
+eureka: instance: instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}} hostname: ${vcap.application.uris[0]} prefer-ip-address: false non-secure-port: 80 lease-renewal-interval-in-seconds: 5 lease-expiration-duration-in-seconds: 5 client: region: default fetch-registry: false register-with-eureka: false service-url: defaultZone: http://${eureka.</description>
+    </item>
+    
+  </channel>
+</rss>

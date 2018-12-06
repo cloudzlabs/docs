@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mariaDB on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/mariadb/</link>
+    <description>Recent content in mariaDB on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 10 Apr 2018 15:53:58 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/mariadb/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kubernetes에 구성한 MariaDB(Mysql)의 한글 깨짐 현상 해결방법</title>
+      <link>http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/</link>
+      <pubDate>Tue, 10 Apr 2018 15:53:58 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/kubernetes/mariadb-utf8/</guid>
+      <description>Why? Kubernetes(a.k.a. K8S)에서 Mysql 또는 Mariadb 이미지를 사용해서 컨테이너를 구성할 때 initialize된 Data에 한글이 깨지는 현상이 발생하는 경우가 있습니다.
+구글에서 &amp;ldquo;mysql 한글 깨짐&amp;rdquo;이라고 검색만 해도 같은 문제를 호소하는 분들이 많고, 이를 해결하기 위한 다양한 해결 방법을 가이드하고 있습니다.
+하지만 Docker 또는 Kubernetes 환경에서는 대부분이 이미 업로드된 official 이미지를 사용해서 컨테이너를 구성하기 때문에 이를 처리하는데 약간의 수고로움 존재합니다.
+이번 세션에서는 K8S 환경에서 mysql(mariadb) 을 구성할 때 한글 깨짐 증상을 해결하고 더 나아가 설정을 자유롭게 할 수 있는 내용을 적어보았습니다.</description>
+    </item>
+    
+    <item>
+      <title>로컬에서 Spring Cloud Connector 사용하기</title>
+      <link>http://tech.cloudz-labs.io/posts/how-to-use-cf-binding-service-in-local-env/</link>
+      <pubDate>Tue, 13 Feb 2018 08:34:45 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/how-to-use-cf-binding-service-in-local-env/</guid>
+      <description>What? 로컬 개발 환경에서 Spring Cloud Connector를 사용해서 Application에 binding 된 PaaS 서비스를 사용해 봅시다.
+Why? 로컬 개발 환경과 PaaS 환경(dev, stg, prod 등) 을 분리하여 개발환경을 구성하는 경우 몇가지 불편한 점이 있습니다.
+그 중 하나가 로컬 개발 환경에서 사용하는 서비스와 PaaS 환경에서 사용하는 서비스가 다른 경우입니다.
+예를 들면,
+ 로컬 환경에서 H2 DB 를 쓰다가 MariaDB로 배포하는 경우 쿼리가 다릅니다.
+H2:
+DROP TABLE IF EXISTS users CASCADE; CREATE TABLE IF NOT EXISTS users ( id INTEGER, username VARCHAR(100) NOT NULL, age INTEGER NOT NULL, job VARCHAR(100) NOT NULL ); ALTER TABLE users MODIFY id INTEGER NOT NULL AUTO_INCREMENT; MariaDB:</description>
+    </item>
+    
+  </channel>
+</rss>

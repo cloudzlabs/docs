@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='언젠가부터 클라우드 열풍이 불어 닥치고 있습니다. 기술의 변화를 보면 IaaS보다는 PaaS나 SaaS를 선호하고, VM에서 직접 컨트롤 하기 보다는 컨테이너, 서버리스 형태의 기술들이 뜨고 있습니다. 저도 그러한 이유로 작년부터 조금씩 회사에서 Kubernetes 스터디를 하고 있네요. 이번 첫번째 챕터에서는 Kubernetes를 처음 접하는 사용자를 위해 Kubernetes 환경에서 애플리케이션을 배포/접속하고 관리하는 기본적인 방법에 대해 보도록 하겠습니다.
+시작하기 전에 애플리케이션 배포를 진행하기 전에 이해가 필요한 기본 개념입니다.
+Kubernetes  Kubernetes는 2014년 Google이 시작한 프로젝트로, 애플리케이션 컨테이너의 배포, 스케일링, 오퍼레이팅을 자동화 해주는 오픈 소스 플랫폼입니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Kubernetes 활용(1/8)] 시작하기 | 김빛나'>
+<meta property='og:description' content='언젠가부터 클라우드 열풍이 불어 닥치고 있습니다. 기술의 변화를 보면 IaaS보다는 PaaS나 SaaS를 선호하고, VM에서 직접 컨트롤 하기 보다는 컨테이너, 서버리스 형태의 기술들이 뜨고 있습니다. 저도 그러한 이유로 작년부터 조금씩 회사에서 Kubernetes 스터디를 하고 있네요. 이번 첫번째 챕터에서는 Kubernetes를 처음 접하는 사용자를 위해 Kubernetes 환경에서 애플리케이션을 배포/접속하고 관리하는 기본적인 방법에 대해 보도록 하겠습니다.
+시작하기 전에 애플리케이션 배포를 진행하기 전에 이해가 필요한 기본 개념입니다.
+Kubernetes  Kubernetes는 2014년 Google이 시작한 프로젝트로, 애플리케이션 컨테이너의 배포, 스케일링, 오퍼레이팅을 자동화 해주는 오픈 소스 플랫폼입니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/kubernetes/getting-start/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='kubernetes'><meta property='article:tag' content='container'><meta property='article:tag' content='container orchestration'><meta property='article:published_time' content='2018-02-21T11:33:28&#43;09:00'/><meta property='article:modified_time' content='2018-02-21T11:33:28&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Kubernetes 활용(1/8)] 시작하기 | 김빛나</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/kubernetes/getting-start/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Feb 21, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 20분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Kubernetes 활용(1/8)] 시작하기</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/blingeeeee">김빛나</a></p>
+
+
+<p>언젠가부터 클라우드 열풍이 불어 닥치고 있습니다.<br/>
+기술의 변화를 보면 IaaS보다는 PaaS나 SaaS를 선호하고, VM에서 직접 컨트롤 하기 보다는 컨테이너, 서버리스 형태의 기술들이 뜨고 있습니다.<br/>
+저도 그러한 이유로 작년부터 조금씩 회사에서 Kubernetes 스터디를 하고 있네요.<br/>
+이번 첫번째 챕터에서는 Kubernetes를 처음 접하는 사용자를 위해 Kubernetes 환경에서 애플리케이션을 배포/접속하고 관리하는 기본적인 방법에 대해 보도록 하겠습니다.</p>
+
+<h2 id="시작하기-전에">시작하기 전에</h2>
+
+<hr />
+
+<p>애플리케이션 배포를 진행하기 전에 이해가 필요한 기본 개념입니다.</p>
+
+<h5 id="kubernetes">Kubernetes</h5>
+
+<blockquote>
+<p>Kubernetes는 2014년 Google이 시작한 프로젝트로, 애플리케이션
+컨테이너의 배포, 스케일링, 오퍼레이팅을 자동화 해주는 오픈 소스
+플랫폼입니다.</p>
+</blockquote>
+
+<h5 id="cluster">Cluster</h5>
+
+<blockquote>
+<p>Kubernetes 내 추상 개념으로, 컨테이너 애플리케이션을 배포, 스케일링,
+오퍼레이팅 할 수 있는 단위 환경이 곧 Cluster 입니다. Cluster 는
+Master와 Node로 구성되어 있습니다.</p>
+
+<ul>
+<li><p>Master</p>
+
+<ul>
+<li>Cluster 전체를 관리하는 주체</li>
+<li>노드의 글로벌 이벤트를 감지하고 응답하는 등 의사결정을 수행</li>
+<li>1대 이상으로 구성할 수 있고 일반적인 운영 환경에서는 단일 마스터가 아닌 이중화 또는 삼중화 형태로 구성할 수 있음</li>
+<li>Kube API Server, Controller Manager, Scheduler, etcd 등 여러 모듈로 구성</li>
+</ul></li>
+
+<li><p>Node</p>
+
+<ul>
+<li>VM 또는 실제 머신을 의미</li>
+<li>kubelet이라는 에이전트를 통해 마스터와 통신</li>
+<li>실제 컨테이너인 Pod가 생성되는 곳</li>
+</ul></li>
+</ul>
+
+<p><img src="k8s-cluster.png" alt="" /></p>
+</blockquote>
+
+<h5 id="pod-object">Pod object</h5>
+
+<blockquote>
+<p>Kubernetes 에서 관리되는 가장 작은 단위입니다.</p>
+
+<ul>
+<li>Containerized app이 배포되는 컴포넌트</li>
+<li>Strongly coupled 한 관계로 Life-cycle이 일치하는 경우는 복수개의 컨테이너로 구성</li>
+<li>MSA에서는 보통 1개 Container당 1개의 App</li>
+<li>Scaling, Replication 의 단위</li>
+</ul>
+
+<p><img src="k8s-pod.png" alt="" /></p>
+</blockquote>
+
+<h5 id="deployment-object">Deployment object</h5>
+
+<blockquote>
+<p>애플리케이션의 배포/삭제, scale out 의 역할을 합니다.<br/>Deployment를
+생성하면 Deployment가 Pod과 ReplicaSets를 함께 생성합니다.<br/> Pod에
+containerized 애플리케이션들이 포함되고, Pod이 생성되면서
+애플리케이션이 배포되는 원리 입니다.<br/> ReplicaSets는 replica 수를 지속
+모니터링하고, 유지시켜줍니다. 만약 Pod이 삭제되어 replica 수와 맞지
+않게 되면 ReplicaSets가 동작하여 지정된 replica 수가 되도록 Pod을
+생성합니다.</p>
+</blockquote>
+
+<h5 id="service-object">Service object</h5>
+
+<blockquote>
+<p>Pod의 논리적 집합과 액세스 정책을 정의하는 추상화된 개념입니다.<br/>
+Service object는 software service (예를들면, mysql)에 대해 이름이
+부여된 추상 개념입니다.<br/> Service object는 클러스터 내부에서 접근 가능한
+port와 외부에서 접근 가능한 nodePort를 가집니다.<br/> 이 포트를 통해 요청이
+왔을 경우, Service object에 설정된 selector를 이용하여 요청이 전달될
+Pod을 찾는데, Service object의 selector 값에 해당하는 label을 가진 Pod
+그룹을 찾고 load balancing (기본은 random) 설정에 따라 특정
+Pod에 요청이 전달 됩니다.<br/> 같은 Cluster 내에서 Pod이 어떤 Node 내
+생성되었는지와 상관 없이 Service는 selector/label 방식으로 Pod을 찾을
+수 있습니다. <br/>Pod은 생성/삭제되기 쉽습니다. 만약 Pod이 죽게 되면,
+Replica Sets가 동적으로 Pod을 생성해냅니다. Pod은 Node 내부에서 고유한
+IP를 가지는데, Pod이 쉽게 생성/삭제 되는 특성상, 이 IP를 통해
+접속하기에 무리가 있습니다.<br/> Kubernetes에서는 이에 대한 안정적인
+endpoint를 제공하기 위해 Service object를 생성 및 활용 합니다.</p>
+
+<p><span class="underline">Kubernetes의 Service Object는 서비스
+디스커버리와  로드밸런싱 기능을 제공하기 때문에 마이크로서비스
+아키텍처의 구성 요소 중 하나인 Spring Netflix Eureka를 대신할 수도
+있습니다. </span></p>
+</blockquote>
+
+<p><img src="k8s-service.png" alt="" /></p>
+
+<h2 id="애플리케이션-준비">애플리케이션 준비</h2>
+
+<hr />
+
+<p>Kubernetes에서 애플리케이션 배포를 위해 Docker Image를 사용합니다. 여기서는  제가 Docker Hub에 미리 Push 해놓은 샘플 Image를 활용해 봅시다.</p>
+
+<ul>
+<li>Image Name :
+<a href="https://hub.docker.com/u/dtlabs/" target="_blank">dtlabs</a><a href="https://hub.docker.com/r/dtlabs/gs-spring-boot-docker/" target="_blank">/</a><a href="https://hub.docker.com/r/dtlabs/gs-spring-boot-docker/" target="_blank">gs-spring-boot-docker</a><a href="https://hub.docker.com/r/dtlabs/gs-spring-boot-docker/" target="_blank">:1.0</a></li>
+<li>Spring Boot 공식 가이드에서 제공하는 <a href="https://github.com/spring-guides/gs-spring-boot-docker.git" target="_blank">GitHub
+샘플소스</a>를
+통해 빌드된 Image 입니다.</li>
+<li>Docker를 이용하여 애플리케이션을 Build 및 Docker Hub에 Push 하는
+방법은 <a href="http://tech.cloudz-labs.io/posts/docker/docker-start/" target="_blank">Docker
+시작하기</a>
+가이드를 참고 하시기 바랍니다.
+
+<br /></li>
+</ul>
+
+<h2 id="애플리케이션-배포">애플리케이션 배포</h2>
+
+<hr />
+
+<p>Kubernetes에서 애플리케이션 배포를 위해 Deployment object를 사용합니다.<br/>
+그리고, 배포된 애플리케이션 서비스 디스커버리 및 접속을 위해 Service
+object를 사용합니다.<br/>
+먼저 Deployment object를 생성해볼까요?</p>
+
+<h3 id="deployment-yaml-파일-생성-및-작성">Deployment yaml 파일 생성 및 작성</h3>
+
+<ul>
+<li><p>[애플리케이션명]-deployment.yaml 파일 생성<br />
+테스트하기 위한 애플리케이션명은 &lsquo;gs-spring-boot-docker&rsquo; 입니다.
+여기에 suffix로 &lsquo;-deployment&rsquo;를 추가 하였습니다. suffix는
+선택사항으로 필수는 아닙니다. &lsquo;gs-spring-boot-docker&rsquo;
+이름의 애플리케이션에 대한 &lsquo;deployment&rsquo; object 생성을 위한
+yaml이라는 의미로 gs-spring-boot-docker-deployment.yaml 파일을
+생성하였습니다.</p>
+
+<p>yaml 작성 방법을 참고하여 gs-spring-boot-docker-deployment.yaml
+파일에 아래의 내용을 작성 합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: apps/v1beta2 <span style="color:#75715e"># for versions before 1.8.0 use apps/v1beta1</span>
+kind: Deployment
+metadata:
+  name: gs-spring-boot-docker-deployment
+  labels:
+    app: gs-spring-boot-docker
+spec:
+  replicas: <span style="color:#ae81ff">1</span>
+  selector:
+    matchLabels:
+      app: gs-spring-boot-docker
+  template:
+    metadata:
+      labels:
+        app: gs-spring-boot-docker
+    spec:
+      containers:
+      - name: gs-spring-boot-docker
+        image: dtlabs/gs-spring-boot-docker:<span style="color:#ae81ff">1.0</span>
+        ports:
+        - containerPort: <span style="color:#ae81ff">8080</span>
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: <span style="color:#e6db74">&#34;256Mi&#34;</span>
+            cpu: <span style="color:#e6db74">&#34;200m&#34;</span>
+          limits:
+            memory: <span style="color:#e6db74">&#34;1Gi&#34;</span>
+            cpu: <span style="color:#e6db74">&#34;500m&#34;</span></code></pre></div>
+<h6 id="line1-apiversion">line1 apiVersion</h6>
+
+<p>API Server에서 관리되는 API 버전을 나타냅니다. 사용자가
+입력한 apiVersion에 맞는 API를 사용하게 됩니다. Kubernetes API는
+실험 단계의 API를 &lsquo;beta&rsquo; 형태로 지원하고, 지속 업데이트 하고
+있습니다. 따라서 Kubernetes API 공식가이드를 통해 현재 사용자의
+Kubernetes 버전 별 호환 및 사용 가능한 API를 확인 후 사용해야
+합니다.</p>
+
+<h6 id="line2-kind">line2 kind</h6>
+
+<p>현재 yaml이 어떤 object를 생성하기 위함인지 kind에 설정합니다. kind:
+Deployment 설정을 통해 현재 yaml로 Deployment object를 생성하게
+됩니다.</p>
+
+<h6 id="line3-metadata">line3 metadata</h6>
+
+<p>Deployment object 자신의 고유 정보를 입력합니다.</p>
+
+<h6 id="line4-metadata-name">line4 metadata.name</h6>
+
+<p>Deployment object에 대한 Unique-key를 입력합니다. 이 name 값을 통해
+여러 object 중 해당 name을 갖는 object를 조회할 수 있습니다.</p>
+
+<h6 id="line5-metadata-labels">line5 metadata.labels</h6>
+
+<p>Deployment object에 대한 label을 설정하는데, 복수개의 label 설정이
+가능 합니다. object들의 그룹화가 가능하고, 같은 label을 가진
+object들을 같은 그룹으로 식별 됩니다.</p>
+
+<h6 id="line7-spec">line7 spec</h6>
+
+<p>Deployment object가 수행하는 내용에 대한 설정 입니다.</p>
+
+<h6 id="line8-spec-replicas">line8 spec.replicas</h6>
+
+<p>Deployment object가 ReplicaSets object를 통해 복제해야 할 Pod의
+개수를 설정합니다.</p>
+
+<h6 id="line10-spec-selector-matchlabels">line10 spec.selector.matchLabels</h6>
+
+<p>Deployment object가 관리해야할 Pod이 어떤 것인지 찾기 위해 selector
+정보로 Pod의 label 정보를 비교하고 매칭되는 label을 갖는 Pod들만
+관리 대상으로 생각합니다.</p>
+
+<h6 id="line11-spec-template">line11 spec.template</h6>
+
+<p>Deployment object가 생성할 Pod 관련 설정 입니다.</p>
+
+<h6 id="line12-spec-template-metadata-labels">line12 spec.template.metadata.labels</h6>
+
+<p>Pod의 label을 설정하는데, 복수개의 label 설정이 가능
+합니다. object들의 그룹화가 가능하고, 같은 label을 가진 object들을
+같은 그룹으로 식별 됩니다. 다른 애플리케이션을 위한 Pod과 label이
+겹치지 않도록 유의 합니다.</p>
+
+<h6 id="line16-spec-template-spec">line16 spec.template.spec</h6>
+
+<p>Deployment object가 생성할 Pod에 대한 설정 입니다.</p>
+
+<h6 id="line17-spec-template-spec-containers">line17 spec.template.spec.containers</h6>
+
+<p>Deployment object가 생성할 Pod이 관리하는 container들의 설정입니다.</p>
+
+<h6 id="line18-spec-template-spec-containers-name">line18 spec.template.spec.containers.name</h6>
+
+<p>container 이름 입니다.</p>
+
+<h6 id="line19-spec-template-spec-containers-image">line19 spec.template.spec.containers.image</h6>
+
+<p>container image name 입니다. docker에서의 image name 및 tag를
+입력하는 방식과 같은 방식으로 입력합니다.</p>
+
+<h6 id="line20-spec-template-spec-containers-ports">line20 spec.template.spec.containers.ports</h6>
+
+<p>containerPort를 배열로 복수개 설정 합니다.</p>
+
+<h6 id="line21-spec-template-spec-containers-ports-containerport">line21 spec.template.spec.containers.ports.containerPort</h6>
+
+<p>contianer가 사용하는 port에 대한 설정 입니다. 8080 포트를
+사용한다고 명시되어 있습니다.</p>
+
+<h6 id="line22-spec-template-spec-containers-imagepullpolicy">line22 spec.template.spec.containers.imagePullPolicy</h6>
+
+<p>&ldquo;Always&rdquo;와 &ldquo;IfNotPresent&rdquo;의 설정이 가능 합니다. &ldquo;Always&rdquo;인 경우,
+Remote Registry로 부터 Image를 항상 Download하고, &ldquo;IfNotPresent&rdquo;는
+우선적으로 캐싱된 Image가 있으면 해당 Image를 사용하고,
+없는 경우에만  Remote Registry로 부터 Download를 시도 합니다.</p>
+
+<p>Deployment object yaml 파일 상세 작성 방법은 <a href="https://kubernetes.io/docs/api-reference/v1.8/#deployment-v1beta1-apps" target="_blank">Deployment
+공식가이드</a>를
+참고 바랍니다.</p>
+
+<h6 id="line24-spec-template-spec-containers-resources-requests">line24 spec.template.spec.containers.resources.requests</h6>
+
+<p>컨테이너가 요청할 최소한의 리소스에 대한 설정입니다. Spring Boot 애플리케이션의 경우는 메모리 값을 256M 이상으로 설정해야 합니다.</p>
+
+<h6 id="line27-spec-template-spec-containers-resources-limits">line27 spec.template.spec.containers.resources.limits</h6>
+
+<p>컨테이너가 최대한으로 사용할 리소스에 대한 설정입니다. 애플리케이션에 따라 적절한 CPU와 메모리 값으로 설정해주어야 합니다. CPU를 너무 낮게 설정하면 애플리케이션이 기동되는데 많은 시간이 걸릴 수 있습니다.</p>
+
+<h4 id="특정-노드에-pod-배포하기">특정 노드에 Pod 배포하기</h4>
+
+<p>지정된 노드에 Pod를 배포하고 싶은 경우에 참고합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#노드 조회를 통해 노드명 확인</span>
+$ kubectl get node
+NAME             STATUS     ROLES     AGE       VERSION
+<span style="color:#ae81ff">10</span>.178.158.149   NotReady       15d       v1.8.3+icp
+<span style="color:#ae81ff">10</span>.178.158.172   Ready          15d       v1.8.3+icp
+<span style="color:#ae81ff">10</span>.178.158.177   Ready          15d       v1.8.3+icp
+<span style="color:#ae81ff">10</span>.178.158.181   Ready          15d       v1.8.3+icp
+<span style="color:#ae81ff">10</span>.178.158.186   Ready          15d       v1.8.3+icp
+
+<span style="color:#75715e">#kubectl label nodes = 명령어를 통해 노드에 label 추가</span>
+$ kubectl label nodes <span style="color:#ae81ff">10</span>.178.158.181 hostname<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.178.158.181
+node <span style="color:#e6db74">&#34;10.178.158.181&#34;</span> labeled
+
+<span style="color:#75715e">#노드의 라벨 조회</span>
+$ kubectl get nodes --show-labels
+NAME             STATUS     ROLES     AGE       VERSION      LABELS
+<span style="color:#ae81ff">10</span>.178.158.149   NotReady       15d       v1.8.3+icp  
+beta.kubernetes.io/arch<span style="color:#f92672">=</span>amd64,beta.kubernetes.io/os<span style="color:#f92672">=</span>linux,gpu/nvidia<span style="color:#f92672">=</span>NA,kubernetes.io/hostname<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.178.158.149
+<span style="color:#ae81ff">10</span>.178.158.172   Ready          15d       v1.8.3+icp  
+beta.kubernetes.io/arch<span style="color:#f92672">=</span>amd64,beta.kubernetes.io/os<span style="color:#f92672">=</span>linux,gpu/nvidia<span style="color:#f92672">=</span>NA,kubernetes.io/hostname<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.178.158.172,management<span style="color:#f92672">=</span>true,role<span style="color:#f92672">=</span>master
+<span style="color:#ae81ff">10</span>.178.158.177   Ready          15d       v1.8.3+icp  
+beta.kubernetes.io/arch<span style="color:#f92672">=</span>amd64,beta.kubernetes.io/os<span style="color:#f92672">=</span>linux,gpu/nvidia<span style="color:#f92672">=</span>NA,kubernetes.io/hostname<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.178.158.177,proxy<span style="color:#f92672">=</span>true
+<span style="color:#ae81ff">10</span>.178.158.181   Ready          15d       v1.8.3+icp  
+beta.kubernetes.io/arch<span style="color:#f92672">=</span>amd64,beta.kubernetes.io/os<span style="color:#f92672">=</span>linux,gpu/nvidia<span style="color:#f92672">=</span>NA,hostname<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.178.158.181,kubernetes.io/hostname<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.178.158.181,test<span style="color:#f92672">=</span>test
+<span style="color:#ae81ff">10</span>.178.158.186   Ready          15d       v1.8.3+icp  
+beta.kubernetes.io/arch<span style="color:#f92672">=</span>amd64,beta.kubernetes.io/os<span style="color:#f92672">=</span>linux,gpu/nvidia<span style="color:#f92672">=</span>NA,kubernetes.io/hostname<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>.178.158.186</code></pre></div></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e">#Deployment 생성 파일에 아래 nodeSelector 필드를 추가</span>
+<span style="color:#75715e">#nodeSelector를 통해 Pod가 특정 노드에서만 실행하도록 제한.</span>
+<span style="color:#75715e">#&#39;hostname=10.178.158.181&#39; 라는 label을 가진 노드를 지정하여 pod를 배포</span>
+
+    apiVersion: apps/v1beta2 <span style="color:#75715e"># for versions before 1.8.0 use apps/v1beta1</span>
+    kind: Deployment
+    metadata:
+      name: gs-spring-boot-docker-deployment
+      labels:
+        app: gs-spring-boot-docker
+    spec:
+      replicas: <span style="color:#ae81ff">1</span>
+      selector:
+        matchLabels:
+          app: gs-spring-boot-docker
+      template:
+        metadata:
+          labels:
+            app: gs-spring-boot-docker
+        spec:
+          containers:
+          - name: gs-spring-boot-docker
+            image: dtlabs/gs-spring-boot-docker:<span style="color:#ae81ff">1.0</span>
+            ports:
+            - containerPort: <span style="color:#ae81ff">8080</span>
+            imagePullPolicy: Always
+          nodeSelector:
+            hostname: <span style="color:#ae81ff">10.178</span>.<span style="color:#ae81ff">158.181</span></code></pre></div>
+<h3 id="deployment-object-생성">Deployment object 생성</h3>
+
+<ul>
+<li><p>Deployment object 생성을 위해 아래의 command를 수행합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># gs-spring-boot-docker-deployment.yaml 파일 위치 확인</span>
+$ ls
+gs-spring-boot-docker-deployment.yaml
+
+<span style="color:#75715e"># kubectl apply 명령어에서 -f 옵션을 통해 파일명이 gs-spring-boot-docker-deployment.yaml 임을 인자로 전달합니다.</span>
+<span style="color:#75715e"># --record 옵션을 통해 yaml 설정 이력을 기록할 수 있습니다.</span>
+$ kubectl apply --record -f ./gs-spring-boot-docker-deployment.yaml
+deployment <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment&#34;</span> created</code></pre></div>
+<p><strong>&lsquo;kube apply&rsquo; VS. &lsquo;kubectl create &ndash;save-config&rsquo;</strong></p>
+
+<p>Kubernetes에서 object 생성을 위한 기본 명령어는 &lsquo;kubectl create&rsquo;
+입니다.</p>
+
+<p>하지만, <strong><span class="underline">&lsquo;kubectl create&rsquo;
+동일한 동작을 하고, 더 간결한 방식인 &lsquo;kube apply&rsquo;를
+사용합니다.</span></strong></p>
+
+<p>그 이유는,</p>
+
+<ul>
+<li>&lsquo;kubectl create -f yaml파일명&rsquo;을 통해 object를 생성시, 생성
+시점의 설정에 대한 버전 기록을 위해 &lsquo;&ndash;save-config&rsquo; flag를
+사용할 수 있습니다.</li>
+<li>기록은 설정 내 &lsquo;annotation&rsquo; 부분에 쓰여집니다.</li>
+<li>생성시 &lsquo;&ndash;save-config&rsquo;를 추가하고, 이후에 설정 변경이 발생할
+경우, &lsquo;과거-현재-신규&rsquo; 버전에 대한 three-way diff 방식의 비교를
+합니다.</li>
+<li>&rsquo;&ndash;save-config&rsquo; 없이 생성시, (생성 시점의 과거 버전 기록이
+제외된) &lsquo;현재-신규&rsquo; 버전에 대한 two-way diff 방식의 비교를
+합니다.</li>
+<li>two-way diff 방식에서는, 특정 설정을 삭제하는 변경 적용 시, 과거
+버전의 기록이 없기 때문에, 삭제될 부분을 인식하지 못하는 제약이
+있기 때문입니다.</li>
+<li>따라서, &lsquo;kubectl create&rsquo; 동일한 동작을 하고, 더 간결한 방식인
+&lsquo;kube apply&rsquo;를 사용합니다.</li>
+</ul>
+
+<p>상세 설명은 여기의 <a href="https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/#in-place-updates-of-resources" target="_blank">kubectl apply
+공식가이드</a>를
+참고 바랍니다.</p>
+
+<ol>
+<li>Deployment object 생성을 확인 합니다.</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Deployments 조회 (kubectl get deployments 명령어 또는 kubectl get deploy 명령어는 같은 의미이므로 선택적으로 사용 가능)</span>
+$ kubectl get deployments
+NAME                               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+gs-spring-boot-docker-deployment   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           23m</code></pre></div>
+<p>Deployment state</p>
+
+<ul>
+<li><code>NAME</code> - 클러스터 내 Deployment의 이름이 리스트업 됩니다.</li>
+<li><code>DESIRED</code> - 개발자가 작성한 Deployment yaml 파일 내 정의한
+replicas의 수를 나타냅니다.</li>
+<li><code>CURRENT</code> - 현재 Running 중인 replicas의 수를 나타냅니다.</li>
+<li><code>UP-TO-DATE</code> - desired state를 만족하기 위해 현재 수행되어지고
+있는 replicas의 수를 나타냅니다.</li>
+<li><code>AVAILABLE</code> - 현재 User가 사용 가능한 replicas의 수를
+나타냅니다.</li>
+<li><code>AGE</code> - 애플리케이션이 Running 상태가 된 이후 부터의 시간을
+나타냅니다.</li>
+</ul></li>
+</ul>
+
+<ol>
+<li><p>Pod, ReplicaSets object 생성 또한 확인 가능 합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># ReplicaSets 조회 (kubectl get replicasets 명령어 또는 kubectl get rs 명령어는 같은 의미이므로 선택적으로 사용 가능)</span>
+$ kubectl get rs
+NAME                                          DESIRED   CURRENT   READY     AGE
+gs-spring-boot-docker-deployment-56fb494f67   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         32m
+
+<span style="color:#75715e"># Pods 조회 (kubectl get pods 명령어 또는 kubectl get pod 명령어 또는 kubectl get po 명령어는 같은 의미이므로 선택적으로 사용 가능)</span>
+$ kubectl get po
+NAME                                                READY     STATUS    RESTARTS   AGE
+gs-spring-boot-docker-deployment-56fb494f67-g2lwr   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          33m</code></pre></div>
+<p>이어서 Service object 도 만들어 봅시다.</p>
+
+<h3 id="service-object-yaml-파일-생성-및-작성">Service object yaml 파일 생성 및 작성</h3>
+
+<ol>
+<li>[애플리케이션명]-service.yaml 파일 생성<br />
+<br /></li>
+</ol>
+
+<p>테스트하기 위한 애플리케이션명은 &lsquo;gs-spring-boot-docker&rsquo; 입니다.
+여기에 suffix로 &lsquo;-service&rsquo;를 추가 하였습니다. suffix는 선택사항으로
+필수는 아닙니다. &lsquo;gs-spring-boot-docker&rsquo; 이름의
+애플리케이션에 대한 &lsquo;service&rsquo; object 생성을 위한 yaml이라는 의미로
+gs-spring-boot-docker-service.yaml 파일을 생성하였습니다.</p>
+
+<ol>
+<li>yaml 작성 방법을 참고하여 gs-spring-boot-docker-service.yaml 파일에
+아래의 내용을 작성 합니다.
+
+<br /></li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: gs-spring-boot-docker-service
+spec:
+  ports:
+    - name: <span style="color:#e6db74">&#34;8080&#34;</span>
+      port: <span style="color:#ae81ff">8081</span>
+      targetPort: <span style="color:#ae81ff">8080</span>
+  selector:
+    app: gs-spring-boot-docker
+  type: NodePort</code></pre></div>
+<h6 id="line1-apiversion-1">line1 apiVersion</h6>
+
+<p>API Server에서 관리되는 API 버전을 나타냅니다. 사용자가
+입력한 apiVersion에 맞는 API를 사용하게 됩니다. Kubernetes API는
+실험 단계의 API를 &lsquo;beta&rsquo; 형태로 지원하고, 지속 업데이트 하고
+있습니다. 따라서 Kubernetes API 공식가이드를 통해 현재 사용자의
+Kubernetes 버전 별 호환 및 사용 가능한 API를 확인 후 사용해야
+합니다.</p>
+
+<h6 id="line2-kind-1">line2 kind</h6>
+
+<p>현재 yaml이 어떤 object를 생성하기 위함인지 kind에 설정합니다. kind:
+Service 설정을 통해 현재 yaml로 Service object를 생성하게 됩니다.</p>
+
+<h6 id="line3-metadata-1">line3 metadata</h6>
+
+<p>Service object 자신의 고유 정보를 입력합니다.</p>
+
+<h6 id="line4-metadata-name-1">line4 metadata.name</h6>
+
+<p>Service object에 대한 Unique-key를 입력합니다. 이 name 값을 통해
+여러 object 중 해당 name을 갖는 object를 조회할 수 있습니다.</p>
+
+<h6 id="line5-spec">line5 spec</h6>
+
+<p>Service object가 수행하는 내용에 대한 설정 입니다.</p>
+
+<h6 id="line6-spec-ports">line6 spec.ports</h6>
+
+<p>Service object 에 설정할 포트 정보 입니다.</p>
+
+<h6 id="spec-ports-name">spec.ports.name</h6>
+
+<p>Service object 에 설정할 포트 중 특정 포트 정보에 대한 명칭 입니다.</p>
+
+<h6 id="spec-ports-port">spec.ports.port</h6>
+
+<p>Cluster 내부에서 사용될 Service object의 포트 입니다.</p>
+
+<h6 id="spec-ports-targetport">spec.ports.targetPort</h6>
+
+<p>Service object로 들어온 요청을 전달할 target이되는 Pod이 노출하고
+있는 포트 입니다. Deployment의
+spec.template.spec.containers.ports.containerPort에 전달 됩니다.
+기본적으로 targetPort는 port 필드와 동일한 값으로 설정됩니다.</p>
+
+<h6 id="spec-selector">spec.selector</h6>
+
+<p>Service object가 요청을 전달할 Pod을 찾기위한 검색어 입니다. Pod의
+label이 app: gs-spring-boot-docker 인 Pod을 찾아 요청을 전달 하게
+됩니다. 찾은 Pod이 여러개인 경우 load balancing 정책에 따라 하나의
+Pod을 선택하게 됩니다.</p>
+
+<h6 id="spec-type">spec.type</h6>
+
+<p>Service object를 노출하기 위한 방식을 설정 합니다. 가능한 type으로는
+ClusterIP, NodePort, LoadBalancer가 있습니다.</p>
+
+<ul>
+<li>ClusterIP - Service object의 cluster-internal IP만 노출
+하고, Cluster 내부에서만 접근 가능 합니다.</li>
+<li>NodePort - 각 Node에서 static 포트를 노출합니다. 클러스터
+외부에서 :의 형태로 request가 가능 합니다. 앱을 배포후
+테스트할 때 선택하기 좋은 type입니다.</li>
+<li>LoadBalancer - 특정 cloud provider(GCE/AWS)의 load
+balancer에게 Service object를 노출시키는 방법 입니다.</li>
+</ul></li>
+</ol>
+
+<h3 id="service-object-생성">Service object 생성</h3>
+
+<ol>
+<li><p>Service object 생성을 위해 아래의 command를 수행합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># gs-spring-boot-docker-service.yaml 파일 위치 확인</span>
+$ ls
+gs-spring-boot-docker-deployment.yaml   gs-spring-boot-docker-service.yaml
+
+<span style="color:#75715e"># kubectl apply 명령어에서 -f 옵션을 통해 파일명이 gs-spring-boot-docker-service.yaml 임을 인자로 전달합니다.</span>
+$ kubectl apply -f ./gs-spring-boot-docker-service.yaml
+service <span style="color:#e6db74">&#34;gs-spring-boot-docker-service&#34;</span> created</code></pre></div>
+<ol>
+<li>Service object 생성을 확인 합니다.</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Service 조회 (kubectl get service 명령어 또는 kubectl get svc 명령어는 같은 의미이므로 선택적으로 사용 가능)</span>
+<span style="color:#75715e"># 8081이 Service에 접근하기 위한 Cluster 내부 포트, 30993이 외부 노출 포트 입니다. 외부포트는 직접 설정하지 않고 자동 부여된 경우 30000-32767 사이에서 random 부여 됩니다.</span>
+$ kubectl get service
+NAME                            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>          AGE
+gs-spring-boot-docker-service   NodePort    <span style="color:#ae81ff">10</span>.99.197.147   &lt;none&gt;        <span style="color:#ae81ff">8081</span>:30993/TCP   11s</code></pre></div></li>
+</ol>
+
+<h3 id="애플리케이션-접속">애플리케이션 접속</h3>
+
+<ol>
+<li><p>접속을 위한 IP / Port 확인<br />
+앞서, Service object의 NodePort설정으로 : 의 형태로 접속 테스트가
+가능합니다.<br />
+아래의 명령어를 통해 NodeIP와 NodePort 정보를 조회합니다. (개인별
+테스트 환경에 따라 다른값의 IP, Port가 조회될 수 있습니다)</p>
+
+<p>아래의 내용 중 &lsquo;Node: poc.k8s-worker01.cloudz.co.kr/169.56.109.58&rsquo;
+이 부분에서 &lsquo;<strong><span class="underline">169.56.109.58</span></strong>&lsquo;의
+IP가 테스트에서 이용할 <strong>NodeIP</strong> 입니다.
+이 방법으로 확인이 어렵다면 Kubernetes 대쉬보드에서 확인해 보거나 Minikube의 경우에는 minikube가 설치된 VM 머신의 IP를 활용하시면 됩니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># pod name 알아내기</span>
+$ kubectl get pod
+NAME                                                READY     STATUS    RESTARTS   AGE
+gs-spring-boot-docker-deployment-56fb494f67-g2lwr   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          3h
+
+<span style="color:#75715e"># pod name을 이용하여, kubectl describe</span>
+$ kubectl describe pod gs-spring-boot-docker-deployment-56fb494f67-g2lwr
+Name:           gs-spring-boot-docker-deployment-56fb494f67-g2lwr
+Namespace:      default
+Node:           poc.k8s-worker01.cloudz.co.kr/169.56.109.58
+... <span style="color:#f92672">(</span>생략<span style="color:#f92672">)</span></code></pre></div>
+<p>아래의 내용 중 &lsquo;8081:30993/TCP&rsquo;에서 &lsquo;<span
+class="underline"><strong>30993</strong></span>&rsquo; 부분이 외부로 노출된
+<strong>NodePort</strong> 입니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Service object 조회를 통해 NodePort를 알아냅니다.</span>
+<span style="color:#75715e"># 8081:30993/TCP 에서 30993이 외부로 노출된 NodePort 입니다.</span>
+$ kubectl get svc
+NAME                            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>          AGE
+gs-spring-boot-docker-service   NodePort    <span style="color:#ae81ff">10</span>.99.197.147   &lt;none&gt;        <span style="color:#ae81ff">8081</span>:30993/TCP   12m
+kubernetes                      ClusterIP   <span style="color:#ae81ff">10</span>.96.0.1       &lt;none&gt;        <span style="color:#ae81ff">443</span>/TCP          14d</code></pre></div></li>
+
+<li><p>브라우저 접속 테스트<br />
+위에서 알아낸 169.56.109.58:30993 을 브라우저로 접속하여 정상 접속
+됨을 확인 합니다.<br />
+<img src="37924032.png" alt="" /></p></li>
+</ol>
+
+<h2 id="애플리케이션-변경">애플리케이션 변경</h2>
+
+<hr />
+
+<h3 id="image-버전-update">Image 버전 Update</h3>
+
+<p>Kubernetes에서 소스 수정 및 버전을 업데이트 하는 방법입니다. Docker Hub에 미리 Push 된 샘플 Image를 사용합니다.</p>
+
+<ul>
+<li>Image Name
+: <a href="https://hub.docker.com/u/dtlabs/" target="_blank">dtlabs</a><a href="https://hub.docker.com/r/dtlabs/gs-spring-boot-docker/" target="_blank">/</a><a href="https://hub.docker.com/r/dtlabs/gs-spring-boot-docker/" target="_blank">gs-spring-boot-docker</a><a href="https://hub.docker.com/r/dtlabs/gs-spring-boot-docker/" target="_blank">:2.0</a></li>
+<li>Spring Boot 공식 가이드에서
+제공하는 <a href="https://github.com/spring-guides/gs-spring-boot-docker.git" target="_blank">샘플소스</a>를
+수정하여 빌드된 Image 입니다.</li>
+<li>업데이트 버전을 tagging 하여 Docker build 후, Docker Hub에 Push
+하였습니다.</li>
+<li>Docker를 이용하여 애플리케이션을 Build 및 Docker Hub에 Push 하는
+방법은 <a href="https://myshare.skcc.com/pages/viewpage.action?pageId=39929582" target="_blank">Docker
+시작하기</a>
+가이드를 참고 하시기 바랍니다.
+
+<br /></li>
+</ul>
+
+<ol>
+<li><p>kubectl set image 명령어를 통한 Image 버전 업데이트 수행</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># deployment/gs-spring-boot-docker-deployment 설정을 통해, deployment object 중 name이 gs-spring-boot-docker-deployment인 것의 Pod Image를 업데이트 하겠다는 의미 입니다.</span>
+<span style="color:#75715e"># gs-spring-boot-docker=dtlabs/gs-spring-boot-docker:2.0 설정을 통해, Image의 name이 gs-spring-boot-docker인 Image를 dtlabs/gs-spring-boot-docker:2.0 라는 Docker Hub/Registry Image로 업데이트 하겠다는 의미 입니다.</span>
+<span style="color:#75715e"># kubectl set image 명령어 수행 시, --record 를 command에 추가 하였다면, kubectl rollout history 수행 결과에서 CHANGE-CAUSE 값으로 업데이트 시 수행한 명령어가 기록되어 보여집니다.</span>
+$ kubectl set image deployment/gs-spring-boot-docker-deployment gs-spring-boot-docker<span style="color:#f92672">=</span>dtlabs/gs-spring-boot-docker:2.0 --record
+deployment <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment&#34;</span> image updated</code></pre></div>
+<p>kubectl set image 명령어를 통해 단일 Pod을 업데이트 하는 경우,
+기존의 Pod을 Terminating 후, 신규 Pod을 Running 상태로 변경하는 동안
+일정 시간의 서비스 불가 상태를 야기 할 수 있습니다. 이를 방지하기
+위해 Pod을 2개 이상 유지하고, <a href="https://myshare.skcc.com/pages/viewpage.action?pageId=37923040" target="_blank">rolling
+update</a>
+기능을 통해 Pod의 순차적 업데이트를 수행하는 것이 좋습니다.</p>
+
+<ol>
+<li>버전 업데이트 확인</li>
+</ol>
+
+<p>Kubernetes에서는 Image의 버전 업데이트 및 배포 시, 과거 버전의
+롤백을 위해, 각 버전 별 Revision를 보존합니다. 그리고 Revision 별
+Pod의 상태는 Revision 별 생성되는 Replica Sets이 저장하고 있습니다.
+그렇기 때문에, 만약 관리자가 업데이트 후 롤백을 시도 할 경우,
+보존되고 있는 Revision 중 롤백 버전에 해당하는 Revision의 Replica
+Sets이 롤백 버전의 Pod을 복구 하게 됩니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 기존 running 상태의 Pod 및 새로 ContainerCreating 중인 Pod 확인</span>
+<span style="color:#75715e"># ContainerCreating 단계는 조회 시점에 따라 skip될 수 있습니다</span>
+<span style="color:#75715e"># Pod의 Unique NAME이 서로 다른 것을 확인할 수 있고, 신규 버전의 Pod이 ContainerCreating 중에도 애플리케이션 이전 버전에 여전히 접속 가능 합니다.</span>
+$ kubectl get pod
+NAME                                                READY     STATUS              RESTARTS   AGE
+gs-spring-boot-docker-deployment-56fb494f67-g2lwr   <span style="color:#ae81ff">1</span>/1       Running             <span style="color:#ae81ff">0</span>          4h
+gs-spring-boot-docker-deployment-7fbf88754d-6grl7   <span style="color:#ae81ff">0</span>/1       ContainerCreating   <span style="color:#ae81ff">0</span>          1m
+
+<span style="color:#75715e"># Replica Sets 또한 Revision 보존을 위해 이전 버전의 Replica Sets이 그대로 유지되는 모습을 확인할 수 있습니다.</span>
+<span style="color:#75715e"># Pod이 ContainerCreating 중에는 새로 생성된 Replica Sets의 READY 상태가 &#39;0&#39;으로 업데이트 진행중임을 확인할 수 있습니다.</span>
+$ kubectl get rs
+NAME                                          DESIRED   CURRENT   READY     AGE
+gs-spring-boot-docker-deployment-56fb494f67   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         4h
+gs-spring-boot-docker-deployment-7fbf88754d   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">0</span>         1m
+
+<span style="color:#75715e">################################</span>
+<span style="color:#75715e"># 일정 시간 이후, ContainerCreating(Image 다운로드) 및 업데이트가 완료된 후</span>
+<span style="color:#75715e">################################</span>
+
+<span style="color:#75715e"># 업데이트가 완료 되면, 아래와 같이 신규 생성된 Pod이 Running</span>
+$ kubectl get pod
+NAME                                                READY     STATUS        RESTARTS   AGE
+gs-spring-boot-docker-deployment-56fb494f67-g2lwr   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          4h
+gs-spring-boot-docker-deployment-7fbf88754d-6grl7   <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          9m
+
+<span style="color:#75715e"># 업데이트가 완료 되면, 아래와 같이 신규 생성된 Replica Sets이 READY 상태가 됩니다.</span>
+$ kubectl get rs
+NAME                                          DESIRED   CURRENT   READY     AGE
+gs-spring-boot-docker-deployment-56fb494f67   <span style="color:#ae81ff">0</span>         <span style="color:#ae81ff">0</span>         <span style="color:#ae81ff">0</span>         4h
+gs-spring-boot-docker-deployment-7fbf88754d   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         9m</code></pre></div>
+<p>브라우저 접속 및 버전 2.0으로 업데이트된 것을 확인합니다.</p>
+
+<p><img src="37923051.png" alt="" />
+ </p></li>
+
+<li><p>버전 변경 history 확인</p>
+
+<p>kubectl rollout history 명령어를 통해 업데이트 history를 확인할 수 있습니다.</p>
+
+<p>kubectl set image 명령어 수행 시, &ndash;record 옵션을 사용했다면, kubectl rollout history 수행 결과에서 CHANGE-CAUSE 값으로 업데이트 시 수행한 명령어 기록을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># deployment/gs-spring-boot-docker-deployment의 의미는, deployment의 이름이 gs-spring-boot-docker-deployment 인 것을 조회하겠다는 뜻 입니다.</span>
+$ kubectl rollout history deployment/gs-spring-boot-docker-deployment
+deployments <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment&#34;</span>
+REVISION  CHANGE-CAUSE
+<span style="color:#ae81ff">1</span>         kubectl create --filename<span style="color:#f92672">=</span>gs-spring-boot-docker-deployment.yaml --record<span style="color:#f92672">=</span>true
+<span style="color:#ae81ff">2</span>         kubectl set image deployment/gs-spring-boot-docker-deployment gs-spring-boot-docker<span style="color:#f92672">=</span>dtlabs/gs-spring-boot-docker:2.0
+
+
+<span style="color:#75715e"># --revision=2 를 추가하면, 특정 revision 업데이트 정보를 확인할 수 있습니다.</span>
+<span style="color:#75715e"># revision #2에서 Image:    dtlabs/gs-spring-boot-docker:2.0를 통해 정상적으로 Image 업데이트가 이루어진 것을 확인 할 수 있습니다.</span>
+$ kubectl rollout history deployment/gs-spring-boot-docker-deployment --revision<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+deployments <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment&#34;</span> with revision <span style="color:#75715e">#2</span>
+Pod Template:
+  Labels:    app<span style="color:#f92672">=</span>gs-spring-boot-docker
+    pod-template-hash<span style="color:#f92672">=</span><span style="color:#ae81ff">3969443108</span>
+  Containers:
+   gs-spring-boot-docker:
+    Image:    dtlabs/gs-spring-boot-docker:2.0
+    Port:    <span style="color:#ae81ff">80</span>/TCP
+    Environment:    &lt;none&gt;
+    Mounts:    &lt;none&gt;
+  Volumes:    &lt;none&gt;</code></pre></div>
+<h3 id="image-버전-rollback">Image 버전 Rollback</h3>
+
+<ul>
+<li><strong><code>undo 방식</code></strong><br />
+버전 변경 바로 직전의 상태로 Rollback을 원할 경우에 사용 가능한 방법
+입니다.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl rollout undo deployment/gs-spring-boot-docker-deployment
+deployment <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment&#34;</span> rolled back
+
+<span style="color:#75715e"># 기존 Running Pod이 Terminating 되고, 신규 생성된 Pod이 Running 되었습니다.</span>
+$ kubectl get pod
+NAME                                                READY     STATUS        RESTARTS   AGE
+gs-spring-boot-docker-deployment-56fb494f67-g2lwr   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          5h
+gs-spring-boot-docker-deployment-7fbf88754d-6grl7   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          1h
+gs-spring-boot-docker-deployment-56fb494f67-rfvnv   <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          5s
+
+<span style="color:#75715e"># Revision #1에 해당하는 Replica Sets를 유지키시고 있었기 때문에, 새로 Replica Sets을 생성하지 않고 Rollback이 수행 됨을 알 수 있습니다.</span>
+$ kubectl get rs
+NAME                                          DESIRED   CURRENT   READY     AGE
+gs-spring-boot-docker-deployment-56fb494f67   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         5h
+gs-spring-boot-docker-deployment-7fbf88754d   <span style="color:#ae81ff">0</span>         <span style="color:#ae81ff">0</span>         <span style="color:#ae81ff">0</span>         1h</code></pre></div>
+<p>브라우저에서 변경된 버전에 접속하여 Rollback을 확인 합니다. &lsquo;2.0&rsquo;
+버전에서 아래와 같이 기존 버전(1.0)으로 변경된 것을 확인할 수
+있습니다.</p>
+
+<p><img src="37924032.png" alt="" /></p></li>
+</ol>
+
+<ul>
+<li><p><strong>&ndash;to-revision 방식</strong></p>
+
+<p>특정 Revision을 명시적으로 선택하여 버전을 변경할 경우 사용합니다.</p>
+
+<p>&ndash;to-revision 방식을 테스트 하기 위해, 버전 1.0을 2.0이 되도록, Revision #2로 다시 변경 해보도록 하겠습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl rollout undo deployment/gs-spring-boot-docker-deployment --to-revision<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+deployment <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment&#34;</span> rolled back
+
+<span style="color:#75715e"># 기존 Running Pod이 Terminating 되고, 신규 생성된 Pod이 Running 되었습니다.</span>
+$ kubectl get pod
+NAME                                                READY     STATUS        RESTARTS   AGE
+gs-spring-boot-docker-deployment-56fb494f67-g2lwr   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          5h
+gs-spring-boot-docker-deployment-56fb494f67-rfvnv   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          6m
+gs-spring-boot-docker-deployment-7fbf88754d-6grl7   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          1h
+gs-spring-boot-docker-deployment-7fbf88754d-7zx7s   <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          6s
+
+<span style="color:#75715e"># Revision #2에 해당하는 Replica Sets를 유지키시고 있었기 때문에, 새로 Replica Sets을 생성하지 않고 Rollback이 수행 됨을 알 수 있습니다.</span>
+$ kubectl get rs
+NAME                                          DESIRED   CURRENT   READY     AGE
+gs-spring-boot-docker-deployment-56fb494f67   <span style="color:#ae81ff">0</span>         <span style="color:#ae81ff">0</span>         <span style="color:#ae81ff">0</span>         5h
+gs-spring-boot-docker-deployment-7fbf88754d   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         1h </code></pre></div>
+<p>브라우저에서 변경된 버전에 접속하여 Rollback을 확인 합니다.</p>
+
+<p>&lsquo;1.0&rsquo; 버전에서 아래와 같이 &lsquo;2.0&rsquo; 버전으로 변경된 것을 확인할 수
+있습니다.</p>
+
+<p><img src="37923051.png" alt="" /></p>
+
+<h3 id="yaml-설정-변경">yaml 설정 변경</h3>
+
+<p>Kubernetes object 생성 시, 사용자가 작성한 yaml 파일의 설정 이외에,
+Kubernetes에서 자동 부여하는 default 설정이 있습니다. 아래의 명령어를
+통해 default 설정이 추가된 전체 설정을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get deploy gs-spring-boot-docker-deployment -o yaml</code></pre></div></li>
+</ul>
+
+<p>이렇게 적용된 설정을 변경할 때, 다음의 명령어들을 사용할 수 있는데, 그
+차이점을 명확히 이해하고 사용해야 합니다.</p>
+
+<ul>
+<li><p><strong>kubectl apply</strong></p>
+
+<ul>
+<li>사용자가 작성한 yaml에 의해 설정된 사항만 설정 변경이 적용
+됩니다 (overwrite 방식)</li>
+
+<li><p>이 명령어는 &lsquo;kubectl create &ndash;save-config&rsquo; 와 같은 동작을
+합니다. (object 생성 전, &lsquo;kubectl apply -f 파일명&rsquo;의 명령어
+수행을 통해 object 생성이 가능 합니다.)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># gs-spring-boot-docker-deployment.yaml 파일 수정 후 아래의 명령어 수행</span>
+$ kubectl apply -f gs-spring-boot-docker-deployment.yaml</code></pre></div></li>
+</ul></li>
+
+<li><p><strong>kubectl edit</strong></p>
+
+<ul>
+<li>전체 설정(사용자가 작성한 yaml의 설정과 자동 부여되는 default
+설정)이 적용 됩니다 (overwrite 방식)</li>
+<li>Editor 도구 (VIM or 사용자 Editor)에서 전체 설정이 보여지고,
+수정 및 저장 시 설정이 적용 됩니다.</li>
+
+<li><p>전체 설정에 대한 yaml 파일에 대한 형상관리의 어려움 때문에, 자동
+부여되는 default 설정 변경시 특히 주의해야 합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># deployment/gs-spring-boot-docker-deployment 를 통해, deployment object 중 name이 gs-spring-boot-docker-deployment 인 설정을 Editor로 open 합니다.</span>
+$ kubectl edit deployment/gs-spring-boot-docker-deployment
+
+<span style="color:#75715e"># Editor 변경 및 저장 시, 설정이 적용 됩니다.</span></code></pre></div></li>
+</ul></li>
+
+<li><p><strong>kubectl patch</strong></p>
+
+<ul>
+<li><p>전체 설정(사용자가 작성한 yaml의 설정과 자동 부여되는 default
+설정)에 추가 설정 일부를 패치 yaml 파일을 통해 삽입할 수
+있습니다.</p>
+
+<p><strong>patch-file.yaml</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">spec:
+  template:
+    spec:
+      containers:
+      - name: patch-demo-ctr-<span style="color:#ae81ff">2</span>
+        image: redis</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 현재 경로에 patch-file.yaml을 작성한 후,</span>
+<span style="color:#75715e"># deployment 중 name이 gs-spring-boot-docker-deployment인 object에 대해 patch-file.yaml 설정을 추가삽입 하겠다는 의미 입니다.</span>
+$ kubectl patch deployment gs-spring-boot-docker-deployment  --patch <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>cat patch-file.yaml<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span></code></pre></div>
+<p>Windows OS에서는 아래의 &ldquo;$(cat patch-file.yaml)&rdquo; 명령어가
+동작하지 않기 때문에, 아래의 동일한 동작을 하는 다른 방법을 사용
+합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; kubectl patch deployment gs-spring-boot-docker-deployment --patch <span style="color:#e6db74">&#34;{\&#34;spec\&#34;:{\&#34;template\&#34;:{\&#34;spec\&#34;:{\&#34;containers\&#34;:[{\&#34;name\&#34;:\&#34;patch-demo-ctr-2\&#34;,\&#34;image\&#34;:\&#34;redis\&#34;}]}}}}</span></code></pre></div></li>
+</ul></li>
+
+<li><p><strong>kubectl replace &ndash;force</strong></p>
+
+<ul>
+<li>경우에 따라, Deployment 설정은 정상인데, broken Pod이 발생하여,
+Pod 자체를 재생성(Pod의 설정은 그대로 유지하며)할 경우가 발생할
+수 있습니다.</li>
+
+<li><p>이 때, &lsquo;kubectl replace &ndash;force&rsquo;를 사용 하는데, 이 경우 서비스가
+중단되는 &lsquo;Disruptive updates&rsquo;가 발생하게 됨을 유의하여 사용
+합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">############################</span>
+<span style="color:#75715e"># 사용자가 작성한 yaml의 설정을 이용하여 replace 할 경우, 자동 부여되는 default 설정 부분은 일부 변경됨(uid 같이 K8S에서 부여한 식별코드 등)</span>
+$ kubectl replace --force -f gs-spring-boot-docker-deployment.yaml
+
+<span style="color:#75715e">############################</span>
+<span style="color:#75715e"># 전체 설정(사용자가 작성한 yaml의 설정과 자동 부여되는 default 설정)을 이용하여 replace 할 경우 (= 설정을 그대로 유지한 상태로 Pod만 재생성)</span>
+$ kubectl get deployment gs-spring-boot-docker-deployment -o yaml | kubectl replace --force -f -</code></pre></div>
+<p>Deployment 설정 중, pod template에 해당하는
+설정(.spec.template)을 변경하면, Rollout이 발생하고,
+Kubernetes에서 Revision을 관리 하게 됩니다. 새로운 Revision이
+생성되면, 새로운 Replica Sets가 생성되고, 그에 따라 새로운 Pod이
+생성 및 Running 된 후, 기존 Revision의 Pod은 Terminating 됩니다.</p></li>
+</ul></li>
+</ul>
+
+<h2 id="디버깅">디버깅</h2>
+
+<hr />
+
+<h3 id="kubectl-describe">kubectl describe</h3>
+
+<p>Kubernetes object의 상세 설명을 보기 위해 사용합니다.</p>
+
+<ul>
+<li><p>기본 형식</p>
+
+<p>kubectl describe (-f FILENAME | TYPE [NAME_PREFIX | -l label]
+| TYPE/NAME) [options]</p></li>
+
+<li><p>상세 설명 보기</p>
+
+<p>Pod이 어떤 Node에 생성되었는지, Node명과 NodeIP를 알 수
+있습니다.(아래의 예시에서 Node:
+poc.k8s-worker01.cloudz.co.kr/169.56.109.58) 그리고 Pod container에
+사용된 Image의 tag를 통해 버전을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># kubectl get pod을 이용하여, 로그를 확인할 Pod의 Name을 알아냅니다.</span>
+$ kubectl get pod
+NAME                                                READY     STATUS        RESTARTS   AGE
+gs-spring-boot-docker-deployment-56fb494f67-g2lwr   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          20h
+gs-spring-boot-docker-deployment-56fb494f67-rfvnv   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          14h
+gs-spring-boot-docker-deployment-7fbf88754d-6grl7   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          15h
+gs-spring-boot-docker-deployment-7fbf88754d-7zx7s   <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          14h
+
+<span style="color:#75715e"># describe 대상 object가 pod이고, 그 Name이 gs-spring-boot-docker-deployment-7fbf88754d-7zx7s 인 것에 대한 설명을 가져옵니다.</span>
+$ kubectl describe pod gs-spring-boot-docker-deployment-7fbf88754d-7zx7s
+Name:           gs-spring-boot-docker-deployment-7fbf88754d-7zx7s
+Namespace:      default
+Node:           poc.k8s-worker01.cloudz.co.kr/169.56.109.58
+Start Time:     Thu, <span style="color:#ae81ff">07</span> Dec <span style="color:#ae81ff">2017</span> <span style="color:#ae81ff">19</span>:11:35 +0900
+Labels:         app<span style="color:#f92672">=</span>gs-spring-boot-docker
+                pod-template-hash<span style="color:#f92672">=</span><span style="color:#ae81ff">3969443108</span>
+Annotations:    kubernetes.io/created-by<span style="color:#f92672">={</span><span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;SerializedReference&#34;</span>,<span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span>,<span style="color:#e6db74">&#34;reference&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;ReplicaSet&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment-7fbf88754d&#34;</span>,<span style="color:#e6db74">&#34;uid&#34;</span>:<span style="color:#e6db74">&#34;a0cd4243-db2...
+</span><span style="color:#e6db74">Status:         Running
+</span><span style="color:#e6db74">IP:             192.168.176.145
+</span><span style="color:#e6db74">Created By:     ReplicaSet/gs-spring-boot-docker-deployment-7fbf88754d
+</span><span style="color:#e6db74">Controlled By:  ReplicaSet/gs-spring-boot-docker-deployment-7fbf88754d
+</span><span style="color:#e6db74">Containers:
+</span><span style="color:#e6db74">  gs-spring-boot-docker:
+</span><span style="color:#e6db74">    Container ID:   docker://785fe1ea6cce6d705f2c7a5f3ec64619988923abb2e82e21575344daf9d8df34
+</span><span style="color:#e6db74">    Image:          dtlabs/gs-spring-boot-docker:2.0
+</span><span style="color:#e6db74">    Image ID:       docker-pullable://dtlabs/gs-spring-boot-docker@sha256:2dc3ce60f8dcf25d41a8cae795b38d0c230493a29b70778a9da02efc9fe52d5e
+</span><span style="color:#e6db74">    Port:           8080/TCP
+</span><span style="color:#e6db74">    State:          Running
+</span><span style="color:#e6db74">      Started:      Thu, 07 Dec 2017 19:11:41 +0900
+</span><span style="color:#e6db74">    Ready:          True
+</span><span style="color:#e6db74">    Restart Count:  0
+</span><span style="color:#e6db74">    Environment:    &lt;none&gt;
+</span><span style="color:#e6db74">    Mounts:
+</span><span style="color:#e6db74">      /var/run/secrets/kubernetes.io/serviceaccount from default-token-rshst (ro)
+</span><span style="color:#e6db74">Conditions:
+</span><span style="color:#e6db74">  Type           Status
+</span><span style="color:#e6db74">  Initialized    True
+</span><span style="color:#e6db74">  Ready          True
+</span><span style="color:#e6db74">  PodScheduled   True
+</span><span style="color:#e6db74">Volumes:
+</span><span style="color:#e6db74">  default-token-rshst:
+</span><span style="color:#e6db74">    Type:        Secret (a volume populated by a Secret)
+</span><span style="color:#e6db74">    SecretName:  default-token-rshst
+</span><span style="color:#e6db74">    Optional:    false
+</span><span style="color:#e6db74">QoS Class:       BestEffort
+</span><span style="color:#e6db74">Node-Selectors:  &lt;none&gt;
+</span><span style="color:#e6db74">Tolerations:     node.alpha.kubernetes.io/notReady:NoExecute for 300s
+</span><span style="color:#e6db74">                 node.alpha.kubernetes.io/unreachable:NoExecute for 300s
+</span><span style="color:#e6db74">Events:          &lt;none&gt;</span></code></pre></div>
+<h3 id="kubectl-logs">kubectl logs</h3>
+
+<p>Kubernetes에서 애플리케이션 디버깅을 위해 log를 확인할 수 있습니다. -f
+옵션을 추가하여, streamed log를 확인할 수도 있습니다.</p>
+
+<ul>
+<li>기본 형식</li>
+</ul>
+
+<p>kubectl logs [-f] [-p] (POD | TYPE/NAME) [-c CONTAINER]
+[options]</p>
+
+<ul>
+<li>log 보기</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># kubectl get pod을 이용하여, 로그를 확인할 Pod의 Name을 알아냅니다.</span>
+$ kubectl get pod
+NAME                                                READY     STATUS        RESTARTS   AGE
+gs-spring-boot-docker-deployment-56fb494f67-g2lwr   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          20h
+gs-spring-boot-docker-deployment-56fb494f67-rfvnv   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          14h
+gs-spring-boot-docker-deployment-7fbf88754d-6grl7   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          15h
+gs-spring-boot-docker-deployment-7fbf88754d-7zx7s   <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          14h
+
+<span style="color:#75715e"># kubectl logs 명령어 뒤에 Pod Name을 입력합니다.</span>
+$ kubectl logs gs-spring-boot-docker-deployment-7fbf88754d-7zx7s
+  .   ____          _            __ _ _
+ /<span style="color:#ae81ff">\\</span> / ___<span style="color:#e6db74">&#39;_ __ _ _(_)_ __  __ _ \ \ \ \
+</span><span style="color:#e6db74">( ( )\___ | &#39;</span>_ | <span style="color:#e6db74">&#39;_| | &#39;</span>_ <span style="color:#ae81ff">\/</span> _<span style="color:#e6db74">`</span> | <span style="color:#ae81ff">\ \ \ \
+</span><span style="color:#ae81ff"></span> <span style="color:#ae81ff">\\</span>/  ___<span style="color:#f92672">)</span>| |_<span style="color:#f92672">)</span>| | | | | <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>_| |  <span style="color:#f92672">)</span> <span style="color:#f92672">)</span> <span style="color:#f92672">)</span> <span style="color:#f92672">)</span>
+  <span style="color:#960050;background-color:#1e0010">&#39;</span>  |____| .__|_| |_|_| |_<span style="color:#ae81ff">\_</span>_, | / / / /
+ <span style="color:#f92672">=========</span>|_|<span style="color:#f92672">==============</span>|___/<span style="color:#f92672">=</span>/_/_/_/
+ :: Spring Boot ::        <span style="color:#f92672">(</span>v1.5.9.RELEASE<span style="color:#f92672">)</span>
+
+<span style="color:#ae81ff">2017</span>-12-07 <span style="color:#ae81ff">10</span>:11:44.558  INFO <span style="color:#ae81ff">1</span> --- <span style="color:#f92672">[</span>           main<span style="color:#f92672">]</span> hello.Application                        : Starting Application v0.1.0 on gs-spring-boot-docker-deployment-7fbf88754d-7zx7s with PID <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>/app.jar started by root in /<span style="color:#f92672">)</span>
+<span style="color:#ae81ff">2017</span>-12-07 <span style="color:#ae81ff">10</span>:11:44.608  INFO <span style="color:#ae81ff">1</span> --- <span style="color:#f92672">[</span>           main<span style="color:#f92672">]</span> hello.Application                        : No active profile set, falling back to default profiles: default
+...
+<span style="color:#ae81ff">2017</span>-12-07 <span style="color:#ae81ff">10</span>:11:50.845  INFO <span style="color:#ae81ff">1</span> --- <span style="color:#f92672">[</span>           main<span style="color:#f92672">]</span> s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>: <span style="color:#ae81ff">8080</span> <span style="color:#f92672">(</span>http<span style="color:#f92672">)</span>
+<span style="color:#ae81ff">2017</span>-12-07 <span style="color:#ae81ff">10</span>:11:50.851  INFO <span style="color:#ae81ff">1</span> --- <span style="color:#f92672">[</span>           main<span style="color:#f92672">]</span> hello.Application                        : Started Application in <span style="color:#ae81ff">7</span>.797 seconds <span style="color:#f92672">(</span>JVM running <span style="color:#66d9ef">for</span> <span style="color:#ae81ff">9</span>.041<span style="color:#f92672">)</span>
+
+
+<span style="color:#75715e"># -f 옵션을 추가하여, streamed log를 확인할 수도 있습니다.</span>
+$ kubectl logs gs-spring-boot-docker-deployment-7fbf88754d-7zx7s -f</code></pre></div></li>
+</ul>
+
+<h3 id="kubectl-exec">kubectl exec</h3>
+
+<p>동작하고 있는 Container 내부 shell 접속이 가능 합니다. -c 옵션으로 특정
+container를 지정하여 접속 가능 합니다. 현재 Pod 내 단일 container로 -c
+옵션은 주지 않았습니다.</p>
+
+<ul>
+<li><p>기본 형식</p>
+
+<p>kubectl exec POD [-c CONTAINER] &ndash; COMMAND [args&hellip;] [options]</p></li>
+
+<li><p>shell 접속</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># kubectl get pod을 이용하여, 로그를 확인할 Pod의 Name을 알아냅니다.</span>
+$ kubectl get pod
+NAME                                                READY     STATUS        RESTARTS   AGE
+gs-spring-boot-docker-deployment-56fb494f67-g2lwr   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          20h
+gs-spring-boot-docker-deployment-56fb494f67-rfvnv   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          14h
+gs-spring-boot-docker-deployment-7fbf88754d-6grl7   <span style="color:#ae81ff">1</span>/1       Terminating   <span style="color:#ae81ff">0</span>          15h
+gs-spring-boot-docker-deployment-7fbf88754d-7zx7s   <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          14h
+
+<span style="color:#75715e"># kubectl exec 명령어와 -it 옵션을 사용하고, command로 /bin/sh을 실행시키면 shell 입력창이 보이게 됩니다.</span>
+$ kubectl exec -it gs-spring-boot-docker-deployment-7fbf88754d-7zx7s -- /bin/sh
+/ <span style="color:#75715e"># ls</span>
+app.jar  dev      home     media    proc     run      srv      tmp      var
+bin      etc      lib      mnt      root     sbin     sys      usr
+
+<span style="color:#75715e"># 현재 hostname이 Pod Name인 것을 확인할 수 있습니다.</span>
+/ <span style="color:#75715e"># hostname</span>
+gs-spring-boot-docker-deployment-7fbf88754d-7zx7s
+
+<span style="color:#75715e"># shell 접속 종료 시, &#39;exit&#39; 입력 또는  Ctrl + p, Ctrl + q  입력</span></code></pre></div>
+<h2 id="애플리케이션-삭제">애플리케이션 삭제</h2>
+
+<hr />
+
+<h3 id="kubectl-delete">kubectl delete</h3>
+
+<p>Kubernetes의 모든 object (Deployment, Service, Pod, Replica Sets, &hellip;)를
+삭제하기 위해서 공통 적으로 kubectl delete 명령어를 사용합니다. 배포한
+애플리케이션을 삭제하기 위해서는, Pod을 delete하는 것이 아니라
+Deployment를 delete하는 방식 입니다. Pod을 delete하게 되면 Replica
+Sets이 설정된 replica 의 수에 따라 Pod을 복원하려 하기 때문입니다.
+Deployment를 delete하게 되면 관련된 Replica Sets, Pod, Deployment가 모두
+삭제 됩니다.</p>
+
+<ul>
+<li>기본 형식</li>
+</ul>
+
+<p>kubectl delete ([-f FILENAME] | TYPE [(NAME | -l label |
+&ndash;all)]) [options]</p>
+
+<ul>
+<li>애플리케이션 삭제</li>
+</ul>
+
+<ol>
+<li><ol>
+<li>kubectl delete OBJECT_TYPE OBJECT_NAME 방식 : OBJECT_TYPE에
+대한 OBJECT_NAME을 통해 특정 이름의 object를 단건 씩 삭제가
+가능 합니다.</li>
+</ol></li>
+
+<li><p>kubectl delete -f FILE_NAME 방식 : yaml 파일 내 정의된 object에
+대한 삭제가 가능 합니다. 특정 디렉토리 내 모든 Kubernetes yaml,
+json 파일을 대상으로 delete할 수도 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># kubectl get deploy(= kubectl get deployment)를 이용하여, 로그를 확인할 Pod의 Name을 알아냅니다.</span>
+$ kubectl get deploy
+NAME                               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+gs-spring-boot-docker-deployment   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           20h
+
+<span style="color:#75715e">####################################</span>
+<span style="color:#75715e"># kubectl delete OBJECT_TYPE OBJECT_NAME 방식</span>
+$ kubectl delete deployment gs-spring-boot-docker-deployment
+deployment <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment&#34;</span> deleted
+
+<span style="color:#75715e">####################################</span>
+<span style="color:#75715e"># kubectl delete -f FILE_NAME 방식</span>
+<span style="color:#75715e"># 현재 명령어가 수행되는 디렉토리 상의 모든 Kubernetes yaml, json 파일 확인</span> 
+$ ls
+gs-spring-boot-docker-deployment.yaml   gs-spring-boot-docker-service.yaml
+
+<span style="color:#75715e"># -f 를 통해 파일을 이용 하여 delete를 수행합니다.</span>
+<span style="color:#75715e"># 하나의 파일을 이용한 delete는, &#39;kubectl delete -f xxx.yaml&#39;과 같이 사용 합니다.</span>
+<span style="color:#75715e"># path로 &#39;.&#39; 을 주어 현재 경로에 있는 모든 Kubernetes yaml, json 파일을 대상으로 하도록 합니다. 단, 의도치 않은 파일까지 삭제되지 않도록 주의해야 합니다.</span>
+$ kubectl delete -f .
+deployment <span style="color:#e6db74">&#34;gs-spring-boot-docker-deployment&#34;</span> deleted
+service <span style="color:#e6db74">&#34;gs-spring-boot-docker-service&#34;</span> deleted
+
+<span style="color:#75715e"># Deployment를 delete하면 관련된 Pod, Replica Sets 또한 모두 삭제 됩니다.</span>
+$ kubectl get pod
+No resources found.</code></pre></div>
+<p>여기까지 Kubernetes 환경에서 애플리케이션을 배포하고 접속, 관리하는 방법에 대해 알아보았습니다. 다음에는 DB나 Redis 등과 같은 Backing 서비스의 연동 방법에 대해 실습해보도록 합시다.</p></li>
+</ol></li>
+</ul>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/kubernetes/secret/">[Kubernetes 활용(7/8)] Secret</a></li>
+        
+        <li><a href="/posts/kubernetes/configmap/">[Kubernetes 활용(6/8)] ConfigMap</a></li>
+        
+        <li><a href="/posts/kubernetes/ingress/">[Kubernetes 활용(5/8)] Ingress</a></li>
+        
+        <li><a href="/posts/kubernetes/backingservice/">[Kubernetes 활용(4/8)] Mysql DB 연동하기</a></li>
+        
+        <li><a href="/posts/kubernetes/hpa/">[Kubernetes 활용(3/8)] HPA(오토스케일링)</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/kubernetes" rel="tag">kubernetes</a></li><li><a href="/tags/container" rel="tag">container</a></li><li><a href="/tags/container-orchestration" rel="tag">container orchestration</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fgetting-start%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fgetting-start%2f&amp;text=%5bKubernetes%20%ed%99%9c%ec%9a%a9%281%2f8%29%5d%20%ec%8b%9c%ec%9e%91%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fgetting-start%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fgetting-start%2f&amp;title=%5bKubernetes%20%ed%99%9c%ec%9a%a9%281%2f8%29%5d%20%ec%8b%9c%ec%9e%91%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fgetting-start%2f&amp;description=%5bKubernetes%20%ed%99%9c%ec%9a%a9%281%2f8%29%5d%20%ec%8b%9c%ec%9e%91%ed%95%98%ea%b8%b0" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fkubernetes%2fgetting-start%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/blingeeeee">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/blingeeeee.png'/><div class="author-info">
+    <h3>김빛나</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/command-tool/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">CF CLI 사용하기</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 21
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 20분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/12-factor/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">12-Factor</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 21
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 20분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

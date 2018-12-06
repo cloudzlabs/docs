@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='우리는 Container의 Writable Layer에 Data를 저장할 수 있다는 것을 알고 있습니다. 하지만, 여기에는 몇 가지 문제점이 존재합니다.
+ Container가 삭제되면 Data도 같이 삭제됩니다. 또한, 다른 프로세스에서 Container에 저장된 Data를 사용하기 어렵습니다. Container의 Writable Layer에는 Container가 실행 중인 Host Machine과 밀접하게 연결됩니다. 따라서, Data를 다른 곳으로 쉽게 옮길 수 없습니다. Container의 Writable Layer에 Data를 저장하기 위해서는 File System을 관리하는 Storage Driver가 필요합니다. Storage Driver는 Linux 커널을 사용하여 공용 File System을 제공합니다.'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='[Docker 기본(5/8)] Volume을 활용한 Data 관리 | 정재훈'>
+<meta property='og:description' content='우리는 Container의 Writable Layer에 Data를 저장할 수 있다는 것을 알고 있습니다. 하지만, 여기에는 몇 가지 문제점이 존재합니다.
+ Container가 삭제되면 Data도 같이 삭제됩니다. 또한, 다른 프로세스에서 Container에 저장된 Data를 사용하기 어렵습니다. Container의 Writable Layer에는 Container가 실행 중인 Host Machine과 밀접하게 연결됩니다. 따라서, Data를 다른 곳으로 쉽게 옮길 수 없습니다. Container의 Writable Layer에 Data를 저장하기 위해서는 File System을 관리하는 Storage Driver가 필요합니다. Storage Driver는 Linux 커널을 사용하여 공용 File System을 제공합니다.'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/docker/volume/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='docker'><meta property='article:tag' content='volume'><meta property='article:published_time' content='2018-03-09T08:25:25&#43;09:00'/><meta property='article:modified_time' content='2018-03-09T08:25:25&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>[Docker 기본(5/8)] Volume을 활용한 Data 관리 | 정재훈</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/docker/volume/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Mar 09, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 10분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>[Docker 기본(5/8)] Volume을 활용한 Data 관리</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/1000jaeh">정재훈</a></p>
+
+
+<p>우리는 Container의 Writable Layer에 Data를 저장할 수 있다는 것을 알고 있습니다. 하지만, 여기에는 몇 가지 문제점이 존재합니다.</p>
+
+<ol>
+<li>Container가 삭제되면 Data도 같이 삭제됩니다. 또한, 다른 프로세스에서 Container에 저장된 Data를 사용하기 어렵습니다.</li>
+<li>Container의 Writable Layer에는 Container가 실행 중인 Host Machine과 밀접하게 연결됩니다. 따라서, Data를 다른 곳으로 쉽게 옮길 수 없습니다.</li>
+<li>Container의 Writable Layer에 Data를 저장하기 위해서는 File System을 관리하는 Storage Driver가 필요합니다. Storage Driver는 Linux 커널을 사용하여 공용 File System을 제공합니다. 이 기능은 Host File System에 직접 쓰는 <code>data volume</code>보다 성능이 떨어집니다.</li>
+</ol>
+
+<p>Docker는 Data를 안전하게 존속시킬 수 있는 방식으로 <code>volume, bind mounts, tmpfs</code>의 3가지 방식을 제공합니다(어떤 것을 사용해야할 지 모를 때는 <code>volume</code>를 사용하시기 바랍니다). 아래는 Container의 Data 관리 방식들과 사용 사례에 대해서 자세히 살펴보도록 하겠습니다.</p>
+
+<h2 id="올바른-mount-유형-선택-방법">올바른 Mount 유형 선택 방법</h2>
+
+<p>어떤 유형의 Mount를 사용하든, Data는 Container 내에서 동일하게 보이며, Container File System의 폴더나 개별적인 파일들로 표시됩니다. 올바른 Mount유형을 선택할 때 기준이 될 <code>volume, bind mounts, tmpfs mount</code>간의 가장 큰 차이점은, Data가 Docker Host내에서 <strong><em>어디에 존재</em></strong>하는지 입니다.</p>
+
+<div class='align-center'>
+    <p><img src="../images/types-of-mounts-volume.png" alt="types of mounts and where they live on the Dockerhost" /><a href="https://docs.docker.com/storage/volumes/" target="_blank">출처: Docker Docs - Use volumes</a></p>
+
+</div>
+
+
+<h3 id="data-저장을-위한-최선의-선택">Data 저장을 위한 최선의 선택</h3>
+
+<ul>
+<li><code>volume</code>는 Docker(Linux에서는 <code>/var/lib/docker/volume/</code>)가 관리하는 Host File System의 일부에 Data가 저장됩니다.</li>
+<li>Non-Docker 프로세스들이 File System의 해당 부분을 수정해서는 안됩니다.</li>
+<li>Docker에서 Data를 존속시킬 수 있는 <strong>Best한 방법</strong>입니다.</li>
+</ul>
+
+<h3 id="host의-file-system-원하는-곳에-저장">Host의 File System 원하는 곳에 저장</h3>
+
+<ul>
+<li><code>bind mount</code>는 Data가 Host System의 어디에든지 저장될 수 있습니다.</li>
+<li>저장되는 Data는 System File이거나 Directory일 수 있습니다.</li>
+<li>Docker Host 또는 Docker Container의 Non-Docker 프로세서들이 언제든지 저장된 Data를 수정할 수 있습니다.</li>
+</ul>
+
+<h3 id="host-system의-memory에-저장">Host System의 Memory에 저장</h3>
+
+<ul>
+<li><code>tmpfs mount</code>는 Host System의 Memory에만 Data가 저장되며, 절대로 Host의 File System에는 저장되지 않습니다.</li>
+</ul>
+
+<h2 id="mount-유형">Mount 유형</h2>
+
+<p>각 Mount 유형에 대해서 자세히 살펴보겠습니다.</p>
+
+<h3 id="volume">volume</h3>
+
+<ul>
+<li>Docker가 생성하고 관리하는 방식입니다. <code>docker volume create</code> 명령을 사용하여 명시적으로 voluems를 생성하거나, Container나 Service 생성 중에 <code>volume</code>을 생성할 수 있습니다.</li>
+<li><code>volume</code>이 생성되면, Data는 Docker Host의 디렉토리에 저장됩니다. 해당 <code>volume</code>을 Container에 Mount하면, Host의 디렉토리가 Mount가 됩니다. 이는 <code>volume</code>이 Docker에 의해 관리되고 Host System과 분리된다는 점을 제외한다면, <code>bind mount</code>와 유사하게 동작합니다.</li>
+<li>동시에 <code>volume</code>을 여러 Container에 Mount할 수 있습니다.</li>
+<li>실행 중인 Container가 <code>volume</code>을 사용하지 않아도, 해당 <code>volume</code>은 Docker에서 계속 사용할 수 있으며, 자동으로 삭제되지 않습니다.</li>
+<li><code>docker volume prune</code>을 사용하여 사용하지 않는 <code>volume</code>을 정리할 수 있습니다.</li>
+<li><code>volume</code>을 Mount할 때, 이름을 명시적으로 지정하여 사용할 수 있으며, 익명으로도 사용할 수 있습니다.</li>
+<li>익명 <code>volume</code>은 처음 Mount될 때 명시적으로 이름이 부여되지 않기 때문에, Docker는 주어진 Docker Host내에서 고유한 임의의 이름을 해당 <code>volume</code>에 부여합니다.</li>
+<li>이름이 지정된 방식과는 상관 없이 <code>volume</code>은 동일한 방식으로 작동합니다.</li>
+<li>또한, <code>volume</code>은 원격 Host와 Cloud Provider가 Data를 저장할 수 있는 <code>volume drivers</code> 사용을 지원하고 있습니다.</li>
+</ul>
+
+<h3 id="bind-mount">bind mount</h3>
+
+<ul>
+<li><code>bind mount</code>는 Docker 초기부터 사용할 수 있었던 방식으로 <code>volume</code>에 비해 기능이 제한적입니다.</li>
+<li><code>bind mount</code>를 사용하면, Host System의 파일 또는 디렉토리가 Container에 Mount됩니다.</li>
+<li>파일 또는 디렉토리는 Host System의 전체 경로로 참조되지만, 미리 Docker Host에 존재할 필요는 없습니다. 없을 경우, 참조된 경로로 파일 또는 디렉토리가 생성됩니다.</li>
+<li><code>bind mount</code>는 매우 효과적이지만, Host Machine의 File System 디렉토리 구조에 의존적입니다.</li>
+<li>Docker CLI 명령어로 <code>bind mount</code>를 관리할 수 없습니다.</li>
+</ul>
+
+<div class="notices warning" ><p><code>bind mount</code>는 Container에서 실행 중인 프로세스들이 Host File System의 중요한 시스템 파일들이나 디렉토리의 생성, 수정, 삭제 명령을 통해 변경시킬 수 있습니다. 이는 Host System의 Non-Docker 프로세스들에게 충돌이 발생하거나, 보안에 큰 영향을 줄 수 있습니다. 따라서, <code>bind mount</code>보다는 <code>volume</code>를 사용하는 것을 권장합니다.</p>
+</div>
+
+
+<h3 id="tmfs-mount">tmfs mount</h3>
+
+<ul>
+<li><code>tmpfs mount</code>는 Docker Host 또는 Container내의 디스크에서 Data가 유지되지 않습니다.</li>
+<li>비영구적인 상태 정보나 민감 정보들 같이 Container의 생명주기와 맞춰서 Data를 보존하고자 할 때 사용할 수 있습니다.</li>
+<li>예를 들어, Docker Cluster인 Swarm Service는 내부적으로 <code>tmps mount</code>를 사용하여 Secret 정보를 Service의 Container에 Mount하여 사용합니다.</li>
+</ul>
+
+<p><code>bind mount</code> 및 <code>volume</code>는 <code>-v</code> 또는 <code>--volume</code> Flag를 사용하여 Container에 모두 Mount할 수 있지만, 각 구문은 약간 차이가 있습니다. <code>tmpfs mount</code>의 경우, <code>--tmpfs</code> Flag를 사용합니다. 그러나 Docker 17.06 이상에서는 bind mount, volume, tmpfs mount에 대해 Container와 Service 모두에 <code>--mount</code> Flag를 사용하는 것이 구문이 더 명확이기 때문에 권장합니다.</p>
+
+<h2 id="mount-유형별-사용-사례">Mount 유형별 사용 사례</h2>
+
+<h3 id="volume-사용-사례">volume 사용 사례</h3>
+
+<p><code>volume</code>은 Docker Container 및 Service에서 Data를 유지하는 기본적인 방법으로, 다음과 같은 경우에 <code>volume</code>을 사용합니다.</p>
+
+<ul>
+<li><strong>실행 중인 여러 Container 간에 Data 공유가 필요한 경우</strong>
+
+<ul>
+<li><code>volume</code>생성에 대해서 명시하지 않은 경우, Container에 처음 Mount될 때 생성됩니다.</li>
+<li>Container가 중지되거나 제거되더라도 생성된 <code>volume</code>은 그대로 유지됩니다.</li>
+<li>여러 Container가 동일한 <code>volume</code>을 읽기/쓰기 또는 읽기 전용으로 동시에 Mount할 수 있습니다.</li>
+<li><code>volume</code>은 명시적으로 선언하여 제거합니다.</li>
+</ul></li>
+<li><strong>Docker Host가 특정 디렉토리나 파일 구조를 가질 수 없는 경우</strong>
+
+<ul>
+<li><code>volume</code>은 Container Runtime으로부터 Docker Host의 설정을 분리하는데 도움이 됩니다.</li>
+</ul></li>
+<li><strong>로컬외의 원격 Host 및 Cloud Provider에 Container의 Data를 저장하려는 경우</strong>
+
+<ul>
+<li>한 Docker Host에서 다른 Docker Host로 Data를 백업이나 복구 또는 마이그레이션을 하는 경우 <code>volume</code>을 사용하면 더 좋습니다.</li>
+<li><code>volume</code>을 사용하여 Container를 중지한 다음 <code>volume</code>의 디렉토리(예: <code>/var/lib/docker/volume/&lt;volume-name&gt;</code>)를 백업할 수 있습니다.</li>
+</ul></li>
+</ul>
+
+<h3 id="bind-mount-사용-사례">bind mount 사용 사례</h3>
+
+<p>일반적인 경우, 가능하면 <code>bind mount</code>보다 <code>volume</code>를 사용하십시오. 다음과 같은 경우에 <code>bind mount</code>를 사용합니다.</p>
+
+<ul>
+<li><strong>Host Machine에서 Container로 설정 파일을 공유해야하는 경우</strong>
+
+<ul>
+<li>Docker는 Host Machine의 <code>/etc/resolv.conf</code>를 각 Container에 <code>bind mount</code>하여 DNS Resolution을 제공하고 있습니다.</li>
+</ul></li>
+<li><strong>Docker Host 개발 환경과 Container 간 소스코드 또는 빌드된 아티팩트를 공유</strong>
+
+<ul>
+<li>예를 들어, Maven의 <code>target/</code> 디렉토리를 Container에 Mount하고, Docker Host에서 Maven Project를 빌드할 때마다, Container에서 재 작성된 작성된 JAR/WAR에 접근할 수 있습니다.</li>
+<li>만약 이런 방식으로 개발을 진행한다면, Production Dockerfile은 <code>bind mount</code>에 의존하지 않고도, Production-Ready 아티팩트를 Image에 직접 복사할 수 있습니다.</li>
+</ul></li>
+<li><strong>Docker Host의 파일 또는 디렉토리 구조가 Container가 요구하는 bind mount와 일치하는 경우</strong></li>
+</ul>
+
+<h4 id="volume-또는-bind-mounts-사용-시-유의사항">volume 또는 bind mounts 사용 시, 유의사항</h4>
+
+<p><code>volume</code> 또는 <code>bind mount</code>를 사용하는 경우, 다음의 사항에 대해 유의하시기 바랍니다.</p>
+
+<ul>
+<li>File 또는 Directory 있는 Container 내의 Directory에 비어있는 <code>volume</code>를 Mount하면, 해당 File 또는 Directory가 <code>volume</code>으로 전달(복사)됩니다. 마찬가지로, 아직 존재하지 않는 특정 <code>volume</code>을 지정하고 Container를 시작하면, 비어있는 <code>volume</code>이 생성됩니다. 이는 다른 Container에 필요한 Data를 미리 갖출 수 있는 좋은 방법입니다.</li>
+<li>File 또는 Directory가 있는 Container 내의 Directory에 <code>bind mount</code> 또는 비어있지 않은 <code>volume</code>를 Mount한다면, Linux Host에서 File을 <code>/mnt</code>에 저장하고 나서 USB 드라이브가 <code>/mnt</code>에 Mount되는 것처럼 기존에 존재하던 File 또는 Directory가 Mount에 의해 가려지게 됩니다. <code>/mnt</code>의 컨텐츠들은 USB 드라이브가 Unmount될 때까지, USB 드라이브의 컨텐츠들에 의해서 가려지게 됩니다. 가려진 파일들은 제거되거나 대체된 것은 아니지만, <code>bind mount</code> 또는 <code>volume</code>이 Mount되어 있는 동안은 접근할 수 없습니다.</li>
+</ul>
+
+<h3 id="tmpfs-mount-사용-사례">tmpfs mount 사용 사례</h3>
+
+<p><code>tmpfs mount</code>는 Host System이나 Container 내에서 Data를 유지하지 않아야할 때 가장 적합합니다. 이는 보안상의 이유가 될 수도 있고, Application이 많은 양의 비영구적인 상태의 Data를 작성해야 할 때, Container의 성능을 보호하기 위한 것일 수도 있습니다.</p>
+
+<h2 id="volume-mount-하기">volume Mount 하기</h2>
+
+<p>volume을 사용하기 전에, volume을 Mount하기 위한 Flag에 대해서 확인해 보겠습니다.</p>
+
+<h3 id="v-또는-mount-선택">-v 또는 &ndash;mount 선택</h3>
+
+<p>원래는 독립형 Container에서는 <code>-v</code> 또는 <code>--volume</code>가 사용되었고, Docker Cluster인 Swarm Mode의 Service에서는 <code>--mount</code>가 사용되었습니다. 하지만, Docker 17.06부터 독립형 Container에서도 <code>--mount</code>를 사용할 수 있게 되었습니다. 두 Flag 간 가장 큰 차이점은 <code>-v</code>구문은 모든 옵션들을 하나의 Field에 결합하여 사용하고, <code>--mount</code>구문은 옵션을 분리하여 사용합니다. 따라서, <code>--mount</code>가 보다 명확하고 자세하게 정보를 확인할 수 있습니다.</p>
+
+<div class="notices info" ><p><code>-v</code> 또는 <code>--volume</code> 보다 <code>--mount</code>의 사용성이 더 쉽기 때문에 <code>--mount</code>를 사용하는 것을 권장합니다. 만약 특정 <code>volume driver</code> 옵션들이 필요하다면, <code>--mount</code>를 사용해야 합니다.</p>
+</div>
+
+
+<p>다음은 Flag별 사용법입니다.</p>
+
+<h4 id="v-또는-volume"><code>-v</code> 또는 <code>--volume</code></h4>
+
+<ul>
+<li>콜론(:)으로 구분된 세 개의 필드로 구성되어있습니다. 필드의 순서가 정확해야 하며, 각 필드의 의미는 명확하지 않습니다.</li>
+<li>이름이 명시된 <code>volume</code>의 경우, 첫번째 필드는 <code>volume</code>의 이름이며, Host Machine에서 유일해야 합니다. 익명 <code>volume</code>의 경우, 첫번째 필드는 생략됩니다.</li>
+<li>두번째 필드는 File 또는 Direcoty가 Container에 Mount될 경로입니다.</li>
+<li>세번째 필드는 선택사항이며, 쉼표(,)로 구분된 옵션 목록(예: <code>ro</code>(읽기전용을 나타내는 옵션))입니다.</li>
+</ul>
+
+<h4 id="mount"><code>--mount</code></h4>
+
+<ul>
+<li>쉼표(,)로 구분되고 각각 여러 key-value 쌍으로 구성됩니다. <code>--mount</code> 구문은 <code>-v</code> 또는 <code>--volume</code>보다 길지만, key의 순서는 중요치 않으며 Flag의 값을 이해하기 쉽게 되어있습니다.</li>
+<li><code>type</code>은 <code>bind, volume, tmpfs</code>로 Mount 유형을 지정합니다.</li>
+<li><code>source</code>는 <code>volume</code>의 이름입니다. 익명 <code>volume</code>을 사용하고자 할 때는, 해당 필드를 생략해도 됩니다. <code>source</code> 또는 <code>src</code>로 지정할 수 있습니다.</li>
+<li><code>destination</code>은 파일 또는 디렉토리가 Container에 Mount될 경로를 나타냅니다. <code>destination, dst</code> 또는 <code>target</code>으로 지정할 수 있습니다.</li>
+<li><code>readonly</code> 옵션이 있으면 Container에 읽기 전용으로 Mount됩니다.</li>
+<li>두 번 이상 지정할 수 있는 <code>volume-opt</code>옵션은 옵션 이름과 해당 값으로 구성된 key-value 쌍을 사용합니다.</li>
+</ul>
+
+<h3 id="v와-mount-사이의-동작-차이">-v와 &ndash;mount 사이의 동작 차이</h3>
+
+<p><code>bind mount</code>와 달리, <code>volume</code>의 모든 옵션들을 <code>--mount</code>와 <code>-v</code> Flag에서 사용할 수 있습니다. 단, Service에서 <code>volume</code>을 사용하고자 한다면,  <code>--mount</code>만 지원됩니다.</p>
+
+<h3 id="volume-생성-및-삭제하기">volume 생성 및 삭제하기</h3>
+
+<p><code>docker volume create [OPTIONS] [VOLUME]</code>로 <code>volume</code>을 생성합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker volume create my-vol
+my-vol</code></pre></div>
+<p><code>docker volume ls [OPTIONS]</code>로 <code>volume</code>의 전체 목록을 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker volume ls
+DRIVER              VOLUME NAME
+local               c6d60670aa3b05a06956839587ce608c67dbc0b14e5f13590f526ff149382bb0
+local               my-vol</code></pre></div>
+<p><code>docker volume inspect [OPTIONS] VOLUME [VOLUMES...]</code>로 생성한 <code>volume</code>의 상세 정보를 확인합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker volume inspect my-vol
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;CreatedAt&#34;</span>: <span style="color:#e6db74">&#34;2017-11-10T06:08:36Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;local&#34;</span>,
+        <span style="color:#e6db74">&#34;Labels&#34;</span>: <span style="color:#f92672">{}</span>,
+        <span style="color:#e6db74">&#34;Mountpoint&#34;</span>: <span style="color:#e6db74">&#34;/var/lib/docker/volume/my-vol/_data&#34;</span>,
+        <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;my-vol&#34;</span>,
+        <span style="color:#e6db74">&#34;Options&#34;</span>: <span style="color:#f92672">{}</span>,
+        <span style="color:#e6db74">&#34;Scope&#34;</span>: <span style="color:#e6db74">&#34;local&#34;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div>
+<p><code>docker volume rm [OPTIONS] VOLUME [VOLUME...]</code>로 생성한 <code>volume</code>를 삭제합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker volume rm my-vol
+my-vol</code></pre></div>
+<h3 id="container에-volume-mount하기">Container에 volume Mount하기</h3>
+
+<p><code>--mount</code> Flag를 사용하여 Container 기동 시, <code>volume</code>을 Mount합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker run -d <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; -it <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --name devtest <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --mount source<span style="color:#f92672">=</span>myvol2,target<span style="color:#f92672">=</span>/app <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; nginx:latest
+Unable to find image <span style="color:#e6db74">&#39;nginx:latest&#39;</span> locally
+latest: Pulling from library/nginx
+bc95e04b23c0: Pull complete
+a21d9ee25fc3: Pull complete
+9bda7d5afd39: Pull complete
+Digest: sha256:9fca103a62af6db7f188ac3376c60927db41f88b8d2354bf02d2290a672dc425
+Status: Downloaded newer image <span style="color:#66d9ef">for</span> nginx:latest
+6de449868f75c83a425ae33f46dde69f3287edb56af88dc616582fb0c3622166</code></pre></div>
+<p>생성된 Container의 상세 정보를 확인합니다. Mounts 필드에서 <code>volume</code>에 대한 상세정보를 확인할 수 있습니다. Mount 형식은 <code>volume</code>으로 source 및 destination의 경로를 확인할 수 있으며, 읽기/쓰기가 모두 가능한 것을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker inspect devtest
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;6de449868f75c83a425ae33f46dde69f3287edb56af88dc616582fb0c3622166&#34;</span>,
+        <span style="color:#e6db74">&#34;Created&#34;</span>: <span style="color:#e6db74">&#34;2017-11-10T06:17:32.273492731Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Path&#34;</span>: <span style="color:#e6db74">&#34;nginx&#34;</span>,
+        <span style="color:#e6db74">&#34;Args&#34;</span>: <span style="color:#f92672">[</span>
+            <span style="color:#e6db74">&#34;-g&#34;</span>,
+            <span style="color:#e6db74">&#34;daemon off;&#34;</span>
+        <span style="color:#f92672">]</span>,
+
+        ... 생략 ...
+
+        <span style="color:#e6db74">&#34;Mounts&#34;</span>: <span style="color:#f92672">[</span>
+            <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Type&#34;</span>: <span style="color:#e6db74">&#34;volume&#34;</span>,
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;myvol2&#34;</span>,
+                <span style="color:#e6db74">&#34;Source&#34;</span>: <span style="color:#e6db74">&#34;/var/lib/docker/volume/myvol2/_data&#34;</span>,
+                <span style="color:#e6db74">&#34;Destination&#34;</span>: <span style="color:#e6db74">&#34;/app&#34;</span>,
+                <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;local&#34;</span>,
+                <span style="color:#e6db74">&#34;Mode&#34;</span>: <span style="color:#e6db74">&#34;z&#34;</span>,
+                <span style="color:#e6db74">&#34;RW&#34;</span>: true,
+                <span style="color:#e6db74">&#34;Propagation&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">]</span>,
+
+        ... 생략 ...
+
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div>
+<p>Container를 중지시키고, 생성한 Container와 <code>volume</code>을 제거합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker container stop devtest
+devtest
+
+$ docker container rm devtest
+devtest
+
+$ docker volume rm myvol2
+myvol2</code></pre></div>
+<p>Docker Cluster인 Swarm Mode의 Service도 Container와 동일한 방식으로 <code>volume</code>을 사용할 수 있습니다. Service를 시작하고 <code>volume</code>을 정의하면, 각 Service Container들은 자체 로컬 <code>volume</code>을 사용합니다. 로컬 <code>volume driver</code>를 사용하는 경우, Container들 중 어느 것도 해당 Data들을 공유할 수 없지만 일부 <code>volume driver</code>는 공유 Storage를 지원합니다. Docker for AWS와 Docker for Azure는 모두 Cloudstor 플러그인을 사용하여 영구 저장소를 지원합니다.</p>
+
+<h3 id="container로-volume에-data-적재하기">Container로 volume에 Data 적재하기</h3>
+
+<p>Container를 시작할 때 새로운 <code>volume</code>을 생성하고, 해당 Container에 Mount할 Directory 내에 File 또는 Directory가 있으면(예: <code>/app/</code>) Directory의 내용이 <code>volume</code>으로 복사됩니다. 그러면 Container는 <code>volume</code>을 Mount하여 사용하고, 다른 Container도 미리 채워진 <code>volume</code>내의 컨턴츠에 접근할 수 있습니다.</p>
+
+<p>먼저 Container를 실행할 때, <code>destination</code>을 <code>/usr/share/nginx/html</code>로 지정하여, 해당 Directory의 내용으로 새로운 <code>nginx-vol</code>라는 이름의 <code>volume</code>에 Data가 채워질 수 있도록 설장합니다. 해당 Directory는 Nginx가 기본 HTML 컨텐츠를 저장하는 곳입니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker run -d <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; -it <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --name<span style="color:#f92672">=</span>nginxtest <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --mount source<span style="color:#f92672">=</span>nginx-vol,destination<span style="color:#f92672">=</span>/usr/share/nginx/html <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; nginx:latest
+777e64d14c6ae173c00372d23130e43fe8d14f6160c94ef4dd7ac7b247ec110d</code></pre></div>
+<p>생성된 Container의 상세 정보를 확인합니다. Mounts 필드에서 <code>volume</code>에 대한 상세정보를 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker inspect nginxtest
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;777e64d14c6ae173c00372d23130e43fe8d14f6160c94ef4dd7ac7b247ec110d&#34;</span>,
+        <span style="color:#e6db74">&#34;Created&#34;</span>: <span style="color:#e6db74">&#34;2017-11-10T06:34:08.21801753Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Path&#34;</span>: <span style="color:#e6db74">&#34;nginx&#34;</span>,
+        <span style="color:#e6db74">&#34;Args&#34;</span>: <span style="color:#f92672">[</span>
+            <span style="color:#e6db74">&#34;-g&#34;</span>,
+            <span style="color:#e6db74">&#34;daemon off;&#34;</span>
+        <span style="color:#f92672">]</span>,
+
+        ... 생략 ...
+
+        <span style="color:#e6db74">&#34;Mounts&#34;</span>: <span style="color:#f92672">[</span>
+            <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Type&#34;</span>: <span style="color:#e6db74">&#34;volume&#34;</span>,
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;nginx-vol&#34;</span>,
+                <span style="color:#e6db74">&#34;Source&#34;</span>: <span style="color:#e6db74">&#34;/var/lib/docker/volume/nginx-vol/_data&#34;</span>,
+                <span style="color:#e6db74">&#34;Destination&#34;</span>: <span style="color:#e6db74">&#34;/usr/share/nginx/html&#34;</span>,
+                <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;local&#34;</span>,
+                <span style="color:#e6db74">&#34;Mode&#34;</span>: <span style="color:#e6db74">&#34;z&#34;</span>,
+                <span style="color:#e6db74">&#34;RW&#34;</span>: true,
+                <span style="color:#e6db74">&#34;Propagation&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">]</span>,
+
+        ... 생략 ...
+
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">]</span></code></pre></div>
+<p>Container를 중지시키고, 생성한 Container와 <code>volume</code>을 제거합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker container stop nginxtest
+nginxtest
+
+$ docker container rm nginxtest
+nginxtest
+
+$ docker volume rm nginx-vol
+nginx-vol</code></pre></div>
+<h3 id="읽기전용-volume-mount하기">읽기전용 volume Mount하기</h3>
+
+<p>일부 Application 개발의 경우, Container가 Docker Host로 변경 사항을 다시 전달할 수 있도록 <code>bind mount</code>하여 사용합니다. 반대로, 다른 Container들은 단지 Data를 읽기만 하여야 하고, 수정하지 못해야 할 때도 있습니다. 즉, 여러 Container가 동일한 <code>volume</code>을 Mount할 수 있으며, 일부 Container는 읽기/쓰기로, 그 외 Container는 읽기전용으로 Mount하여 사용할 수도 있습니다.</p>
+
+<p><code>--mount</code>에 <code>readonly</code> 옵션을 추가하여 Container와 volume을 생성합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker run -d <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; -it <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --name<span style="color:#f92672">=</span>nginxtest <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --mount source<span style="color:#f92672">=</span>nginx-vol,destination<span style="color:#f92672">=</span>/usr/share/nginx/html,readonly <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; nginx:latest
+44f1138b38c1b4df9b1bb4b4d14e7181af05ee0dcc153e634c7db5b17c509635</code></pre></div>
+<p>생성된 Container의 상세 정보를 확인합니다. Mounts 필드에서 <code>volume</code>에 대한 상세정보를 확인할 수 있습니다. <code>readonly</code> 옵션이 적용되어, <code>RW</code> Key의 value가 <code>false</code>로 되어 있는 것을 확인할 수 있습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker inspect nginxtest
+<span style="color:#f92672">[</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;44f1138b38c1b4df9b1bb4b4d14e7181af05ee0dcc153e634c7db5b17c509635&#34;</span>,
+        <span style="color:#e6db74">&#34;Created&#34;</span>: <span style="color:#e6db74">&#34;2017-11-10T06:38:25.060891516Z&#34;</span>,
+        <span style="color:#e6db74">&#34;Path&#34;</span>: <span style="color:#e6db74">&#34;nginx&#34;</span>,
+        <span style="color:#e6db74">&#34;Args&#34;</span>: <span style="color:#f92672">[</span>
+            <span style="color:#e6db74">&#34;-g&#34;</span>,
+            <span style="color:#e6db74">&#34;daemon off;&#34;</span>
+        <span style="color:#f92672">]</span>,
+
+        ... 생략 ...
+
+        <span style="color:#e6db74">&#34;Mounts&#34;</span>: <span style="color:#f92672">[</span>
+            <span style="color:#f92672">{</span>
+                <span style="color:#e6db74">&#34;Type&#34;</span>: <span style="color:#e6db74">&#34;volume&#34;</span>,
+                <span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;nginx-vol&#34;</span>,
+                <span style="color:#e6db74">&#34;Source&#34;</span>: <span style="color:#e6db74">&#34;/var/lib/docker/volume/nginx-vol/_data&#34;</span>,
+                <span style="color:#e6db74">&#34;Destination&#34;</span>: <span style="color:#e6db74">&#34;/usr/share/nginx/html&#34;</span>,
+                <span style="color:#e6db74">&#34;Driver&#34;</span>: <span style="color:#e6db74">&#34;local&#34;</span>,
+                <span style="color:#e6db74">&#34;Mode&#34;</span>: <span style="color:#e6db74">&#34;z&#34;</span>,
+                <span style="color:#e6db74">&#34;RW&#34;</span>: false,
+                <span style="color:#e6db74">&#34;Propagation&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">]</span>,
+
+        ... 생략 ...
+
+        <span style="color:#f92672">}</span>
+
+    <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">]</span></code></pre></div>
+<p>Container를 중지시키고, 생성한 Container와 <code>volume</code>을 제거합니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker container stop nginxtest
+nginxtest
+
+$ docker container rm nginxtest
+nginxtest
+
+$ docker volume rm nginx-vol
+nginx-vol</code></pre></div>
+<p>이렇게 <code>volume</code>을 사용하여, Container의 Data들을 영구적으로 존속시킬 수 있었습니다. 또한 다양한 Driver를 사용하여 NFS 또는 AWS의 S3와 같은 외부 Storage System과의 연동을 통해 Data를 Docker Machine간에 Data를 공유할 수도 있습니다. 이 때, <code>volume driver</code>는 Storage System을 추상화하여 사용하기 때문에, Application의 로직 변경없이도 자유롭게 Data를 유지시킬 수 있습니다.</p>
+
+<p>Container란 무엇인가라는 주제부터 시작해서 Volume을 활용한 Container Data관리까지, Application이 Container화하여 어떤 식으로 동작하고, 무엇을 고려해야할지에 대해서 기초적인 항목들을 확인하였습니다. 현재까지는 모든 것들을 단일 Docker Machine 환경으로 한정하여 생각했습니다. 다음에는 Docker Cluster인 Swarm을 구성하여 이런 Container들을 어떤 방식으로 Orchestration할 수 있는지 알아봐야겠네요.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/docker/docker-start/">Docker 시작하기</a></li>
+        
+        <li><a href="/posts/digital-transformation-journey/">Digital Transformation Journey</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-test/">[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/what-is-docker-user-defined-network/">[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/docker" rel="tag">docker</a></li><li><a href="/tags/volume" rel="tag">volume</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fvolume%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fvolume%2f&amp;text=%5bDocker%20%ea%b8%b0%eb%b3%b8%285%2f8%29%5d%20Volume%ec%9d%84%20%ed%99%9c%ec%9a%a9%ed%95%9c%20Data%20%ea%b4%80%eb%a6%ac" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fvolume%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fvolume%2f&amp;title=%5bDocker%20%ea%b8%b0%eb%b3%b8%285%2f8%29%5d%20Volume%ec%9d%84%20%ed%99%9c%ec%9a%a9%ed%95%9c%20Data%20%ea%b4%80%eb%a6%ac" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fvolume%2f&amp;description=%5bDocker%20%ea%b8%b0%eb%b3%b8%285%2f8%29%5d%20Volume%ec%9d%84%20%ed%99%9c%ec%9a%a9%ed%95%9c%20Data%20%ea%b4%80%eb%a6%ac" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdocker%2fvolume%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/1000jaeh">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/1000jaeh.jpeg'/><div class="author-info">
+    <h3>정재훈</h3>
+    <p>Microservice Architecture Design</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/docker/docker-build-push/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(4/8)] docker build &amp; push</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 09
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 10분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/docker/swarm/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">[Docker 기본(6/8)] Docker의 Container Ochestartion: Swarm</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Mar 09
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 10분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

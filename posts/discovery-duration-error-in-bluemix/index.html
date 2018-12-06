@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang='ko' class='svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg no-touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg'>
+
+    <head>
+
+    <meta charset='utf-8'>
+<meta name='keywords' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='author' content='CLOUDZ LABS, DIGITAL LABS'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='description' content='Bluemix에서 eureka server의 종료된 앱 정보가 삭제되는데 delay가 발생하는 현상이 발생했다. 어떤 문제일까 ?'>
+
+<meta name="google-site-verification" content="vMW654gdULy3JNwnOIbbAqHdH3cQKdKH0ocV8OxP5cM" />
+
+<meta property='og:title' content='Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix | 윤지상'>
+<meta property='og:description' content='Bluemix에서 eureka server의 종료된 앱 정보가 삭제되는데 delay가 발생하는 현상이 발생했다. 어떤 문제일까 ?'>
+<meta property='og:url' content='http://tech.cloudz-labs.io/posts/discovery-duration-error-in-bluemix/'>
+<meta property='og:site_name' content='DIGITAL LABS'>
+<meta property='og:type' content='article'><meta property='og:image' content='/images/default.png'><meta property='article:section' content='Posts'><meta property='article:tag' content='liberty buildpack'><meta property='article:tag' content='spring cloud'><meta property='article:tag' content='spring cloud eureka'><meta property='article:tag' content='bluemix'><meta property='article:tag' content='buildpack'><meta property='article:tag' content='java buildpack'><meta property='article:tag' content='cloud foundry'><meta property='article:published_time' content='2018-02-19T10:39:44&#43;09:00'/><meta property='article:modified_time' content='2018-02-19T10:39:44&#43;09:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.53-DEV" />
+
+
+    <title>Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix | 윤지상</title>
+
+    <link rel='canonical' href='http://tech.cloudz-labs.io/posts/discovery-duration-error-in-bluemix/'>
+
+    
+
+    <link rel='icon' href='/favicon-blank.ico'>
+
+
+<link rel='apple-touch-icon' href='touch-icon-iphone.png'>
+<link rel='apple-touch-icon' sizes='152x152' href='touch-icon-ipad.png'>
+<link rel='apple-touch-icon' sizes='180x180' href='touch-icon-iphone-retina.png'>
+<link rel='apple-touch-icon' sizes='167x167' href='touch-icon-ipad-retina.png'>
+
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+
+<link rel='stylesheet' href='/assets/css/main.f0e8df71.css'>
+
+<link rel='stylesheet' href='/assets/css/bootstrap.css'><link rel='stylesheet' href='/assets/css/common.css'><link rel='stylesheet' href='/assets/css/font-awesome.css'><link rel='stylesheet' href='/assets/css/markdown.css'><link rel='stylesheet' href='/assets/css/mermaid.css'><style type="text/css">
+:root #header + #content > #left > #rlblock_left{
+    display:none !important;
+}:not(pre) > code + span.copy-to-clipboard {
+        display: none;
+    }</style>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-115004569-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+
+    <body naver_screen_capture_injected="true" class="hasScrollbar">
+
+        
+<div class="offcanvas-container" id="mobile-menu">
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class='has-children'>
+                <span>
+                    <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                        <span>About Us</span>
+                    </a>
+                </span>
+            </li>
+            <li class='has-children'>
+                <span>
+                    <a href='/posts/'>
+                        <span>Posts</span>
+                    </a>
+                </span>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<div class="site-backdrop"></div>
+
+
+<header class="navbar navbar-sticky">
+
+    <div class="site-search" method="get">
+    <input data-search-input id="search-by" type="text" name="site_search" placeholder="검색어를 3글자 이상 입력하세요.">
+    <div class="search-tools">
+        <span class="clear-search">Clear</span>
+        <span class="close-search">
+            <i class="icon-cross"></i>
+        </span>
+    </div>
+</div>
+<div class="site-branding">
+    <div class="inner">
+        <a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
+        <a class="site-logo" href="http://tech.cloudz-labs.io/">Digital Labs Tech</a>
+    </div>
+</div>
+<nav class='site-menu'>
+    <ul>
+        <li >
+            <a href='http://dtlabs.skcc.com/?utm_source=tech_blog&amp;utm_campaign=blog_about_us&amp;utm_content=menulink'>
+                <span>About Us</span>
+            </a>
+        </li>
+        <li >
+            <a href='/posts/'>
+                <span>Posts</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+<div class="toolbar">
+    <div class="tools">
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</header>
+
+
+
+        
+
+<div class="offcanvas-wrapper page-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row col-lg-12"><ul class="cover-byline">
+    <li>
+        <i class="fa fa-calendar" aria-hidden="true"></i>Feb 19, 2018
+    </li>
+    
+    <li>
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+전체 읽기 6분 소요
+
+    </li>
+    
+</ul>
+</div>
+
+                <div class="page-con"><h2>Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix</h2>
+<p class="post-authorName">
+
+    by&nbsp;<a href="/authors/jisangyun">윤지상</a></p>
+
+
+<h2 id="what">What ?</h2>
+
+<p>예전에 bluemix에 배포한 어플리케이션이 eureka와 연계했을 때 생각과 다르게 동작하는 것을 발견했습니다.</p>
+
+<p>해당 현상은 eureka client 어플리케이션이 종료됐을 때, eureka server에서 해당 어플리케이션 정보가 삭제되는데 생각보다 delay가 생기는 것 입니다. (예상 : 5초 내외, but 수 분이상 dashboard 상에서 조회)</p>
+
+<p><img src="bluemix-run.PNG" alt="bluemix-run" /></p>
+
+<p><img src="bluemix-stop.PNG" alt="bluemix-stop" /></p>
+
+<p>어디서 꼬인 것일까요 ?</p>
+
+<h2 id="why">Why ?</h2>
+
+<ul>
+<li><p>eureka 설정이 잘못됐을 가능성</p>
+
+<p>eureka server 적용된 설정은 아래와 같습니다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">eureka:
+  instance:
+    instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+    hostname: ${vcap.application.uris[<span style="color:#ae81ff">0</span>]}
+    prefer-ip-address: <span style="color:#66d9ef">false</span>
+    non-secure-port: <span style="color:#ae81ff">80</span>
+    lease-renewal-interval-in-seconds: <span style="color:#ae81ff">5</span>
+    lease-expiration-duration-in-seconds: <span style="color:#ae81ff">5</span>
+  client:
+    region: default
+    fetch-registry: <span style="color:#66d9ef">false</span>
+    register-with-eureka: <span style="color:#66d9ef">false</span>
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/</code></pre></div>
+<p>eureka.instance.lease-expiration-duration-in-seconds 을 5초로 세팅했습니다.</p>
+
+<p>eureka server에서 eureka client의 health check를 수행하고,  5초를 넘어서면 eureka server에서 해당 eureka client가 unregist 되는 것으로 이해하고 적용했습니다.</p>
+
+<p>해당 설정은 의도에 맞게 적용된 것일까요 ?</p>
+
+<ul>
+<li>어플리케이션 종료시 이상 증상이 발생해서 eureka server에서 감지하지 못할 가능성
+<br /></li>
+</ul>
+
+<p>Cloud Foundry 기반의 플랫폼에서 어플리케이션의 종료는 어떻게 이루어질까요 ?</p>
+
+<p>해당 프로세스에 적합하게 어플리케이션이 종료된 것일까요 ?</p>
+
+<h2 id="how">How ?</h2>
+
+<h3 id="1-테스트-준비">1. 테스트 준비</h3>
+
+<ul>
+<li>java 어플리케이션</li>
+<li>eureka client 어플리케이션 (dtlabs-service-admin)</li>
+<li>eureka server 어플리케이션 (dtlabs-service-discovery)</li>
+<li>bluemix</li>
+<li>buildpack</li>
+<li>liberty-for-java buildpack</li>
+<li>java buildpack</li>
+</ul>
+
+<h3 id="2-eureka-설정-체크">2. eureka 설정 체크</h3>
+
+<h4 id="eureka-server-적용된-설정">eureka server 적용된 설정</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">eureka:
+instance:
+  instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+  hostname: ${vcap.application.uris[<span style="color:#ae81ff">0</span>]}
+  prefer-ip-address: <span style="color:#66d9ef">false</span>
+  non-secure-port: <span style="color:#ae81ff">80</span>
+  lease-renewal-interval-in-seconds: <span style="color:#ae81ff">5</span>
+  lease-expiration-duration-in-seconds: <span style="color:#ae81ff">5</span>
+client:
+  region: default
+  fetch-registry: <span style="color:#66d9ef">false</span>
+  register-with-eureka: <span style="color:#66d9ef">false</span>
+  service-url:
+    defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/</code></pre></div></li>
+</ul>
+
+<h4 id="eureka-client-적용된-설정">eureka client 적용된 설정</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">  eureka:
+    instance:
+      instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+      hostname: ${vcap.application.uris[<span style="color:#ae81ff">0</span>]}
+      prefer-ip-address: <span style="color:#66d9ef">false</span>
+      non-secure-port: <span style="color:#ae81ff">80</span>
+      lease-renewal-interval-in-seconds: <span style="color:#ae81ff">5</span>
+    client:
+      region: default
+      fetch-registry: <span style="color:#66d9ef">true</span>
+      register-with-eureka: <span style="color:#66d9ef">true</span>
+      registry-fetch-interval-seconds: <span style="color:#ae81ff">5</span>
+      service-url:
+        defaultZone: ${vcap.services.dtlabs-service-discovery.credentials.uri}/eureka/</code></pre></div>
+<h4 id="eureka-instance-lease-expiration-duration-in-seconds-설정-코드-내-주석">eureka.instance.lease-expiration-duration-in-seconds 설정 코드 내 주석</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#a6e22e">@Data</span>
+  <span style="color:#a6e22e">@ConfigurationProperties</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;eureka.instance&#34;</span><span style="color:#f92672">)</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EurekaInstanceConfigBean</span> <span style="color:#66d9ef">implements</span> CloudEurekaInstanceConfig<span style="color:#f92672">,</span> EnvironmentAware <span style="color:#f92672">{</span>
+    
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">    * Indicates the time in seconds that the eureka server waits since it received the
+</span><span style="color:#75715e">    * last heartbeat before it can remove this instance from its view and there by
+</span><span style="color:#75715e">    * disallowing traffic to this instance.
+</span><span style="color:#75715e">    *
+</span><span style="color:#75715e">    * Setting this value too long could mean that the traffic could be routed to the
+</span><span style="color:#75715e">    * instance even though the instance is not alive. Setting this value too small could
+</span><span style="color:#75715e">    * mean, the instance may be taken out of traffic because of temporary network
+</span><span style="color:#75715e">    * glitches.This value to be set to atleast higher than the value specified in
+</span><span style="color:#75715e">    * leaseRenewalIntervalInSeconds.
+</span><span style="color:#75715e">    */</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> leaseExpirationDurationInSeconds <span style="color:#f92672">=</span> 90<span style="color:#f92672">;</span>
+    
+    <span style="color:#f92672">...</span>
+  <span style="color:#f92672">}</span></code></pre></div>
+<p>eureka server / eureka client / eureka.instance.lease-expiration-duration-in-seconds 설정을 다 확인해보니, 무언가 이상한게 보입니다.</p>
+
+<p>eureka.instance.lease-expiration-duration-in-seconds 설정을 eureka server에 세팅하고 eureka client에는 세팅을 하지 않았습니다.</p>
+
+<p>eureka 설정의 개념을 살펴보니,</p>
+
+<blockquote>
+<p>eureka.instance: eureka service가 자신이 eureka 서버에 등록될 때 사용하는 설정</p>
+
+<p>eureka.client: 다른 eureka service를 찾으려고 할 때 사용하는 설정</p>
+</blockquote>
+
+<p><strong>eureka.instance.lease-expiration-duration-in-seconds 는 eureka client 쪽에 설정을 해줘야 의도대로 동작한다.</strong></p>
+
+<h4 id="eureka-client에-설정-적용-후-eureka-apps-확인">eureka client에 설정 적용 후 eureka/apps 확인</h4>
+
+<p><img src="erureka-apps.PNG" alt="erureka-apps" /></p>
+
+<p>하지만 eureka client 설정변경과 관계없이, default 값이 90초로 세팅되어 있는데 eureka server dashboard 에서 어플리케이션 정보가 삭제될 때까지 수 분이 걸리는 것으로 봐서 해당 사유는 아닌 듯합니다.</p>
+
+<h3 id="3-어플리케이션-종료-체크">3. 어플리케이션 종료 체크</h3>
+
+<h4 id="buildpack-별-종료-로그-비교">buildpack 별 종료 로그 비교</h4>
+
+<ul>
+<li><p>java buildpack</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ae81ff">2017</span>-10-11T10:50:49.32+0900 <span style="color:#f92672">[</span>API/1<span style="color:#f92672">]</span>      OUT Updated app with guid 1d6ccdc9-730d-459d-a9fe-c097abee52cb <span style="color:#f92672">({</span><span style="color:#e6db74">&#34;state&#34;</span><span style="color:#f92672">=</span>&gt;<span style="color:#e6db74">&#34;STOPPED&#34;</span><span style="color:#f92672">})</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.33+0900 <span style="color:#f92672">[</span>CELL/0<span style="color:#f92672">]</span>     OUT Exit status <span style="color:#ae81ff">0</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.33+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#f92672">[</span>CONTAINER<span style="color:#f92672">]</span> org.apache.coyote.http11.Http11NioProtocol         INFO    Pausing ProtocolHandler <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;http-nio-8080&#34;</span><span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.33+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#f92672">[</span>CONTAINER<span style="color:#f92672">]</span> org.apache.catalina.core.StandardService           INFO    Stopping service Catalina
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.33+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.332  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5071d11a: startup date <span style="color:#f92672">[</span>Wed Oct <span style="color:#ae81ff">11</span> <span style="color:#ae81ff">10</span>:49:51 KST <span style="color:#ae81ff">2017</span><span style="color:#f92672">]</span>; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@74b09b
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.33+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.337  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application dtlabs-service-activity with eureka with status DOWN
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.33+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.337  WARN <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent <span style="color:#f92672">[</span>timestamp<span style="color:#f92672">=</span><span style="color:#ae81ff">1507686649337</span>, current<span style="color:#f92672">=</span>DOWN, previous<span style="color:#f92672">=</span>UP<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.33+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.338  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.33+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.338  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>nfoReplicator-0<span style="color:#f92672">]</span> com.netflix.discovery.DiscoveryClient    : DiscoveryClient_DTLABS-SERVICE-ACTIVITY/836a081a-b768-4b66-64cc-90ce75991597: registering service...
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.33+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.338  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> com.netflix.discovery.DiscoveryClient    : Unregistering ...
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.46+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.457  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>nfoReplicator-0<span style="color:#f92672">]</span> com.netflix.discovery.DiscoveryClient    : DiscoveryClient_DTLABS-SERVICE-ACTIVITY/836a081a-b768-4b66-64cc-90ce75991597 - registration status: <span style="color:#ae81ff">204</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.49+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.487  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> com.netflix.discovery.DiscoveryClient    : DiscoveryClient_DTLABS-SERVICE-ACTIVITY/836a081a-b768-4b66-64cc-90ce75991597 - deregister  status: <span style="color:#ae81ff">200</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.94+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.942  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.98+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.981  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase <span style="color:#ae81ff">2147483647</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:49.98+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:49.982  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase <span style="color:#ae81ff">0</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.09+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:50.094  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>ost-startStop-2<span style="color:#f92672">]</span> o.a.c.c.C.<span style="color:#f92672">[</span>Catalina<span style="color:#f92672">]</span>.<span style="color:#f92672">[</span>localhost<span style="color:#f92672">]</span>.<span style="color:#f92672">[</span>/<span style="color:#f92672">]</span>     : Closing Spring root WebApplicationContext
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.09+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:50.096  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.10+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:50.101  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.23+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:50.238  WARN <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.24+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:50.241  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.33+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#ae81ff">2017</span>-10-11 <span style="color:#ae81ff">10</span>:50:50.333  INFO <span style="color:#ae81ff">8</span> --- <span style="color:#f92672">[</span>       Thread-7<span style="color:#f92672">]</span> j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory <span style="color:#66d9ef">for</span> persistence unit <span style="color:#e6db74">&#39;default&#39;</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.40+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#f92672">[</span>CONTAINER<span style="color:#f92672">]</span> org.apache.catalina.loader.WebappClassLoaderBase   WARNING The web application <span style="color:#f92672">[</span>ROOT<span style="color:#f92672">]</span> registered the JDBC driver <span style="color:#f92672">[</span>org.mariadb.jdbc.Driver<span style="color:#f92672">]</span> but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.50+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#f92672">[</span>CONTAINER<span style="color:#f92672">]</span> org.apache.coyote.http11.Http11NioProtocol         INFO    Stopping ProtocolHandler <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;http-nio-8080&#34;</span><span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.56+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT <span style="color:#f92672">[</span>CONTAINER<span style="color:#f92672">]</span> org.apache.coyote.http11.Http11NioProtocol         INFO    Destroying ProtocolHandler <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;http-nio-8080&#34;</span><span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.64+0900 <span style="color:#f92672">[</span>APP/0<span style="color:#f92672">]</span>      OUT Exit status <span style="color:#ae81ff">143</span>
+<span style="color:#ae81ff">2017</span>-10-11T10:50:50.65+0900 <span style="color:#f92672">[</span>CELL/0<span style="color:#f92672">]</span>     OUT Destroying container
+<span style="color:#ae81ff">2017</span>-10-11T10:50:51.27+0900 <span style="color:#f92672">[</span>CELL/0<span style="color:#f92672">]</span>     OUT Successfully destroyed container</code></pre></div>
+<ul>
+<li>liberty-for-java buildpack
+<code>bash
+2017-10-11T10:55:52.45+0900 [API/0]      OUT Updated app with guid 1d6ccdc9-730d-459d-a9fe-c097abee52cb ({&quot;state&quot;=&gt;&quot;STOPPED&quot;})
+2017-10-11T10:55:52.45+0900 [CELL/0]     OUT Exit status 0
+2017-10-11T10:56:03.46+0900 [CELL/0]     OUT Destroying container
+2017-10-11T10:56:04.07+0900 [CELL/0]     OUT Successfully destroyed container
+</code></li>
+</ul></li>
+</ul>
+
+<p>buildpack 별 log를 확인해보니, 다른 점을 찾을 수 있습니다.</p>
+
+<p><strong>java buildpack 은 종료시  DispatcherServlet.destory() -&gt; AbstractApplicationContext.close() 가 호출되는데, liberty-for-java buildpack은 여타 동작없이 어플리케이션을 강제종료 시킨 것 처럼 보인다.</strong></p>
+
+<p>liberty-for-java buildpack 의 강제종료 사유는 무엇일까요?</p>
+
+<h4 id="cloud-foundry의-어플리케이션-종료-프로세스">Cloud Foundry의 어플리케이션 종료 프로세스</h4>
+
+<p>(<a href="https://docs.cloudfoundry.org/devguide/deploy-apps/app-lifecycle.html" target="_blank">CF-appl-lifecycle</a>)</p>
+
+<ol>
+<li>어플리케이션 종료 요청 발생</li>
+<li>Cloud Foundry가 SIGTERM 시그널을 어플리케이션 프로세스로 보냄</li>
+<li>어플리케이션 프로세스는 10초 내 종료되어야함</li>
+<li>10초 내 종료되지 않으면, Cloud Foundry가 SIGKILL 시그널을 보내 어플리케이션을 종료한다.</li>
+</ol>
+
+<p><strong>10초 내로 SIGTERM 으로 종료되지 않으면 SIGKILL로 어플리케이션을 종료시킨다.</strong></p>
+
+<p>이것 때문에 강제종료 처리가 되는 것일까요 ?<br />
+SIGTERM 이후 10초 내에 어플리케이션이 종료되지 않은 이유는 무엇일까요 ?</p>
+
+<h4 id="cloud-foundry의-custom-command-가이드-체크">Cloud Foundry의 custom command 가이드 체크</h4>
+
+<p>(<a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#start-commands" target="_blank">CF custorm command</a>)</p>
+
+<ul>
+<li>Cloud Foundry위의 어플리케이션을 사용할 때, Cloud Foundry가 보내는 SIGTERM 시그널을 받기 위해서 어플리케이션 프로세스를 exec prefix를 사용해서 start해야 합니다.</li>
+</ul>
+
+<p><strong>Cloud Foundry의 custom command를 적용하기 위해서는 exec 를 prefix로 적용해줘야한다.</strong></p>
+
+<p>liberty-for-java buildpack은 exec prefix를 적용해 어플리케이션을 구동하고 있을까요 ?</p>
+
+<h4 id="buildpack-별-exec-prefix-적용-여부">buildpack 별 exec prefix 적용 여부</h4>
+
+<ul>
+<li><p>java buildpack</p>
+
+<ul>
+<li><a href="https://github.com/cloudfoundry/java-buildpack/blob/master/lib/java_buildpack/container/tomcat.rb#L46" target="_blank">https://github.com/cloudfoundry/java-buildpack/blob/master/lib/java_buildpack/container/tomcat.rb#L46</a></li>
+<li><a href="https://github.com/cloudfoundry/java-buildpack/commit/df964cdbb70dabe4cceee80a30f03a4206ac01a1#diff-7fac9479a5b3e17b9b3210c9fa06eca9" target="_blank">https://github.com/cloudfoundry/java-buildpack/commit/df964cdbb70dabe4cceee80a30f03a4206ac01a1#diff-7fac9479a5b3e17b9b3210c9fa06eca9</a></li>
+<li>2015년 11월에 적용</li>
+</ul></li>
+
+<li><p>liberty-for-java buildpack</p>
+
+<ul>
+<li><a href="https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/blob/master/lib/liberty_buildpack/container/liberty.rb#L123" target="_blank">https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/blob/master/lib/liberty_buildpack/container/liberty.rb#L123</a></li>
+<li><a href="https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/commit/8eb1bd0180366661988362d123db72a9b67246e9" target="_blank">https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack/commit/8eb1bd0180366661988362d123db72a9b67246e9</a></li>
+
+<li><p>2017년 10월 18일에 적용 (어플리케이션 배포 시점은 2017년 10월 11일)</p>
+
+<p><img src="liberty-version.PNG" alt="liberty-version" /></p></li>
+</ul></li>
+</ul>
+
+<p>예전에 적용된 빌드팩에 exec prefix가 적용되지 않은 것이 문제라면, 빌드팩을 최신 버전(v.3.1.5)으로 변경해서 재배포를 해보겠습니다.</p>
+
+<h4 id="liberty-for-java-buildpack-최신버전으로-변경해서-재배포">liberty-for-java buildpack 최신버전으로 변경해서 재배포</h4>
+
+<p><img src="cfpush.PNG" alt="cfpush" /></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  API/1	  Updated app with guid dde4c846-0e96-45f5-b492-704d7a5b0043 <span style="color:#f92672">({</span><span style="color:#e6db74">&#34;state&#34;</span><span style="color:#f92672">=</span>&gt;<span style="color:#e6db74">&#34;STOPPED&#34;</span><span style="color:#f92672">})</span>	2018년 2월 19일 <span style="color:#ae81ff">06</span>:46:24.264 오후
+  APP/0	  .app-management/scripts/start: <span style="color:#ae81ff">1</span>: kill: invalid signal number or name: igterm		2018년 2월 19일 <span style="color:#ae81ff">06</span>:46:24.266 오후
+  CELL/0	Exit status <span style="color:#ae81ff">0</span>																		2018년 2월 19일 <span style="color:#ae81ff">06</span>:46:24.268 오후
+  CELL/0	Successfully destroyed container													2018년 2월 19일 <span style="color:#ae81ff">06</span>:46:35.999 오후</code></pre></div>
+<p>여전히 의도대로 동작하지 않아서 로그를 확인해보니 kill: invalid signal number or name: igterm 이라는 로그가 찍혀 있습니다.</p>
+
+<p>sigterm의 오타일까요 설마&hellip; 원인을 잘 모르겠네요.</p>
+
+<p><strong>GG</strong></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<ol>
+<li><p>eureka.instance.lease-expiration-duration-in-seconds 설정은 eureka client에 세팅을 해줘야 합니다. 이 말은 어플리케이션 마다 eureka server에서 unregist 되는 시간을 달리 해줄 수 있다는 의미입니다. 활용할 방법을 고민해볼 만합니다.</p></li>
+
+<li><p>Cloud Foundry의 custom command 사용시 exec prefix를 달아줘야 합니다. Cloud Foundry 기반의 플랫폼을 구축할 때 or buildpack을 개발해서 제공할 때 유의해야 할 부분입니다.</p></li>
+</ol>
+
+<p>liberty-for-java buildpack 은 2017년 10월 exec prefix가 적용된 buildpack을 release 했으나, 원인 모를 곳에서 막히고 말았습니다.</p>
+
+<p>제가 잘못한 것 인지, buildpack이 잘못한 것인지 시간이 지나고 확인을 해보겠습니다.</p>
+
+
+<div class="series">
+    <h3>함께 보기</h3>
+    <ul>
+        
+        <li><a href="/posts/how-to-use-cf-binding-service-in-local-env/">로컬에서 Spring Cloud Connector 사용하기</a></li>
+        
+        <li><a href="/posts/service-mesh/">Service Mesh 란?</a></li>
+        
+        <li><a href="/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/">[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</a></li>
+        
+        <li><a href="/posts/cf-apprelease/">CF에 Cloud Native Application 배포하기 </a></li>
+        
+        <li><a href="/posts/command-tool/">CF CLI 사용하기</a></li>
+        
+    </ul>
+</div>
+
+<div class="single-post-footer">
+
+                        <ul class="tag"><li><a href="/tags/liberty-buildpack" rel="tag">liberty buildpack</a></li><li><a href="/tags/spring-cloud" rel="tag">spring cloud</a></li><li><a href="/tags/spring-cloud-eureka" rel="tag">spring cloud eureka</a></li><li><a href="/tags/bluemix" rel="tag">bluemix</a></li><li><a href="/tags/buildpack" rel="tag">buildpack</a></li><li><a href="/tags/java-buildpack" rel="tag">java buildpack</a></li><li><a href="/tags/cloud-foundry" rel="tag">cloud foundry</a></li></ul>
+<div class="share">
+    <ul class="sns center">
+        
+        
+        
+        <li>
+            <a class="social-button" href="//plus.google.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdiscovery-duration-error-in-bluemix%2f" target="_blank" rel="noopener">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//twitter.com/share?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdiscovery-duration-error-in-bluemix%2f&amp;text=Eureka%20Server%20%eb%a7%a4%ed%95%91%20%ec%a0%95%eb%b3%b4%20%ec%82%ad%ec%a0%9c%20delay%20%ed%98%84%ec%83%81%20in%20Bluemix" target="_blank" rel="noopener">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.facebook.com/sharer/sharer.php?u=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdiscovery-duration-error-in-bluemix%2f" target="_blank" rel="noopener">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.linkedin.com/shareArticle?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdiscovery-duration-error-in-bluemix%2f&amp;title=Eureka%20Server%20%eb%a7%a4%ed%95%91%20%ec%a0%95%eb%b3%b4%20%ec%82%ad%ec%a0%9c%20delay%20%ed%98%84%ec%83%81%20in%20Bluemix" target="_blank" rel="noopener">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdiscovery-duration-error-in-bluemix%2f&amp;description=Eureka%20Server%20%eb%a7%a4%ed%95%91%20%ec%a0%95%eb%b3%b4%20%ec%82%ad%ec%a0%9c%20delay%20%ed%98%84%ec%83%81%20in%20Bluemix" target="_blank" rel="noopener">
+                <i class="fa fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+
+        
+        
+        <li>
+            <a class="social-button" href="mailto:?subject=Check out this post by &amp;body=http%3a%2f%2ftech.cloudz-labs.io%2fposts%2fdiscovery-duration-error-in-bluemix%2f" target="_blank" rel="noopener">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+<div class="foot-author row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="author">
+                                    <a href="/authors/jisangyun">
+
+                                        <img class="img-circle" alt="" src='http://tech.cloudz-labs.io//images/authors/jisangyun.jpg'/><div class="author-info">
+    <h3>윤지상</h3>
+    <p>Microservice Architecture Design&amp;Dev</p>
+</div>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<section class="mt-30">
+
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "digital-labs" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</section>
+</div>
+
+                <div class="mt-30 row"><div class="col-md-6 post-pre"><a href='/posts/how-to-use-cf-binding-service-in-local-env/'>
+            <div class="author">
+                <div class="author-info">이전&nbsp;페이지
+                    <h2 class="post-title">로컬에서 Spring Cloud Connector 사용하기</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 19
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 6분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div><div class="col-md-6 post-next"><a href='/posts/command-tool/'>
+            <div class="author">
+                <div class="author-info">다음&nbsp;페이지
+                    <h2 class="post-title">CF CLI 사용하기</h2>
+                    <ul class="cover-byline"><li><i class="fa fa-calendar" aria-hidden="true"></i>2018, Feb 19
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        전체 읽기 6분 소요
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </a>
+    </div></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <footer class="site-footer">
+    <div class="container">
+
+        <ul class="sns">
+
+            <li>
+        <a class='social-button' href='https://twitter.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-twitter' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://facebook.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-facebook' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='https://github.com/cloudzlabs' target='_blank' rel='noopener'><i class='fa fa-github' aria-hidden='true'></i></a>
+    </li><li>
+        <a class='social-button' href='mailto:withdtlabs@gmail.com' target='_blank' rel='noopener'>
+            <i class='fa fa-envelope' aria-hidden='true'></i></a>
+    </li>
+
+            
+
+        </ul>
+
+        <span class='copyright'><b>
+            
+        
+
+         &copy; 2018
+        SK 주식회사 C&amp;C <span>Digital Labs</span> All Rights Reserved.
+</span></b>
+
+
+    </div>
+</footer>
+
+
+        <a class="scroll-to-top-btn visible" href="#">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</a>
+<script src='/assets/js/main.5871befd.js'></script>
+
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/tech.cloudz-labs.io\/";
+    
+</script><script src='/assets/js/common.js'></script><script src='/assets/js/scripts.js'></script><script src='/assets/js/lunr.min.js'></script><script src='/assets/js/auto-complete.js'></script><script src='/assets/js/search.js'></script><script src='/assets/js/clipboard.min.js'></script><script src='/assets/js/mermaid.js'></script></body>
+
+</html>

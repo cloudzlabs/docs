@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cncf on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/cncf/</link>
+    <description>Recent content in cncf on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 23 Jul 2018 08:06:40 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/cncf/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Monitoring in kubernetes</title>
+      <link>http://tech.cloudz-labs.io/posts/monitoring-in-kubernetes/</link>
+      <pubDate>Mon, 23 Jul 2018 08:06:40 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/monitoring-in-kubernetes/</guid>
+      <description>Container 환경에서 떠오르는 도전 과제 운영 환경으로 Container 환경 사용 운영 환경에서 Kubernets 사용 비율 증가. =&amp;gt; Container 기반 운영 환경 증가
+Container 환경에서 떠오르는 도전 과제 Container 환경을 운영 환경으로 고려하기 시작하면서 운영을 위해 꼭 필요한 모니터링에 대한 관심 증가
+[출처 : CNCF https://www.cncf.io/blog/2017/12/06/cloud-native-technologies-scaling-production-applications/]
+Cloud Native 환경에서 Monitoring Architecture의 변화 Legacy  고사양의 서버에 Application을 크게 운영 Monitoring Agent를 서버에 설치 Agent가 App 및 OS의 metric 수집해 Backend에 전송  Cloud Native  Application을 작게 운영하고 필요할 때 마다 확장 동적으로 확장하는 서버에 Agent 설치 불가능 Kubernetes API를 통해 동적으로 확장된 서버 endpoint를 discovery Monitoring Backend에서 discovery한 endpoint를 통해 metric 수집  Monitoring Architecture Prometheus  Service Discovery, Metric 수집 및 저장, Alert 기능을 통합해 제공하는 Monitoring 시스템 CNCF의 메인 프로젝트로 Container 기반 Monitoring 시스템의 defactor Kubernetes외의 다른 Cloud Provider에 대한 Service Discovery 기능 제공으로 동적인 Cloud를 효율적을 모니터링 자체 Alert 엔진 보유.</description>
+    </item>
+    
+    <item>
+      <title>Logging in kubernetes</title>
+      <link>http://tech.cloudz-labs.io/posts/logging-in-kubernetes/</link>
+      <pubDate>Wed, 18 Jul 2018 08:06:40 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/logging-in-kubernetes/</guid>
+      <description>Cloud Native 환경에서 Logging Architecture의 변화 Legacy  고사양의 서버에 Application을 크게 운영 Log를 Application이 실행 중인 서버 내부에 저장 개발자/운영자는 서버 내부에 접속해 Log를 확인  Cloud Native  Application을 작게 운영하고 필요할 때 마다 확장 다중 인스턴스의 로그를 효율적으로 검색하기 위해 외부 Log 시스템에 저장 개발자/운영자는 서버에 직접 접속하지 않고 외부 Log Backend에서 로그 확인  Cloud Native Logging Architecture Overview DaemonSet Pattern  App Console Log가 각 Node의 Storage에 자동 저장 각 Node의 Agent가 Log를 Aggregator로 전달 Log data를 전/후 처리 후 Backend로 전달  Sidecar Pattern  App Log를 Pod의 Storage에 파일로 저장(Log4j 등 사용) Pod의 Agent가 Log data를 전/후 처리 후 Backend로 전달  DaemonSet Pattern 상세 Architecture  App Console Log가 각 Node의 Storage에 자동 저장 Fluentbit가 각 Node의 Log 수집해 FluentD로 전달 FluentD가 수집한 Log를 전/후 처리 후 ElasticSearch로 전달 Log raw data를 S3와 같은 저장소에 동시 전달 가능(Log Data 백업 활용) Kibana를 통해 ES의 Log data 검색/분석 및 시각화  Sidecar Pattern 상세 Architecture  App Log를 Pod의 Storage에 파일로 저장(Log4j 등 사용) Fluentbit가 저장된 Log를 전/후 처리 후 ElasticSearch로 전달.</description>
+    </item>
+    
+  </channel>
+</rss>

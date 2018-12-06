@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>layer on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/layer/</link>
+    <description>Recent content in layer on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 09 Mar 2018 08:22:39 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/layer/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Docker 기본(3/8)] Container는 뭘까?</title>
+      <link>http://tech.cloudz-labs.io/posts/docker/what-is-container/</link>
+      <pubDate>Fri, 09 Mar 2018 08:22:39 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker/what-is-container/</guid>
+      <description>Docker는 Application의 배포와 운영을 쉽게 도와주는 &amp;lsquo;Containers as a Service(CaaS) Platform이며, Client-Server Model로 동작하고 있습니다. 여기서 Container란, 운영체제의 커널이 하나의 인스턴스가 아닌, 여러 개의 격리된 인스턴스들을 갖출 수 있도록 하는 서버 가상화 방식입니다. 이러한 인스턴스들은 이를 소유하고 있는 Host Machine과 사용자의 관점에서 바라보면, 실제 서버인 것처럼 보입니다.
+가상화(Virtualization) Container는 가상화 방식의 한 종류입니다. 하지만, 흔히 우리가 알고있는 가상화(Virtualization)는 VMWare Workstation과 같은 소프트웨어를 이용해, Linux나 MacOS위에 Windows를 올려서 사용하는 그런 것을 떠올릴 것입니다.</description>
+    </item>
+    
+  </channel>
+</rss>

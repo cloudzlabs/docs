@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>zuul on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/zuul/</link>
+    <description>Recent content in zuul on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 27 Feb 2018 17:21:07 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/zuul/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Zuul Swagger 연동</title>
+      <link>http://tech.cloudz-labs.io/posts/zuul-swagger-integration/</link>
+      <pubDate>Tue, 27 Feb 2018 17:21:07 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/zuul-swagger-integration/</guid>
+      <description>MSA(Micro Service Architecture) 활용하여 팀 홈페이지를 제작하는 과정에서 User BFF에서 백엔드 서비스를 호출하기 위해 Zuul을 사용하였습니다. 여러 가지 서비스가 Zuul을 통해 User BFF에 노출되고 있어, Zuul을 통해 서비스되는 모든 API를 하나의 Swagger page로 노출하고 싶었습니다. 다행히도 Swagger에서 Zuul 연계하는 기능이 있어 이를 소개합니다.
+MSA에 대한 자세한 설명은 차후에 포스팅하기로 하고, 이해를 돕기 위해 간단한 홈페이지 아키텍처 첨부합니다.
+graph LR; A[Client] --|Request| B(User BFF) B --|Request| C{Zuul} C --|Request| D[Mail service] C --|Request| E[User service]  사용법 1.</description>
+    </item>
+    
+  </channel>
+</rss>

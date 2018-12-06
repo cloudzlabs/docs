@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jisangyun on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/authors/jisangyun/</link>
+    <description>Recent content in jisangyun on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 17 Oct 2018 10:14:07 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/authors/jisangyun/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Event Driven Microservice 란?</title>
+      <link>http://tech.cloudz-labs.io/posts/event-driven-microservice/</link>
+      <pubDate>Wed, 17 Oct 2018 10:14:07 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/event-driven-microservice/</guid>
+      <description>MicroService Architecture(MSA)는 loosely coupled를 기반으로 빠른 배포주기, 폴리글랏 프로그래밍, 관심사의 집중 등의 장점을 발휘해 Enterprise IT에서 가장 주목받고 있는 아키텍처 입니다. 또한, 분해된 서비스의 scalabililty, resiliency 등 컨테이너 기반의 플랫폼(Kubernetes 등)과 잘 어우러지는 성향으로 서로 끌어주고 밀어주며 발전하고 있습니다.
+하지만 MSA를 도입한 이후 새로운 문제점은 발생하지 않았나요 ? Database Per Service 라는 새로운 요구사항은 잘 지켜지나요 ? rest 통신(synchronized)으로 인한 제약사항은 없나요 ? 분산된 서비스 간 트랜잭션 처리 / 반정규화 된 데이터의 동기 처리는 잘 이루어지고 있나요 ?</description>
+    </item>
+    
+    <item>
+      <title>Service Mesh 란?</title>
+      <link>http://tech.cloudz-labs.io/posts/service-mesh/</link>
+      <pubDate>Fri, 01 Jun 2018 08:06:40 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/service-mesh/</guid>
+      <description>수년간 Enterprise IT환경은 급격하게 변하고 있습니다. 특히 Cloud로 대변되는 시스템 구축 환경의 변화에 따라 이를 잘 활용할 수 있는 다양한 Architecture들이 대두되고 있습니다.
+Service Mesh Architecture는 MicroService Architecture와 더불어 최근 활발하게 언급되고 있습니다.
+이번 포스팅에서는 Service Mesh Architecture가 &amp;lsquo;무엇&amp;rsquo;인지, &amp;lsquo;왜&amp;rsquo; 활발하게 언급되고 있는지, Service Mesh Architecture &amp;lsquo;구현체&amp;rsquo; 간단 소개와 &amp;lsquo;장단점&amp;rsquo; 등을 알아보겠습니다.
+Service Mesh 란? Service Mesh는 모티브와 정의, 구현체의 기능 등 다양한 관점에서 용어를 정의하고 있습니다.
+ MicroService Architecture를 적용한 시스템의 내부 통신이 Mesh 네트워크의 형태를 띄는 것에 빗대어 Service Mesh로 명명되었습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker-User Defined Network 활용(3/3)] Docker User Defined Bridge Network with Spring Cloud</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/</link>
+      <pubDate>Sun, 20 May 2018 18:13:30 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-with-spring-cloud/</guid>
+      <description>지난 포스팅에서 Docker의 네트워크 기능과 연관된 factors를 경우의 수에 따라 검증을 했습니다.
+Docker toolbox를 사용하는 환경(win7)에서 테스트 결과, 아래의 경우에 서비스 간 호출이 성공했습니다.
+ 컨테이너의 Port를 노출하고 {docker-machine ip}:{외부 노출 Port}으로 접속한 경우 컨테이너를 user defined network에 연결하고 {컨테이너 명}:{컨테이너 내부 port}로 접근한 경우 컨테이너를 user defined network에 연결하고 {user defined network ip}:{컨테이너 내부 port}로 접근한 경우  이 중 2번. 컨테이너를 user defined network에 연결하고 {컨테이너 명}:{컨테이너 내부 port}로 접근하는 방법으로 Docker에서 최소 단위의 MSA가 적용된 system을 구성해보겠습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker-User Defined Network 활용(2/3)] Docker User Defined Bridge Network 테스트</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/</link>
+      <pubDate>Wed, 21 Mar 2018 11:16:00 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-user-defined-network/docker-user-defined-network-test/</guid>
+      <description>지난 포스팅에서 docker user defined network의 간단한 설명과 동작을 확인했습니다.
+이번에는 docker user defined network를 활용한 컨테이너 간 통신에 연관된 factors를 확인하고 경우의 수에 따라 테스트를 진행하겠습니다.
+Docker Network 기능 Service Discovery Docker는 각 Network 내 컨테이너의 ip주소, 컨테이너 명, Hostname 등을 관리합니다. 각 네트워크는 Subnet mask와 Gateway를 가집니다. 기본적으로 컨테이너의 ip주소는 Network에서 관리하는 Pool 중 할당이 됩니다. 할당하고 싶은 ip주소, Hostname이나 network 정보가 있으면 option을 적용해 지정 가능합니다. 각 Network 별 Host정보를 관리하는 기능을 사용해서 컨테이너 명으로 컨테이너 간 통신을 하는 Service Discovery 기능을 수행할 수 있습니다.</description>
+    </item>
+    
+    <item>
+      <title>[Docker-User Defined Network 활용(1/3)] Docker User Defined Network 란?</title>
+      <link>http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/</link>
+      <pubDate>Tue, 20 Mar 2018 18:12:19 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/docker-user-defined-network/what-is-docker-user-defined-network/</guid>
+      <description>Docker는 몇가지 네트워크 드라이버를 기본 제공하여 강력한 네트워크 기능을 활용할 수 있게 합니다.
+ bridge: 기본 네트워크 드라이버. docker0이라는 이름의 bridge 네트워크를 생성됩니다. 설정없이 컨테이너를 생성하게되면 docker0 bridge에 컨테이너를 binding 해서 네트워크 기능을 수행합니다. host: 컨테이너 네트워크가 독립/격리되지 않고, Host의 네트워크를 직접적으로 사용합니다. overlay: 서로 다른 Docker Host에서 실행되는 컨테이너 간 통신이 필요하거나, Docker Swarm 상에서 여러 컨테이너를 동시에 운영할 때 유용합니다. Macvlan: Mac주소를 컨테이너에 할당합니다. Docker 데몬은 트래픽을 컨테이너의 MAC 주소로 라우팅합니다.</description>
+    </item>
+    
+    <item>
+      <title>MSA 에서 유비쿼터스 언어(보편 언어)의 중요성</title>
+      <link>http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/</link>
+      <pubDate>Mon, 26 Feb 2018 17:52:54 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/ubiquitous-language-in-msa/</guid>
+      <description>Health-Care Application의 MS 분리 워크샵을 진행한 후 자문해봤다.
+ 보상/혜택  Reward가 사용자에게 주어지면 그게 사용자 입장에서는? Item인가 Reward인가? 운동을 안해서 주는 경고도 Reward인가? 내가 운동을 많이 했다고 선물이 아니라 칭찬메시지가 오는 것도 Reward인가? 친구가 나를 역전했다고 알려주는 것이 Reward인가?  챌린지/목표/이벤트  챌린지와 목표의 차이는? 챌린지가 이벤트와 다른 것인가? 마케팅 기획이 이벤트인가? 챌린지를 집단으로 한다면 챌린지인가 이벤트인가?  포인트  포인트가 챌린지의 보상인가? 포인트가 사용자의 경험치인가? 운동량과 포인트는 누구에게나 동일한 비율로 적재되는가?</description>
+    </item>
+    
+    <item>
+      <title>Eureka Server 매핑 정보 삭제 delay 현상 in Bluemix</title>
+      <link>http://tech.cloudz-labs.io/posts/discovery-duration-error-in-bluemix/</link>
+      <pubDate>Mon, 19 Feb 2018 10:39:44 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/discovery-duration-error-in-bluemix/</guid>
+      <description>What ? 예전에 bluemix에 배포한 어플리케이션이 eureka와 연계했을 때 생각과 다르게 동작하는 것을 발견했습니다.
+해당 현상은 eureka client 어플리케이션이 종료됐을 때, eureka server에서 해당 어플리케이션 정보가 삭제되는데 생각보다 delay가 생기는 것 입니다. (예상 : 5초 내외, but 수 분이상 dashboard 상에서 조회)
+어디서 꼬인 것일까요 ?
+Why ?  eureka 설정이 잘못됐을 가능성
+eureka server 적용된 설정은 아래와 같습니다.
+eureka: instance: instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}} hostname: ${vcap.application.uris[0]} prefer-ip-address: false non-secure-port: 80 lease-renewal-interval-in-seconds: 5 lease-expiration-duration-in-seconds: 5 client: region: default fetch-registry: false register-with-eureka: false service-url: defaultZone: http://${eureka.</description>
+    </item>
+    
+    <item>
+      <title>로컬에서 Spring Cloud Connector 사용하기</title>
+      <link>http://tech.cloudz-labs.io/posts/how-to-use-cf-binding-service-in-local-env/</link>
+      <pubDate>Tue, 13 Feb 2018 08:34:45 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/how-to-use-cf-binding-service-in-local-env/</guid>
+      <description>What? 로컬 개발 환경에서 Spring Cloud Connector를 사용해서 Application에 binding 된 PaaS 서비스를 사용해 봅시다.
+Why? 로컬 개발 환경과 PaaS 환경(dev, stg, prod 등) 을 분리하여 개발환경을 구성하는 경우 몇가지 불편한 점이 있습니다.
+그 중 하나가 로컬 개발 환경에서 사용하는 서비스와 PaaS 환경에서 사용하는 서비스가 다른 경우입니다.
+예를 들면,
+ 로컬 환경에서 H2 DB 를 쓰다가 MariaDB로 배포하는 경우 쿼리가 다릅니다.
+H2:
+DROP TABLE IF EXISTS users CASCADE; CREATE TABLE IF NOT EXISTS users ( id INTEGER, username VARCHAR(100) NOT NULL, age INTEGER NOT NULL, job VARCHAR(100) NOT NULL ); ALTER TABLE users MODIFY id INTEGER NOT NULL AUTO_INCREMENT; MariaDB:</description>
+    </item>
+    
+  </channel>
+</rss>

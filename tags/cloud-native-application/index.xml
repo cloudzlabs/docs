@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cloud native application on DIGITAL LABS</title>
+    <link>http://tech.cloudz-labs.io/tags/cloud-native-application/</link>
+    <description>Recent content in cloud native application on DIGITAL LABS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 02 Mar 2018 11:07:05 +0900</lastBuildDate>
+    
+	<atom:link href="http://tech.cloudz-labs.io/tags/cloud-native-application/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CF에 Cloud Native Application 배포하기 </title>
+      <link>http://tech.cloudz-labs.io/posts/cf-apprelease/</link>
+      <pubDate>Fri, 02 Mar 2018 11:07:05 +0900</pubDate>
+      
+      <guid>http://tech.cloudz-labs.io/posts/cf-apprelease/</guid>
+      <description>PaaS에 Cloud Application을 배포하는 전 과정을 정리해보았습니다. Java로 만든 Cloud Native Application을 CF에 배포하는 간단한 실습인데요, 개발 환경 세팅부터 PaaS에 애플리케이션 배포하기까지의 흐름을 살펴볼 수 있어요. 코딩이 필요하지 않은 초보 개발자 위주의 간단한 실습이라 처음 접하는 사람도 쉽게 따라할 수 있으실꺼예요. 처음부터 끝까지 따라하면서 Cloud Native Application 개발을 시작해보세요!
+실습 과정 아래 과정의 순서대로 진행합니다.
+준비 사항 전제조건  CF 기반 PaaS  PaaS에 애플리케이션을 배포, 업데이트, 삭제, 스케일링 등의 작업을 할 수 있는 CF기반의 PaaS가 있어야 합니다.</description>
+    </item>
+    
+  </channel>
+</rss>
