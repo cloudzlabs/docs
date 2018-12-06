@@ -1,7 +1,7 @@
 language: go
 
 go:
-  - '1.9' # This uses automatically the latest version of go
+  - '1.11' # This uses automatically the latest version of go
 
 install:
   - go get github.com/gohugoio/hugo # This provides the latest version of Hugo to Travis CI
