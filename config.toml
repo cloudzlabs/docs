@@ -1,11 +1,11 @@
 baseURL = "http://tech.cloudz-labs.io/"
 # baseURL = "https://cloudzlabs.github.io/docs/"
-title = "CLOUDZ LABS"
+title = "DIGITAL LABS"
 theme = "labs"
 
 # for smart copyright line, leave this blank and check [params.copyright]
 copyright = ""
-disqusShortname = "cloudz-labs"
+disqusShortname = "digital-labs"
 googleAnalytics = "UA-115004569-1"
 
 Paginate = 10
@@ -40,7 +40,7 @@ enableEmoji = true
 hrefTargetBlank = true
 
 [params.info]
-home = "CloudZ Labs Tech"
+home = "Digital Labs Tech"
 suffix = "기술 블로그"
 description = ""
 title404 = "Nothing's here!"
@@ -57,7 +57,7 @@ customJS = ["assets/js/common.js", "assets/js/scripts.js", "assets/js/lunr.min.j
 [params.copyright]
 prefix = ""
 text = "SK 주식회사 C&C "
-holder = "CloudZ Labs"
+holder = "Digital Labs"
 startYear = "2018"
 suffix = "All Rights Reserved."
 
